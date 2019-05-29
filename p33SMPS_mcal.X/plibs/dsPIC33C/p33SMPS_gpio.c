@@ -33,6 +33,11 @@
 
 inline volatile uint16_t gpio_reset(void) {
 
+    // ToDo: Device port detection is not working across projects. 
+    // Currently this only can be resolved by adding devices to the project configuration
+    // Thus, port numbers from A-d have been added as default. This will cause compiler errors
+    // when using smaller devices. On larger devices ports E-F won't be reset.
+    
     /* Reset all device pins to digital function */
     #ifdef ANSELA
         ANSELA = 0x0000;
@@ -45,12 +50,6 @@ inline volatile uint16_t gpio_reset(void) {
     #endif
     #ifdef ANSELD
         ANSELD = 0x0000;
-    #endif
-    #ifdef ANSELE
-        ANSELE = 0x0000;
-    #endif
-    #ifdef ANSELF
-        ANSELF = 0x0000;
     #endif
 
     /* Reset all weak pull-up settings */
@@ -66,12 +65,6 @@ inline volatile uint16_t gpio_reset(void) {
     #ifdef CNPUD
         CNPUD = 0x0000;
     #endif
-    #ifdef CNPUE
-        CNPUE = 0x0000;
-    #endif
-    #ifdef CNPUF
-        CNPUF = 0x0000;
-    #endif
     
     /* Reset all weak pull-down settings */
     #ifdef CNPDA
@@ -85,12 +78,6 @@ inline volatile uint16_t gpio_reset(void) {
     #endif
     #ifdef CNPDD
         CNPDD = 0x0000;
-    #endif
-    #ifdef CNPDE
-        CNPDE = 0x0000;
-    #endif
-    #ifdef CNPDF
-        CNPDF = 0x0000;
     #endif
 
     /* Reset all open-drain settings */
@@ -106,12 +93,6 @@ inline volatile uint16_t gpio_reset(void) {
     #ifdef ODCD
         ODCD = 0x0000;
     #endif
-    #ifdef ODCE
-        ODCE = 0x0000;
-    #endif
-    #ifdef ODCF
-        ODCF = 0x0000;
-    #endif
 
     /* Reset pin direction settings to input */
     #ifdef TRISA        
@@ -126,12 +107,6 @@ inline volatile uint16_t gpio_reset(void) {
     #ifdef TRISD        
         TRISD = 0xFFFF;
     #endif
-    #ifdef TRISE        
-        TRISE = 0xFFFF;
-    #endif
-    #ifdef TRISF        
-        TRISF = 0xFFFF;
-    #endif
         
     /* Reset port latch registers to high */
     #ifdef LATA
@@ -145,12 +120,6 @@ inline volatile uint16_t gpio_reset(void) {
     #endif
     #ifdef LATD
         LATD = 0xFFFF;
-    #endif
-    #ifdef LATE
-        LATE = 0xFFFF;
-    #endif
-    #ifdef LATF
-        LATF = 0xFFFF;
     #endif
         
     return(1);
