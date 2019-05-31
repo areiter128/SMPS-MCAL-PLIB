@@ -239,7 +239,7 @@
     #error === CPU oscillator frequency macros cannot be determined for this device ===
 #endif
 
-// Operating Frequency in Hertz (~50 MHz max.)
+// Operating Frequency in Hertz (~100 MHz max.)
 #define FCY     ((uint32_t)(FOSC / 2))
 
 // Instruction Cycle in Seconds

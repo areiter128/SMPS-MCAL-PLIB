@@ -87,18 +87,18 @@
 #if defined (__P33SMPS_EP__) 
 
     #define UART_UxMODE_REG_DISPOSE_MASK     0x0000
-    #define UART_UxSTA_REG_DISPOSE_MASK     0x0000
+    #define UART_UxSTA_REG_DISPOSE_MASK      0x0000
 
-    #define UART_UxMODE_REG_WRITE_MASK		0xBBFF
-    #define UART_UxMODE_REG_READ_MASK		0xBBFF
+    #define UART_UxMODE_REG_WRITE_MASK		 0xBBFF
+    #define UART_UxMODE_REG_READ_MASK		 0xBBFF
     #define UART_UxMODE_REG_OFF_MASK         0x3BFF
 
-    #define UART_UxSTA_REG_WRITE_MASK       0xECE1
-    #define UART_UxSTA_REG_RESET_WRITE_MASK 0xECE3
-    #define UART_UxSTA_REG_READ_MASK        0xEFFF
+    #define UART_UxSTA_REG_WRITE_MASK        0xECE1
+    #define UART_UxSTA_REG_RESET_WRITE_MASK  0xECE3
+    #define UART_UxSTA_REG_READ_MASK         0xEFFF
 
-    #define UART_UxBRG_REG_WRITE_MASK       0xFFFF
-    #define UART_UxBRG_REG_READ_MASK        0xFFFF
+    #define UART_UxBRG_REG_WRITE_MASK        0xFFFF
+    #define UART_UxBRG_REG_READ_MASK         0xFFFF
 
     #define UxBRGL(x)    ((uint16_t)(FCY / (16 * x)) - 1)
     #define UxBRGH(x)    ((uint16_t)(FCY / (4 * x)) - 1)
@@ -130,8 +130,8 @@
     #define UART_UxBRGH_REG_WRITE_MASK       0x000F
     #define UART_UxBRGH_REG_READ_MASK        0x000F
 
-    #define UART_UxBRGL(x)    ((uint16_t)(FCY / (16 * x)) - 1)
-    #define UART_UxBRGH(x)    ((uint16_t)(FCY / (4 * x)) - 1)
+    #define UART_UxBRGL(x)    ((uint16_t)(((float)FCY / (16.0 * (float)x)) - 1.0))
+    #define UART_UxBRGH(x)    ((uint16_t)(((float)FCY / (4.0 * (float)x)) - 1.0))
 
     #define UART_UxP1_REG_WRITE_MASK         0x01FF
     #define UART_UxP1_REG_READ_MASK          0x01FF
