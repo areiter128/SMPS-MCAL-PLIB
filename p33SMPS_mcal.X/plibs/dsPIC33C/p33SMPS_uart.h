@@ -44,6 +44,7 @@
 
 #include "../p33SMPS_devices.h"
 #include "p33SMPS_oscillator.h"
+#include "p33SMPS_oscillator_default_cfg.h"
 
 /*@@p33FGS_uart.h
  * ************************************************************************************************

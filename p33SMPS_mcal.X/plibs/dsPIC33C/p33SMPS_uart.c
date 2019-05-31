@@ -165,7 +165,6 @@ inline volatile uint16_t smps_uart_open_port(uint16_t index,
     // Calculate the baud rate 
     brg_buf = UART_UxBRGL(baud);
     
-    
     if(brg_buf < 0xFFFF)
     { 
         reg_buf |= REG_BRGH_DEFAULT; 

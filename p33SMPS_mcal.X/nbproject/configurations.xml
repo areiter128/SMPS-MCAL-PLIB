@@ -16,6 +16,7 @@
         <itemPath>plibs/dsPIC33C/p33SMPS_irq.h</itemPath>
         <itemPath>plibs/dsPIC33C/p33SMPS_gpio.h</itemPath>
         <itemPath>plibs/dsPIC33C/p33SMPS_mailboxes.h</itemPath>
+        <itemPath>plibs/dsPIC33C/p33SMPS_uart.h</itemPath>
       </logicalFolder>
       <itemPath>p33SMPS_plib.h</itemPath>
       <itemPath>plibs/p33SMPS_devices.h</itemPath>
@@ -38,6 +39,7 @@
         <itemPath>plibs/dsPIC33C/p33SMPS_irq.c</itemPath>
         <itemPath>plibs/dsPIC33C/p33SMPS_gpio.c</itemPath>
         <itemPath>plibs/dsPIC33C/p33SMPS_mailboxes.c</itemPath>
+        <itemPath>plibs/dsPIC33C/p33SMPS_uart.c</itemPath>
       </logicalFolder>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
