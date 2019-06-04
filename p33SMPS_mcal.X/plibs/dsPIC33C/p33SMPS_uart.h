@@ -69,16 +69,16 @@
 
     #if defined (__P33SMPS_CH_SLV__) 
         #define UART_UART_COUNT	1
-        #define UART_INDEX_REG_OFFSET	0x0008
+        #define UART_INDEX_REG_OFFSET	0x0014
 
     #elif defined (__P33SMPS_CH_MSTR__) 
         #define UART_UART_COUNT	2
-        #define UART_INDEX_REG_OFFSET	0x0008
+        #define UART_INDEX_REG_OFFSET	0x0014
     #endif
 
 #elif defined (__P33SMPS_CK__)
 	#define UART_UART_COUNT	3
-	#define UART_INDEX_REG_OFFSET	0x0008
+	#define UART_INDEX_REG_OFFSET	0x0014
 
 #else
 	//#error === selected device not supported ===

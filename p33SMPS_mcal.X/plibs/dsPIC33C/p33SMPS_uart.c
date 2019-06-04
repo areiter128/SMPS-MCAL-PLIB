@@ -110,10 +110,8 @@ inline volatile uint16_t smps_uart_init(uint16_t index, UxMODE_CONTROL_REGISTER_
  * isr_priority = interrupt service routine priority of this UART unit
  *
  * Description:
- * This routine is setting the timer pre-scaler in accordance to apply the
- * desired period using a 16-bit time base. Therefore the 16bit mode is enforced
- * and any pre-scaler settings will be ignored. The timer will remain disabled after
- * initialization and has to be enabled by the user.
+ * This routine is setting the uart parameters and enables the transmitter and the receiver
+
  * ***********************************************************************************************/
 
 inline volatile uint16_t smps_uart_open_port(uint16_t index, 
@@ -170,16 +168,22 @@ inline volatile uint16_t smps_uart_open_port(uint16_t index,
     }        
     
     // Calculate the baud rate 
-    brg_buf = UART_UxBRGL(baud);
+    brg_buf = UART_UxBRGH(baud);
     
     if(brg_buf < 0xFFFF)
     { 
-        reg_buf |= REG_BRGH_DEFAULT; 
+        reg_buf |= REG_BRGH_HIGH_SPEED; 
     }
     else
     { 
-        brg_buf = UART_UxBRGH(baud);
-        reg_buf |= REG_BRGH_HIGH_SPEED; 
+        brg_buf = UART_UxBRGL(baud);
+        reg_buf |= REG_BRGH_DEFAULT; 
+    }
+    
+    // Invalid baud rate
+    if(brg_buf>0xffff)
+    {
+        return(0);
     }
 
     // Set up interrupt
@@ -275,11 +279,11 @@ inline volatile uint16_t smps_uart_open_port(uint16_t index,
     
     // Set basic configuration
     regptr  = (volatile uint16_t *)&U1MODE + reg_offset;
-    *regptr = ((reg_buf & UART_UxMODE_REG_WRITE_MASK) | REG_UARTEN_ENABLED);	// UART ENABLE is on
+    *regptr = ((reg_buf & UART_UxMODE_REG_WRITE_MASK) | REG_UARTEN_ENABLED | REG_UTXEN_ENABLED | REG_URXEN_ENABLED);	// UART ENABLE is on, Transmit and receive also enabled
 
     // set status register to enable transmit buffer
-    regptr  = (volatile uint16_t *)&U1STA + reg_offset;
-    *regptr = ((reg_buf & UART_UxSTA_REG_WRITE_MASK) | REG_UTXEN_ENABLED);	// UART TX ENABLE is on
+//    regptr  = (volatile uint16_t *)&U1STA + reg_offset;
+//    *regptr = ((reg_buf & UART_UxSTA_REG_WRITE_MASK) | REG_UTXEN_ENABLED);	// UART TX ENABLE is on, Transmit and receive also enabled
     
 	return(1);
 

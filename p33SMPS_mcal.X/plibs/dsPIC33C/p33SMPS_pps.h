@@ -843,20 +843,15 @@
  * 	Defines for register direct addressing of available remappable output pins
  * ---------------------------------------------------------------------------*/
 
-    #define PPS_RPO16    (uint8_t*)&RPOR0
-    #define PPS_RPO17    (uint8_t*)&RPOR0+1
-    #define PPS_RPO18    (uint8_t*)&RPOR1
-    #define PPS_RPO19    (uint8_t*)&RPOR1+1
-    #define PPS_RPO20    (uint8_t*)&RPOR2
+    #define PPS_RPO32    (uint8_t*)&RPOR0
+    #define PPS_RPO33    (uint8_t*)&RPOR0+1
+    #define PPS_RPO34    (uint8_t*)&RPOR1
+    #define PPS_RPO35    (uint8_t*)&RPOR1+1
+    #define PPS_RPO36    (uint8_t*)&RPOR2
+    #define PPS_RPO37    (uint8_t*)&RPOR2+1
+    #define PPS_RPO38    (uint8_t*)&RPOR3
+    #define PPS_RPO39    (uint8_t*)&RPOR3+1
 
-    #define PPS_RPO32    (uint8_t*)&RPOR2+1
-    #define PPS_RPO33    (uint8_t*)&RPOR3
-    #define PPS_RPO34    (uint8_t*)&RPOR3+1
-    #define PPS_RPO35    (uint8_t*)&RPOR4
-    #define PPS_RPO36    (uint8_t*)&RPOR4+1
-    #define PPS_RPO37    (uint8_t*)&RPOR5
-    #define PPS_RPO38    (uint8_t*)&RPOR5+1
-    #define PPS_RPO39    (uint8_t*)&RPOR6
     #define PPS_RPO40    (uint8_t*)&RPOR6+1
     #define PPS_RPO41    (uint8_t*)&RPOR7
 
@@ -881,11 +876,13 @@
     #define PPS_RPO60    (uint8_t*)&RPOR15+1
     #define PPS_RPO61    (uint8_t*)&RPOR16
     #define PPS_RPO62    (uint8_t*)&RPOR16+1
-    #define PPS_RPO63    (uint8_t*)&RPOR17
-    #define PPS_RPO64    (uint8_t*)&RPOR17+1
-    #define PPS_RPO65    (uint8_t*)&RPOR18
-    #define PPS_RPO66    (uint8_t*)&RPOR18+1
-    #define PPS_RPO67    (uint8_t*)&RPOR19
+    
+    #define PPS_RPO66    (uint8_t*)&RPOR17
+    #define PPS_RPO67    (uint8_t*)&RPOR17+1
+    
+#define PPS_RPO65    (uint8_t*)&RPOR18
+//    #define PPS_RPO66    (uint8_t*)&RPOR18+1
+//    #define PPS_RPO67    (uint8_t*)&RPOR19
     #define PPS_RPO68    (uint8_t*)&RPOR19+1
     #define PPS_RPO69    (uint8_t*)&RPOR20
     #define PPS_RPO70    (uint8_t*)&RPOR20+1
@@ -1062,8 +1059,8 @@
 
 // PROTOTYPES FOR p33SMPS_pps.c
     
-extern volatile uint16_t pps_RemapOutput(uint8_t pinno, uint8_t peripheral);
-extern volatile uint16_t pps_UnmapOutput(uint8_t pinno);
+extern volatile uint16_t pps_RemapOutput(uint8_t *pinno, uint8_t peripheral);
+extern volatile uint16_t pps_UnmapOutput(uint8_t *pinno);
 extern volatile uint16_t pps_RemapInput(uint8_t pinno, uint8_t *peripheral);
 extern volatile uint16_t pps_UnmapInput(uint8_t *peripheral);
 extern volatile uint16_t pps_LockIO(void);
