@@ -43,6 +43,13 @@
 
 #include "p33SMPS_uart.h"
 
+// This included is needed to import CPU clock from the application project
+#include "../../../../USB-PD-BoB/h/hal/config/syscfg_scaling.h"
+
+#ifndef FCY
+    #error FCY system clock has to be defined for baudrate setting
+#endif
+
 #define SMPS_UART_IO_TIMEOUT   5000    // wait for n while cycles before terminating poll-attempt
 
 /*@@p33MP_uart.c

@@ -15,6 +15,7 @@
             <sourceRootList>
                 <sourceRootElem>.</sourceRootElem>
                 <sourceRootElem>plibs</sourceRootElem>
+                <sourceRootElem>../../USB-PD-BoB/h/hal/config</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>
