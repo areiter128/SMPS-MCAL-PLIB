@@ -227,23 +227,23 @@
     #define ACLK_PLLDIV_N2     APLLDIV_POST2DIV_N2N3_2
     #define ACLK_PLLDIV_N3     APLLDIV_POST2DIV_N2N3_1
         
-    #define F_ACLK  (uint32_t)(((float)AUXOSCFREQUENCY * (float)ACLK_PLLDIV_M) / ((float)ACLK_PLLDIV_N1 * (float)ACLK_PLLDIV_N2 * (float)ACLK_PLLDIV_N3))
+//    #define F_ACLK  (uint32_t)(((float)AUXOSCFREQUENCY * (float)ACLK_PLLDIV_M) / ((float)ACLK_PLLDIV_N1 * (float)ACLK_PLLDIV_N2 * (float)ACLK_PLLDIV_N3))
 
     // PWM Resolution in Seconds (~1.042 ns max.)
-    #define T_ACLK  ((float)(1.0/(float)(F_ACLK)))  
+//    #define T_ACLK  ((float)(1.0/(float)(F_ACLK)))  
 
     // PLL Output Frequency in Hertz (~100 MHz max.)
-    #define FOSC    (uint32_t)((((float)OSC_FREQUENCY * (float)OSC_PLLDIV_M) / ((float)OSC_PLLDIV_N1 * (float)OSC_PLLDIV_N2 * (float)OSC_PLLDIV_N3)) / 2.0)
+//    #define FOSC    (uint32_t)((((float)OSC_FREQUENCY * (float)OSC_PLLDIV_M) / ((float)OSC_PLLDIV_N1 * (float)OSC_PLLDIV_N2 * (float)OSC_PLLDIV_N3)) / 2.0)
 
 #else
     #error === CPU oscillator frequency macros cannot be determined for this device ===
 #endif
 
 // Operating Frequency in Hertz (~100 MHz max.)
-#define FCY     ((uint32_t)(FOSC / 2))
+//#define FCY     ((uint32_t)(FOSC / 2))
 
 // Instruction Cycle in Seconds
-#define TCY     ((float)(1.0/(float)(FCY)))
+//#define TCY     ((float)(1.0/(float)(FCY)))
 
 
             

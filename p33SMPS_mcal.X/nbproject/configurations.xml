@@ -51,6 +51,7 @@
   <sourceRootList>
     <Elem>.</Elem>
     <Elem>plibs</Elem>
+    <Elem>../../USB-PD-BoB/h/hal/config</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
