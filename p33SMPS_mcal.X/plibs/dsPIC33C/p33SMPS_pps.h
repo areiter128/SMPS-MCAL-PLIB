@@ -851,48 +851,48 @@
     #define PPS_RPO37    (uint8_t*)&RPOR2+1
     #define PPS_RPO38    (uint8_t*)&RPOR3
     #define PPS_RPO39    (uint8_t*)&RPOR3+1
-
-    #define PPS_RPO40    (uint8_t*)&RPOR6+1
-    #define PPS_RPO41    (uint8_t*)&RPOR7
-
-    #define PPS_RPO43    (uint8_t*)&RPOR7+1
-    #define PPS_RPO44    (uint8_t*)&RPOR8
-    #define PPS_RPO45    (uint8_t*)&RPOR8+1
-    #define PPS_RPO46    (uint8_t*)&RPOR9
-    #define PPS_RPO47    (uint8_t*)&RPOR9+1
-    #define PPS_RPO48    (uint8_t*)&RPOR10
-    #define PPS_RPO49    (uint8_t*)&RPOR10+1
-
-    #define PPS_RPO50    (uint8_t*)&RPOR11
-    #define PPS_RPO51    (uint8_t*)&RPOR11+1
-    #define PPS_RPO52    (uint8_t*)&RPOR12
-    #define PPS_RPO53    (uint8_t*)&RPOR12+1
-    #define PPS_RPO54    (uint8_t*)&RPOR13
-    #define PPS_RPO55    (uint8_t*)&RPOR13+1
-    #define PPS_RPO56    (uint8_t*)&RPOR14
-    #define PPS_RPO57    (uint8_t*)&RPOR14+1
-    #define PPS_RPO58    (uint8_t*)&RPOR15
-
-    #define PPS_RPO60    (uint8_t*)&RPOR15+1
-    #define PPS_RPO61    (uint8_t*)&RPOR16
-    #define PPS_RPO62    (uint8_t*)&RPOR16+1
-    
+    #define PPS_RPO40    (uint8_t*)&RPOR4
+    #define PPS_RPO41    (uint8_t*)&RPOR4+1
+    #define PPS_RPO42    (uint8_t*)&RPOR5
+    #define PPS_RPO43    (uint8_t*)&RPOR5+1
+    #define PPS_RPO44    (uint8_t*)&RPOR6
+    #define PPS_RPO45    (uint8_t*)&RPOR6+1
+    #define PPS_RPO46    (uint8_t*)&RPOR7
+    #define PPS_RPO47    (uint8_t*)&RPOR7+1
+    #define PPS_RPO48    (uint8_t*)&RPOR8
+    #define PPS_RPO49    (uint8_t*)&RPOR8+1
+    #define PPS_RPO50    (uint8_t*)&RPOR9
+    #define PPS_RPO51    (uint8_t*)&RPOR9+1
+    #define PPS_RPO52    (uint8_t*)&RPOR10
+    #define PPS_RPO53    (uint8_t*)&RPOR10+1
+    #define PPS_RPO54    (uint8_t*)&RPOR11
+    #define PPS_RPO55    (uint8_t*)&RPOR11+1
+    #define PPS_RPO56    (uint8_t*)&RPOR12
+    #define PPS_RPO57    (uint8_t*)&RPOR12+1
+    #define PPS_RPO58    (uint8_t*)&RPOR13
+    #define PPS_RPO69    (uint8_t*)&RPOR13+1
+    #define PPS_RPO60    (uint8_t*)&RPOR14
+    #define PPS_RPO61    (uint8_t*)&RPOR14+1
+    #define PPS_RPO62    (uint8_t*)&RPOR15
+    #define PPS_RPO63    (uint8_t*)&RPOR15+1
+    #define PPS_RPO62    (uint8_t*)&RPOR16
+    #define PPS_RPO63    (uint8_t*)&RPOR16+1
     #define PPS_RPO66    (uint8_t*)&RPOR17
     #define PPS_RPO67    (uint8_t*)&RPOR17+1
-    
-#define PPS_RPO65    (uint8_t*)&RPOR18
-//    #define PPS_RPO66    (uint8_t*)&RPOR18+1
-//    #define PPS_RPO67    (uint8_t*)&RPOR19
-    #define PPS_RPO68    (uint8_t*)&RPOR19+1
-    #define PPS_RPO69    (uint8_t*)&RPOR20
-    #define PPS_RPO70    (uint8_t*)&RPOR20+1
-    #define PPS_RPO71    (uint8_t*)&RPOR21
-    #define PPS_RPO72    (uint8_t*)&RPOR21+1
-    #define PPS_RPO73    (uint8_t*)&RPOR22
-    #define PPS_RPO74    (uint8_t*)&RPOR22+1
-    #define PPS_RPO75    (uint8_t*)&RPOR23
-    #define PPS_RPO76    (uint8_t*)&RPOR23+1
+    #define PPS_RPO68    (uint8_t*)&RPOR18
+    #define PPS_RPO69    (uint8_t*)&RPOR18+1
+    #define PPS_RPO70    (uint8_t*)&RPOR19
+    #define PPS_RPO71    (uint8_t*)&RPOR19+1
+    #define PPS_RPO72    (uint8_t*)&RPOR20
+    #define PPS_RPO73    (uint8_t*)&RPOR20+1
+    #define PPS_RPO74    (uint8_t*)&RPOR21
+    #define PPS_RPO75    (uint8_t*)&RPOR21+1
+    #define PPS_RPO76    (uint8_t*)&RPOR22
+    #define PPS_RPO78    (uint8_t*)&RPOR22+1
+    #define PPS_RPO79    (uint8_t*)&RPOR23
+    #define PPS_RPO80    (uint8_t*)&RPOR23+1
 
+    // Virtual pins
     #define PPS_RPO176   (uint8_t*)&RPOR24
     #define PPS_RPO177   (uint8_t*)&RPOR24+1
     #define PPS_RPO178   (uint8_t*)&RPOR25
