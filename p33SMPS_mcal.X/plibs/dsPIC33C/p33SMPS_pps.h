@@ -870,13 +870,13 @@
     #define PPS_RPO56    (uint8_t*)&RPOR12
     #define PPS_RPO57    (uint8_t*)&RPOR12+1
     #define PPS_RPO58    (uint8_t*)&RPOR13
-    #define PPS_RPO69    (uint8_t*)&RPOR13+1
+    #define PPS_RPO59    (uint8_t*)&RPOR13+1
     #define PPS_RPO60    (uint8_t*)&RPOR14
     #define PPS_RPO61    (uint8_t*)&RPOR14+1
     #define PPS_RPO62    (uint8_t*)&RPOR15
     #define PPS_RPO63    (uint8_t*)&RPOR15+1
-    #define PPS_RPO62    (uint8_t*)&RPOR16
-    #define PPS_RPO63    (uint8_t*)&RPOR16+1
+    #define PPS_RPO64    (uint8_t*)&RPOR16
+    #define PPS_RPO65    (uint8_t*)&RPOR16+1
     #define PPS_RPO66    (uint8_t*)&RPOR17
     #define PPS_RPO67    (uint8_t*)&RPOR17+1
     #define PPS_RPO68    (uint8_t*)&RPOR18

@@ -107,10 +107,11 @@ inline volatile uint16_t smps_uart_init(uint16_t index, UxMODE_CONTROL_REGISTER_
  *	data_bits   = number of data bits of the selected UART unit
  *	parity      = parity setting of the selected UART unit
  *	stop_bits   = number of stop bits of the selected UART unit
- * isr_priority = interrupt service routine priority of this UART unit
+ *  isr_priority = interrupt service routine priority of this UART unit
  *
  * Description:
  * This routine is setting the uart parameters and enables the transmitter and the receiver
+ * RX, TX and error interrupt are enabled with priority isr_priority
 
  * ***********************************************************************************************/
 
@@ -194,17 +195,14 @@ inline volatile uint16_t smps_uart_open_port(uint16_t index,
             _U1RXIP = isr_priority;
             if(isr_priority > 0) {_U1RXIE = 1; }
             else {_U1RXIE = 0; }
-/*
             _U1TXIF = 0;
             _U1TXIP = isr_priority;
             if(isr_priority > 0) {_U1TXIE = 1; }
             else {_U1TXIE = 0; }
-
             _U1EIF = 0;
             _U1EIP = isr_priority;
             if(isr_priority > 0) {_U1EIE = 0; }
             else {_U1EIE = 0; }
-*/
             break;
 
         #if defined (U2MODE)
@@ -213,17 +211,14 @@ inline volatile uint16_t smps_uart_open_port(uint16_t index,
             _U2RXIP = isr_priority;
             if(isr_priority > 0) {_U2RXIE = 1; }
             else {_U2RXIE = 0; }
-/*
             _U2TXIF = 0;
             _U2TXIP = isr_priority;
-            if(isr_priority > 0) {_U2TXIE = 0; }
+            if(isr_priority > 0) {_U2TXIE = 1; }
             else {_U2TXIE = 0; }
-
             _U2EIF = 0;
             _U2EIP = isr_priority;
             if(isr_priority > 0) {_U2EIE = 0; }
             else {_U2EIE = 0; }
-*/           
             break;
         #endif
             
@@ -233,17 +228,15 @@ inline volatile uint16_t smps_uart_open_port(uint16_t index,
             _U3RXIP = isr_priority;
             if(isr_priority > 0) {_U3RXIE = 1; }
             else {_U3RXIE = 0; }
-/*
             _U3TXIF = 0;
             _U3TXIP = isr_priority;
-            if(isr_priority > 0) {_U3TXIE = 0; }
+            if(isr_priority > 0) {_U3TXIE = 1; }
             else {_U3TXIE = 0; }
-
             _U3EIF = 0;
             _U3EIP = isr_priority;
             if(isr_priority > 0) {_U3EIE = 0; }
             else {_U3EIE = 0; }
-*/            
+           
             break;
         #endif
 
@@ -253,17 +246,15 @@ inline volatile uint16_t smps_uart_open_port(uint16_t index,
             _U4RXIP = isr_priority;
             if(isr_priority > 0) {_U4RXIE = 1; }
             else {_U4RXIE = 0; }
-/*
             _U4TXIF = 0;
             _U4TXIP = isr_priority;
-            if(isr_priority > 0) {_U4TXIE = 0; }
+            if(isr_priority > 0) {_U4TXIE = 1; }
             else {_U4TXIE = 0; }
-
             _U4EIF = 0;
             _U4EIP = isr_priority;
             if(isr_priority > 0) {_U4EIE = 0; }
             else {_U4EIE = 0; }
-*/            
+          
             break;
         #endif
             
