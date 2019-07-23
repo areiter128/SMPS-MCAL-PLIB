@@ -43,6 +43,7 @@
 #include <xc.h>
 #include <stdint.h>
 
+#include "../../p33SMPS_plib.h"
 #include "p33SMPS_uart.h"
 
 #define SMPS_UART_IO_TIMEOUT   5000    // wait for n while cycles before terminating poll-attempt
@@ -596,16 +597,16 @@ volatile uint32_t smps_uart_get_baudrate(uint16_t uart_instance, uint32_t baud) 
     baudclk = ((reg_buf & 0x0600) >> 9); 
     switch (baudclk) {
         case 0b00:  // FOSC/2 (FP)
-            baudclk = system_clock.fp; 
+            baudclk = system_frequencies.fp; 
             break;
         case 0b01:  // (reserved) => invalid
             return(0); 
             break;
         case 0b10:  // FOSC
-            baudclk = system_clock.fosc; 
+            baudclk = system_frequencies.fosc; 
             break;
         case 0b11:  // AFVCO/3
-            baudclk = (volatile uint32_t)((float)system_clock.fvco / 3.0);
+            baudclk = (volatile uint32_t)((float)system_frequencies.fvco / 3.0);
             break;
     }
     
@@ -637,6 +638,7 @@ volatile uint32_t smps_uart_get_baudrate(uint16_t uart_instance, uint32_t baud) 
     
     }
 
+    // Return calculation result
     return((volatile uint32_t)baudclk);
     
 }
