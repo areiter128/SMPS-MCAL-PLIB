@@ -387,19 +387,33 @@ inline volatile uint16_t init_AUXCLK(AUXOSC_CONFIG_t aux_clock_config)
  *
  * ************************************************************************************************/
 
- inline volatile uint16_t init_AUXCLK_500MHz(void)
+ inline volatile uint16_t init_AUXCLK_Defaults(AUX_PLL_DEFAULTS_e afpllo_frequency)
  {
     volatile uint16_t fres = 0;
     volatile AUXOSC_CONFIG_t aux_clock_config;
-    
+
+    // Set FRC as clock input to auxiliary PLL module
     aux_clock_config.FRCSEL = PLLDIV_ACLKCON_FRCSEL_FRC;
+    
+    // Set auxiliary PLL VCO divider to 1:1
     aux_clock_config.AVCODIV = APLLDIV_AVCODIV_FVCO_DIV_BY_1;
-    aux_clock_config.N1 = ACLKCON_APLLDIV_N1_1;
-    aux_clock_config.M = APLLFBD_APLLFBDIV_M_125;
-    aux_clock_config.N2 = APLLDIV_POST2DIV_N2N3_2;
-    aux_clock_config.N3 = APLLDIV_POST2DIV_N2N3_1;
+    
+    // Select PLL dividers and multiplier in accordance with user parameter 
+    if(afpllo_frequency <= 800) {
+        aux_clock_config.N1 = ACLKCON_APLLDIV_N1_1;     // Default divider of 1
+        aux_clock_config.M = (afpllo_frequency >> 2);   // frequency divided by 4
+        aux_clock_config.N2 = APLLDIV_POST2DIV_N2N3_2;  // Default divider of 2
+        aux_clock_config.N3 = APLLDIV_POST2DIV_N2N3_1;  // Default divider of 1
+    }
+    else {
+        return(0);  // When frequency is out of range, return failure
+                    // Most recent APLL setting remains unchanged
+    }
+    
+    // Enable auxiliary PLL
     aux_clock_config.APLLEN = ACLKCON_APLLEN_ENABLED;
-     
+    
+    // Call auxiliary PLL configuration to apply new settings
     fres = init_AUXCLK(aux_clock_config);
     
     return(fres);

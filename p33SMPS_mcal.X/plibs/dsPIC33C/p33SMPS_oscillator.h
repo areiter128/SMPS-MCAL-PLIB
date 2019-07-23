@@ -78,6 +78,20 @@ typedef enum
     CPU_SPEED_100_MIPS = 100 // CPU Speed setting for 100 MIPS operation
 } CPU_SPEED_DEFAULTS_e;  // Default CPU speed settings 
 
+
+typedef enum 
+{
+    AFPLLO_100_MHZ  = 100, // Auxiliary PLL output frequency of 500 MHz
+    AFPLLO_200_MHZ  = 200, // Auxiliary PLL output frequency of 500 MHz
+    AFPLLO_300_MHZ  = 300, // Auxiliary PLL output frequency of 500 MHz
+    AFPLLO_400_MHZ  = 400, // Auxiliary PLL output frequency of 500 MHz
+    AFPLLO_500_MHZ  = 500, // Auxiliary PLL output frequency of 500 MHz (Default for high resolution PWM)
+    AFPLLO_600_MHZ  = 600, // Auxiliary PLL output frequency of 600 MHz
+    AFPLLO_700_MHZ  = 700, // Auxiliary PLL output frequency of 700 MHz
+    AFPLLO_800_MHZ  = 800 // Auxiliary PLL output frequency of 800 MHz
+} AUX_PLL_DEFAULTS_e;  // Default Auxiliary PLL output frequency settings 
+
+
 /*!System OSCILLATOR_SYSTEM_FREQUENCIES_t
  * ************************************************************************************************
  * Summary:
@@ -1092,7 +1106,7 @@ extern volatile uint16_t init_FOSC(OSC_CONFIG_t osc_config);
 extern volatile uint16_t init_AUXCLK(AUXOSC_CONFIG_t aux_clock_config);
 
 extern volatile uint16_t init_FRCCLK_Defaults(CPU_SPEED_DEFAULTS_e cpu_speed);
-extern volatile uint16_t init_AUXCLK_500MHz(void);
+extern volatile uint16_t init_AUXCLK_Defaults(AUX_PLL_DEFAULTS_e afpllo_frequency);
 extern volatile uint32_t osc_get_frequencies(uint32_t pri_osc_frequency);
 
 #endif  /* __MCAL_P33_SMPS_OSCILLATOR_H__ */
