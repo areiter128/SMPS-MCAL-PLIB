@@ -1048,12 +1048,9 @@
 
     #endif
 
-
-//#pragma message "pps mcal needs review"
-
 #elif defined (__P33SMPS_CK__)
 
-
+    #pragma message "warning: === dsPIC33CK is lacking PPS support. Please review ==="
 
 #else
     #error === p33SMPS_pps: selected device type not supported ===

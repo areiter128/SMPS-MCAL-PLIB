@@ -155,13 +155,7 @@ typedef struct {
     #define OSC_TUN_STEP_PERCENTAGE 0.00047     // Oscillator frequency step size of <OSCTUN>
 
 #else
-    #warning === selected device family not supported by oscillator mcal driver library ===
-#endif
-
-#if (USE_EXTERNAL_OSC == 0)     // if device is running with internal FRC oscillator
-    #define OSC_FREQ ((uint32_t)((float)OSC_FRC_FREQ + (float)((float)OSC_FRC_TUN * (OSC_TUN_STEP_PERCENTAGE * (float)OSC_FRC_FREQ))))
-#else
-    #define OSC_FREQ  EXT_OSC_FREQ	// External oscillator frequency in [Hz] as defined by user in device_config.h
+    #pragma message "error: === selected device family not supported by oscillator mcal driver library ==="
 #endif
 
 #define OSC_TUN_STEP_FREQUENCY  (volatile int32_t)(OSC_FRC_FREQ * OSC_TUN_STEP_PERCENTAGE)
@@ -279,7 +273,7 @@ typedef enum {
 } CLKDIV_PLLPRE_e; // PLL Phase Detector Input Divider Select bits (also denoted as ?N1?, PLL prescaler)
 
 #else
-    #warning === selected device family is not supported by oscillator mcal library ===
+    #pragma message "error: === selected device family is not supported by oscillator mcal library ==="
 #endif
 
 #define REG_CLKDIV_DOZE_DIV_1    0b0000000000000000
@@ -559,7 +553,7 @@ typedef struct {
 } PLLFBD_t;
 
 #else
-    #warning === selected device family is not supported by oscillator mcal library ===
+    #pragma message "error: === selected device family is not supported by oscillator mcal library ==="
 #endif
 
 typedef union {
@@ -647,7 +641,7 @@ typedef enum {
 } OSCTUN_TUN_e; // FRC Oscillator Tuning bits
 
 #else
-    #warning === selected device family is not supported by oscillator mcal library ===
+    #pragma message "error: === selected device family is not supported by oscillator mcal library ==="
 #endif
 
 typedef struct {
@@ -777,7 +771,7 @@ typedef union {
 } REGBLK_ACLKCON_CONFIG_t;
 
 #else
-    #warning === selected device family is not supported by oscillator mcal library ===
+    #pragma message "error: === selected device family is not supported by oscillator mcal library ==="
 #endif
 
 /* ===========================================================================
@@ -991,7 +985,7 @@ typedef union {
 } REGBLK_APLLFBD_CONFIG_t;
 
 #else
-    #warning === selected device family is not supported by oscillator mcal library ===
+    #pragma message "error: === selected device family is not supported by oscillator mcal library ==="
 #endif
 
 /* ===========================================================================
@@ -1046,7 +1040,7 @@ typedef union {
 } REGBLK_APLLDIV_CONFIG_t;
 
 #else
-    #warning === selected device family is not supported by oscillator mcal library ===
+    #pragma message "error: === selected device family is not supported by oscillator mcal library ==="
 #endif
 
 /* ===========================================================================
@@ -1078,7 +1072,7 @@ typedef struct {
 } AUXOSC_CONFIG_t;
 
 #else
-    #warning === selected device family is not supported by oscillator mcal library ===
+    #pragma message "error: === selected device family is not supported by oscillator mcal library ==="
 #endif
 
 

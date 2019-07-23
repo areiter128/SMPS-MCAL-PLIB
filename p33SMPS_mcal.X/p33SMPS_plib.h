@@ -53,8 +53,6 @@
 #include "plibs/dsPIC33C/p33SMPS_timer.h"
 #include "plibs/dsPIC33C/p33SMPS_uart.h"
 
-//  #pragma message "P33SMPS_plib Message:: Device type successfully recognized."
-
 #else
   #pragma message "P33SMPS_plib Warning: selected device is currently not supported by the peripheral libraries"
 #endif
