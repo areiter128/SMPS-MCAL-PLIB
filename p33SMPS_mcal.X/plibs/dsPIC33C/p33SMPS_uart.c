@@ -34,6 +34,8 @@
  * Created on October 26, 2017, 1:10 PM
  * 
  * Revision:
+ * 17/10/26		initial version
+ * 19/07/23		added baudrate calculation
  * 
  * ***************************************************************************/
 
@@ -41,6 +43,7 @@
 #include <xc.h>
 #include <stdint.h>
 
+#include "../../p33SMPS_plib.h"
 #include "p33SMPS_uart.h"
 
 #define SMPS_UART_IO_TIMEOUT   5000    // wait for n while cycles before terminating poll-attempt
@@ -585,10 +588,8 @@ volatile uint32_t smps_uart_get_baudrate(uint16_t uart_instance, uint32_t baud) 
     volatile uint16_t reg_buf = 0;
     volatile uint32_t baudclk = 0;
     
-    // Get pointer offset to UART peripheral instance
     reg_offset = (uart_instance - 1) * ((volatile uint16_t*)&U2MODE - (volatile uint16_t*)&U1MODE);
     
-    // Get pointer address to UART peripheral instance
     regptr = (volatile uint16_t*)&U1MODEH + reg_offset;
     reg_buf = *regptr;
     
@@ -602,10 +603,10 @@ volatile uint32_t smps_uart_get_baudrate(uint16_t uart_instance, uint32_t baud) 
             return(0); 
             break;
         case 0b10:  // FOSC
-            baudclk = system_clock.fosc; 
+            baudclk = system_frequencies.fosc; 
             break;
         case 0b11:  // AFVCO/3
-            baudclk = (volatile uint32_t)((float)system_clock.fvco / 3.0);
+            baudclk = (volatile uint32_t)((float)system_frequencies.fvco / 3.0);
             break;
     }
     
@@ -637,6 +638,7 @@ volatile uint32_t smps_uart_get_baudrate(uint16_t uart_instance, uint32_t baud) 
     
     }
 
+    // Return calculation result
     return((volatile uint32_t)baudclk);
     
 }

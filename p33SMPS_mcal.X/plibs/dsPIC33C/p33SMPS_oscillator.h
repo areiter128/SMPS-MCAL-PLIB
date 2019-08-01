@@ -46,11 +46,23 @@
 /*!System Frequencies
  * ************************************************************************************************
  * Summary:
- * Set of values and macros for system frequency adaption
+ * Set of defines, data types and data structures for system frequency adaption
  *
  * Description:
- * Following several basic settings for the main oscillator are listed, to scale the system's
- * frequencies of Timer, PWM or ADC accordingly.
+ * This library offers default preset for CPU frequencies to simplify the oscillator 
+ * configuration for standard applications using the internal Fast RC oscillator (FRC).
+ * These parameters are supposed to be used with the function call init_FRCCLK_Defaults().
+ * To change the CPU frequency at any point during runtime, clock switching must be enabled
+ * by setting the configuration bit FCKSM:
+ * 
+ *      #pragma config FCKSM = CSECMD (Clock Switching Enabled/Clock Monitor Disabled) 
+ *   or                        CSECME (Clock Switching Enabled/Clock Monitor Enabled)
+ * 
+ * Example:
+ * The following code line configures the internal FRC oscillator for 80 MIPS operation:
+ * 
+ *      init_FRCCLK_Defaults(CPU_SPEED_80_MIPS);    // Configuring FRC for 80 MIPS operation
+ * 
  * ***********************************************************************************************/
 
 typedef enum 
@@ -67,37 +79,86 @@ typedef enum
 } CPU_SPEED_DEFAULTS_e;  // Default CPU speed settings 
 
 
-#if defined (__P33SMPS_CH__) || defined (__P33SMPS_CK__)
-    #define FRCTUN_MIN      -32     // minimum tuning value
-    #define FRCTUN_MAX      31      // maximum tuning value
-#else
-    #warning === selected device family not supported by oscillator mcal driver library ===
-#endif
+typedef enum 
+{
+    AFPLLO_100_MHZ  = 100, // Auxiliary PLL output frequency of 500 MHz
+    AFPLLO_200_MHZ  = 200, // Auxiliary PLL output frequency of 500 MHz
+    AFPLLO_300_MHZ  = 300, // Auxiliary PLL output frequency of 500 MHz
+    AFPLLO_400_MHZ  = 400, // Auxiliary PLL output frequency of 500 MHz
+    AFPLLO_500_MHZ  = 500, // Auxiliary PLL output frequency of 500 MHz (Default for high resolution PWM)
+    AFPLLO_600_MHZ  = 600, // Auxiliary PLL output frequency of 600 MHz
+    AFPLLO_700_MHZ  = 700, // Auxiliary PLL output frequency of 700 MHz
+    AFPLLO_800_MHZ  = 800 // Auxiliary PLL output frequency of 800 MHz
+} AUX_PLL_DEFAULTS_e;  // Default Auxiliary PLL output frequency settings 
 
-/* FRC oscillator settings */
+
+/*!System OSCILLATOR_SYSTEM_FREQUENCIES_t
+ * ************************************************************************************************
+ * Summary:
+ * Global data structure holding system frequencies of different clock domains
+ *
+ * Description:
+ * The data structure "system_frequencies" of type OSCILLATOR_SYSTEM_FREQUENCIES_t is used
+ * to broadcast most recent system frequencies of multiple clock domains. Contents of this data 
+ * structure are NOT updated automatically. 
+ * 
+ * The function osc_get_frequencies() must be called from user code to update/refresh the 
+ * contents of this data structure every time a oscillator configuration has been changed.
+ *
+ * Example:
+ * The following code lines initialize the internal FRC oscillator for 100 MIPS operation and
+ * the auxiliary PLL for 500 MHz to support 250ps resolution of the PWM module. After both 
+ * configurations have been set, the function 'osc_get_frequencies()' is used to update the 
+ * most recent frequencies of multiple clock domains.
+ * 
+ *      init_FRCCLK_Defaults(CPU_SPEED_100_MIPS);   // Initialize FRC for 100 MIPS operation
+ *      init_AUXCLK_500MHz();                       // Initialize AuxPLL for 500 MHz clock output
+ *      osc_get_frequencies(0);                     // Update system frequencies data structure
+ * 
+ * Please note: 
+ * When an external oscillator is used, the function osc_get_frequencies() must be called 
+ * to set the external frequency value in [Hz] and update all related frequencies accordingly.
+ * If only the internal FRC oscillator is used, this parameter should be set = 0.
+ * ***********************************************************************************************/
+
+typedef struct {
+    volatile uint32_t frc;      // Internal fast RC oscillator frequency incl. tuning
+    volatile uint32_t fpri;     // External primary oscillator frequency 
+    volatile uint32_t fclk;     // Clock frequency (external or internal oscillator frequency)
+    volatile uint32_t fosc;     // Oscillator frequency
+    volatile uint32_t fcy;      // CPU click frequency (instruction frequency = MIPS incl. DOZE divider)
+    volatile uint32_t fp;       // Peripheral bus clock frequency
+    volatile uint32_t fpllo;    // PLL output frequency
+    volatile uint32_t fvco;     // PLL VCO frequency output incl. divider
+    volatile float tp;          // Peripheral clock period 
+    volatile float tcy;         // CPU clock period 
+    volatile uint32_t afpllo;   // APLL output frequency
+    volatile uint32_t afvco;    // APLL VCO frequency output incl. divider
+}OSCILLATOR_SYSTEM_FREQUENCIES_t;
+
+
+/* FRC oscillator settings and tuning */
 #if defined (__P33SMPS_CH__) 
 
-    #define OSC_FRC_FREQ        8000000     // Frequency of the internal oscillator in [Hz]
-    #define OSC_FRC_TUN         0           // <OSCTUN> FRC Oscillator Tuning Rregister default value
-    #define OSC_TUN_SCALER      0.00047     // Oscillator frequency step size of <OSCTUN>
+    #define FRCTUN_MIN              -32     // minimum tuning value
+    #define FRCTUN_MAX              31      // maximum tuning value
+    #define OSC_FRC_FREQ            8000000     // Frequency of the internal oscillator in [Hz]
+    #define OSC_FRC_TUN             0           // <OSCTUN> FRC Oscillator Tuning Rregister default value
+    #define OSC_TUN_STEP_PERCENTAGE 0.00047     // Oscillator frequency step size of <OSCTUN>
 
 #elif defined (__P33SMPS_CK__) 
 
-    #define OSC_FRC_FREQ        8000000     // Frequency of the internal oscillator in [Hz]
-    #define OSC_FRC_TUN         0           // <OSCTUN> FRC Oscillator Tuning Rregister value
-    #define OSC_TUN_SCALER      0.00047     // Oscillator frequency step size of <OSCTUN>
+    #define FRCTUN_MIN              -32     // minimum tuning value
+    #define FRCTUN_MAX              31      // maximum tuning value
+    #define OSC_FRC_FREQ            8000000     // Frequency of the internal oscillator in [Hz]
+    #define OSC_FRC_TUN             0           // <OSCTUN> FRC Oscillator Tuning Rregister value
+    #define OSC_TUN_STEP_PERCENTAGE 0.00047     // Oscillator frequency step size of <OSCTUN>
 
 #else
-    #warning === selected device family not supported by oscillator mcal driver library ===
+    #pragma message "error: === selected device family not supported by oscillator mcal driver library ==="
 #endif
 
-#if (USE_EXTERNAL_OSC == 0)     // if device is running with internal FRC oscillator
-    #define OSC_FREQ ((uint32_t)((float)OSC_FRC_FREQ + (float)((float)OSC_FRC_TUN * (OSC_TUN_SCALER * (float)OSC_FRC_FREQ))))
-#else
-    #define OSC_FREQ  EXT_OSC_FREQ	// External oscillator frequency in [Hz] as defined by user in device_config.h
-#endif
-
-
+#define OSC_TUN_STEP_FREQUENCY  (volatile int32_t)(OSC_FRC_FREQ * OSC_TUN_STEP_PERCENTAGE)
 
 /* ***************************************************************************************
  *	BASIC DEFINES
@@ -158,6 +219,7 @@ typedef enum {
 #define REG_OSCCON_COSC_FRCPLL  0b0001000000000000
 #define REG_OSCCON_COSC_FRC     0b0000000000000000
 
+
 typedef enum {
     OSCCON_xOSC_FRC = 0b000, // Fast RC Oscillator, no PLL 
     OSCCON_xOSC_FRCPLL = 0b001, // Fast RC Oscillator with PLL
@@ -166,7 +228,7 @@ typedef enum {
     OSCCON_xOSC_LPRC = 0b101, // Low Power Oscillator for Idle/Sleep Mode
     OSCCON_xOSC_BFRC = 0b110, // Backup Fast RC Oscillator
     OSCCON_xOSC_FRCDIVN = 0b111 // Fast RC Oscillator with variable Divider
-} OSCCON_xOSC_e; // Oscillator Type Selection bits
+} OSCCON_xOSC_TYPE_e ;// Oscillator Type Selection bits
 
 typedef struct {
     volatile OSCCON_OSWEN_e OSWEN : 1; // Oscillator Switch Enable bit
@@ -176,9 +238,9 @@ typedef struct {
     volatile OSCCON_LOCK_e LOCK : 1; // PLL Lock Status bit (read only)
     volatile unsigned : 1; // reserved
     volatile OSCCON_CLKLOCK_e CLKLOCK : 1; // Clock Lock Enable bit
-    volatile OSCCON_xOSC_e NOSC : 3; // New Oscillator Selection bits
+    volatile OSCCON_xOSC_TYPE_e NOSC : 3; // New Oscillator Selection bits
     volatile unsigned : 1; // reserved
-    volatile OSCCON_xOSC_e COSC : 3; // Current Oscillator Selection bits (read only)
+    volatile OSCCON_xOSC_TYPE_e COSC : 3; // Current Oscillator Selection bits (read only)
 
 } __attribute__((packed)) OSCCON_t; // Oscillator configuration register
 
@@ -211,7 +273,7 @@ typedef enum {
 } CLKDIV_PLLPRE_e; // PLL Phase Detector Input Divider Select bits (also denoted as ?N1?, PLL prescaler)
 
 #else
-    #warning === selected device family is not supported by oscillator mcal library ===
+    #pragma message "error: === selected device family is not supported by oscillator mcal library ==="
 #endif
 
 #define REG_CLKDIV_DOZE_DIV_1    0b0000000000000000
@@ -491,7 +553,7 @@ typedef struct {
 } PLLFBD_t;
 
 #else
-    #warning === selected device family is not supported by oscillator mcal library ===
+    #pragma message "error: === selected device family is not supported by oscillator mcal library ==="
 #endif
 
 typedef union {
@@ -579,7 +641,7 @@ typedef enum {
 } OSCTUN_TUN_e; // FRC Oscillator Tuning bits
 
 #else
-    #warning === selected device family is not supported by oscillator mcal library ===
+    #pragma message "error: === selected device family is not supported by oscillator mcal library ==="
 #endif
 
 typedef struct {
@@ -709,7 +771,7 @@ typedef union {
 } REGBLK_ACLKCON_CONFIG_t;
 
 #else
-    #warning === selected device family is not supported by oscillator mcal library ===
+    #pragma message "error: === selected device family is not supported by oscillator mcal library ==="
 #endif
 
 /* ===========================================================================
@@ -923,7 +985,7 @@ typedef union {
 } REGBLK_APLLFBD_CONFIG_t;
 
 #else
-    #warning === selected device family is not supported by oscillator mcal library ===
+    #pragma message "error: === selected device family is not supported by oscillator mcal library ==="
 #endif
 
 /* ===========================================================================
@@ -978,7 +1040,7 @@ typedef union {
 } REGBLK_APLLDIV_CONFIG_t;
 
 #else
-    #warning === selected device family is not supported by oscillator mcal library ===
+    #pragma message "error: === selected device family is not supported by oscillator mcal library ==="
 #endif
 
 /* ===========================================================================
@@ -988,7 +1050,7 @@ typedef union {
 #if defined (__P33SMPS_CH__) ||  defined (__P33SMPS_CK__)
 
 typedef struct {
-    volatile OSCCON_xOSC_e osc_type;
+    volatile OSCCON_xOSC_TYPE_e osc_type;
     volatile CLKDIV_FRCDIVN_e frc_div;
     volatile OSCTUN_TUN_e frc_tune;
     volatile CLKDIV_PLLPRE_e N1;
@@ -1010,7 +1072,7 @@ typedef struct {
 } AUXOSC_CONFIG_t;
 
 #else
-    #warning === selected device family is not supported by oscillator mcal library ===
+    #pragma message "error: === selected device family is not supported by oscillator mcal library ==="
 #endif
 
 
@@ -1038,7 +1100,7 @@ extern volatile uint16_t init_FOSC(OSC_CONFIG_t osc_config);
 extern volatile uint16_t init_AUXCLK(AUXOSC_CONFIG_t aux_clock_config);
 
 extern volatile uint16_t init_FRCCLK_Defaults(CPU_SPEED_DEFAULTS_e cpu_speed);
-extern volatile uint16_t init_AUXCLK_500MHz(void);
-
+extern volatile uint16_t init_AUXCLK_Defaults(AUX_PLL_DEFAULTS_e afpllo_frequency);
+extern volatile uint32_t osc_get_frequencies(uint32_t pri_osc_frequency);
 
 #endif  /* __MCAL_P33_SMPS_OSCILLATOR_H__ */
