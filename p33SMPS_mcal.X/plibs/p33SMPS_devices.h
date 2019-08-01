@@ -162,7 +162,7 @@
 
 #else
 
-//    #pragma message "selected device not supported by peripheral driver libraries"
+    #pragma message "selected device not supported by peripheral driver libraries"
 
 #endif
 

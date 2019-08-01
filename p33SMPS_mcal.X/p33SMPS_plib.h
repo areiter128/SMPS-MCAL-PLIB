@@ -37,7 +37,7 @@
 
 #include "plibs/p33SMPS_devices.h" // Triaging dsPIC33 device families
 
-// including peripheral library headers for the selected device
+// include peripheral library headers for the selected device
 #if defined (__P33SMPS_CH__) || defined (__P33SMPS_CK__)
 
 #include "plibs/dsPIC33C/p33SMPS_cpu_macros.h"
@@ -53,11 +53,13 @@
 #include "plibs/dsPIC33C/p33SMPS_timer.h"
 #include "plibs/dsPIC33C/p33SMPS_uart.h"
 
-//  #pragma message "P33SMPS_plib Message:: Device type successfully recognized."
-
 #else
   #pragma message "P33SMPS_plib Warning: selected device is currently not supported by the peripheral libraries"
 #endif
+
+// peripheral library global data structures
+extern volatile OSCILLATOR_SYSTEM_FREQUENCIES_t system_frequencies;
+
 
 
 #endif	/* __P33SMPS_PERIPHERAL_LIBRARY_H__ */

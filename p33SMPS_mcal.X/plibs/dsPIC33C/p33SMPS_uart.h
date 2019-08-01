@@ -1004,17 +1004,18 @@ extern volatile uint8_t  smps_uart_read(volatile uint16_t index);
 extern volatile uint16_t smps_uart_write(uint16_t index, uint8_t txData);
 extern volatile uint16_t smps_uart_get_status(volatile uint16_t index);
 
-extern volatile uint16_t smps_uart_enable(uint16_t index);
-extern volatile uint16_t smps_uart_disable(uint16_t index);
-extern volatile uint16_t smps_uart_dispose(uint16_t index);
+extern volatile uint16_t smps_uart_enable(uint16_t uart_instance);
+extern volatile uint16_t smps_uart_disable(uint16_t uart_instance);
+extern volatile uint16_t smps_uart_dispose(uint16_t uart_instance);
 
-extern volatile uint16_t smps_uart_power_on(uint16_t index);
-extern volatile uint16_t smps_uart_power_off(uint16_t index);
+extern volatile uint16_t smps_uart_power_on(uint16_t uart_instance);
+extern volatile uint16_t smps_uart_power_off(uint16_t uart_instance);
 
-extern volatile uint16_t smps_uart_open_port(uint16_t index, 
+extern volatile uint16_t smps_uart_open_port(uint16_t uart_instance, 
     UART_BAUDRATE_SETTING_e baud, UART_DATA_BIT_SETTING_e data_bits, UART_PARITY_SETTING_e parity, UART_STOP_BIT_SETTING_e stop_bits, 
     UART_ISR_PRIORITY_e isr_priority);
 
+extern volatile uint32_t smps_uart_get_baudrate(uint16_t uart_instance, uint32_t baud);
 
 #endif  /* _MCAL_P33_SMPS_UART_H_ */
 // End of File
