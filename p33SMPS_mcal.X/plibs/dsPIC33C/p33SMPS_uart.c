@@ -61,16 +61,16 @@
  * Initializes a specific UART unit
  *
  * Parameters:
- *	index		= selects the register address range of the target UART unit
- *	regUxMODE   = Basic UART unit configuration
- *	regUxSTA    = Enhanced UART unit configuration and status bits
+ *	uart_instance = selects the register address range of the target UART unit
+ *	regUxMODE     = Basic UART unit configuration
+ *	regUxSTA      = Enhanced UART unit configuration and status bits
  *
  * Description:
  * This routine is setting the uart configuration. This routine needs to be called before a UART
  * port is opened to ensure the baudrate settings and hardware flow control is applied properly.
  * ***********************************************************************************************/
 
-inline volatile uint16_t smps_uart_init(uint16_t index, UxMODE_CONTROL_REGISTER_t regUxMODE, UxSTA_CONTROL_REGISTER_t regUxSTA)
+inline volatile uint16_t smps_uart_init(uint16_t uart_instance, UxMODE_CONTROL_REGISTER_t regUxMODE, UxSTA_CONTROL_REGISTER_t regUxSTA)
 {
 
     volatile uint16_t *regptr;
@@ -95,12 +95,12 @@ inline volatile uint16_t smps_uart_init(uint16_t index, UxMODE_CONTROL_REGISTER_
  * Initializes a specific UART unit
  *
  * Parameters:
- *	index		= selects the register address range of the target UART unit
- *	baud        = baudrate of the selected UART unit
- *	data_bits   = number of data bits of the selected UART unit
- *	parity      = parity setting of the selected UART unit
- *	stop_bits   = number of stop bits of the selected UART unit
- * isr_priority = interrupt service routine priority of this UART unit
+ *	uart_instance = selects the register address range of the target UART unit
+ *	baud          = baudrate of the selected UART unit
+ *	data_bits     = number of data bits of the selected UART unit
+ *	parity        = parity setting of the selected UART unit
+ *	stop_bits     = number of stop bits of the selected UART unit
+ * isr_priority   = interrupt service routine priority of this UART unit
  *
  * Description:
  * This routine is setting the timer pre-scaler in accordance to apply the
@@ -109,7 +109,7 @@ inline volatile uint16_t smps_uart_init(uint16_t index, UxMODE_CONTROL_REGISTER_
  * initialization and has to be enabled by the user.
  * ***********************************************************************************************/
 
-inline volatile uint16_t smps_uart_open_port(uint16_t index, 
+inline volatile uint16_t smps_uart_open_port(uint16_t uart_instance, 
     UART_BAUDRATE_SETTING_e baud, UART_DATA_BIT_SETTING_e data_bits, UART_PARITY_SETTING_e parity, UART_STOP_BIT_SETTING_e stop_bits, 
     UART_ISR_PRIORITY_e isr_priority)
 {
@@ -279,20 +279,19 @@ inline volatile uint16_t smps_uart_open_port(uint16_t index,
 
 }
 
-
 /*@@smps_uart_read
  * ************************************************************************************************
  * Summary:
  * Reads one byte from the input buffer 
  *
  * Parameters:
- *	index		= selects the register address range of the target UART unit
+ *	uart_instance = selects the register address range of the target UART unit
  *
  * Description:
  * This routine is reading one byte from the selected UART receive buffer
  * ***********************************************************************************************/
 
-inline volatile uint8_t smps_uart_read(volatile uint16_t index)
+inline volatile uint8_t smps_uart_read(volatile uint16_t uart_instance)
 {
 
     volatile uint16_t *regptr;
@@ -324,14 +323,14 @@ inline volatile uint8_t smps_uart_read(volatile uint16_t index)
  * Writes one byte to the output buffer 
  *
  * Parameters:
- *	index		= selects the register address range of the target UART unit
- *  txData      = data byte to send
+ *	uart_instance = selects the register address range of the target UART unit
+ *  txData        = data byte to send
  *
  * Description:
  * This routine is writing one byte to the selected UART transmit buffer
  * ***********************************************************************************************/
 
-inline volatile uint16_t smps_uart_write(uint16_t index, uint8_t txData)
+inline volatile uint16_t smps_uart_write(uint16_t uart_instance, uint8_t txData)
 {
 
     volatile uint16_t *regptr;
@@ -365,13 +364,13 @@ inline volatile uint16_t smps_uart_write(uint16_t index, uint8_t txData)
  * Reads the status of the given UART unit
  *
  * Parameters:
- *	index		= selects the register address range of the target UART unit
+ *	uart_instance = selects the register address range of the target UART unit
  *
  * Description:
  * This routine is reading the status information form the status register of the selected UART 
  * ***********************************************************************************************/
 
-inline volatile uint16_t smps_uart_get_status(volatile uint16_t index)
+inline volatile uint16_t smps_uart_get_status(volatile uint16_t uart_instance)
 {
     
     volatile uint16_t *regptr;
@@ -400,13 +399,13 @@ inline volatile uint16_t smps_uart_get_status(volatile uint16_t index)
  * Enables a specific, pre-configured UART unit 
  *
  * Parameters:
- *	index		= selects the register address range of the target UART unit
+ *	uart_instance = selects the register address range of the target UART unit
  *
  * Description:
  * This routine is enabling the selected UART as it was configured previously.
  * ***********************************************************************************************/
 
-inline volatile uint16_t smps_uart_enable(uint16_t index)
+inline volatile uint16_t smps_uart_enable(uint16_t uart_instance)
 {
 
     volatile uint16_t *regptr;
@@ -430,13 +429,13 @@ inline volatile uint16_t smps_uart_enable(uint16_t index)
  * Disables a specific, pre-configured UART unit 
  *
  * Parameters:
- *	index		= selects the register address range of the target UART unit
+ *	uart_instance = selects the register address range of the target UART unit
  *
  * Description:
  * This routine is disabling the selected UART as it was configured previously.
  * ***********************************************************************************************/
 
-inline volatile uint16_t smps_uart_disable(uint16_t index)
+inline volatile uint16_t smps_uart_disable(uint16_t uart_instance)
 {
 
     volatile uint16_t *regptr;
@@ -461,13 +460,13 @@ inline volatile uint16_t smps_uart_disable(uint16_t index)
  * Resets a specific UART unit 
  *
  * Parameters:
- *	index		= selects the register address range of the target UART unit
+ *	uart_instance = selects the register address range of the target UART unit
  *
  * Description:
  * This routine is disabling the selected UART and resets its entire configuration.
  * ***********************************************************************************************/
 
-inline volatile uint16_t smps_uart_dispose(uint16_t index)
+inline volatile uint16_t smps_uart_dispose(uint16_t uart_instance)
 {
 	
     volatile uint16_t *regptr;
@@ -493,13 +492,13 @@ inline volatile uint16_t smps_uart_dispose(uint16_t index)
  * Turns on the power to a given UART unit 
  *
  * Parameters:
- *	index		= selects the PMD register-bit of the target UART unit
+ *	uart_instance = selects the PMD register-bit of the target UART unit
  *
  * Description:
  * This routine is enabling the power supply to the user-defined UART module.
  * ***********************************************************************************************/
 
-inline volatile uint16_t smps_uart_power_on(uint16_t index)
+inline volatile uint16_t smps_uart_power_on(uint16_t uart_instance)
 {
 
 	if (index > UART_UART_COUNT) return(0); // Skip if index is out of range
@@ -529,13 +528,13 @@ inline volatile uint16_t smps_uart_power_on(uint16_t index)
  * Turns off the power to a given UART unit 
  *
  * Parameters:
- *	index		= selects the PMD register-bit of the target UART unit
+ *	uart_instance = selects the PMD register-bit of the target UART unit
  *
  * Description:
  * This routine is disabling the power supply to the user-defined UART module.
  * ***********************************************************************************************/
 
-inline volatile uint16_t smps_uart_power_off(uint16_t index)
+inline volatile uint16_t smps_uart_power_off(uint16_t uart_instance)
 {
 
 	if (index > UART_UART_COUNT) return(0); // Skip if index is out of range
@@ -558,6 +557,89 @@ inline volatile uint16_t smps_uart_power_off(uint16_t index)
 
 }
 
+/*@@smps_uart_get_baudrate
+ * ************************************************************************************************
+ * Summary:
+ * Calculates the SFR register value required to achieve the given baud rate
+ *
+ * Parameters:
+ *	uint16_t uart_instance = selects the index of the UART peripheral to use
+ *  uint32_t baud = user given baud rate (e.g. 9600)
+ *
+ * Description:
+ * This routine reads the most recent oscillator and UART configuration and 
+ * calculates the SFR value to program the selected UART peripheral for 
+ * a certain, user defined baud rate.
+ * 
+ * This routine only calculates the required SFR value but does not program it into the target
+ * peripheral. Please use function smps_uart_open_port(...) to apply the new baud rate setting.
+ * 
+ * Please note:
+ * When the system clock or main oscillator settings are changed, this routine has to be
+ * called again to adjust the baud rate for the new clock source frequency.
+ * ************************************************************************************************/
+volatile uint32_t smps_uart_get_baudrate(uint16_t uart_instance, uint32_t baud) {
+    
+    volatile uint16_t* regptr;
+    volatile uint16_t reg_offset = 0;
+    volatile uint16_t reg_buf = 0;
+    volatile uint32_t baudclk = 0;
+    
+    // Get pointer offset to UART peripheral instance
+    reg_offset = (uart_instance - 1) * ((volatile uint16_t*)&U2MODE - (volatile uint16_t*)&U1MODE);
+    
+    // Get pointer address to UART peripheral instance
+    regptr = (volatile uint16_t*)&U1MODEH + reg_offset;
+    reg_buf = *regptr;
+    
+    // Get frequency based on input clock selection setting
+    baudclk = ((reg_buf & 0x0600) >> 9); 
+    switch (baudclk) {
+        case 0b00:  // FOSC/2 (FP)
+            baudclk = system_frequencies.fp; 
+            break;
+        case 0b01:  // (reserved) => invalid
+            return(0); 
+            break;
+        case 0b10:  // FOSC
+            baudclk = system_clock.fosc; 
+            break;
+        case 0b11:  // AFVCO/3
+            baudclk = (volatile uint32_t)((float)system_clock.fvco / 3.0);
+            break;
+    }
+    
+    if(reg_buf & 0x0800) { // Baud Clock Generation Mode Selection (bit 11)
+    // When in fractional baud rate generation mode, the BRG register setting
+        // is calculated by [f_source] / [BAUDRATE]
+        
+        baudclk = (volatile uint32_t)((float)baudclk / (float)baud);
+        
+    }
+    else {
+    // When in legacy divide-by-x counter baud rate generation mode
+        
+        regptr = (volatile uint16_t*)&U1MODE + reg_offset;
+        reg_buf = *regptr;
+
+        if (reg_buf & 0x0080) {   // Filter on BRGH bit
+        // High Speed: Baud rate is baudclk/4
+            
+            baudclk = (volatile uint32_t)((float)baudclk / (4.0 * (float)baud));
+
+        }
+        else {
+        // Low Speed: Baud rate is baudclk/16
+
+            baudclk = (volatile uint32_t)((float)baudclk / (16.0 * (float)baud));
+            
+        }
+    
+    }
+
+    return((volatile uint32_t)baudclk);
+    
+}
 
 
 
