@@ -131,8 +131,8 @@
     #define UART_UxBRGH_REG_WRITE_MASK       0x000F
     #define UART_UxBRGH_REG_READ_MASK        0x000F
 
-    #define UART_UxBRGL(x)    ((uint16_t)(((float)FCY / (16.0 * (float)x)) - 1.0))
-    #define UART_UxBRGH(x)    ((uint16_t)(((float)FCY / (4.0 * (float)x)) - 1.0))
+//    #define UART_UxBRGL(x)    ((uint16_t)(((float)FCY / (16.0 * (float)x)) - 1.0))
+//    #define UART_UxBRGH(x)    ((uint16_t)(((float)FCY / (4.0 * (float)x)) - 1.0))
 
     #define UART_UxP1_REG_WRITE_MASK         0x01FF
     #define UART_UxP1_REG_READ_MASK          0x01FF
@@ -630,8 +630,9 @@ typedef enum
         REG_BCLKMOD_FRACTIONAL  = 0b0000100000000000,   // Baud Clock Generation Mode Select bit
         REG_BCLKMOD_DIV_BY_CNT  = 0b0000000000000000,
 
-        REG_BCLKSEL_FOSC        = 0b0000010000000000,   // Baud Clock Source Selection bits
-        REG_BCLKSEL_FOSC_DIV2   = 0b0000000000000000,
+        REG_BCLKSEL_AFVCO_DIV3  = 0b0000010000000000,   // Baud Clock Source Selection bits = ACLK/3
+        REG_BCLKSEL_FOSC        = 0b0000010000000000,   // Baud Clock Source Selection bits = FOSC
+        REG_BCLKSEL_FOSC_DIV2   = 0b0000000000000000,   // Baud Clock Source Selection bits = FOSC/2 = Peripheral Clock
 
         REG_HALFDPLX_HALF       = 0b0000000100000000,   // UART Half-Duplex Selection Mode bit
         REG_HALFDPLX_FULL   	= 0b0000000000000000,
@@ -660,20 +661,28 @@ typedef enum
     }REG_UxMODEH_BIT_FIELD_e;
 
     // Single Register Bit Fields
-    typedef enum
-    {
-        SLPEN_ENABLED       = 0b1,   // Run During Sleep Enable bit
-        SLPEN_DISABLED      = 0b0,
+    typedef enum {
+        SLPEN_ENABLED       = 0b1,  // Run During Sleep Mode
+        SLPEN_DISABLED      = 0b0   // Suspend During Sleep Mode
+    }REG_UxMODEH_SLPEN_FLAG_e;     // Run During Sleep Enable bit
+    
+    typedef enum {
+        ACTIVE_RUN          = 0b1,  // UART clock request is active (user can not update the UxMODE/UxMODEH registers)
+        ACTIVE_STOP         = 0b0   // UART clock request is not active (user can update the UxMODE/UxMODEH registers)
+    }REG_UxMODEH_ACTIVE_FLAG_e;     // UART Running Status bit
 
-        ACTIVE_RUN          = 0b1,   // UART Running Status bit
-        ACTIVE_STOP         = 0b0,
+    typedef enum {
+        BCLKMOD_FRACTIONAL  = 0b1,  // Uses fractional Baud Rate Generation
+        BCLKMOD_DIV_BY_CNT  = 0b0   // Uses legacy divide-by-x counter for baud clock generation
+    }REG_UxMODEH_BCLKMOD_FLAG_e;    // Baud Clock Generation Mode Select bit
 
-        BCLKMOD_FRACTIONAL  = 0b1,   // Baud Clock Generation Mode Select bit
-        BCLKMOD_DIV_BY_CNT  = 0b0,
+    typedef enum {
+        BCLKSEL_AFVCO_DIV3  = 0b11, // Baud Clock Source Selection bits = ACLK/3
+        BCLKSEL_FOSC        = 0b01, // Baud Clock Source Selection bits = FOSC = CPU Clock
+        BCLKSEL_FOSC_DIV2   = 0b00, // Baud Clock Source Selection bits = FOSC/2 = Peripheral Clock
+    }REG_UxMODEH_BCLKSEL_FLAG_e;    // Baud Clock Source Selection bits
 
-        BCLKSEL_FOSC        = 0b1,   // Baud Clock Source Selection bits
-        BCLKSEL_FOSC_DIV2   = 0b0,
-
+    typedef enum {
         HALFDPLX_HALF       = 0b1,   // UART Half-Duplex Selection Mode bit
         HALFDPLX_FULL   	= 0b0,
 
@@ -710,11 +719,11 @@ typedef enum
         volatile unsigned runovf:1;	// Bit #7: Run During Overflow Condition Mode bit
         volatile unsigned halfdplx:1;	// Bit #8: UART Half-Duplex Selection Mode bit
         volatile unsigned bclksel:2;	// Bit #10-9: Baud Clock Source Selection bits
-        volatile unsigned bclkmod:1;	// Bit #11: Baud Clock Generation Mode Select bit
+        volatile REG_UxMODEH_BCLKMOD_FLAG_e bclkmod:1;	// Bit #11: Baud Clock Generation Mode Select bit
         volatile unsigned		:1;	// Bit #12: reserved
         volatile unsigned		:1;	// Bit #13: reserved
-        volatile unsigned active:1;	// Bit #14: UART Running Status bit
-        volatile unsigned slpen :1;	// Bit #15: Run During Sleep Enable bit
+        volatile REG_UxMODEH_ACTIVE_FLAG_e active:1;	// Bit #14: UART Running Status bit
+        volatile REG_UxMODEH_SLPEN_FLAG_e slpen :1;	// Bit #15: Run During Sleep Enable bit
     }__attribute__((packed))UxMODEH_CONTROL_REGISTER_BIT_FIELD_t;
 
     
@@ -999,10 +1008,11 @@ typedef union
 
 // Prototypes
 
-extern volatile uint16_t smps_uart_init(uint16_t index, UxMODE_CONTROL_REGISTER_t regUxMODE, UxSTA_CONTROL_REGISTER_t regUxSTA);
-extern volatile uint8_t  smps_uart_read(volatile uint16_t index);
-extern volatile uint16_t smps_uart_write(uint16_t index, uint8_t txData);
-extern volatile uint16_t smps_uart_get_status(volatile uint16_t index);
+extern volatile uint32_t smps_uart_get_baudrate(uint16_t uart_instance, uint32_t baudrate);
+extern volatile uint16_t smps_uart_init(uint16_t uart_instance, UxMODE_CONTROL_REGISTER_t regUxMODE, UxSTA_CONTROL_REGISTER_t regUxSTA);
+extern volatile uint8_t  smps_uart_read(volatile uint16_t uart_instance);
+extern volatile uint16_t smps_uart_write(uint16_t uart_instance, uint8_t txData);
+extern volatile uint16_t smps_uart_get_status(volatile uint16_t uart_instance);
 
 extern volatile uint16_t smps_uart_enable(uint16_t uart_instance);
 extern volatile uint16_t smps_uart_disable(uint16_t uart_instance);
@@ -1015,7 +1025,6 @@ extern volatile uint16_t smps_uart_open_port(uint16_t uart_instance,
     UART_BAUDRATE_SETTING_e baud, UART_DATA_BIT_SETTING_e data_bits, UART_PARITY_SETTING_e parity, UART_STOP_BIT_SETTING_e stop_bits, 
     UART_ISR_PRIORITY_e isr_priority);
 
-extern volatile uint32_t smps_uart_get_baudrate(uint16_t uart_instance, uint32_t baud);
 
 #endif  /* _MCAL_P33_SMPS_UART_H_ */
 // End of File

@@ -58,7 +58,8 @@
  * driver file contains initialization routines for all required settings.
  * ***********************************************************************************************/
 
-/*@@gstmr_init_uart
+
+/*@@smps_uart_init
  * ************************************************************************************************
  * Summary:
  * Initializes a specific UART unit
@@ -79,9 +80,9 @@ inline volatile uint16_t smps_uart_init(uint16_t uart_instance, UxMODE_CONTROL_R
     volatile uint16_t *regptr;
     volatile uint16_t reg_offset=0;
 
-	if (index > UART_UART_COUNT) return(0);
+	if (uart_instance > UART_UART_COUNT) return(0);
     
-	reg_offset = ((index-1) * UART_INDEX_REG_OFFSET);
+	reg_offset = ((uart_instance-1) * UART_INDEX_REG_OFFSET);
 
     regptr  = (volatile uint16_t *)&U1MODE;
     *regptr = (((uint16_t)regUxMODE.reg_block & UART_UxMODE_REG_WRITE_MASK) & UART_UxMODE_REG_OFF_MASK);	// UART ENABLE is masked out !!!
@@ -121,10 +122,10 @@ inline volatile uint16_t smps_uart_open_port(uint16_t uart_instance,
     volatile uint16_t reg_offset=0, reg_buf=0;
     volatile uint32_t brg_buf=0;
 
-	if (index > UART_UART_COUNT) return(0);     // Check if index is valid
+	if (uart_instance > UART_UART_COUNT) return(0);     // Check if index is valid
     
     // Determine SFR offset depending on given index
-	reg_offset = ((index - 1) * (volatile uint16_t)UART_INDEX_REG_OFFSET);
+	reg_offset = ((uart_instance - 1) * (volatile uint16_t)UART_INDEX_REG_OFFSET);
 
     // Set data bits and parity
     if((data_bits == UART_DATA_BITS_7) && (parity == UART_PARITY_NONE))
@@ -165,22 +166,24 @@ inline volatile uint16_t smps_uart_open_port(uint16_t uart_instance,
             break;
     }        
     
+    // =======================================
     // Calculate the baud rate 
-    brg_buf = UART_UxBRGL(baud);
+//    brg_buf = UART_UxBRGL(baud);  // replaced by runtime calculation
+    // ToDo: select fractional or legacy mode with 4x or 16x multiplier depending on baud rate value
+    brg_buf = smps_uart_get_baudrate(uart_instance, baud);
     
+    // ========================================
     
-    if(brg_buf < 0xFFFF)
-    { 
+    if(brg_buf < 0xFFFF) { 
         reg_buf |= REG_BRGH_DEFAULT; 
     }
-    else
-    { 
-        brg_buf = UART_UxBRGH(baud);
+    else { 
+//        brg_buf = UART_UxBRGH(baud);
         reg_buf |= REG_BRGH_HIGH_SPEED; 
     }
 
     // Set up interrupt
-    switch(index)
+    switch(uart_instance)
     {
         case 1:
             _U1RXIF = 0;
@@ -301,10 +304,10 @@ inline volatile uint8_t smps_uart_read(volatile uint16_t uart_instance)
     volatile uint16_t reg_offset=0, reg_buf=0;
     volatile uint16_t timeout=0;
 
-    if (index > UART_UART_COUNT) return(0);     // Check if index is valid
+    if (uart_instance > UART_UART_COUNT) return(0);     // Check if index is valid
 
     // Determine SFR offset depending on given index
-	reg_offset = ((index - 1) * (volatile uint16_t)UART_INDEX_REG_OFFSET);
+	reg_offset = ((uart_instance - 1) * (volatile uint16_t)UART_INDEX_REG_OFFSET);
 
     regptr  = (volatile uint16_t *)&U1STA + reg_offset;
     reg_buf = (*regptr & UART_UxSTA_REG_READ_MASK);
@@ -340,10 +343,10 @@ inline volatile uint16_t smps_uart_write(uint16_t uart_instance, uint8_t txData)
     volatile uint16_t reg_offset=0, reg_buf=0;
     volatile uint16_t timeout=0;
 
-    if (index > UART_UART_COUNT) return(0);     // Check if index is valid
+    if (uart_instance > UART_UART_COUNT) return(0);     // Check if index is valid
 
     // Determine SFR offset depending on given index
-	reg_offset = ((index - 1) * (volatile uint16_t)UART_INDEX_REG_OFFSET);
+	reg_offset = ((uart_instance - 1) * (volatile uint16_t)UART_INDEX_REG_OFFSET);
 
     regptr  = (volatile uint16_t *)&U1STA + reg_offset;
     reg_buf = (*regptr & UART_UxSTA_REG_READ_MASK);
@@ -379,10 +382,10 @@ inline volatile uint16_t smps_uart_get_status(volatile uint16_t uart_instance)
     volatile uint16_t *regptr;
     volatile uint16_t reg_offset=0, reg_buf=0;
 
-    if (index > UART_UART_COUNT) return(0);     // Check if index is valid
+    if (uart_instance > UART_UART_COUNT) return(0);     // Check if index is valid
 
     // Determine SFR offset depending on given index
-	reg_offset = ((index - 1) * (volatile uint16_t)UART_INDEX_REG_OFFSET);
+	reg_offset = ((uart_instance - 1) * (volatile uint16_t)UART_INDEX_REG_OFFSET);
 
     regptr  = (volatile uint16_t *)&U1STA + reg_offset;
     reg_buf = (*regptr & UART_UxSTA_REG_READ_MASK);
@@ -414,9 +417,9 @@ inline volatile uint16_t smps_uart_enable(uint16_t uart_instance)
     volatile uint16_t *regptr;
     volatile uint16_t reg_offset=0, reg_buf=0;
 	
-	if (index > UART_UART_COUNT) return(0); // Skip if index is out of range
+	if (uart_instance > UART_UART_COUNT) return(0); // Skip if index is out of range
 
-	reg_offset = ((index-1) * UART_INDEX_REG_OFFSET);
+	reg_offset = ((uart_instance-1) * UART_INDEX_REG_OFFSET);
 
     regptr  = (volatile uint16_t *)&U1MODE;
     reg_buf = (*regptr | REG_UARTEN_ENABLED);
@@ -444,9 +447,9 @@ inline volatile uint16_t smps_uart_disable(uint16_t uart_instance)
     volatile uint16_t *regptr;
     volatile uint16_t reg_offset=0, reg_buf=0;
 	
-	if (index > UART_UART_COUNT) return(0); // Skip if index is out of range
+	if (uart_instance > UART_UART_COUNT) return(0); // Skip if index is out of range
 
-	reg_offset = ((index-1) * UART_INDEX_REG_OFFSET);
+	reg_offset = ((uart_instance-1) * UART_INDEX_REG_OFFSET);
 
     regptr  = (volatile uint16_t *)&U1MODE;
     reg_buf = (*regptr & UART_UxMODE_REG_OFF_MASK);
@@ -475,9 +478,9 @@ inline volatile uint16_t smps_uart_dispose(uint16_t uart_instance)
     volatile uint16_t *regptr;
     volatile uint16_t reg_offset=0;
 	
-	if (index > UART_UART_COUNT) return(0); // Skip if index is out of range
+	if (uart_instance > UART_UART_COUNT) return(0); // Skip if index is out of range
 
-	reg_offset = ((index-1) * UART_INDEX_REG_OFFSET);
+	reg_offset = ((uart_instance-1) * UART_INDEX_REG_OFFSET);
 	
     regptr  = (volatile uint16_t *)&U1MODE;
     *regptr = UART_UxMODE_REG_DISPOSE_MASK;
@@ -504,17 +507,17 @@ inline volatile uint16_t smps_uart_dispose(uint16_t uart_instance)
 inline volatile uint16_t smps_uart_power_on(uint16_t uart_instance)
 {
 
-	if (index > UART_UART_COUNT) return(0); // Skip if index is out of range
+	if (uart_instance > UART_UART_COUNT) return(0); // Skip if index is out of range
 
     // Turn on power to peripheral module
     #ifdef _U1MD
-        if(index == 1) { _U1MD = 0; }
+        if(uart_instance == 1) { _U1MD = 0; }
     #endif
     #ifdef _U2MD
-        if(index == 2) { _U2MD = 0; }
+        if(uart_instance == 2) { _U2MD = 0; }
     #endif
     #ifdef _U3MD
-        if(index == 3) { _U3MD = 0; }
+        if(uart_instance == 3) { _U3MD = 0; }
     #endif
     #ifdef _U4MD
         if(index == 4) { _U4MD = 0; }
@@ -540,17 +543,17 @@ inline volatile uint16_t smps_uart_power_on(uint16_t uart_instance)
 inline volatile uint16_t smps_uart_power_off(uint16_t uart_instance)
 {
 
-	if (index > UART_UART_COUNT) return(0); // Skip if index is out of range
+	if (uart_instance > UART_UART_COUNT) return(0); // Skip if index is out of range
 
     // Turn on power to peripheral module
     #ifdef _U1MD
-        if(index == 1) { _U1MD = 1; }
+        if(uart_instance == 1) { _U1MD = 1; }
     #endif
     #ifdef _U2MD
-        if(index == 2) { _U2MD = 1; }
+        if(uart_instance == 2) { _U2MD = 1; }
     #endif
     #ifdef _U3MD
-        if(index == 3) { _U3MD = 1; }
+        if(uart_instance == 3) { _U3MD = 1; }
     #endif
     #ifdef _U4MD
         if(index == 4) { _U4MD = 1; }
@@ -588,31 +591,33 @@ volatile uint32_t smps_uart_get_baudrate(uint16_t uart_instance, uint32_t baud) 
     volatile uint16_t reg_buf = 0;
     volatile uint32_t baudclk = 0;
     
+    // Determine register address offset based on UART instance
     reg_offset = (uart_instance - 1) * ((volatile uint16_t*)&U2MODE - (volatile uint16_t*)&U1MODE);
     
+    // Get register bank address offset
     regptr = (volatile uint16_t*)&U1MODEH + reg_offset;
     reg_buf = *regptr;
     
     // Get frequency based on input clock selection setting
     baudclk = ((reg_buf & 0x0600) >> 9); 
     switch (baudclk) {
-        case 0b00:  // FOSC/2 (FP)
+        case 0b00:  // FOSC/2 (= peripheral clock)
             baudclk = system_frequencies.fp; 
             break;
         case 0b01:  // (reserved) => invalid
             return(0); 
             break;
-        case 0b10:  // FOSC
+        case 0b10:  // FOSC (= CPU clock)
             baudclk = system_frequencies.fosc; 
             break;
-        case 0b11:  // AFVCO/3
+        case 0b11:  // AFVCO/3 (=auxiliary PLL output divided by 3)
             baudclk = (volatile uint32_t)((float)system_frequencies.fvco / 3.0);
             break;
     }
     
     if(reg_buf & 0x0800) { // Baud Clock Generation Mode Selection (bit 11)
     // When in fractional baud rate generation mode, the BRG register setting
-        // is calculated by [f_source] / [BAUDRATE]
+    // is calculated by [f_source] / [BAUDRATE]
         
         baudclk = (volatile uint32_t)((float)baudclk / (float)baud);
         
