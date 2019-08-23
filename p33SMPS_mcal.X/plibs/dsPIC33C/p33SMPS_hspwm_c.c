@@ -143,7 +143,7 @@ inline volatile uint16_t hspwm_init_independent_pwm(
  * Sets the basic signal timing configuration of a PWM generator 
  *
  * Parameters:
- *	uint16_t channel:     Index of the PWM generator addressed (e.g. 1 for PWM1, 2 for PWM2, etc.)
+ *	uint16_t instance:    Index of the PWM generator addressed (e.g. 1 for PWM1, 2 for PWM2, etc.)
  *  uint16_t regPGxPER:   PWM generator period register setting the switching period 
  *  uint16_t regPGxDC:    PWM generator duty cycle register setting the switching signal on-time 
  *  uint16_t regPGxPHASE: PWM generator phase register setting the switching signal phase shift
@@ -153,31 +153,31 @@ inline volatile uint16_t hspwm_init_independent_pwm(
  * duty cycle/on-time and phase shift.
  * ***********************************************************************************************/
 
-inline volatile uint16_t hspwm_init_pwm_timing(uint16_t channel, uint16_t regPGxPER, uint16_t regPGxDC, uint16_t regPGxPHASE)
+inline volatile uint16_t hspwm_init_pwm_timing(uint16_t instance, uint16_t regPGxPER, uint16_t regPGxDC, uint16_t regPGxPHASE)
 {
     
     volatile uint16_t fres=1;
     volatile uint16_t *regptr16;
     volatile uint16_t reg_offset;
 
-    // write PWM channel configuration
-    reg_offset = (channel-1) * ((volatile uint16_t)&PG2PER - (volatile uint16_t)&PG1PER);
+    // write PWM Period
+    reg_offset = (instance-1) * ((volatile uint16_t)&PG2PER - (volatile uint16_t)&PG1PER);
     regptr16 = (volatile uint16_t*)((volatile uint8_t*)&PG1PER + reg_offset);
     *regptr16 = (regPGxPER & REG_PGxPER_VALID_DATA_WRITE_MASK);
 
     // Test if written value matches parameter
     fres &= ((*regptr16 & REG_PGxPER_VALID_DATA_READ_MASK) == (regPGxPER & REG_PGxPER_VALID_DATA_WRITE_MASK));
     
-    // write IO configuration
-    reg_offset = (channel-1) * ((volatile uint16_t)&PG2DC - (volatile uint16_t)&PG1DC);
+    // write Duty Cycle
+    reg_offset = (instance-1) * ((volatile uint16_t)&PG2DC - (volatile uint16_t)&PG1DC);
     regptr16 = (volatile uint16_t*) ((volatile uint8_t*)&PG1DC + reg_offset);
     *regptr16 = regPGxDC;
 
     // Test if written value matches parameter
     fres &= ((*regptr16 & REG_PGxDC_VALID_DATA_READ_MASK) == (regPGxDC & REG_PGxDC_VALID_DATA_WRITE_MASK));
     
-    // write dead time
-    reg_offset = (channel-1) * ((volatile uint16_t)&PG2PHASE - (volatile uint16_t)&PG1PHASE);
+    // write Phase Shift
+    reg_offset = (instance-1) * ((volatile uint16_t)&PG2PHASE - (volatile uint16_t)&PG1PHASE);
     regptr16 = (volatile uint16_t*) ((volatile uint8_t*)&PG1PHASE + reg_offset);
     *regptr16 = regPGxPHASE;
     
@@ -188,13 +188,47 @@ inline volatile uint16_t hspwm_init_pwm_timing(uint16_t channel, uint16_t regPGx
 
 }
 
+/*!hspwm_set_duty_cycle
+ * ************************************************************************************************
+ * Summary:
+ * Writes a new duty cycle value to the individual duty cycle register of the specified PWM instance 
+ *
+ * Parameters:
+ *	uint16_t instance:  Index of the PWM generator addressed (e.g. 1 for PWM1, 2 for PWM2, etc.)
+ *
+ * Returns:
+ *  uint16_t            a 16-bit unsigned integer number indicating if the write process was 
+ *                      executed successfully (0: failure, 1: success)
+ *  
+ * Description:
+ * Writes a new duty cycle value to the individual duty cycle register of the PWM generator 
+ * specified by parameter 'instance'.
+ * ***********************************************************************************************/
+
+inline volatile uint16_t hspwm_set_duty_cycle(uint16_t instance, uint16_t regPGxDC)
+{
+    volatile uint16_t fres=0;
+    volatile uint16_t *regptr16;
+    volatile uint16_t reg_offset;
+
+    // write Duty Cycle
+    reg_offset = (instance-1) * ((volatile uint16_t)&PG2DC - (volatile uint16_t)&PG1DC);
+    regptr16 = (volatile uint16_t*) ((volatile uint8_t*)&PG1DC + reg_offset);
+    *regptr16 = regPGxDC;
+
+    // Test if written value matches parameter
+    fres = ((*regptr16 & REG_PGxDC_VALID_DATA_READ_MASK) == (regPGxDC & REG_PGxDC_VALID_DATA_WRITE_MASK));
+    
+    return(fres);
+}
+
 /*!hspwm_enable_pwm
  * ************************************************************************************************
  * Summary:
  * Enables a PWM generator 
  *
  * Parameters:
- *	uint16_t channel:     Index of the PWM generator addressed (e.g. 1 for PWM1, 2 for PWM2, etc.)
+ *	uint16_t instance:    Index of the PWM generator addressed (e.g. 1 for PWM1, 2 for PWM2, etc.)
  *  bool wait_for_hres:   PWM generator period register setting the switching period 
  *
  * Returns:
@@ -207,7 +241,7 @@ inline volatile uint16_t hspwm_init_pwm_timing(uint16_t channel, uint16_t regPGx
  * generator.
  * ***********************************************************************************************/
 
-inline volatile uint16_t hspwm_enable_pwm(uint16_t channel, bool wait_for_hres)
+inline volatile uint16_t hspwm_enable_pwm(uint16_t instance, bool wait_for_hres)
 {
 
     volatile uint16_t *regptr16;
@@ -231,7 +265,7 @@ inline volatile uint16_t hspwm_enable_pwm(uint16_t channel, bool wait_for_hres)
 
     }
 
-    reg_offset = (channel-1) * ((volatile uint16_t)&PG2CONL - (volatile uint16_t)&PG1CONL);
+    reg_offset = (instance-1) * ((volatile uint16_t)&PG2CONL - (volatile uint16_t)&PG1CONL);
     regptr16 = (volatile uint16_t*) ((volatile uint8_t*)&PG1CONL + reg_offset);
     reg_buf = *regptr16;
     *regptr16 = reg_buf | REG_PGCON_ON_PWM_ENABLED;
@@ -246,7 +280,7 @@ inline volatile uint16_t hspwm_enable_pwm(uint16_t channel, bool wait_for_hres)
  * Disables a PWM generator 
  *
  * Parameters:
- *	uint16_t channel:     Index of the PWM generator addressed (e.g. 1 for PWM1, 2 for PWM2, etc.)
+ *	uint16_t instance:  Index of the PWM generator addressed (e.g. 1 for PWM1, 2 for PWM2, etc.)
  *
  * Returns:
  *  uint16_t            a 16-bit unsigned integer number indicating if the write process was 
@@ -256,28 +290,46 @@ inline volatile uint16_t hspwm_enable_pwm(uint16_t channel, bool wait_for_hres)
  * This function disables a PWM generator defined by parameter CHANNEL.
  * ***********************************************************************************************/
 
-inline volatile uint16_t hspwm_disable_pwm(uint16_t channel)
+inline volatile uint16_t hspwm_disable_pwm(uint16_t instance)
 {
 
     volatile uint16_t *regptr16;
     volatile uint16_t reg_offset;
     volatile uint16_t reg_buf=0;
 
-    reg_offset = (channel-1) * ((volatile uint16_t)&PG2CONL - (volatile uint16_t)&PG1CONL);
+    reg_offset = (instance-1) * ((volatile uint16_t)&PG2CONL - (volatile uint16_t)&PG1CONL);
     regptr16 = (volatile uint16_t*) ((volatile uint8_t*)&PG1CONL + reg_offset);
     reg_buf = *regptr16;
     *regptr16 = reg_buf & REG_PGCON_ON_PWM_RESET;
     
     return((volatile uint16_t)(volatile bool)(*regptr16 & REG_PGCON_ON_PWM_ENABLED));
 }
+/*!hspwm_ovr_hold
+ * ************************************************************************************************
+ * Summary:
+ * Overrides both PWM outputs (H/L) of the specified PWM instance 
+ *
+ * Parameters:
+ *	uint16_t instance:  Index of the PWM generator addressed (e.g. 1 for PWM1, 2 for PWM2, etc.)
+ *
+ * Returns:
+ *  uint16_t            a 16-bit unsigned integer number indicating if the write process was 
+ *                      executed successfully (0: failure, 1: success)
+ *  
+ * Description:
+ * This function disables both outputs PWMxH and PWMxL of the PWM generator defined by 
+ * parameter 'instance'. While in override mode, the PWM module is still running and thus
+ * keeps generating triggers for other peripherals (e.g. ADC). Only the PWM outputs PWMxH and PWMxL
+ * are forced to a permanent pin state defined by register bits PGxIOCONL->OVRDAT.
+ * ***********************************************************************************************/
 
-inline volatile uint16_t hspwm_ovr_hold(uint16_t channel)
+inline volatile uint16_t hspwm_ovr_hold(uint16_t instance)
 {
     volatile uint16_t *regptr16;
     volatile uint16_t reg_offset;
     volatile uint16_t reg_buf=0;
 
-    reg_offset = (channel-1) * ((volatile uint16_t)&PG2IOCONL - (volatile uint16_t)&PG1IOCONL);
+    reg_offset = (instance-1) * ((volatile uint16_t)&PG2IOCONL - (volatile uint16_t)&PG1IOCONL);
     regptr16 = (volatile uint16_t*) ((volatile uint8_t*)&PG1IOCONL + reg_offset);
     reg_buf = *regptr16;
     *regptr16 = reg_buf | REG_IOCON_OVREN_COMP_SET;
@@ -285,14 +337,30 @@ inline volatile uint16_t hspwm_ovr_hold(uint16_t channel)
     return((volatile uint16_t)(volatile bool)(*regptr16 & REG_IOCON_OVREN_COMP_SET));
 }
 
+/*!hspwm_ovr_release
+ * ************************************************************************************************
+ * Summary:
+ * Releases both PWM outputs (H/L) of the specified PWM instance 
+ *
+ * Parameters:
+ *	uint16_t instance:  Index of the PWM generator addressed (e.g. 1 for PWM1, 2 for PWM2, etc.)
+ *
+ * Returns:
+ *  uint16_t            a 16-bit unsigned integer number indicating if the write process was 
+ *                      executed successfully (0: failure, 1: success)
+ *  
+ * Description:
+ * This function enables both outputs PWMxH and PWMxL of the PWM generator defined by 
+ * parameter 'instance' by releasing them from override conditions.
+ * ***********************************************************************************************/
 
-inline volatile uint16_t hspwm_ovr_release(uint16_t channel)
+inline volatile uint16_t hspwm_ovr_release(uint16_t instance)
 {
     volatile uint16_t *regptr16;
     volatile uint16_t reg_offset;
     volatile uint16_t reg_buf=0;
 
-    reg_offset = (channel-1) * ((volatile uint16_t)&PG2IOCONL - (volatile uint16_t)&PG1IOCONL);
+    reg_offset = (instance-1) * ((volatile uint16_t)&PG2IOCONL - (volatile uint16_t)&PG1IOCONL);
     regptr16 = (volatile uint16_t*) ((volatile uint8_t*)&PG1IOCONL + reg_offset);
     reg_buf = *regptr16;
     *regptr16 = reg_buf & REG_IOCON_OVREN_COMP_RESET;
@@ -300,13 +368,30 @@ inline volatile uint16_t hspwm_ovr_release(uint16_t channel)
     return(1 - (volatile uint16_t)(volatile bool)(*regptr16 & REG_IOCON_OVREN_COMP_SET));
 }
 
-inline volatile uint16_t hspwm_ovr_release_high_side(uint16_t channel)
+/*!hspwm_ovr_release_high_side
+ * ************************************************************************************************
+ * Summary:
+ * Releases the high-side PWM output PWMxH of the specified PWM instance 
+ *
+ * Parameters:
+ *	uint16_t instance:  Index of the PWM generator addressed (e.g. 1 for PWM1, 2 for PWM2, etc.)
+ *
+ * Returns:
+ *  uint16_t            a 16-bit unsigned integer number indicating if the write process was 
+ *                      executed successfully (0: failure, 1: success)
+ *  
+ * Description:
+ * This function enables the high-side PWM output PWMxH of the PWM generator defined by 
+ * parameter 'instance' by releasing them from override conditions.
+ * ***********************************************************************************************/
+
+inline volatile uint16_t hspwm_ovr_release_high_side(uint16_t instance)
 {
     volatile uint16_t *regptr16;
     volatile uint16_t reg_offset;
     volatile uint16_t reg_buf=0;
 
-    reg_offset = (channel-1) * ((volatile uint16_t)&PG2IOCONL - (volatile uint16_t)&PG1IOCONL);
+    reg_offset = (instance-1) * ((volatile uint16_t)&PG2IOCONL - (volatile uint16_t)&PG1IOCONL);
     regptr16 = (volatile uint16_t*) ((volatile uint8_t*)&PG1IOCONL + reg_offset);
     reg_buf = *regptr16;
     *regptr16 = reg_buf & REG_IOCON_OVRENH_RESET;
@@ -314,13 +399,30 @@ inline volatile uint16_t hspwm_ovr_release_high_side(uint16_t channel)
     return(1 - (volatile uint16_t)(volatile bool)(*regptr16 & REG_IOCON_OVRENH_ENABLED));
 }
 
-inline volatile uint16_t hspwm_ovr_release_low_side(uint16_t channel)
+/*!hspwm_ovr_release_low_side
+ * ************************************************************************************************
+ * Summary:
+ * Releases the low-side PWM output PWMxL of the specified PWM instance 
+ *
+ * Parameters:
+ *	uint16_t instance:  Index of the PWM generator addressed (e.g. 1 for PWM1, 2 for PWM2, etc.)
+ *
+ * Returns:
+ *  uint16_t            a 16-bit unsigned integer number indicating if the write process was 
+ *                      executed successfully (0: failure, 1: success)
+ *  
+ * Description:
+ * This function enables the low-side PWM output PWMxL of the PWM generator defined by 
+ * parameter 'instance' by releasing them from override conditions.
+ * ***********************************************************************************************/
+
+inline volatile uint16_t hspwm_ovr_release_low_side(uint16_t instance)
 {
     volatile uint16_t *regptr16;
     volatile uint16_t reg_offset;
     volatile uint16_t reg_buf=0;
 
-    reg_offset = (channel-1) * ((volatile uint16_t)&PG2IOCONL - (volatile uint16_t)&PG1IOCONL);
+    reg_offset = (instance-1) * ((volatile uint16_t)&PG2IOCONL - (volatile uint16_t)&PG1IOCONL);
     regptr16 = (volatile uint16_t*) ((volatile uint8_t*)&PG1IOCONL + reg_offset);
     reg_buf = *regptr16;
     *regptr16 = reg_buf & REG_IOCON_OVRENL_RESET;
@@ -328,13 +430,31 @@ inline volatile uint16_t hspwm_ovr_release_low_side(uint16_t channel)
     return(1 - (volatile uint16_t)(volatile bool)(*regptr16 & REG_IOCON_OVRENL_ENABLED));
 }
 
-inline volatile uint16_t hspwm_set_gpio_high_side(uint16_t channel)
+/*!hspwm_set_gpio_high_side
+ * ************************************************************************************************
+ * Summary:
+ * Revokes pin-ownership of output PWMxH of a PWM generator making it a GPIO
+ *
+ * Parameters:
+ *	uint16_t instance:  Index of the PWM generator addressed (e.g. 1 for PWM1, 2 for PWM2, etc.)
+ *
+ * Returns:
+ *  uint16_t            a 16-bit unsigned integer number indicating if the write process was 
+ *                      executed successfully (0: failure, 1: success)
+ *  
+ * Description:
+ * This function revokes the pin-ownership of output PWMxH from the specified PWM generator 
+ * defined by parameter 'instance'. The output pin PWMxH becomes a general purpose IO, which 
+ * can be controlled by port latch (LATx), port (PORTx) and i/o direction registers (TRIS).
+ * ***********************************************************************************************/
+
+inline volatile uint16_t hspwm_set_gpio_high_side(uint16_t instance)
 {
     volatile uint16_t *regptr16;
     volatile uint16_t reg_offset;
     volatile uint16_t reg_buf=0;
 
-    reg_offset = (channel-1) * ((volatile uint16_t)&PG2IOCONH - (volatile uint16_t)&PG1IOCONH);
+    reg_offset = (instance-1) * ((volatile uint16_t)&PG2IOCONH - (volatile uint16_t)&PG1IOCONH);
     regptr16 = (volatile uint16_t*) ((volatile uint8_t*)&PG1IOCONH + reg_offset);
     reg_buf = *regptr16;
     *regptr16 = reg_buf & REG_IOCON_PENH_GPIO_ENABLE;
@@ -342,13 +462,31 @@ inline volatile uint16_t hspwm_set_gpio_high_side(uint16_t channel)
     return((volatile uint16_t)(volatile bool)(*regptr16 & REG_IOCON_PENH_GPIO_DISABLE));
 }
 
-inline volatile uint16_t hspwm_reset_gpio_high_side(uint16_t channel)
+/*!hspwm_reset_gpio_high_side
+ * ************************************************************************************************
+ * Summary:
+ * Assigns the pin-ownership of output PWMxH to the PWM generator
+ *
+ * Parameters:
+ *	uint16_t instance:  Index of the PWM generator addressed (e.g. 1 for PWM1, 2 for PWM2, etc.)
+ *
+ * Returns:
+ *  uint16_t            a 16-bit unsigned integer number indicating if the write process was 
+ *                      executed successfully (0: failure, 1: success)
+ *  
+ * Description:
+ * This function assigns the pin-ownership of output PWMxH to the specified PWM generator defined by 
+ * parameter 'instance'. General power control registers, such as port latch (LATx), port (PORTx) 
+ * and i/o direction registers (TRIS), will have no effect on the output pin.
+ * ***********************************************************************************************/
+     
+inline volatile uint16_t hspwm_reset_gpio_high_side(uint16_t instance)
 {
     volatile uint16_t *regptr16;
     volatile uint16_t reg_offset;
     volatile uint16_t reg_buf=0;
 
-    reg_offset = (channel-1) * ((volatile uint16_t)&PG2IOCONH - (volatile uint16_t)&PG1IOCONH);
+    reg_offset = (instance-1) * ((volatile uint16_t)&PG2IOCONH - (volatile uint16_t)&PG1IOCONH);
     regptr16 = (volatile uint16_t*) ((volatile uint8_t*)&PG1IOCONH + reg_offset);
     reg_buf = *regptr16;
     *regptr16 = reg_buf | REG_IOCON_PENH_GPIO_DISABLE;
@@ -356,13 +494,31 @@ inline volatile uint16_t hspwm_reset_gpio_high_side(uint16_t channel)
     return(1 - (volatile uint16_t)(volatile bool)(*regptr16 & REG_IOCON_PENH_GPIO_DISABLE));
 }
 
-inline volatile uint16_t hspwm_set_gpio_low_side(uint16_t channel)
+/*!hspwm_set_gpio_low_side
+ * ************************************************************************************************
+ * Summary:
+ * Revokes pin-ownership of output PWMxL of a PWM generator making it a GPIO
+ *
+ * Parameters:
+ *	uint16_t instance:  Index of the PWM generator addressed (e.g. 1 for PWM1, 2 for PWM2, etc.)
+ *
+ * Returns:
+ *  uint16_t            a 16-bit unsigned integer number indicating if the write process was 
+ *                      executed successfully (0: failure, 1: success)
+ *  
+ * Description:
+ * This function revokes the pin-ownership of output PWMxL from the specified PWM generator 
+ * defined by parameter 'instance'. The output pin PWMxL becomes a general purpose IO, which 
+ * can be controlled by port latch (LATx), port (PORTx) and i/o direction registers (TRIS).
+ * ***********************************************************************************************/
+
+inline volatile uint16_t hspwm_set_gpio_low_side(uint16_t instance)
 {
     volatile uint16_t *regptr16;
     volatile uint16_t reg_offset;
     volatile uint16_t reg_buf=0;
 
-    reg_offset = (channel-1) * ((volatile uint16_t)&PG2IOCONH - (volatile uint16_t)&PG1IOCONH);
+    reg_offset = (instance-1) * ((volatile uint16_t)&PG2IOCONH - (volatile uint16_t)&PG1IOCONH);
     regptr16 = (volatile uint16_t*) ((volatile uint8_t*)&PG1IOCONH + reg_offset);
     reg_buf = *regptr16;
     *regptr16 = reg_buf & REG_IOCON_PENL_GPIO_ENABLE;
@@ -370,14 +526,31 @@ inline volatile uint16_t hspwm_set_gpio_low_side(uint16_t channel)
     return((volatile uint16_t)(volatile bool)(*regptr16 & REG_IOCON_PENL_GPIO_DISABLE));
 }
 
+/*!hspwm_reset_gpio_low_side
+ * ************************************************************************************************
+ * Summary:
+ * Assigns the pin-ownership of output PWMxL to the PWM generator
+ *
+ * Parameters:
+ *	uint16_t instance:  Index of the PWM generator addressed (e.g. 1 for PWM1, 2 for PWM2, etc.)
+ *
+ * Returns:
+ *  uint16_t            a 16-bit unsigned integer number indicating if the write process was 
+ *                      executed successfully (0: failure, 1: success)
+ *  
+ * Description:
+ * This function assigns the pin-ownership of output PWMxL to the specified PWM generator defined by 
+ * parameter 'instance'. General power control registers, such as port latch (LATx), port (PORTx) 
+ * and i/o direction registers (TRIS), will have no effect on the output pin.
+ * ***********************************************************************************************/
 
-inline volatile uint16_t hspwm_reset_gpio_low_side(uint16_t channel)
+inline volatile uint16_t hspwm_reset_gpio_low_side(uint16_t instance)
 {
     volatile uint16_t *regptr16;
     volatile uint16_t reg_offset;
     volatile uint16_t reg_buf=0;
 
-    reg_offset = (channel-1) * ((volatile uint16_t)&PG2IOCONH - (volatile uint16_t)&PG1IOCONH);
+    reg_offset = (instance-1) * ((volatile uint16_t)&PG2IOCONH - (volatile uint16_t)&PG1IOCONH);
     regptr16 = (volatile uint16_t*) ((volatile uint8_t*)&PG1IOCONH + reg_offset);
     reg_buf = *regptr16;
     *regptr16 = reg_buf | REG_IOCON_PENL_GPIO_DISABLE;

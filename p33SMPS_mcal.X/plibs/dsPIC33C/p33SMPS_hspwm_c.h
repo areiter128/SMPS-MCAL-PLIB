@@ -1299,17 +1299,18 @@ extern volatile uint16_t hspwm_init_pwm_timing
     uint16_t regPGxDC,
     uint16_t regPGxPHASE
     );
+extern volatile uint16_t hspwm_set_duty_cycle(uint16_t instance, uint16_t regPGxDC);
 
-extern volatile uint16_t hspwm_enable_pwm(uint16_t channel, bool wait_for_hres);
-extern volatile uint16_t hspwm_disable_pwm(uint16_t channel);
-extern volatile uint16_t hspwm_ovr_hold(uint16_t channel);
-extern volatile uint16_t hspwm_ovr_release(uint16_t channel);
-extern volatile uint16_t hspwm_ovr_release_high_side(uint16_t channel);
-extern volatile uint16_t hspwm_ovr_release_low_side(uint16_t channel);
-extern volatile uint16_t hspwm_set_gpio_high_side(uint16_t channel);
-extern volatile uint16_t hspwm_reset_gpio_high_side(uint16_t channel);
-extern volatile uint16_t hspwm_set_gpio_low_side(uint16_t channel);
-extern volatile uint16_t hspwm_reset_gpio_low_side(uint16_t channel);
+extern volatile uint16_t hspwm_enable_pwm(uint16_t instance, bool wait_for_hres);
+extern volatile uint16_t hspwm_disable_pwm(uint16_t instance);
+extern volatile uint16_t hspwm_ovr_hold(uint16_t instance);
+extern volatile uint16_t hspwm_ovr_release(uint16_t instance);
+extern volatile uint16_t hspwm_ovr_release_high_side(uint16_t instance);
+extern volatile uint16_t hspwm_ovr_release_low_side(uint16_t instance);
+extern volatile uint16_t hspwm_set_gpio_high_side(uint16_t instance);
+extern volatile uint16_t hspwm_reset_gpio_high_side(uint16_t instance);
+extern volatile uint16_t hspwm_set_gpio_low_side(uint16_t instance);
+extern volatile uint16_t hspwm_reset_gpio_low_side(uint16_t instance);
 
 #endif
 // End of File _P33SMPS_SMPS_PWM_H_
