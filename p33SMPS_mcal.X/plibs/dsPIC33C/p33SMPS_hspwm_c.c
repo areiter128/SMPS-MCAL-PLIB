@@ -205,7 +205,7 @@ inline volatile uint16_t hspwm_init_pwm_timing(uint16_t instance, uint16_t regPG
  * specified by parameter 'instance'.
  * ***********************************************************************************************/
 
-inline volatile uint16_t hspwm_set_duty_cycle(uint16_t instance, uint16_t regPGxDC)
+inline volatile uint16_t hspwm_set_duty_cycle(uint16_t instance, uint16_t regPGxDC, uint16_t regPGxDCA)
 {
     volatile uint16_t fres=0;
     volatile uint16_t *regptr16;
@@ -216,8 +216,13 @@ inline volatile uint16_t hspwm_set_duty_cycle(uint16_t instance, uint16_t regPGx
     regptr16 = (volatile uint16_t*) ((volatile uint8_t*)&PG1DC + reg_offset);
     *regptr16 = regPGxDC;
 
+    // write Duty Cycle Adjustment
+    reg_offset = (instance-1) * ((volatile uint16_t)&PG2DCA - (volatile uint16_t)&PG1DCA);
+    regptr16 = (volatile uint16_t*) ((volatile uint8_t*)&PG1DCA + reg_offset);
+    *regptr16 = regPGxDCA;
+
     // Test if written value matches parameter
-    fres = ((*regptr16 & REG_PGxDC_VALID_DATA_READ_MASK) == (regPGxDC & REG_PGxDC_VALID_DATA_WRITE_MASK));
+    fres = ((*regptr16 & REG_PGxDCA_VALID_DATA_READ_MASK) == (regPGxDCA & REG_PGxDCA_VALID_DATA_WRITE_MASK));
     
     return(fres);
 }
