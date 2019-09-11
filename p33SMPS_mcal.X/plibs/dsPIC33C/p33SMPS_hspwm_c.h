@@ -41,26 +41,6 @@
  * This file is an additional header file on top of the generic device header file.
  * ***********************************************************************************************/
 
-
-/*
-
-typedef struct {
-    volatile uint16_t PCLKCON;  // PWM CLOCK CONTROL REGISTER
-    volatile uint16_t FSCL; // FREQUENCY SCALE REGISTER
-    volatile uint16_t FSMINPER; // FREQUENCY SCALING MINIMUM PERIOD REGISTER
-    volatile uint16_t MPHASE; // MASTER PHASE REGISTER
-    volatile uint16_t MDC; // MASTER DUTY CYCLE REGISTER
-    volatile uint16_t MPER; // MASTER PERIOD REGISTER
-    volatile uint16_t CMBTRIGL; // COMBINATIONAL TRIGGER REGISTER LOW
-    volatile uint16_t CMBTRIGH; // COMBINATIONAL TRIGGER REGISTER HIGH
-    volatile uint16_t LOGCONy; // COMBINATORIAL PWM LOGIC CONTROL REGISTER y
-    volatile uint16_t PWMEVTy; // PWM EVENT OUTPUT CONTROL REGISTER y
-    volatile uint16_t LFSR; // LINEAR FEEDBACK SHIFT REGISTER
-    
-}HSPWM_C_TYPE_GENERIC_REGISTERS_t;
-
- */
-
 #define HSPWM_OVERRIDE_ENABLE     1
 #define HSPWM_OVERRIDE_DISABLE    0
 
@@ -145,8 +125,99 @@ typedef struct {
 
 typedef union {
     volatile uint16_t value; // 16-bit register direct write access
-    volatile PCLKCON_t PCLKCON; // PWM CLOCK CONTROL REGISTER
-} REGBLK_PCLK_CONFIG_t; // PWM CLOCK CONTROL REGISTER
+    volatile PCLKCON_t bits; // PWM CLOCK CONTROL REGISTER
+} REGBLK_PCLKCON_t; // PWM CLOCK CONTROL REGISTER
+
+/* ===========================================================================
+ * FSCL: FREQUENCY SCALE REGISTER
+ * ===========================================================================*/
+#define REG_FSCL_VALID_DATA_WRITE_MASK 0xFFFF
+#define REG_FSCL_VALID_DATA_READ_MASK  0xFFFF
+
+typedef struct {
+    volatile uint16_t FSCL; // <15:0>: Frequency Scale Register
+} FSCL_t;   // PWM FREQUENCY SCALE REGISTER
+
+typedef union {
+    volatile uint16_t value; // 16-bit register direct write access
+    volatile FSCL_t bits; // <15:0>: Frequency Scale Register
+} REGBLK_FSCL_t;   // PWM FREQUENCY SCALE REGISTER
+
+/* ===========================================================================
+ * FSMINPER: FREQUENCY SCALING MINIMUM PERIOD REGISTER
+ * ===========================================================================*/
+#define REG_FSMINPER_VALID_DATA_WRITE_MASK 0xFFFF
+#define REG_FSMINPER_VALID_DATA_READ_MASK  0xFFFF
+
+typedef struct {
+    volatile uint16_t FSMINPER; // <15:0>: Frequency Scaling Minimum Period Register bits
+} FSMINPER_t;   // PWM FREQUENCY SCALING MINIMUM PERIOD REGISTER
+
+typedef union {
+    volatile uint16_t value; // 16-bit register direct write access
+    volatile FSMINPER_t bits; // Frequency Scaling Minimum Period Register  Bits
+} REGBLK_FSMINPER_t;   // PWM FREQUENCY SCALING MINIMUM PERIOD REGISTER
+
+/* ===========================================================================
+ * MPHASE: MASTER PHASE REGISTER
+ * ===========================================================================*/
+#define REG_MPHASE_VALID_DATA_WRITE_MASK 0xFFFF
+#define REG_MPHASE_VALID_DATA_READ_MASK  0xFFFF
+
+typedef struct {
+    volatile uint16_t MPHASE; // <15:0>: Master Phase Register bits
+} MPHASE_t;   // MPHASE: MASTER PHASE REGISTER
+
+typedef union {
+    volatile uint16_t value; // 16-bit register direct write access
+    volatile MPHASE_t bits; // Master Phase Register Bits
+} REGBLK_MPHASE_t;   // MPHASE: MASTER PHASE REGISTER
+
+/* ===========================================================================
+ * MDC: MASTER DUTY CYCLE REGISTER
+ * ===========================================================================*/
+#define REG_MDC_VALID_DATA_WRITE_MASK 0xFFFF
+#define REG_MDC_VALID_DATA_READ_MASK  0xFFFF
+
+typedef struct {
+    volatile uint16_t MDC; // <15:0>: Master Duty Cycle Register bits
+} MDC_t;   // MDC: MASTER DUTY CYCLE REGISTER
+
+typedef union {
+    volatile uint16_t value; // 16-bit register direct write access
+    volatile MDC_t bits; // Master Duty Cycle Register bits
+} REGBLK_MDC_t;   // MDC: MASTER DUTY CYCLE REGISTER
+
+/* ===========================================================================
+ * MPER: MASTER PERIOD REGISTER
+ * ===========================================================================*/
+#define REG_MPER_VALID_DATA_WRITE_MASK 0xFFFF
+#define REG_MPER_VALID_DATA_READ_MASK  0xFFFF
+
+typedef struct {
+    volatile uint16_t MPER; // <15:0>: Master Period Register bits
+} MPER_t;   // MPER: MASTER PERIOD REGISTER
+
+typedef union {
+    volatile uint16_t value; // 16-bit register direct write access
+    volatile MPER_t bits; // Master Period Register bits
+} REGBLK_MPER_t;   // MPER: MASTER PERIOD REGISTER
+
+/* ===========================================================================
+ * LFSR: LINEAR FEEDBACK SHIFT REGISTER
+ * ===========================================================================*/
+#define REG_LFSR_VALID_DATA_WRITE_MASK 0x7FFF
+#define REG_LFSR_VALID_DATA_READ_MASK  0x7FFF
+
+typedef struct {
+    volatile uint16_t LFSR; // Bit <14:0>: Linear Feedback Shift Register bits
+    volatile unsigned  : 1; // Bit 15: (reserved)
+} LFSR_t;   // LFSR: LINEAR FEEDBACK SHIFT REGISTER
+
+typedef union {
+    volatile uint16_t value; // 16-bit register direct read/write access
+    volatile LFSR_t bits; // Linear Feedback Shift Register bits
+} REGBLK_LFSR_t;   // LFSR: LINEAR FEEDBACK SHIFT REGISTER
 
 /* ======================================================================================================
  * CMBTRIGL/H: COMBINATIONAL TRIGGER REGISTER LOW/HIGH
@@ -209,35 +280,137 @@ typedef struct {
     volatile CMBTRIG_CTy_PGx_ENABLE_e PG1_CTRIG_EN : 1; // Bit 7: Trigger Output from PWM Generator 1 as Source for Combinatorial Trigger A
     volatile unsigned : 8;  // Bit 15-8: (reserved)
 
-} __attribute__((packed)) CMBTRIGy_t; // COMBINATIONAL TRIGGER REGISTERS HIGH and LOW
-
-typedef union {
-    volatile uint16_t value;
-    volatile CMBTRIGy_t CMBTRIG;
-} REGBLK_CMBTRIGy_t;
+} __attribute__((packed)) CMBTRIGy_ENABLE_t; // COMBINATIONAL TRIGGER REGISTER ENABLE BITS
 
 typedef struct {
-    
-    // CMBTRIGL/H
-    volatile CMBTRIGy_t CTA_EN; // Bit  0-15: Combinatorial Trigger A Enable bits
-    volatile CMBTRIGy_t CTB_EN; // Bit 16-31: Combinatorial Trigger B Enable bits
-
-} __attribute__((packed)) CMBTRIG_t; // COMBINATIONAL TRIGGER REGISTERS HIGH and LOW
+    volatile CMBTRIGy_ENABLE_t CTBxEN; // COMBINATIONAL TRIGGER ENABLE REGISTER bits
+    volatile CMBTRIGy_ENABLE_t CTAxEN; // COMBINATIONAL TRIGGER ENABLE REGISTER bits
+} __attribute__((packed)) CMBTRIGy_t;  // COMBINATIONAL TRIGGER ENABLE REGISTER 
 
 typedef union {
-    volatile uint32_t value;
-    volatile CMBTRIG_t CMBTRIG_ENABLE;
-} REGBLK_CMBTRIG_t;
+    volatile uint32_t value; // register value
+    volatile CMBTRIGy_t bits; // COMBINATIONAL TRIGGER ENABLE REGISTER bits
+} REGBLK_CMBTRIGy_t;  // COMBINATIONAL TRIGGER ENABLE REGISTER 
 
 /* ===========================================================================
  * LOGCONy: COMBINATORIAL PWM LOGIC CONTROL REGISTER y (y=A, B, C, D ,E or F)
  * ===========================================================================*/
+#define REG_LOGCONy_VALID_DATA_WRITE_MASK 0xFFF7
+#define REG_LOGCONy_VALID_DATA_READ_MASK  0xFFF7
 
+#define REG_LOGCON_PWMS1_PWM8L	0b1111000000000000  // Combinatorial PWM Logic Source #1 Selection is PWM8L
+#define REG_LOGCON_PWMS1_PWM8H	0b1110000000000000  // Combinatorial PWM Logic Source #1 Selection is PWM8H
+#define REG_LOGCON_PWMS1_PWM7L	0b1101000000000000  // Combinatorial PWM Logic Source #1 Selection is PWM7L
+#define REG_LOGCON_PWMS1_PWM7H	0b1100000000000000  // Combinatorial PWM Logic Source #1 Selection is PWM7H
+#define REG_LOGCON_PWMS1_PWM6L	0b1011000000000000  // Combinatorial PWM Logic Source #1 Selection is PWM6L
+#define REG_LOGCON_PWMS1_PWM6H	0b1010000000000000  // Combinatorial PWM Logic Source #1 Selection is PWM6H
+#define REG_LOGCON_PWMS1_PWM5L	0b1001000000000000  // Combinatorial PWM Logic Source #1 Selection is PWM5L
+#define REG_LOGCON_PWMS1_PWM5H	0b1000000000000000  // Combinatorial PWM Logic Source #1 Selection is PWM5H
+#define REG_LOGCON_PWMS1_PWM4L	0b0111000000000000  // Combinatorial PWM Logic Source #1 Selection is PWM4L
+#define REG_LOGCON_PWMS1_PWM4H	0b0110000000000000  // Combinatorial PWM Logic Source #1 Selection is PWM4H
+#define REG_LOGCON_PWMS1_PWM3L	0b0101000000000000  // Combinatorial PWM Logic Source #1 Selection is PWM3L
+#define REG_LOGCON_PWMS1_PWM3H	0b0100000000000000  // Combinatorial PWM Logic Source #1 Selection is PWM3H
+#define REG_LOGCON_PWMS1_PWM2L	0b0011000000000000  // Combinatorial PWM Logic Source #1 Selection is PWM2L
+#define REG_LOGCON_PWMS1_PWM2H	0b0010000000000000  // Combinatorial PWM Logic Source #1 Selection is PWM2H
+#define REG_LOGCON_PWMS1_PWM1L	0b0001000000000000  // Combinatorial PWM Logic Source #1 Selection is PWM1L
+#define REG_LOGCON_PWMS1_PWM1H	0b0000000000000000  // Combinatorial PWM Logic Source #1 Selection is PWM1H
+
+#define REG_LOGCON_PWMS2_PWM8L	0b0000111100000000  // Combinatorial PWM Logic Source #2 Selection is PWM8L
+#define REG_LOGCON_PWMS2_PWM8H	0b0000111000000000  // Combinatorial PWM Logic Source #2 Selection is PWM8H
+#define REG_LOGCON_PWMS2_PWM7L	0b0000110100000000  // Combinatorial PWM Logic Source #2 Selection is PWM7L
+#define REG_LOGCON_PWMS2_PWM7H	0b0000110000000000  // Combinatorial PWM Logic Source #2 Selection is PWM7H
+#define REG_LOGCON_PWMS2_PWM6L	0b0000101100000000  // Combinatorial PWM Logic Source #2 Selection is PWM6L
+#define REG_LOGCON_PWMS2_PWM6H	0b0000101000000000  // Combinatorial PWM Logic Source #2 Selection is PWM6H
+#define REG_LOGCON_PWMS2_PWM5L	0b0000100100000000  // Combinatorial PWM Logic Source #2 Selection is PWM5L
+#define REG_LOGCON_PWMS2_PWM5H	0b0000100000000000  // Combinatorial PWM Logic Source #2 Selection is PWM5H
+#define REG_LOGCON_PWMS2_PWM4L	0b0000011100000000  // Combinatorial PWM Logic Source #2 Selection is PWM4L
+#define REG_LOGCON_PWMS2_PWM4H	0b0000011000000000  // Combinatorial PWM Logic Source #2 Selection is PWM4H
+#define REG_LOGCON_PWMS2_PWM3L	0b0000010100000000  // Combinatorial PWM Logic Source #2 Selection is PWM3L
+#define REG_LOGCON_PWMS2_PWM3H	0b0000010000000000  // Combinatorial PWM Logic Source #2 Selection is PWM3H
+#define REG_LOGCON_PWMS2_PWM2L	0b0000001100000000  // Combinatorial PWM Logic Source #2 Selection is PWM2L
+#define REG_LOGCON_PWMS2_PWM2H	0b0000001000000000  // Combinatorial PWM Logic Source #2 Selection is PWM2H
+#define REG_LOGCON_PWMS2_PWM1L	0b0000000100000000  // Combinatorial PWM Logic Source #2 Selection is PWM1L
+#define REG_LOGCON_PWMS2_PWM1H	0b0000000000000000  // Combinatorial PWM Logic Source #2 Selection is PWM1H
+
+typedef enum {
+    LOGCON_PWMSx_PWM8L = 0b1111, // Combinatorial PWM Logic Source #1 or #2 Selection is PWM8L
+    LOGCON_PWMSx_PWM8H = 0b1110, // Combinatorial PWM Logic Source #1 or #2 Selection is PWM8H
+    LOGCON_PWMSx_PWM7L = 0b1101, // Combinatorial PWM Logic Source #1 or #2 Selection is PWM7L
+    LOGCON_PWMSx_PWM7H = 0b1100, // Combinatorial PWM Logic Source #1 or #2 Selection is PWM7H
+    LOGCON_PWMSx_PWM6L = 0b1011, // Combinatorial PWM Logic Source #1 or #2 Selection is PWM6L
+    LOGCON_PWMSx_PWM6H = 0b1010, // Combinatorial PWM Logic Source #1 or #2 Selection is PWM6H
+    LOGCON_PWMSx_PWM5L = 0b1001, // Combinatorial PWM Logic Source #1 or #2 Selection is PWM5L
+    LOGCON_PWMSx_PWM5H = 0b1000, // Combinatorial PWM Logic Source #1 or #2 Selection is PWM5H
+    LOGCON_PWMSx_PWM4L = 0b0111, // Combinatorial PWM Logic Source #1 or #2 Selection is PWM4L
+    LOGCON_PWMSx_PWM4H = 0b0110, // Combinatorial PWM Logic Source #1 or #2 Selection is PWM4H
+    LOGCON_PWMSx_PWM3L = 0b0101, // Combinatorial PWM Logic Source #1 or #2 Selection is PWM3L
+    LOGCON_PWMSx_PWM3H = 0b0100, // Combinatorial PWM Logic Source #1 or #2 Selection is PWM3H
+    LOGCON_PWMSx_PWM2L = 0b0011, // Combinatorial PWM Logic Source #1 or #2 Selection is PWM2L
+    LOGCON_PWMSx_PWM2H = 0b0010, // Combinatorial PWM Logic Source #1 or #2 Selection is PWM2H
+    LOGCON_PWMSx_PWM1L = 0b0001, // Combinatorial PWM Logic Source #1 or #2 Selection is PWM1L
+    LOGCON_PWMSx_PWM1H = 0b0000  // Combinatorial PWM Logic Source #1 or #2 Selection is PWM1H
+} LOGCON_SRC_e; // List of comCinatorial PWM Logic Sources
+
+
+#define REG_LOGCON_S1yPOL_INVETED       0b0000000010000000 // Combinatorial PWM Logic Source #1 Polarity is inverted
+#define REG_LOGCON_S1yPOL_NOT_INVETED   0b0000000000000000 // Combinatorial PWM Logic Source #1 Polarity is not inverted
+#define REG_LOGCON_S2yPOL_INVETED       0b0000000001000000 // Combinatorial PWM Logic Source #2 Polarity is inverted
+#define REG_LOGCON_S2yPOL_NOT_INVETED   0b0000000000000000 // Combinatorial PWM Logic Source #2 Polarity is not inverted
+
+typedef enum {
+    LOGCON_SxPOL_INVETED = 1,       // Combinatorial PWM Logic Source Polarity is inverted
+    LOGCON_SxPOL_NOT_INVETED = 0    // Combinatorial PWM Logic Source Polarity is not inverted
+}LOGCON_SPOL_e; // Combinatorial PWM Logic Source Polarity bit
+
+
+#define REG_LOGCON_PWMLF_S1_XOR_S2  0b0000000000100000  // PWMS1y ^ PWMS2y (XOR)
+#define REG_LOGCON_PWMLF_S1_AND_S2  0b0000000000010000  // PWMS1y & PWMS2y (AND)
+#define REG_LOGCON_PWMLF_S1_OR_S2   0b0000000000000000  // PWMS1y | PWMS2y (OR)
+
+typedef enum {
+    LOGCON_PWMLF_S1_XOR_S2 = 0b010, // PWMS1y ^ PWMS2y (XOR)
+    LOGCON_PWMLF_S1_AND_S2 = 0b001, // PWMS1y & PWMS2y (AND)
+    LOGCON_PWMLF_S1_OR_S2  = 0b000  // PWMS1y | PWMS2y (OR)
+}LOGCON_LOGFUN_e; // Combinatorial PWM Logic Source Polarity bit
+
+
+#define REG_LOGCON_PWMLFD_PWM8   0b0000000000000111  // Logic function is assigned to PWM8H or PWM8L pin
+#define REG_LOGCON_PWMLFD_PWM7   0b0000000000000110  // Logic function is assigned to PWM7H or PWM7L pin
+#define REG_LOGCON_PWMLFD_PWM6   0b0000000000000101  // Logic function is assigned to PWM6H or PWM6L pin
+#define REG_LOGCON_PWMLFD_PWM5   0b0000000000000100  // Logic function is assigned to PWM5H or PWM5L pin
+#define REG_LOGCON_PWMLFD_PWM4   0b0000000000000011  // Logic function is assigned to PWM4H or PWM4L pin
+#define REG_LOGCON_PWMLFD_PWM3   0b0000000000000010  // Logic function is assigned to PWM3H or PWM3L pin
+#define REG_LOGCON_PWMLFD_PWM2   0b0000000000000001  // Logic function is assigned to PWM2H or PWM2L pin
+#define REG_LOGCON_PWMLFD_NONE   0b0000000000000000  // No assignment, combinatorial PWM logic function is disabled
+
+typedef enum {
+    LOGCON_PWMLFD_PWM8 = 0b111, // Logic function is assigned to PWM8H or PWM8L pin
+    LOGCON_PWMLFD_PWM7 = 0b110, // Logic function is assigned to PWM7H or PWM7L pin
+    LOGCON_PWMLFD_PWM6 = 0b101, // Logic function is assigned to PWM6H or PWM6L pin
+    LOGCON_PWMLFD_PWM5 = 0b100, // Logic function is assigned to PWM5H or PWM5L pin
+    LOGCON_PWMLFD_PWM4 = 0b011, // Logic function is assigned to PWM4H or PWM4L pin
+    LOGCON_PWMLFD_PWM3 = 0b010, // Logic function is assigned to PWM3H or PWM3L pin
+    LOGCON_PWMLFD_PWM2 = 0b001, // Logic function is assigned to PWM2H or PWM2L pin
+    LOGCON_PWMLFD_NONE = 0b000, // No assignment, combinatorial PWM logic function is disabled    LOGCON_SxPOL_INVETED = 1,       // Combinatorial PWM Logic Source Polarity is inverted
+}LOGCON_LOGDIR_e; // Combinatorial PWM Logic Destination Selection bits
+
+
+typedef struct {
+    
+    volatile LOGCON_LOGDIR_e PWMLFD : 3; // Bit 2-0: Combinatorial PWM Logic Function Selection bits
+    volatile unsigned : 1;              // Bit 3: (reserved)
+    volatile LOGCON_LOGFUN_e PWMLF : 2; // Bit 5-4: Combinatorial PWM Logic Function Selection bits
+    volatile LOGCON_SPOL_e S2POL : 1;   // Bit 6: Combinatorial PWM Logic Source #2 Polarity bit
+    volatile LOGCON_SPOL_e S1POL : 1;   // Bit 7: Combinatorial PWM Logic Source #1 Polarity bit
+    volatile LOGCON_SRC_e  PWMS2 : 4;   // Bit 11-8:  Combinatorial PWM Logic Source #2 Selection bits
+    volatile LOGCON_SRC_e  PWMS1 : 4;   // Bit 15-12: Combinatorial PWM Logic Source #1 Selection bits
+
+} __attribute__((packed)) LOGCONy_t; // COMBINATIONAL TRIGGER REGISTERS HIGH and LOW
 
 typedef union {
-    volatile uint32_t value;
-    volatile CMBTRIG_t LOGCON;
-} REGBLK_LOGCONy_t;
+    volatile uint32_t value;  // Combinatorial PWM Logic control register value
+    volatile LOGCONy_t bits;  // Combinatorial PWM Logic control register bits
+} REGBLK_LOGCONy_t; // COMBINATIONAL PWM LOGIC CONTROL REGISTERS HIGH and LOW
 
 
 /* ===========================================================================
@@ -338,7 +511,7 @@ typedef struct {
 
 typedef union {
     volatile uint32_t value; // EVENT OUTPUT CONTROL REGISTER DIRECT READ/WRITE
-    volatile PWMEVTy_t PGxEVT; // PWM EVENT OUTPUT CONTROL REGISTER A, B, C, D, E or F
+    volatile PWMEVTy_t bits; // PWM EVENT OUTPUT CONTROL REGISTER A, B, C, D, E or F
 }REGBLK_PWMEVTy_t_CONFIG_t; // PWM EVENT OUTPUT CONTROL REGISTER CONFIGURATION
 
 /* ******************************************************************************************************
@@ -515,7 +688,7 @@ typedef struct {
 
 typedef union {
     volatile uint32_t value;
-    volatile PGxCON_t PGxCON;
+    volatile PGxCON_t bits;
 } REGBLK_PGxCH_CONFIG_t;
 
 
@@ -673,7 +846,7 @@ typedef struct {
 
 typedef union {
     volatile uint16_t value;
-    volatile PGxSTAT_t PGxSTAT;
+    volatile PGxSTAT_t bits;
 } REGBLK_PGxCH_STATUS_t;
 
 /* ===========================================================================
@@ -882,7 +1055,7 @@ typedef struct {
 
 typedef union {
     volatile uint32_t value;
-    volatile PGxIOCON_t PGxIOCON;
+    volatile PGxIOCON_t bits;
 } REGBLK_PGxIO_CONFIG_t;
 
 /* ===========================================================================
@@ -1170,7 +1343,7 @@ typedef struct {
 
 typedef union {
     volatile uint32_t value;
-    volatile PGxEVT_t PGxEVT;
+    volatile PGxEVT_t bits;
 }REGBLK_PGxEVT_CONFIG_t;
 
 
@@ -1208,7 +1381,7 @@ typedef struct {
 
 typedef union {
     volatile uint32_t value;
-    volatile PGxDT_t PGxDT;
+    volatile PGxDT_t bits;
 } REGBLK_PGxDEAD_TIME_t;
 
 
@@ -1226,7 +1399,7 @@ typedef struct {
 
 typedef union {
     volatile PGxDC_t PGxDC;
-    volatile uint16_t value;
+    volatile uint16_t bits;
 } REGBLK_PGxDC_t;
 
 /* ===========================================================================
@@ -1243,8 +1416,8 @@ typedef struct {
 } __attribute__((packed)) PGxDCA_t;
 
 typedef union {
-    volatile PGxDCA_t PGxDC;
     volatile uint16_t value;
+    volatile PGxDCA_t bits;
 } REGBLK_PGxDCA_t;
 
 
@@ -1261,7 +1434,7 @@ typedef struct {
 } __attribute__((packed)) PGxPER_t;
 
 typedef union {
-    volatile PGxDC_t PGxPER;
+    volatile PGxDC_t bits;
     volatile uint16_t value;
 } REGBLK_PGxPER_t;
 
@@ -1278,7 +1451,7 @@ typedef struct {
 } __attribute__((packed)) PGxPHASE_t;
 
 typedef union {
-    volatile PGxPHASE_t PGxPHASE;
+    volatile PGxPHASE_t bits;
     volatile uint16_t value;
 } REGBLK_PGxPHASE_t;
 
@@ -1296,7 +1469,7 @@ typedef struct {
 } __attribute__((packed)) PGxLEB_t;
 
 typedef union {
-    volatile PGxLEB_t PGxLEB;
+    volatile PGxLEB_t bits;
     volatile uint16_t value;
 } REGBLK_PGxLEB_t;
 
@@ -1313,7 +1486,7 @@ typedef struct {
 } __attribute__((packed)) PGxTRGy_t;
 
 typedef union {
-    volatile PGxTRGy_t TRG;
+    volatile PGxTRGy_t bits;
     volatile uint16_t value;
 } REGBLK_PGxTRGy_t;
 
@@ -1331,35 +1504,46 @@ typedef struct {
 } __attribute__((packed)) PGxCAP_t;
 
 typedef union {
-    volatile PGxCAP_t CAP;
+    volatile PGxCAP_t bits;
     volatile uint16_t value;
 } REGBLK_PGxCAP_t;
 
 
+
+/*!HSPWM Global Data Structures 
+ * ********************************************************************************
+ * Summary:
+ * Global data structures for PWM module and PWM channel register sets
+ * 
+ * Description:
+ * Global data structures of the PWM module base registers and the PWM generator
+ * register set are used to configure specific channels by using pre-configurations
+ * loaded into 'arteficial' register maps. 
+ *  
+ * ******************************************************************************** */
+
 typedef struct {
-    volatile uint16_t PCLKCON_t;
-    volatile uint16_t FSCL_t;
-    volatile uint16_t FSMINPER_t;
-    volatile uint16_t MPHASE_t;
-    volatile uint16_t MDC_t; 
-    volatile uint16_t MPER_t; 
-    volatile uint16_t LFSR_t; 
-    volatile uint16_t CMBTRIGL_t;
-    volatile uint16_t CMBTRIGH_t;
-    volatile uint16_t LOGCONA_t;
-    volatile uint16_t LOGCONB_t;
-    volatile uint16_t LOGCONC_t;
-    volatile uint16_t LOGCOND_t;
-    volatile uint16_t LOGCONE_t;
-    volatile uint16_t LOGCONF_t;
+    volatile REGBLK_PCLKCON_t PCLKCON;
+    volatile REGBLK_FSCL_t FSCL;
+    volatile REGBLK_FSMINPER_t FSMINPER;
+    volatile REGBLK_MPHASE_t MPHASE;
+    volatile REGBLK_MDC_t MDC; 
+    volatile REGBLK_MPER_t MPER; 
+    volatile REGBLK_LFSR_t LFSR; 
+    volatile REGBLK_CMBTRIGy_t CMBTRIG;
+    volatile REGBLK_LOGCONy_t LOGCONA;
+    volatile REGBLK_LOGCONy_t LOGCONB;
+    volatile REGBLK_LOGCONy_t LOGCONC;
+    volatile REGBLK_LOGCONy_t LOGCOND;
+    volatile REGBLK_LOGCONy_t LOGCONE;
+    volatile REGBLK_LOGCONy_t LOGCONF;
     volatile REGBLK_PWMEVTy_t_CONFIG_t PWMEVTA; 
     volatile REGBLK_PWMEVTy_t_CONFIG_t PWMEVTB; 
     volatile REGBLK_PWMEVTy_t_CONFIG_t PWMEVTC; 
     volatile REGBLK_PWMEVTy_t_CONFIG_t PWMEVTD; 
     volatile REGBLK_PWMEVTy_t_CONFIG_t PWMEVTE; 
     volatile REGBLK_PWMEVTy_t_CONFIG_t PWMEVTF; 
-}HSPWM_C_TYPE_PWM_MODULE_CONFIG_t;
-
+}HSPWM_C_MODULE_CONFIG_t;
 
 
 typedef struct {
@@ -1382,35 +1566,39 @@ typedef struct {
     volatile REGBLK_PGxTRGy_t PGxTRIGC; // PWM GENERATOR x TRIGGER C REGISTER
     volatile REGBLK_PGxDEAD_TIME_t  PGxDT; // PWM GENERATOR x DEAD-TIME REGISTER LOW/HIGH
     volatile REGBLK_PGxCAP_t PGxCAP; // PWM GENERATOR x CAPTURE REGISTER
-}HSPWM_C_TYPE_PWM_CHANNEL_CONFIG_t;
+}HSPWM_C_CHANNEL_CONFIG_t;
 
 
 
 
 
 // Prototypes
-extern volatile uint16_t hspwm_power_enable(void);
-extern volatile uint16_t hspwm_power_disable(void);
 
-extern volatile uint16_t hspwm_init_independent_pwm
-(
-    uint16_t channel,
-    REGBLK_PCLK_CONFIG_t regPCLK,
+extern volatile uint16_t hspwm_init_pwm_module ( HSPWM_C_MODULE_CONFIG_t pwm_config );
+
+extern volatile uint16_t hspwm_init_independent_pwm (
+    uint16_t instance,
+    REGBLK_PCLKCON_t regPCLK,
     REGBLK_PGxCH_CONFIG_t regPGxCON,
     REGBLK_PGxEVT_CONFIG_t regPGxEVT,
     REGBLK_PGxIO_CONFIG_t regPGxIOCON,
     REGBLK_PGxDEAD_TIME_t regPGxDT
     );
 
-extern volatile uint16_t hspwm_init_pwm_timing
-(
+extern volatile uint16_t hspwm_init_pwm_timing (
     uint16_t channel,
     uint16_t regPGxPER,
     uint16_t regPGxDC,
     uint16_t regPGxPHASE
     );
-extern volatile uint16_t hspwm_set_duty_cycle(uint16_t instance, uint16_t regPGxDC);
+extern volatile uint16_t hspwm_set_duty_cycle(
+    uint16_t instance, 
+    uint16_t regPGxDC, 
+    uint16_t regPGxDCA
+    );
 
+extern volatile uint16_t hspwm_power_enable(void);
+extern volatile uint16_t hspwm_power_disable(void);
 extern volatile uint16_t hspwm_enable_pwm(uint16_t instance, bool wait_for_hres);
 extern volatile uint16_t hspwm_disable_pwm(uint16_t instance);
 extern volatile uint16_t hspwm_ovr_hold(uint16_t instance);
