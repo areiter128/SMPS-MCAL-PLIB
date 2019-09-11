@@ -31,7 +31,6 @@
       <logicalFolder name="dsPIC33C" displayName="dsPIC33C" projectFiles="true">
         <itemPath>plibs/dsPIC33C/p33SMPS_dsp.c</itemPath>
         <itemPath>plibs/dsPIC33C/p33SMPS_hsadc.c</itemPath>
-        <itemPath>plibs/dsPIC33C/p33SMPS_hspwm_c.c</itemPath>
         <itemPath>plibs/dsPIC33C/p33SMPS_oscillator.c</itemPath>
         <itemPath>plibs/dsPIC33C/p33SMPS_timer.c</itemPath>
         <itemPath>plibs/dsPIC33C/p33SMPS_pmd.c</itemPath>
@@ -40,6 +39,7 @@
         <itemPath>plibs/dsPIC33C/p33SMPS_gpio.c</itemPath>
         <itemPath>plibs/dsPIC33C/p33SMPS_mailboxes.c</itemPath>
         <itemPath>plibs/dsPIC33C/p33SMPS_uart.c</itemPath>
+        <itemPath>plibs/dsPIC33C/p33SMPS_hspwm_c.c</itemPath>
       </logicalFolder>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
