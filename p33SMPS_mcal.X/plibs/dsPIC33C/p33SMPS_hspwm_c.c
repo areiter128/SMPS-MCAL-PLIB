@@ -206,7 +206,7 @@ volatile uint16_t hspwm_init_pwm_module ( HSPWM_C_MODULE_CONFIG_t pwm_config ) {
     return(fres);
 }
 
-/*!hspwm_init_pwm_channel
+/*!hspwm_init_pwm_generator
  * ************************************************************************************************
  * Summary:
  * Writes a complete PWM generator register set configuration
@@ -217,11 +217,11 @@ volatile uint16_t hspwm_init_pwm_module ( HSPWM_C_MODULE_CONFIG_t pwm_config ) {
  * Description:
  * Each PWM generator of the high resolution PWM module of the dsPICs have an identical set of
  * configuration and status registers. These registers are merged into the data structure 
- * HSPWM_C_CHANNEL_CONFIG_t. This data structure can be used to set/load a default configuration 
+ * HSPWM_C_GENERATOR_CONFIG_t. This data structure can be used to set/load a default configuration 
  * in user code. This routine can be used to write this complete PWM generator register configuration 
  * at once while still every write process is monitored and checked.
  * ***********************************************************************************************/
-volatile uint16_t hspwm_init_pwm_channel ( uint16_t instance, HSPWM_C_CHANNEL_CONFIG_t pg_config ) {
+volatile uint16_t hspwm_init_pwm_generator ( uint16_t instance, HSPWM_C_GENERATOR_CONFIG_t pg_config ) {
 
     volatile uint16_t fres=1;
     volatile uint16_t *regptr16;

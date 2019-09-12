@@ -668,6 +668,7 @@ typedef enum {
 } PGCON_MDCSEL_e; // Master Duty Cycle Register Select bit
 
 typedef struct {
+    
     volatile PGCON_MODSEL_e MODSEL : 3; // Mode Selection bits
     volatile PGCON_CLKSEL_e CLKSEL : 2; // Clock Selection bits
     volatile unsigned : 2; // reserved
@@ -675,6 +676,7 @@ typedef struct {
     volatile PGCON_TRGCNT_e TRGCNT : 3; // Trigger Count Select bits
     volatile unsigned : 4; // reserved
     volatile PGCON_ON_e ON : 1; // PWM module enable bit
+    
     volatile PGCON_SOCS_e SOCS : 4; // Start-of-Cycle Selection bits
     volatile unsigned : 2; // reserved
     volatile PGCON_TRGMOD_e TRGMOD : 2; // PWM Generator Trigger Mode Selection bit
@@ -1359,6 +1361,7 @@ typedef union {
 #define REG_PGxyPCI_VALID_DATA_WRITE_MASK  0xF7FFFFFF
 #define REG_PGxyPCI_VALID_DATA_READ_MASK   0xF7FFFFFF
 
+
 #define REG_PGxyPCIL_TSYNCDIS_IMMEDIATE  0b1000000000000000 // Termination of latched PCI occurs immediately
 #define REG_PGxyPCIL_TSYNCDIS_EOC        0b0000000000000000 // Termination of latched PCI occurs at PWM EOC
 
@@ -1676,8 +1679,14 @@ typedef enum {
     LEBCON_PWMPCI_PG1 = 0b000  // PWM Generator #8 output is made available to PCI logic 
 }PGxLEBCON_PWMPCI_e; // PWM Source for PCI Selection bits
 
-#define REG_PGxLEBCON_LEBTRG_ENABLE     0b0000000000010000  // Selected edge of PWMx will trigger the LEB duration counter
-#define REG_PGxLEBCON_LEBTRG_DISABLE    0b0000000000000000  // LEB ignores the selected edge of PWMx
+#define REG_PGxLEBCON_LEBTRG_PHR_ENABLE  0b0000000000001000  // Selected edge of PWMx will trigger the LEB duration counter
+#define REG_PGxLEBCON_LEBTRG_PHR_DISABLE 0b0000000000000000  // LEB ignores the selected edge of PWMx
+#define REG_PGxLEBCON_LEBTRG_PHF_ENABLE  0b0000000000000100  // Selected edge of PWMx will trigger the LEB duration counter
+#define REG_PGxLEBCON_LEBTRG_PHF_DISABLE 0b0000000000000000  // LEB ignores the selected edge of PWMx
+#define REG_PGxLEBCON_LEBTRG_PLR_ENABLE  0b0000000000000010  // Selected edge of PWMx will trigger the LEB duration counter
+#define REG_PGxLEBCON_LEBTRG_PLR_DISABLE 0b0000000000000000  // LEB ignores the selected edge of PWMx
+#define REG_PGxLEBCON_LEBTRG_PLF_ENABLE  0b0000000000000001  // Selected edge of PWMx will trigger the LEB duration counter
+#define REG_PGxLEBCON_LEBTRG_PLF_DISABLE 0b0000000000000000  // LEB ignores the selected edge of PWMx
 
 typedef enum {
     PGxLEBCON_LEBTRG_ENABLE  = 0b1, // Selected edge of PWMx will trigger the LEB duration counter
@@ -1752,8 +1761,8 @@ typedef struct {
 } __attribute__((packed)) PGxDC_t;
 
 typedef union {
-    volatile PGxDC_t PGxDC;
-    volatile uint16_t bits;
+    volatile PGxDC_t bits;
+    volatile uint16_t value;
 } REGBLK_PGxDC_t;
 
 /* ===========================================================================
@@ -1877,27 +1886,27 @@ typedef union {
  * ******************************************************************************** */
 
 typedef struct {
-    volatile REGBLK_PCLKCON_t PCLKCON;
-    volatile REGBLK_FSCL_t FSCL;
-    volatile REGBLK_FSMINPER_t FSMINPER;
-    volatile REGBLK_MPHASE_t MPHASE;
-    volatile REGBLK_MDC_t MDC; 
-    volatile REGBLK_MPER_t MPER; 
-    volatile REGBLK_LFSR_t LFSR; 
-    volatile REGBLK_CMBTRIGy_t CMBTRIG;
-    volatile REGBLK_LOGCONy_t LOGCONA;
-    volatile REGBLK_LOGCONy_t LOGCONB;
-    volatile REGBLK_LOGCONy_t LOGCONC;
-    volatile REGBLK_LOGCONy_t LOGCOND;
-    volatile REGBLK_LOGCONy_t LOGCONE;
-    volatile REGBLK_LOGCONy_t LOGCONF;
-    volatile REGBLK_PWMEVTy_t_CONFIG_t PWMEVTA; 
-    volatile REGBLK_PWMEVTy_t_CONFIG_t PWMEVTB; 
-    volatile REGBLK_PWMEVTy_t_CONFIG_t PWMEVTC; 
-    volatile REGBLK_PWMEVTy_t_CONFIG_t PWMEVTD; 
-    volatile REGBLK_PWMEVTy_t_CONFIG_t PWMEVTE; 
-    volatile REGBLK_PWMEVTy_t_CONFIG_t PWMEVTF; 
-}HSPWM_C_MODULE_CONFIG_t;
+    volatile REGBLK_PCLKCON_t PCLKCON;  // PCLKCON: PWM CLOCK CONTROL REGISTER
+    volatile REGBLK_FSCL_t FSCL;        // FSCL: FREQUENCY SCALE REGISTER
+    volatile REGBLK_FSMINPER_t FSMINPER; // FSMINPER: FREQUENCY SCALING MINIMUM PERIOD REGISTER
+    volatile REGBLK_MPHASE_t MPHASE; // MPHASE: MASTER PHASE REGISTER
+    volatile REGBLK_MDC_t MDC; // MDC: MASTER DUTY CYCLE REGISTER
+    volatile REGBLK_MPER_t MPER; // MPER: MASTER PERIOD REGISTER
+    volatile REGBLK_LFSR_t LFSR; // LFSR: LINEAR FEEDBACK SHIFT REGISTER
+    volatile REGBLK_CMBTRIGy_t CMBTRIG; // CMBTRIGL/H: COMBINATIONAL TRIGGER REGISTER LOW & HIGH
+    volatile REGBLK_LOGCONy_t LOGCONA;  // LOGCONy: COMBINATORIAL PWM LOGIC CONTROLREGISTER A
+    volatile REGBLK_LOGCONy_t LOGCONB;  // LOGCONy: COMBINATORIAL PWM LOGIC CONTROLREGISTER A
+    volatile REGBLK_LOGCONy_t LOGCONC;  // LOGCONy: COMBINATORIAL PWM LOGIC CONTROLREGISTER A
+    volatile REGBLK_LOGCONy_t LOGCOND;  // LOGCONy: COMBINATORIAL PWM LOGIC CONTROLREGISTER A
+    volatile REGBLK_LOGCONy_t LOGCONE;  // LOGCONy: COMBINATORIAL PWM LOGIC CONTROLREGISTER A
+    volatile REGBLK_LOGCONy_t LOGCONF;  // LOGCONy: COMBINATORIAL PWM LOGIC CONTROLREGISTER A
+    volatile REGBLK_PWMEVTy_t_CONFIG_t PWMEVTA; // PWMEVTy: PWM EVENT OUTPUT CONTROL REGISTER A
+    volatile REGBLK_PWMEVTy_t_CONFIG_t PWMEVTB; // PWMEVTy: PWM EVENT OUTPUT CONTROL REGISTER B
+    volatile REGBLK_PWMEVTy_t_CONFIG_t PWMEVTC; // PWMEVTy: PWM EVENT OUTPUT CONTROL REGISTER C
+    volatile REGBLK_PWMEVTy_t_CONFIG_t PWMEVTD; // PWMEVTy: PWM EVENT OUTPUT CONTROL REGISTER D
+    volatile REGBLK_PWMEVTy_t_CONFIG_t PWMEVTE; // PWMEVTy: PWM EVENT OUTPUT CONTROL REGISTER E
+    volatile REGBLK_PWMEVTy_t_CONFIG_t PWMEVTF; // PWMEVTy: PWM EVENT OUTPUT CONTROL REGISTER F
+} __attribute__((packed)) HSPWM_C_MODULE_CONFIG_t;   // GENERIC PWM MODULE BASE REGISTERS
 
 
 typedef struct {
@@ -1920,9 +1929,7 @@ typedef struct {
     volatile REGBLK_PGxTRGy_t PGxTRIGC; // PWM GENERATOR x TRIGGER C REGISTER
     volatile REGBLK_PGxDEAD_TIME_t  PGxDT; // PWM GENERATOR x DEAD-TIME REGISTER LOW/HIGH
     volatile REGBLK_PGxCAP_t PGxCAP; // PWM GENERATOR x CAPTURE REGISTER
-}HSPWM_C_CHANNEL_CONFIG_t;
-
-
+} __attribute__((packed)) HSPWM_C_GENERATOR_CONFIG_t;   // INDIVIDUAL PWM GENERATOR REGISTERS
 
 
 
