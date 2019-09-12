@@ -77,6 +77,23 @@ inline volatile uint16_t hspwm_power_disable(void) {
     return(1 - _PWMMD);
 }
 
+/*!hspwm_init_pwm_module
+ * ************************************************************************************************
+ * Summary:
+ * Writes a complete PWM module base register set configuration
+ *
+ * Parameters:
+ *	HSPWM_C_MODULE_CONFIG_t pwm_config
+ * 
+ * Description:
+ * The high resolution PWM module of the dsPICs have basic registers determining parameters
+ * for all PWM generators, such as input clock selection and dividers, PWM resolution and 
+ * logic combination of PWM generator outputs. These basic registers are merged into the 
+ * data structure HSPWM_C_MODULE_CONFIG_t. This data structure can be used to set/load a 
+ * default configuration in user code. This routine can be used to write this complete PWM
+ * base register configuration at once while still every write process is monitored and 
+ * checked.
+ * ***********************************************************************************************/
 volatile uint16_t hspwm_init_pwm_module ( HSPWM_C_MODULE_CONFIG_t pwm_config ) {
 
     volatile uint16_t fres=1;
@@ -122,7 +139,7 @@ volatile uint16_t hspwm_init_pwm_module ( HSPWM_C_MODULE_CONFIG_t pwm_config ) {
     fres &= ((*regptr16 & REG_LFSR_VALID_DATA_READ_MASK) == (pwm_config.LFSR.value & REG_LFSR_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
 
     // write register configuration
-    regptr32 = (volatile uint32_t*) &CMBTRIGL; // Get target address
+    regptr32 = (volatile uint32_t*) ((volatile uint8_t*)&CMBTRIGL); // Get target address
     *regptr32 = (pwm_config.CMBTRIG.value & REG_CMBTRIG_VALID_DATA_WRITE_MASK); // write value with bit-mask
     fres &= ((*regptr16 & REG_CMBTRIG_VALID_DATA_READ_MASK) == (pwm_config.CMBTRIG.value & REG_CMBTRIG_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
 
@@ -186,8 +203,62 @@ volatile uint16_t hspwm_init_pwm_module ( HSPWM_C_MODULE_CONFIG_t pwm_config ) {
     *regptr16 = (pwm_config.PWMEVTF.value & REG_PWMEVTy_VALID_DATA_WRITE_MASK); // write value with bit-mask
     fres &= ((*regptr16 & REG_PWMEVTy_VALID_DATA_READ_MASK) == (pwm_config.PWMEVTF.value & REG_PWMEVTy_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
 
-    return(1);
+    return(fres);
 }
+
+/*!hspwm_init_pwm_channel
+ * ************************************************************************************************
+ * Summary:
+ * Writes a complete PWM generator register set configuration
+ *
+ * Parameters:
+ *	HSPWM_C_MODULE_CONFIG_t pg_config
+ * 
+ * Description:
+ * Each PWM generator of the high resolution PWM module of the dsPICs have an identical set of
+ * configuration and status registers. These registers are merged into the data structure 
+ * HSPWM_C_CHANNEL_CONFIG_t. This data structure can be used to set/load a default configuration 
+ * in user code. This routine can be used to write this complete PWM generator register configuration 
+ * at once while still every write process is monitored and checked.
+ * ***********************************************************************************************/
+volatile uint16_t hspwm_init_pwm_channel ( uint16_t instance, HSPWM_C_CHANNEL_CONFIG_t pg_config ) {
+
+    volatile uint16_t fres=1;
+    volatile uint16_t *regptr16;
+    volatile uint32_t *regptr32;
+    volatile uint16_t reg_offset;
+
+    // determine register offset
+    reg_offset = (instance-1) * ((volatile uint16_t)&PG2CONL - (volatile uint16_t)&PG1CONL); 
+
+    // write PWM generator instance register configuration
+    regptr32 = (volatile uint32_t*) ((volatile uint8_t*)&PG1CONL + reg_offset); // capture register address
+    *regptr32 = (pg_config.PGxCON.value & REG_PGxCON_VALID_DATA_WRITE_MASK); // write value to registers
+    fres &= ((*regptr32 & REG_PGxCON_VALID_DATA_READ_MASK) == (pg_config.PGxCON.value & REG_PGxCON_VALID_DATA_WRITE_MASK)); // read and compare register values
+    
+    // write PWM generator instance register configuration
+    regptr16 = (volatile uint16_t*) ((volatile uint8_t*)&PG1STAT + reg_offset); // capture register address
+    *regptr16 = (pg_config.PGxSTAT.value & REG_PGxSTAT_VALID_DATA_WRITE_MASK); // write value to registers
+    fres &= ((*regptr32 & REG_PGxSTAT_VALID_DATA_READ_MASK) == (pg_config.PGxSTAT.value & REG_PGxSTAT_VALID_DATA_WRITE_MASK)); // read and compare register values
+
+    // write PWM generator instance register configuration
+    regptr32 = (volatile uint32_t*) ((volatile uint8_t*)&PG1IOCONL + reg_offset); // capture register address
+    *regptr32 = (pg_config.PGxIOCON.value & REG_PGxIOCON_VALID_DATA_WRITE_MASK); // write value to registers
+    fres &= ((*regptr32 & REG_PGxIOCON_VALID_DATA_READ_MASK) == (pg_config.PGxSTAT.value & REG_PGxIOCON_VALID_DATA_WRITE_MASK)); // read and compare register values
+
+    // write PWM generator instance register configuration
+    regptr32 = (volatile uint32_t*) ((volatile uint8_t*)&PG1EVTL + reg_offset); // capture register address
+    *regptr32 = (pg_config.PGxEVT.value & REG_PGxEVTy_VALID_DATA_WRITE_MASK); // write value to registers
+    fres &= ((*regptr32 & REG_PGxEVTy_VALID_DATA_READ_MASK) == (pg_config.PGxEVT.value & REG_PGxEVTy_VALID_DATA_WRITE_MASK)); // read and compare register values
+
+    // write PWM generator instance register configuration
+    regptr32 = (volatile uint32_t*) ((volatile uint8_t*)&PG1FPCIL + reg_offset); // capture register address
+    *regptr32 = (pg_config.PGxFPCI.value & REG_PGxyPCI_VALID_DATA_WRITE_MASK); // write value to registers
+    fres &= ((*regptr32 & REG_PGxyPCI_VALID_DATA_READ_MASK) == (pg_config.PGxFPCI.value & REG_PGxyPCI_VALID_DATA_WRITE_MASK)); // read and compare register values
+
+    return(fres);
+}
+
 
 /*!hspwm_init_independent_pwm
  * ************************************************************************************************
@@ -233,7 +304,7 @@ inline volatile uint16_t hspwm_init_independent_pwm(
     // write PWM instance event configuration
     reg_offset = (instance-1) * ((volatile uint16_t)&PG2EVTL - (volatile uint16_t)&PG1EVTL);
     regptr32 = (volatile uint32_t*) ((volatile uint8_t*)&PG1EVTL + reg_offset);
-    *regptr32 = (regPGxEVT.value & REG_PGxEVT_VALID_DATA_WRITE_MASK);
+    *regptr32 = (regPGxEVT.value & REG_PGxEVTy_VALID_DATA_WRITE_MASK);
 
     // write IO configuration
     reg_offset = (instance-1) * ((volatile uint16_t)&PG2IOCONL - (volatile uint16_t)&PG1IOCONL);
