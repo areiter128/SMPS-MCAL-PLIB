@@ -136,7 +136,7 @@ typedef union {
 
 typedef struct {
     volatile uint16_t FSCL; // <15:0>: Frequency Scale Register
-} FSCL_t;   // PWM FREQUENCY SCALE REGISTER
+} __attribute__((packed)) FSCL_t;   // PWM FREQUENCY SCALE REGISTER
 
 typedef union {
     volatile uint16_t value; // 16-bit register direct write access
@@ -151,7 +151,7 @@ typedef union {
 
 typedef struct {
     volatile uint16_t FSMINPER; // <15:0>: Frequency Scaling Minimum Period Register bits
-} FSMINPER_t;   // PWM FREQUENCY SCALING MINIMUM PERIOD REGISTER
+} __attribute__((packed)) FSMINPER_t;   // PWM FREQUENCY SCALING MINIMUM PERIOD REGISTER
 
 typedef union {
     volatile uint16_t value; // 16-bit register direct write access
@@ -166,7 +166,7 @@ typedef union {
 
 typedef struct {
     volatile uint16_t MPHASE; // <15:0>: Master Phase Register bits
-} MPHASE_t;   // MPHASE: MASTER PHASE REGISTER
+} __attribute__((packed)) MPHASE_t;   // MPHASE: MASTER PHASE REGISTER
 
 typedef union {
     volatile uint16_t value; // 16-bit register direct write access
@@ -181,7 +181,7 @@ typedef union {
 
 typedef struct {
     volatile uint16_t MDC; // <15:0>: Master Duty Cycle Register bits
-} MDC_t;   // MDC: MASTER DUTY CYCLE REGISTER
+} __attribute__((packed)) MDC_t;   // MDC: MASTER DUTY CYCLE REGISTER
 
 typedef union {
     volatile uint16_t value; // 16-bit register direct write access
@@ -196,7 +196,7 @@ typedef union {
 
 typedef struct {
     volatile uint16_t MPER; // <15:0>: Master Period Register bits
-} MPER_t;   // MPER: MASTER PERIOD REGISTER
+} __attribute__((packed)) MPER_t;   // MPER: MASTER PERIOD REGISTER
 
 typedef union {
     volatile uint16_t value; // 16-bit register direct write access
@@ -212,7 +212,7 @@ typedef union {
 typedef struct {
     volatile uint16_t LFSR; // Bit <14:0>: Linear Feedback Shift Register bits
     volatile unsigned  : 1; // Bit 15: (reserved)
-} LFSR_t;   // LFSR: LINEAR FEEDBACK SHIFT REGISTER
+} __attribute__((packed)) LFSR_t;   // LFSR: LINEAR FEEDBACK SHIFT REGISTER
 
 typedef union {
     volatile uint16_t value; // 16-bit register direct read/write access
@@ -507,7 +507,7 @@ typedef struct {
     volatile EVTySEL_e EVTySEL : 4; // PWM Event Selection bits
     volatile unsigned : 1; // reserved
     volatile EVTyPGS_e EVTyPGS : 3; // PWM Event Source Selection bits
-}PWMEVTy_t;
+} __attribute__((packed)) PWMEVTy_t;
 
 typedef union {
     volatile uint32_t value; // EVENT OUTPUT CONTROL REGISTER DIRECT READ/WRITE
@@ -843,11 +843,10 @@ typedef struct {
 
 } __attribute__((packed)) PGxSTAT_t;
 
-
 typedef union {
     volatile uint16_t value;
     volatile PGxSTAT_t bits;
-} REGBLK_PGxCH_STATUS_t;
+} REGBLK_PGxSTAT_t;
 
 /* ===========================================================================
  * PGxIOCONL/H: PWM GENERATOR x I/O CONTROL REGISTER LOW/HIGH
@@ -1062,8 +1061,8 @@ typedef union {
  * PGxEVTx: PWM GENERATOR x EVENT REGISTER HIGH/LOW
  * ===========================================================================*/
 
-#define REG_PGxEVT_VALID_DATA_WRITE_MASK  0xF3FFFF1F
-#define REG_PGxEVT_VALID_DATA_READ_MASK   0xF3FFFF1F
+#define REG_PGxEVTy_VALID_DATA_WRITE_MASK  0xF3FFFF1F
+#define REG_PGxEVTy_VALID_DATA_READ_MASK   0xF3FFFF1F
 
 #define REG_PGEVT_FLTIEN_ENABLED  0b1000000000000000 // Fault interrupt is enabled
 #define REG_PGEVT_FLTIEN_DISABLED 0b0000000000000000 // Fault interrupt is disabled
@@ -1318,6 +1317,7 @@ typedef enum {
     PGEVT_PGTRGSEL_EOC = 0b000 // EOC event is the PWM Generator trigger
 }PGEVT_PGTRGSEL_e;   // PWM Generator Trigger Output Selection bits
 
+
 typedef struct {
     
     volatile PGEVT_PGTRGSEL_e PGTRGSEL : 3; // PWM Generator Trigger Output Selection bits(1)
@@ -1339,13 +1339,367 @@ typedef struct {
     volatile PGEVT_CLIEN_e CLIEN: 1;        // PCI Current-Limit Interrupt Enable bit
     volatile PGEVT_FLTIEN_e FLTIEN: 1;      // PCI Fault Interrupt Enable bit
     
-}PGxEVT_t;
+} __attribute__((packed)) PGxEVT_t;
 
 typedef union {
     volatile uint32_t value;
     volatile PGxEVT_t bits;
 }REGBLK_PGxEVT_CONFIG_t;
 
+
+/* ===========================================================================
+ * PGxyPCIL: PWM GENERATOR xy PCI REGISTER LOW (x = PWM GENERATOR #; y = F, CL, FF OR S)
+ * ===========================================================================*/
+#define REG_PGxyPCIL_VALID_DATA_WRITE_MASK  0xFFFF
+#define REG_PGxyPCIL_VALID_DATA_READ_MASK   0xFFFF
+
+#define REG_PGxyPCIH_VALID_DATA_WRITE_MASK  0xF7FF
+#define REG_PGxyPCIH_VALID_DATA_READ_MASK   0xF7FF
+
+#define REG_PGxyPCI_VALID_DATA_WRITE_MASK  0xF7FFFFFF
+#define REG_PGxyPCI_VALID_DATA_READ_MASK   0xF7FFFFFF
+
+#define REG_PGxyPCIL_TSYNCDIS_IMMEDIATE  0b1000000000000000 // Termination of latched PCI occurs immediately
+#define REG_PGxyPCIL_TSYNCDIS_EOC        0b0000000000000000 // Termination of latched PCI occurs at PWM EOC
+
+typedef enum {
+    PGxyPCI_TSYNCDIS_IMMEDIATE = 0b1, // Termination of latched PCI occurs immediately
+    PGxyPCI_TSYNCDIS_EOC       = 0b0  // Termination of latched PCI occurs at PWM EOC
+}PGxyPCIL_TSYNCDIS_e; // Termination Synchronization Disable 
+
+#define REG_PGxyPCIL_TERM_PCI_SRC_9     0b0111000000000000 // Termination Event Selection: PCI Source #9
+#define REG_PGxyPCIL_TERM_PCI_SRC_8     0b0110000000000000 // Termination Event Selection: PCI Source #8
+#define REG_PGxyPCIL_TERM_PCI_SRC_1     0b0101000000000000 // Termination Event Selection: PCI Source #1
+#define REG_PGxyPCIL_TERM_PGxTRIGC      0b0100000000000000 // Termination Event Selection: PGxTRIGC
+#define REG_PGxyPCIL_TERM_PGxTRIGB      0b0011000000000000 // Termination Event Selection: PGxTRIGB
+#define REG_PGxyPCIL_TERM_PGxTRIGA      0b0010000000000000 // Termination Event Selection: PGxTRIGA
+#define REG_PGxyPCIL_TERM_AUTO          0b0001000000000000 // Termination Event Selection: Auto-Terminate
+#define REG_PGxyPCIL_TERM_MANUAL        0b0000000000000000 // Termination Event Selection: Manual Terminate
+
+typedef enum {
+    PGxyPCI_TERM_PCI_SRC_9 = 0b111, // Termination Event Selection: PCI Source #9
+    PGxyPCI_TERM_PCI_SRC_8 = 0b110, // Termination Event Selection: PCI Source #8
+    PGxyPCI_TERM_PCI_SRC_1 = 0b101, // Termination Event Selection: PCI Source #1
+    PGxyPCI_TERM_PGxTRIGC  = 0b100, // Termination Event Selection: PGxTRIGC
+    PGxyPCI_TERM_PGxTRIGB  = 0b011, // Termination Event Selection: PGxTRIGB
+    PGxyPCI_TERM_PGxTRIGA  = 0b010, // Termination Event Selection: PGxTRIGA
+    PGxyPCI_TERM_AUTO      = 0b001, // Termination Event Selection: Auto-Terminate
+    PGxyPCI_TERM_MANUAL    = 0b000  // Termination Event Selection: Manual Terminate
+}PGxyPCIL_TERM_e; // Termination Event Selectiona
+
+#define REG_PGxyPCIL_AQPS_INVERTED      0b0000100000000000 // Acceptance Qualifier Polarity: Inverted
+#define REG_PGxyPCIL_AQPS_NOT_INVERTED  0b0000000000000000 // Acceptance Qualifier Polarity: Not inverted
+
+typedef enum {
+    PGxyPCI_AQPS_INVERTED = 0b1,       // Acceptance Qualifier Polarity: Inverted
+    PGxyPCI_AQPS_NOT_INVERTED  = 0b0   // Acceptance Qualifier Polarity: Not inverted
+}PGxyPCIL_AQPS_e; // Acceptance Qualifier Polarity Select bit 
+
+
+#define REG_PGxyPCIL_AQSS_SWPCI         0b0000011100000000 // SWPCI control bit only (qualifier forced to ?0?)
+#define REG_PGxyPCIL_AQSS_PCI_SRC_9     0b0000011000000000 // Selects PCI Source #9
+#define REG_PGxyPCIL_AQSS_PCI_SRC_8     0b0000010100000000 // Selects PCI Source #8
+#define REG_PGxyPCIL_AQSS_PCI_SRC_1     0b0000010000000000 // Selects PCI Source #1 (PWM Generator output selected by the PWMPCI<2:0> bits)
+#define REG_PGxyPCIL_AQSS_PWM_TRIG      0b0000001100000000 // PWM Generator is triggered
+#define REG_PGxyPCIL_AQSS_LEB_ON        0b0000001000000000 // LEB is active
+#define REG_PGxyPCIL_AQSS_DC_ON         0b0000000100000000 // Duty cycle is active (base PWM Generator signal)
+#define REG_PGxyPCIL_AQSS_NONE          0b0000000000000000 // No acceptance qualifier is used (qualifier forced to ?1?)
+
+typedef enum {
+    PGxyPCI_AQSS_SWPCI     = 0b111, // SWPCI control bit only (qualifier forced to ?0?)
+    PGxyPCI_AQSS_PCI_SRC_9 = 0b110, // Selects PCI Source #9
+    PGxyPCI_AQSS_PCI_SRC_8 = 0b101, // Selects PCI Source #8
+    PGxyPCI_AQSS_PCI_SRC_1 = 0b100, // Selects PCI Source #1 (PWM Generator output selected by the PWMPCI<2:0> bits)
+    PGxyPCI_AQSS_PWM_TRIG  = 0b011, // PWM Generator is triggered
+    PGxyPCI_AQSS_LEB_ON    = 0b010, // LEB is active
+    PGxyPCI_AQSS_DC_ON     = 0b001, // Duty cycle is active (base PWM Generator signal)
+    PGxyPCI_AQSS_NONE      = 0b000  // No acceptance qualifier is used (qualifier forced to ?1?)
+}PGxyPCIL_AQSS_e; // Acceptance Qualifier Source Selection bits
+
+
+#define REG_PGxyPCIL_SWTERM_TERMINATE   0b0000000010000000 // PCI Software Termination: Terminate
+#define REG_PGxyPCIL_SWTERM_RUN         0b0000000000000000 // PCI Software Termination: Run
+
+typedef enum {
+    PGxyPCI_SWTERM_TERMINATE = 0b1,       // PCI Software Termination: Terminate
+    PGxyPCI_SWTERM_RUN  = 0b0             // PCI Software Termination: Run
+}PGxyPCIL_SWTERM_e; // PCI Software Termination bit
+
+#define REG_PGxyPCIL_PSYNC_PWM_EOC      0b0000000001000000 // PCI source is synchronized to PWM EOC
+#define REG_PGxyPCIL_PSYNC_NONE         0b0000000000000000 // PCI source is not synchronized to PWM EOC
+
+typedef enum {
+    PGxyPCI_PSYNC_PWM_EOC = 0b1,       // PCI source is synchronized to PWM EOC
+    PGxyPCI_PSYNC_NONE  = 0b0          // PCI source is not synchronized to PWM EOC
+}PGxyPCIL_PSYNC_e; // PCI Synchronization Control
+
+#define REG_PGxyPCIL_PPS_INVERTED       0b0000000000100000 // PCI Polarity Selection: Inverted
+#define REG_PGxyPCIL_PPS_NOT_INVERTED   0b0000000000000000 // PCI Polarity Selection: not inverted
+
+typedef enum {
+    PGxyPCI_PPS_INVERTED = 0b1,        // PCI Polarity Selection: Inverted
+    PGxyPCI_PPS_NOT_INVERTED  = 0b0    // PCI Polarity Selection: not inverted
+}PGxyPCIL_PPS_e; // PCI Polarity Selection
+
+
+#define REG_PGxyPCIL_PSS_CLC1       0b0000000000011111	// PCI Source Selection: CLC1
+//#define REG_PGxyPCIL_PSS_         0b0000000000011110	// PCI Source Selection: Reserved
+#define REG_PGxyPCIL_PSS_CMP3OUT    0b0000000000011101	// PCI Source Selection: Comparator 3 output
+#define REG_PGxyPCIL_PSS_CMP2OUT    0b0000000000011100	// PCI Source Selection: Comparator 2 output
+#define REG_PGxyPCIL_PSS_CMP1OUT    0b0000000000011011	// PCI Source Selection: Comparator 1 output
+#define REG_PGxyPCIL_PSS_PWMEVTD    0b0000000000011010	// PCI Source Selection: PWM Event D
+#define REG_PGxyPCIL_PSS_PWMEVTC    0b0000000000011001	// PCI Source Selection: PWM Event C
+#define REG_PGxyPCIL_PSS_PWMEVTB    0b0000000000011000	// PCI Source Selection: PWM Event B
+#define REG_PGxyPCIL_PSS_PWMEVTA    0b0000000000010111	// PCI Source Selection: PWM Event A
+#define REG_PGxyPCIL_PSS_PCI_P22    0b0000000000010110	// PCI Source Selection: Device pin, PCI<22>
+#define REG_PGxyPCIL_PSS_PCI_P21    0b0000000000010101	// PCI Source Selection: Device pin, PCI<21>
+#define REG_PGxyPCIL_PSS_PCI_P20    0b0000000000010100	// PCI Source Selection: Device pin, PCI<20>
+#define REG_PGxyPCIL_PSS_PCI_P19    0b0000000000010011	// PCI Source Selection: Device pin, PCI<19>
+#define REG_PGxyPCIL_PSS_PCI_RP18   0b0000000000010010	// PCI Source Selection: RPn input, PCI18R
+#define REG_PGxyPCIL_PSS_PCI_RP17   0b0000000000010001	// PCI Source Selection: RPn input, PCI17R
+#define REG_PGxyPCIL_PSS_PCI_RP16   0b0000000000010000	// PCI Source Selection: RPn input, PCI16R
+#define REG_PGxyPCIL_PSS_PCI_RP15   0b0000000000001111	// PCI Source Selection: RPn input, PCI15R
+#define REG_PGxyPCIL_PSS_PCI_RP14   0b0000000000001110	// PCI Source Selection: RPn input, PCI14R
+#define REG_PGxyPCIL_PSS_PCI_RP13   0b0000000000001101	// PCI Source Selection: RPn input, PCI13R
+#define REG_PGxyPCIL_PSS_PCI_RP12   0b0000000000001100	// PCI Source Selection: RPn input, PCI12R
+#define REG_PGxyPCIL_PSS_PCI_RP11   0b0000000000001011	// PCI Source Selection: RPn input, PCI11R
+#define REG_PGxyPCIL_PSS_PCI_RP10   0b0000000000001010	// PCI Source Selection: RPn input, PCI10R
+#define REG_PGxyPCIL_PSS_PCI_RP9    0b0000000000001001	// PCI Source Selection: RPn input, PCI9R
+#define REG_PGxyPCIL_PSS_PCI_RP8    0b0000000000001000	// PCI Source Selection: RPn input, PCI8R
+//#define REG_PGxyPCIL_PSS_         0b0000000000000111	// PCI Source Selection: Reserved
+//#define REG_PGxyPCIL_PSS_         0b0000000000000110	// PCI Source Selection: Reserved
+//#define REG_PGxyPCIL_PSS_         0b0000000000000101	// PCI Source Selection: Reserved
+//#define REG_PGxyPCIL_PSS_         0b0000000000000100	// PCI Source Selection: Reserved
+#define REG_PGxyPCIL_PSS_CMBTRGB    0b0000000000000011	// PCI Source Selection: Internally connected to Combo Trigger B
+#define REG_PGxyPCIL_PSS_CMBTRGA    0b0000000000000010	// PCI Source Selection: Internally connected to Combo Trigger A
+#define REG_PGxyPCIL_PSS_PWMPCI_MUX 0b0000000000000001	// PCI Source Selection: Internally connected to the output of PWMPCI<2:0> MUX
+#define REG_PGxyPCIL_PSS_VSS        0b0000000000000000	// PCI Source Selection: Tied to ?0?
+
+typedef enum {
+    PGxyPCI_PSS_CLC1      = 0b11111,	// PCI Source Selection: CLC1
+    //PGxyPCI_PSS_        = 0b11110,	// PCI Source Selection: Reserved
+    PGxyPCI_PSS_CMP3OUT   = 0b11101,	// PCI Source Selection: Comparator 3 output
+    PGxyPCI_PSS_CMP2OUT   = 0b11100,	// PCI Source Selection: Comparator 2 output
+    PGxyPCI_PSS_CMP1OUT   = 0b11011,	// PCI Source Selection: Comparator 1 output
+    PGxyPCI_PSS_PWMEVTD   = 0b11010,	// PCI Source Selection: PWM Event D
+    PGxyPCI_PSS_PWMEVTC   = 0b11001,	// PCI Source Selection: PWM Event C
+    PGxyPCI_PSS_PWMEVTB   = 0b11000,	// PCI Source Selection: PWM Event B
+    PGxyPCI_PSS_PWMEVTA   = 0b10111,	// PCI Source Selection: PWM Event A
+    PGxyPCI_PSS_PCI_P22   = 0b10110,	// PCI Source Selection: Device pin, PCI<22>
+    PGxyPCI_PSS_PCI_P21   = 0b10101,	// PCI Source Selection: Device pin, PCI<21>
+    PGxyPCI_PSS_PCI_P20   = 0b10100,	// PCI Source Selection: Device pin, PCI<20>
+    PGxyPCI_PSS_PCI_P19   = 0b10011,	// PCI Source Selection: Device pin, PCI<19>
+    PGxyPCI_PSS_PCI_RP18  = 0b10010,	// PCI Source Selection: RPn input, PCI18R
+    PGxyPCI_PSS_PCI_RP17  = 0b10001,	// PCI Source Selection: RPn input, PCI17R
+    PGxyPCI_PSS_PCI_RP16  = 0b10000,	// PCI Source Selection: RPn input, PCI16R
+    PGxyPCI_PSS_PCI_RP15  = 0b01111,	// PCI Source Selection: RPn input, PCI15R
+    PGxyPCI_PSS_PCI_RP14  = 0b01110,	// PCI Source Selection: RPn input, PCI14R
+    PGxyPCI_PSS_PCI_RP13  = 0b01101,	// PCI Source Selection: RPn input, PCI13R
+    PGxyPCI_PSS_PCI_RP12  = 0b01100,	// PCI Source Selection: RPn input, PCI12R
+    PGxyPCI_PSS_PCI_RP11  = 0b01011,	// PCI Source Selection: RPn input, PCI11R
+    PGxyPCI_PSS_PCI_RP10  = 0b01010,	// PCI Source Selection: RPn input, PCI10R
+    PGxyPCI_PSS_PCI_RP9   = 0b01001,	// PCI Source Selection: RPn input, PCI9R
+    PGxyPCI_PSS_PCI_RP8   = 0b01000,	// PCI Source Selection: RPn input, PCI8R
+    //PGxyPCI_PSS_        = 0b00111,	// PCI Source Selection: Reserved
+    //PGxyPCI_PSS_        = 0b00110,	// PCI Source Selection: Reserved
+    //PGxyPCI_PSS_        = 0b00101,	// PCI Source Selection: Reserved
+    //PGxyPCI_PSS_        = 0b00100,	// PCI Source Selection: Reserved
+    PGxyPCI_PSS_CMBTRGB   = 0b00011,	// PCI Source Selection: Internally connected to Combo Trigger B
+    PGxyPCI_PSS_CMBTRGA   = 0b00010,	// PCI Source Selection: Internally connected to Combo Trigger A
+    PGxyPCI_PSS_PWMPCI_MX = 0b00001,	// PCI Source Selection: Internally connected to the output of PWMPCI<2:0> MUX
+    PGxyPCI_PSS_VSS       = 0b00000	// PCI Source Selection: Tied to ?0?
+}PGxyPCIL_PSS_e; // PCI Polarity Selection
+
+
+#define REG_PGxyPCIH_BPEN_ENABLED   0b1000000000000000  // PCI Bypass Enable bit: bypass active
+#define REG_PGxyPCIH_BPEN_DISABLED  0b0000000000000000  // PCI Bypass Enable bit: bypass inactive
+
+typedef enum {
+    PGxyPCI_BPEN_ENABLED  = 0b1, // PCI Bypass Enable bit: bypass active
+    PGxyPCI_BPEN_DISABLED = 0b0  // PCI Bypass Enable bit: bypass inactive
+} PGxyPCIH_BPEN_e;
+    
+#define REG_PGxyPCIH_BPSEL_PG8      0b0111000000000000 // PCI control is sourced from PWM Generator 8 PCI logic
+#define REG_PGxyPCIH_BPSEL_PG7      0b0110000000000000 // PCI control is sourced from PWM Generator 7 PCI logic
+#define REG_PGxyPCIH_BPSEL_PG6      0b0101000000000000 // PCI control is sourced from PWM Generator 6 PCI logic
+#define REG_PGxyPCIH_BPSEL_PG5      0b0100000000000000 // PCI control is sourced from PWM Generator 5 PCI logic
+#define REG_PGxyPCIH_BPSEL_PG4      0b0011000000000000 // PCI control is sourced from PWM Generator 4 PCI logic
+#define REG_PGxyPCIH_BPSEL_PG3      0b0010000000000000 // PCI control is sourced from PWM Generator 3 PCI logic
+#define REG_PGxyPCIH_BPSEL_PG2      0b0001000000000000 // PCI control is sourced from PWM Generator 2 PCI logic
+#define REG_PGxyPCIH_BPSEL_PG1      0b0000000000000000 // PCI control is sourced from PWM Generator 1 PCI logic
+
+typedef enum {
+    PGxyPCI_BPSEL_PG8 = 0b111, // PCI control is sourced from PWM Generator 8 PCI logic
+    PGxyPCI_BPSEL_PG7 = 0b110, // PCI control is sourced from PWM Generator 7 PCI logic
+    PGxyPCI_BPSEL_PG6 = 0b101, // PCI control is sourced from PWM Generator 6 PCI logic
+    PGxyPCI_BPSEL_PG5 = 0b100, // PCI control is sourced from PWM Generator 5 PCI logic
+    PGxyPCI_BPSEL_PG4 = 0b011, // PCI control is sourced from PWM Generator 4 PCI logic
+    PGxyPCI_BPSEL_PG3 = 0b010, // PCI control is sourced from PWM Generator 3 PCI logic
+    PGxyPCI_BPSEL_PG2 = 0b001, // PCI control is sourced from PWM Generator 2 PCI logic
+    PGxyPCI_BPSEL_PG1 = 0b000  // PCI control is sourced from PWM Generator 1 PCI logic
+} PGxyPCIH_BPSEL_e;
+
+
+#define PGxyPCIH_REG_ACP_
+
+//#define PGxyPCIH_REG_ACP_                 0b0000011100000000 // Reserved
+//#define PGxyPCIH_REG_ACP_                 0b0000011000000000 // Reserved
+#define REG_PGxyPCIH_REG_ACP_LATCHED_ANY    0b0000010100000000 // Latched any edge
+#define REG_PGxyPCIH_REG_ACP_LATCHED_RISE   0b0000010000000000 // Latched rising edge
+#define REG_PGxyPCIH_REG_ACP_LATCHED        0b0000001100000000 // Latched
+#define REG_PGxyPCIH_REG_ACP_ANY_EDGE       0b0000001000000000 // Any edge
+#define REG_PGxyPCIH_REG_ACP_RISE_EDGE      0b0000000100000000 // Rising edge
+#define REG_PGxyPCIH_REG_ACP_LEVEL          0b0000000000000000 // Level-sensitive
+
+typedef enum {
+    //PGxyPCIH_REG_ACP_  = 0b111	// Reserved
+    //PGxyPCIH_REG_ACP_  = 0b110	// Reserved
+    PGxyPCI_REG_ACP_LATCHED_ANY  = 0b101, // Latched any edge 0b0000010100000000 // Latched any edge
+    PGxyPCI_REG_ACP_LATCHED_RISE = 0b100, // Latched rising edge
+    PGxyPCI_REG_ACP_LATCHED      = 0b011, // Latched
+    PGxyPCI_REG_ACP_ANY_EDGE     = 0b010, // Any edge
+    PGxyPCI_REG_ACP_RISE_EDGE    = 0b001, // Rising edge
+    PGxyPCI_REG_ACP_LEVEL        = 0b000  // Level-sensitive
+} PGxyPCIH_ACP_e; // PCI Acceptance Criteria Selection bits
+
+
+#define REG_PGxyPCIH_SWPCI_HIGH     0b0000000010000000  // Drives a ?1? to PCI logic assigned to by the SWPCIM<1:0> control bits
+#define REG_PGxyPCIH_SWPCI_LOW      0b0000000000000000  // Drives a ?0? to PCI logic assigned to by the SWPCIM<1:0> control bits
+
+typedef enum {
+    PGxyPCI_SWPCI_HIGH  = 0b1, // Drives a ?1? to PCI logic assigned to by the SWPCIM<1:0> control bits
+    PGxyPCI_SWPCI_LOW   = 0b0  // Drives a ?0? to PCI logic assigned to by the SWPCIM<1:0> control bits
+} PGxyPCIH_SWPCI_e;
+   
+//#define REG_PGxyPCIH_SWPCIM_      0b0000000001100000 // Reserved
+#define REG_PGxyPCIH_SWPCIM_TQ      0b0000000001000000 // SWPCI bit is assigned to termination qualifier logic
+#define REG_PGxyPCIH_SWPCIM_AQ      0b0000000000100000 // SWPCI bit is assigned to acceptance qualifier logic
+#define REG_PGxyPCIH_SWPCIM_PCI     0b0000000000000000 // SWPCI bit is assigned to PCI acceptance logic
+
+typedef enum {
+    PGxyPCI_SWPCIM_TQ  = 0b10, // SWPCI bit is assigned to termination qualifier logic
+    PGxyPCI_SWPCIM_AQ  = 0b01, // SWPCI bit is assigned to acceptance qualifier logic
+    PGxyPCI_SWPCIM_PCI = 0b00  // SWPCI bit is assigned to PCI acceptance logic
+} PGxyPCIH_SWPCIM_e;
+
+#define REG_PGxyPCIH_LATMOD_RESET   0b0000000000010000  // SR latch is Reset-dominant in Latched Acceptance modes
+#define REG_PGxyPCIH_LATMOD_SET     0b0000000000000000  // SR latch is Set-dominant in Latched Acceptance modes
+
+typedef enum {
+    PGxyPCI_LATMOD_RESET  = 0b1, // SR latch is Reset-dominant in Latched Acceptance modes
+    PGxyPCI_LATMOD_SET    = 0b0  // SR latch is Set-dominant in Latched Acceptance modes
+} PGxyPCIH_LATMOD_e;
+
+#define REG_PGxyPCIH_TQPS_INVERTED      0b0000000000001000 // Termination Qualifier Polarity Selection: Inverted
+#define REG_PGxyPCIH_TQPS_NOT_INVERTED  0b0000000000000000 // Termination Qualifier Polarity Selection: not inverted
+
+typedef enum {
+    PGxyPCI_TQPS_INVERTED = 0b1,        // Termination Qualifier Polarity Selection: Inverted
+    PGxyPCI_TQPS_NOT_INVERTED  = 0b0    // Termination Qualifier Polarity Selection: not inverted
+}PGxyPCIH_TQPS_e; // Termination Qualifier Polarity Selection bit
+
+#define REG_PGxyPCIH_TQSS_SWPCI         0b0000000000000111 // SWPCI control bit only (qualifier forced to ?0?)
+#define REG_PGxyPCIH_TQSS_PCI_SRC_9     0b0000000000000110 // Selects PCI Source #9
+#define REG_PGxyPCIH_TQSS_PCI_SRC_8     0b0000000000000101 // Selects PCI Source #8
+#define REG_PGxyPCIH_TQSS_PCI_SRC_1     0b0000000000000100 // Selects PCI Source #1 (PWM Generator output selected by the PWMPCI<2:0> bits)
+#define REG_PGxyPCIH_TQSS_PWM_TRIG      0b0000000000000011 // PWM Generator is triggered
+#define REG_PGxyPCIH_TQSS_LEB_ON        0b0000000000000010 // LEB is active
+#define REG_PGxyPCIH_TQSS_DC_ON         0b0000000000000001 // Duty cycle is active (base PWM Generator signal)
+#define REG_PGxyPCIH_TQSS_NONE          0b0000000000000000 // No acceptance qualifier is used (qualifier forced to ?1?)
+
+typedef enum {
+    PGxyPCI_TQSS_SWPCI     = 0b111, // SWPCI control bit only (qualifier forced to ?0?)
+    PGxyPCI_TQSS_PCI_SRC_9 = 0b110, // Selects PCI Source #9
+    PGxyPCI_TQSS_PCI_SRC_8 = 0b101, // Selects PCI Source #8
+    PGxyPCI_TQSS_PCI_SRC_1 = 0b100, // Selects PCI Source #1 (PWM Generator output selected by the PWMPCI<2:0> bits)
+    PGxyPCI_TQSS_PWM_TRIG  = 0b011, // PWM Generator is triggered
+    PGxyPCI_TQSS_LEB_ON    = 0b010, // LEB is active
+    PGxyPCI_TQSS_DC_ON     = 0b001, // Duty cycle is active (base PWM Generator signal)
+    PGxyPCI_TQSS_NONE      = 0b000  // No termination qualifier is used (qualifier forced to ?1?)
+}PGxyPCIH_TQSS_e; // Termination Qualifier Source Selection bits
+
+
+
+typedef struct {
+    
+    volatile PGxyPCIL_PSS_e PSS : 5;            // Bit 4-0: PCI Source Selection bits
+    volatile PGxyPCIL_PPS_e PPS : 1;            // Bit 5: PCI Polarity Select bit
+    volatile PGxyPCIL_PSYNC_e PSYNC : 1;        // Bit 6: PCI Synchronization Control
+    volatile PGxyPCIL_SWTERM_e SWTERM : 1;      // Bit 7: PCI Software Termination bit
+    volatile PGxyPCIL_AQSS_e AQSS : 3;          // Bit 10-8: Acceptance Qualifier Source Selection bits
+    volatile PGxyPCIL_AQPS_e AQPS : 1;          // Bit 11: Acceptance Qualifier Polarity Select bit
+    volatile PGxyPCIL_TERM_e TERM : 3;          // Bit 14-12: Termination Event Selection bits
+    volatile PGxyPCIL_TSYNCDIS_e TSYNCDIS: 1;   // Bit 15: PCI Fault Interrupt Enable bit
+    
+    volatile PGxyPCIH_TQSS_e TQSS : 3;          // Bit 2-0: Termination Qualifier Source Selection bits
+    volatile PGxyPCIH_TQPS_e TQPS : 1;          // Bit 3: Termination Qualifier Polarity Select bit
+    volatile PGxyPCIH_LATMOD_e LATMOD : 1;      // Bit 4: PCI SR Latch Mode bit
+    volatile PGxyPCIH_SWPCIM_e SWPCIM : 2;      // Bit 6-5: Software PCI Control Mode bits
+    volatile PGxyPCIH_SWPCI_e SWPCI : 1;        // Bit 7: Software PCI Control bit
+    volatile PGxyPCIH_ACP_e ACP : 3;            // Bit 10-8: PCI Acceptance Criteria Selection bits
+    volatile unsigned : 1;                      // (reserved)
+    volatile PGxyPCIH_BPSEL_e BPSEL : 3;        // Bit 14-12: PCI Bypass Source Selection bits
+    volatile PGxyPCIH_BPEN_e BPEN : 1;          // Bit 15: PCI Bypass Enable bit
+    
+} __attribute__((packed)) PGxyPCI_t; // PGxyPCIL: PWM GENERATOR xy PCI REGISTER HIGH/LOW
+
+typedef union {
+    volatile uint32_t value; // Direct read/write access to both registers
+    volatile PGxEVT_t bits;  // Single-bit access to register bits
+}REGBLK_PGxyPCI_t;  // PGxyPCIL: PWM GENERATOR xy PCI REGISTER HIGH/LOW
+                    // (x = PWM GENERATOR #; y = F, CL, FF OR S) 
+
+
+/* ===========================================================================
+ * PGxLEBH: PWM GENERATOR x LEADING-EDGE BLANKING REGISTER HIGH
+ * ===========================================================================*/
+#define REG_PGxLEBCON_VALID_DATA_WRITE_MASK 0x070F
+#define REG_PGxLEBCON_VALID_DATA_READ_MASK 0x070F
+
+#define REG_LEBCON_PWMPCI_PG8   0b0000011100000000 // PWM Generator #8 output is made available to PCI logic 
+#define REG_LEBCON_PWMPCI_PG7   0b0000011000000000 // PWM Generator #8 output is made available to PCI logic 
+#define REG_LEBCON_PWMPCI_PG6   0b0000010100000000 // PWM Generator #8 output is made available to PCI logic 
+#define REG_LEBCON_PWMPCI_PG5   0b0000010000000000 // PWM Generator #8 output is made available to PCI logic 
+#define REG_LEBCON_PWMPCI_PG4   0b0000001100000000 // PWM Generator #8 output is made available to PCI logic 
+#define REG_LEBCON_PWMPCI_PG3   0b0000001000000000 // PWM Generator #8 output is made available to PCI logic 
+#define REG_LEBCON_PWMPCI_PG2   0b0000000100000000 // PWM Generator #8 output is made available to PCI logic 
+#define REG_LEBCON_PWMPCI_PG1   0b0000000000000000 // PWM Generator #8 output is made available to PCI logic 
+
+typedef enum {
+    LEBCON_PWMPCI_PG8 = 0b111, // PWM Generator #8 output is made available to PCI logic 
+    LEBCON_PWMPCI_PG7 = 0b110, // PWM Generator #8 output is made available to PCI logic 
+    LEBCON_PWMPCI_PG6 = 0b101, // PWM Generator #8 output is made available to PCI logic 
+    LEBCON_PWMPCI_PG5 = 0b100, // PWM Generator #8 output is made available to PCI logic 
+    LEBCON_PWMPCI_PG4 = 0b011, // PWM Generator #8 output is made available to PCI logic 
+    LEBCON_PWMPCI_PG3 = 0b010, // PWM Generator #8 output is made available to PCI logic 
+    LEBCON_PWMPCI_PG2 = 0b001, // PWM Generator #8 output is made available to PCI logic 
+    LEBCON_PWMPCI_PG1 = 0b000  // PWM Generator #8 output is made available to PCI logic 
+}PGxLEBCON_PWMPCI_e; // PWM Source for PCI Selection bits
+
+#define REG_PGxLEBCON_LEBTRG_ENABLE     0b0000000000010000  // Selected edge of PWMx will trigger the LEB duration counter
+#define REG_PGxLEBCON_LEBTRG_DISABLE    0b0000000000000000  // LEB ignores the selected edge of PWMx
+
+typedef enum {
+    PGxLEBCON_LEBTRG_ENABLE  = 0b1, // Selected edge of PWMx will trigger the LEB duration counter
+    PGxLEBCON_LEBTRG_DISABLE = 0b0  // LEB ignores the selected edge of PWMx
+} PGxLEBCON_LEBTRG_e;
+
+typedef struct {
+    
+    volatile PGxLEBCON_LEBTRG_e PLF : 1;    // Bit 0: PWMxL Falling Edge Trigger Enable bit
+    volatile PGxLEBCON_LEBTRG_e PLR : 1;    // Bit 1: PWMxL Rising Edge Trigger Enable bit
+    volatile PGxLEBCON_LEBTRG_e PHF : 1;    // Bit 2: PWMxH Falling Edge Trigger Enable bit
+    volatile PGxLEBCON_LEBTRG_e PHR : 1;    // Bit 3: PWMxH Rising Edge Trigger Enable bit
+    volatile unsigned : 4;                  // Bit 7-4:  (reserved)
+    volatile PGxLEBCON_PWMPCI_e PWMPCI : 3; // Bit 10-8: PWM Source for PCI Selection bits
+    volatile unsigned : 5;                  // Bit 15-11: (reserved)
+
+} __attribute__((packed)) PGxLEBCON_t; // PGxLEBH: PWM GENERATOR x LEADING-EDGE BLANKING REGISTER HIGH
+
+typedef union {
+    volatile uint32_t value; // Direct read/write access to both registers
+    volatile PGxEVT_t bits;  // Single-bit access to register bits
+}REGBLK_PGxLEBCON_t;   // PGxLEBH: PWM GENERATOR x LEADING-EDGE BLANKING REGISTER HIGH
 
 
 /* ===========================================================================
@@ -1457,7 +1811,7 @@ typedef union {
 
 
 /* ===========================================================================
- * PGxDC: PWM GENERATOR x PHASE REGISTER
+ * PGxLEBL: PWM GENERATOR x LEADING-EDGE BLANKING REGISTER LOW
  * ===========================================================================*/
 #define REG_PGxLEB_VALID_DATA_WRITE_MASK 0xFFFF
 #define REG_PGxLEB_VALID_DATA_READ_MASK 0xFFFF
@@ -1474,7 +1828,7 @@ typedef union {
 } REGBLK_PGxLEB_t;
 
 /* ===========================================================================
- * PGxDC: PWM GENERATOR x TRIGGER REGISTER
+ * PGxTRIGA: PWM GENERATOR x TRIGGER y REGISTER (x = PWM Generator, y = A, B or C)
  * ===========================================================================*/
 #define REG_PGxTRIGy_VALID_DATA_WRITE_MASK 0xFFFF
 #define REG_PGxTRIGy_VALID_DATA_READ_MASK 0xFFFF
@@ -1548,15 +1902,15 @@ typedef struct {
 
 typedef struct {
     volatile REGBLK_PGxCH_CONFIG_t PGxCON; // PWM GENERATOR x CONTROL REGISTER LOW/HIGH
-    volatile uint16_t PGxSTAT; // PWM GENERATOR x STATUS REGISTER
+    volatile REGBLK_PGxSTAT_t PGxSTAT; // PWM GENERATOR x STATUS REGISTER
     volatile REGBLK_PGxIO_CONFIG_t PGxIOCON; // PWM GENERATOR x I/O CONTROL REGISTER LOW/HIGH
     volatile REGBLK_PGxEVT_CONFIG_t PGxEVT; // PWM GENERATOR x EVENT REGISTER LOW/HIGH
-    volatile uint32_t PGxFPCI; // PWM GENERATOR x FAULT PCI REGISTER LOW(HIGH)
-    volatile uint32_t PGxCLPCI; // PWM GENERATOR x CURRENT LIMIT PCI REGISTER LOW/HIGH
-    volatile uint32_t PGxFFPCI; // PWM GENERATOR x FEED FORWARD PCI REGISTER LOW/HIGH
-    volatile uint32_t PGxSPCI; // PWM GENERATOR x SOFTWARE PCI REGISTER LOW/HIGH
+    volatile REGBLK_PGxyPCI_t PGxFPCI; // PWM GENERATOR x FAULT PCI REGISTER LOW(HIGH)
+    volatile REGBLK_PGxyPCI_t PGxCLPCI; // PWM GENERATOR x CURRENT LIMIT PCI REGISTER LOW/HIGH
+    volatile REGBLK_PGxyPCI_t PGxFFPCI; // PWM GENERATOR x FEED FORWARD PCI REGISTER LOW/HIGH
+    volatile REGBLK_PGxyPCI_t PGxSPCI; // PWM GENERATOR x SOFTWARE PCI REGISTER LOW/HIGH
     volatile REGBLK_PGxLEB_t PGxLEB; // PWM GENERATOR x LEADING-EDGE BLANKING REGISTER LOW
-    volatile uint16_t PGxLEBCON; // PWM GENERATOR x LEADING-EDGE BLANKING REGISTER HIGH
+    volatile REGBLK_PGxLEBCON_t PGxLEBCON; // PWM GENERATOR x LEADING-EDGE BLANKING REGISTER HIGH
     volatile REGBLK_PGxPHASE_t PGxPHASE; // PWM GENERATOR x PHASE REGISTER
     volatile REGBLK_PGxDC_t PGxDC; // PWM GENERATOR x DUTY CYCLE REGISTER
     volatile REGBLK_PGxDCA_t PGxDCA; // PWM GENERATOR x DUTY CYCLE ADJUSTMENT REGISTER
