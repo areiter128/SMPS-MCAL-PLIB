@@ -1935,7 +1935,8 @@ typedef struct {
 
 // Prototypes
 
-extern volatile uint16_t hspwm_init_pwm_module ( HSPWM_C_MODULE_CONFIG_t pwm_config );
+extern volatile uint16_t hspwm_init_pwm_module(HSPWM_C_MODULE_CONFIG_t pwm_config);
+extern volatile uint16_t hspwm_init_pwm_generator(uint16_t instance, HSPWM_C_GENERATOR_CONFIG_t pg_config);
 
 extern volatile uint16_t hspwm_init_independent_pwm (
     uint16_t instance,
