@@ -528,8 +528,8 @@ typedef enum {
     ADCON1_ADON_DISABLED = 0b0 // ADC module is disabled
 } ADCON1_ADON_e; // ADC Enable bit
 
-#define REG_ADCON1_ADSIDL_STOP			0b0010000000000000      // Module Discontinues Operation in Idle Mode
-#define REG_ADCON1_ADSIDL_RUN			0b0000000000000000      // Module Continues Operation in Idle Mode
+#define REG_ADCON1L_ADSIDL_STOP			0b0010000000000000      // Module Discontinues Operation in Idle Mode
+#define REG_ADCON1L_ADSIDL_RUN			0b0000000000000000      // Module Continues Operation in Idle Mode
 
 typedef enum {
     ADCON1_ADSIDL_STOP = 0b1, // Discontinues module operation when device enters Idle mode
@@ -574,20 +574,20 @@ typedef struct {
 
 typedef union {
     volatile uint32_t value;
-    volatile ADCON1_t ADCON1;
+    volatile ADCON1_t bits;
 } REGBLK_ADCON1_t;
 
 
 // REGISTERS ADCON2L/H: ANALOG-TO-DIGITAL CONTROL REGISTER 2 LOW/HIGH
 
-#define REG_ADCON2_VALID_DATA_WRITE_MASK  0xC3FFD77F		// Bit mask used to set unimplemented bits to zero
-#define REG_ADCON2_VALID_DATA_READ_MASK   0xC3FFD77F		// Bit mask used to set unimplemented bits to zero
+#define REG_ADCON2_VALID_DATA_WRITE_MASK  0xC3FFDF7F		// Bit mask used to set unimplemented bits to zero
+#define REG_ADCON2_VALID_DATA_READ_MASK   0xC3FFDF7F		// Bit mask used to set unimplemented bits to zero
 
 
 // REGISTER ADCON2L: ANALOG-TO-DIGITAL CONTROL REGISTER 2 HIGH
 
 #define REG_ADCON2L_RESET               0b0000000000000000      // Reset ADCON 2 Low Register
-#define REG_ADCON2L_VALID_DATA_MSK		0b1101011101111111		// Bit mask used to set unimplemented bits to zero
+#define REG_ADCON2L_VALID_DATA_MSK		0b1101111101111111		// Bit mask used to set unimplemented bits to zero
 
 #define REG_ADCON2L_SHRADC_CFG_MASK     0b0001011101111111      // Bit-Mask eliminating all bits not concerning the shared ADC core configuration
 #define REG_ADCON2L_REF_CFG_MASK        0b1100000000000000      // Bit-Mask eliminating all bits not concerning the bandgap reference configuration
@@ -625,6 +625,14 @@ typedef enum {
     ADCON2_EIEN_ON = 0b1, // The early interrupt feature is enabled for the input channel interrupts (when the EISTATx flag is set)
     ADCON2_EIEN_OFF = 0b0 // The individual interrupts are generated when conversion is done (when the ANxRDY flag is set)
 } ADCON2_EIEN_e; // Early Interrupts Enable bit
+
+#define REG_ADCON2L_PTGEN_ON           0b0001000000000000      // External Conversion Request Interface bit: PTG Access ON
+#define REG_ADCON2L_PTGEN_OFF          0b0000000000000000      // External Conversion Request Interface bit: PTG Access OFF
+
+typedef enum {
+    ADCON2_PTGEN_ON = 0b1, // External Conversion Request Interface bit: PTG Access ON
+    ADCON2_PTGEN_OFF = 0b0 // External Conversion Request Interface bit: PTG Access OFF
+} ADCON2_PTGEN_e; // External Conversion Request Interface bit
 
 
 #define REG_ADCON2L_SHREISEL_8TAD       0b0000011100000000      // Early Interrupts 8 TADs before READY
@@ -1836,25 +1844,25 @@ typedef enum {
 } ADCON2_SHRSAMC_e; // Shared ADC Core Sample Time Selection bits
 
 typedef struct {
-    volatile ADCON2_SHRADCS_e SHRADCS : 7; // Shared ADC Core Input Clock Divider
-    volatile unsigned : 1;
-    volatile ADCON2_SHREISEL_e SHREISEL : 3; // Shared Core Early Interrupt Time Selection
-    volatile unsigned : 1;
-    volatile ADCON2_EIEN_e EIEN : 1; // Early Interrupts Enable
-    volatile unsigned : 1;
-    volatile ADCON2_REFERCIE_e REFERCIE : 1; // Band Gap or Reference Voltage Error Common Interrupt Enable
-    volatile ADCON2_REFCIE_e REFCIE : 1; // Band Gap and Reference Voltage Ready Common Interrupt Enable
+    volatile ADCON2_SHRADCS_e SHRADCS : 7;   // Bit 6-0: Shared ADC Core Input Clock Divider
+    volatile unsigned : 1;                   // Bit 7: (reserved))
+    volatile ADCON2_SHREISEL_e SHREISEL : 3; // Bit 10-8: Shared Core Early Interrupt Time Selection
+    volatile ADCON2_PTGEN_e PTGEN : 1;       // Bit 11: PTG Trigger Enable
+    volatile ADCON2_EIEN_e EIEN : 1;         // Bit 12: Early Interrupts Enable
+    volatile unsigned : 1;                   // Bit 13: (reserved))
+    volatile ADCON2_REFERCIE_e REFERCIE : 1; // Bit 14: Band Gap or Reference Voltage Error Common Interrupt Enable
+    volatile ADCON2_REFCIE_e REFCIE : 1;     // Bit 15: Band Gap and Reference Voltage Ready Common Interrupt Enable
 
-    volatile ADCON2_SHRSAMC_e SHRSAMC : 10; // Shared ADC Core Sample Time Selection bits
-    volatile unsigned : 4;
-    volatile ADCON2_REFERR_e REFERR : 1; // Band Gap or Reference Voltage Error Flag bit
-    volatile ADCON2_REFRDY_e REFRDY : 1; // Band Gap Reference status
+    volatile ADCON2_SHRSAMC_e SHRSAMC : 10;  // Bit 9-0: Shared ADC Core Sample Time Selection bits
+    volatile unsigned : 4;                   // Bit 13-10: (reserved)
+    volatile ADCON2_REFERR_e REFERR : 1;     // Bit 14: Band Gap or Reference Voltage Error Flag bit
+    volatile ADCON2_REFRDY_e REFRDY : 1;     // Bit 15: Band Gap Reference status
 
 } __attribute__((packed)) ADCON2_t; // ADCON2L: ADC CONTROL REGISTER 2 LOW
 
 typedef union {
     volatile uint32_t value;
-    volatile ADCON2_t ADCON2;
+    volatile ADCON2_t bits;
 } REGBLK_ADCON2_t;
 
 // REGISTERS ADCON3L/H: ANALOG-TO-DIGITAL CONTROL REGISTER 3 LOW/HIGH
@@ -1880,24 +1888,24 @@ typedef enum {
     ADCON3_REFSEL_AVDD_AVSS = 0b000 // VDD to VSS is ADC reference voltage source
 } ADCON3_REFSEL_e; // ADC Reference Voltage Selection
 
-#define REG_ADCON3L_SUSPEND_ON          0b0001000000000000      // All ADC triggers are disabled
-#define REG_ADCON3L_SUSPEND_OFF         0b0000000000000000      // All ADC triggers are enabled
+#define REG_ADCON3L_SUSPEND_HOLD        0b0001000000000000      // All ADC triggers are disabled
+#define REG_ADCON3L_SUSPEND_RUN         0b0000000000000000      // All ADC triggers are enabled
 
 typedef enum {
     ADCON3_SUSPEND_HOLD = 0b1, // All new trigger events for all ADC cores are disabled 
     ADCON3_SUSPEND_RUN = 0b0 // All ADC cores can be triggered 
 } ADCON3_SUSPEND_e; // All ADC Core Triggers Disable
 
-#define REG_ADCON3L_SUSPCIE_ON          0b0000100000000000      // Suspend Interrupt Enabled
-#define REG_ADCON3L_SUSPCIE_OFF         0b0000000000000000      // Suspend Interrupt Disabled
+#define REG_ADCON3L_SUSPCIE_ENABLED     0b0000100000000000      // Suspend Interrupt Enabled
+#define REG_ADCON3L_SUSPCIE_DISABLED    0b0000000000000000      // Suspend Interrupt Disabled
 
 typedef enum {
     ADCON3_SUSPCIE_ENABLED = 0b1, // Common interrupt will be generated when ADC core triggers are suspended (SUSPEND bit = 1) and all previous conversions are finished (SUSPRDY bit becomes set)
     ADCON3_SUSPCIE_DISABLED = 0b0 // Common interrupt is not generated for suspend ADC cores event
 } ADCON3_SUSPCIE_e; // Suspend All ADC Cores Common Interrupt Enable
 
-#define REG_ADCON3L_SUSPRDY_ON          0b0000010000000000      // READ ONLY: Suspend Status ON
-#define REG_ADCON3L_SUSPRDY_OFF         0b0000000000000000      // READ ONLY: Suspend Status OFF
+#define REG_ADCON3L_SUSPRDY_SUSPENDED   0b0000010000000000      // READ ONLY: Suspend Status ON
+#define REG_ADCON3L_SUSPRDY_RUNNING     0b0000000000000000      // READ ONLY: Suspend Status OFF
 
 typedef enum {
     ADCON3_SUSPRDY_SUSPENDED = 0b1, // ADC core is suspended (SUSPEND bit = 1) and has no conversions in progress
@@ -1925,16 +1933,16 @@ typedef enum {
 } ADCON3_CNVRTCH_e; // Software Individual Channel Conversion Trigger
 
 
-#define REG_ADCON3L_SWLCTRG_ON          0b0000000010000000      // Software Level-Sensitive Common Trigger ON
-#define REG_ADCON3L_SWLCTRG_OFF         0b0000000000000000      // Software Level-Sensitive Common Trigger OFF
+#define REG_ADCON3L_SWLCTRG_LVLTRG_BY_SW 0b0000000010000000      // Software Level-Sensitive Common Trigger ON
+#define REG_ADCON3L_SWLCTRG_LVLTRG_BY_HW 0b0000000000000000      // Software Level-Sensitive Common Trigger OFF
 
 typedef enum {
     ADCON3_SWLCTRG_LVLTRG_BY_SW = 0b1, // Triggers are continuously generated for all channels with the software; level-sensitive common trigger selected as a source in the ADTRIGnL and ADTRIGnH registers
     ADCON3_SWLCTRG_LVLTRG_BY_HW = 0b0 // No software, level-sensitive common triggers are generated
 } ADCON3_SWLCTRG_e; // Software Level-Sensitive Common Trigger Mode Selection
 
-#define REG_ADCON3L_SWCTRG_ON           0b0000000001000000      // Software Common Trigger ON
-#define REG_ADCON3L_SWCTRG_OFF          0b0000000000000000      // Software Common Trigger OFF
+#define REG_ADCON3L_SWCTRG_GO           0b0000000001000000      // Software Common Trigger ON
+#define REG_ADCON3L_SWCTRG_READY        0b0000000000000000      // Software Common Trigger OFF
 
 typedef enum {
     ADCON3_SWCTRG_GO = 0b1, // Single trigger is generated for all channels with the software; common trigger selected as a source in the ADTRIGnL and ADTRIGnH registers; when the bit is set, it is automatically cleared by hardware on the next instruction cycle
@@ -2114,8 +2122,8 @@ typedef enum {
     ADCON3_CLKDIV_64 = 0b111111 // ADC Module Clock Source Divider of 64 Source Clock Periods
 } ADCON3_CLKDIV_e; // ADC Module Clock Source Divider
 
-#define REG_ADCON3H_SHREN_ON           0b0000000010000000      // Shared ADC Core Enabled
-#define REG_ADCON3H_SHREN_OFF          0b0000000000000000      // Shared ADC Core Disabled
+#define REG_ADCON3H_SHREN_ENABLED       0b0000000010000000      // Shared ADC Core Enabled
+#define REG_ADCON3H_SHREN_DISABLED      0b0000000000000000      // Shared ADC Core Disabled
 
 typedef enum {
     ADCON3_SHREN_ENABLED = 0b1, // Shared ADC Core is enabled
@@ -2213,7 +2221,7 @@ typedef struct {
 
 typedef union {
     volatile uint32_t value;
-    volatile ADCON3_t ADCON3;
+    volatile ADCON3_t bits;
 } REGBLK_ADCON3_t;
 
 
@@ -2411,14 +2419,43 @@ typedef union {
 
     #elif defined (__P33SMPS_CK__)
 
+    #if (ADC_CORE_COUNT > 1)
+    #define REG_ADCON4H_C0CHS_ANA0      0b0000000000000001
+    #define REG_ADCON4H_C0CHS_AN0       0b0000000000000000
+    #endif
+    #if (ADC_CORE_COUNT > 2)
+    #define REG_ADCON4H_C1CHS_ANA1      0b0000000000000100
+    #define REG_ADCON4H_C1CHS_AN1       0b0000000000000000
+    #endif
+    #if (ADC_CORE_COUNT > 3)
+    #define REG_ADCON4H_C2CHS_ANA2      0b0000000000010000
+    #define REG_ADCON4H_C2CHS_AN2       0b0000000000000000
+    #endif
+    #if (ADC_CORE_COUNT > 4)
+    #define REG_ADCON4H_C3CHS_ANA3      0b0000000001000000
+    #define REG_ADCON4H_C3CHS_AN3       0b0000000000000000
+    #endif
+    #if (ADC_CORE_COUNT > 5)
+    #define REG_ADCON4H_C4CHS_ANA4      0b0000000100000000
+    #define REG_ADCON4H_C4CHS_AN4       0b0000000000000000
+    #endif
+    #if (ADC_CORE_COUNT > 6)
+    #define REG_ADCON4H_C5CHS_ANA5      0b0000010000000000
+    #define REG_ADCON4H_C5CHS_AN5       0b0000000000000000
+    #endif
+    #if (ADC_CORE_COUNT > 7)
+    #define REG_ADCON4H_C6CHS_ANA5      0b0001000000000000
+    #define REG_ADCON4H_C6CHS_AN5       0b0000000000000000
+    #endif
+    
     typedef enum {
-        ADCON4_C1CHS_S1ANA1 = 0b01, // Dedicated ADC Core 1 Input is Slave Core #1 alternative AN1 input
-        ADCON4_C1CHS_S1AN1 = 0b00 // Dedicated ADC Core 1 Input is Slave Core #1 AN1 input
+        ADCON4_C1CHS_ANA1 = 0b01, // Dedicated ADC Core 1 Input is Slave Core #1 alternative AN1 input
+        ADCON4_C1CHS_AN1 = 0b00 // Dedicated ADC Core 1 Input is Slave Core #1 AN1 input
     } ADCON4_C1CHS_e; // Dedicated ADC Core 1 Input Channel Selection
 
     typedef enum {
-        ADCON4_C0CHS_S1ANA0 = 0b01, // Dedicated ADC Core 1 Input is Slave Core #0 alternative AN0 input
-        ADCON4_C0CHS_S1AN0 = 0b00 // Dedicated ADC Core 1 Input is Slave Core #0 AN0 input
+        ADCON4_C0CHS_ANA0 = 0b01, // Dedicated ADC Core 1 Input is Slave Core #0 alternative AN0 input
+        ADCON4_C0CHS_AN0 = 0b00 // Dedicated ADC Core 1 Input is Slave Core #0 AN0 input
     } ADCON4_C0CHS_e; // Dedicated ADC Core 0 Input Channel Selection
 
     #endif
@@ -2552,7 +2589,7 @@ typedef union {
 
 typedef union {
     volatile uint32_t value;
-    volatile ADCON4_t ADCON4;
+    volatile ADCON4_t bits;
 } REGBLK_ADCON4_t;
 
 // REGISTERS ADCON5L/H: ANALOG-TO-DIGITAL CONTROL REGISTER 5 LOW/HIGH
@@ -2571,7 +2608,7 @@ typedef union {
 #define REG_ADCON5H_VALID_DATA_READ_MASK	(uint16_t)(0x0F00 | ADCDORE_REGISTER_BIT_MASK)		// Bit mask used to set unimplemented bits to zero
 
 #define REG_ADCON5L_SHRRDY_PWROK        0b1000000000000000      // Sharder ADC Core powered and ready
-#define REG_ADCON5L_SHRRDY_OFF          0b1000000000000000      // Sharder ADC Core is not powered
+#define REG_ADCON5L_SHRRDY_FF           0b1000000000000000      // Sharder ADC Core is not powered
 
 #if (ADC_CORE_COUNT > 1)
     #define REG_ADCON5L_C0RDY_PWROK         0b0000000100000000      // Dedicated ADC Core #0 powered and ready
@@ -2682,39 +2719,39 @@ typedef enum {
 } ADCON5_WARMTIME_e;
 
 
-#define REG_ADCON5L_SHRCIE_ENABLED      0b0000000010000000      // Shared ADC Core Ready Interrupt enabled
-#define REG_ADCON5L_SHRCIE_DISABLED     0b0000000000000000      // Shared ADC Core Ready Interrupt disabled
+#define REG_ADCON5H_SHRCIE_ENABLED      0b0000000010000000      // Shared ADC Core Ready Interrupt enabled
+#define REG_ADCON5H_SHRCIE_DISABLED     0b0000000000000000      // Shared ADC Core Ready Interrupt disabled
 
 #if (ADC_CORE_COUNT > 1)
-    #define REG_ADCON5L_C0CIE_ENABLED            0b0000000000000001      // Dedicated ADC Core #0 Ready Interrupt enabled
-    #define REG_ADCON5L_C0CIE_DISABLED           0b0000000000000000      // Dedicated ADC Core #0 Ready Interrupt disabled
+    #define REG_ADCON5H_C0CIE_ENABLED            0b0000000000000001      // Dedicated ADC Core #0 Ready Interrupt enabled
+    #define REG_ADCON5H_C0CIE_DISABLED           0b0000000000000000      // Dedicated ADC Core #0 Ready Interrupt disabled
 #endif
 #if (ADC_CORE_COUNT > 2)
-    #define REG_ADCON5L_C1CIE_ENABLED            0b0000000000000010      // Dedicated ADC Core #1 Ready Interrupt enabled
-    #define REG_ADCON5L_C1CIE_DISABLED           0b0000000000000000      // Dedicated ADC Core #1 Ready Interrupt disabled
+    #define REG_ADCON5H_C1CIE_ENABLED            0b0000000000000010      // Dedicated ADC Core #1 Ready Interrupt enabled
+    #define REG_ADCON5H_C1CIE_DISABLED           0b0000000000000000      // Dedicated ADC Core #1 Ready Interrupt disabled
 #endif
 #if (ADC_CORE_COUNT > 3)
-    #define REG_ADCON5L_C2CIE_ENABLED            0b0000000000000100      // Dedicated ADC Core #2 Ready Interrupt enabled
-    #define REG_ADCON5L_C2CIE_DISABLED           0b0000000000000000      // Dedicated ADC Core #2 Ready Interrupt disabled
+    #define REG_ADCON5H_C2CIE_ENABLED            0b0000000000000100      // Dedicated ADC Core #2 Ready Interrupt enabled
+    #define REG_ADCON5H_C2CIE_DISABLED           0b0000000000000000      // Dedicated ADC Core #2 Ready Interrupt disabled
 #endif
 #if (ADC_CORE_COUNT > 4)
-    #define REG_ADCON5L_C3CIE_ENABLED            0b0000000000001000      // Dedicated ADC Core #3 Ready Interrupt enabled
-    #define REG_ADCON5L_C3CIE_DISABLED           0b0000000000000000      // Dedicated ADC Core #3 Ready Interrupt disabled
+    #define REG_ADCON5H_C3CIE_ENABLED            0b0000000000001000      // Dedicated ADC Core #3 Ready Interrupt enabled
+    #define REG_ADCON5H_C3CIE_DISABLED           0b0000000000000000      // Dedicated ADC Core #3 Ready Interrupt disabled
 #endif
 #if (ADC_CORE_COUNT > 5)
-    #define REG_ADCON5L_C4CIE_ENABLED            0b0000000000010000      // Dedicated ADC Core #4 Ready Interrupt enabled
-    #define REG_ADCON5L_C4CIE_DISABLED           0b0000000000000000      // Dedicated ADC Core #4 Ready Interrupt disabled
+    #define REG_ADCON5H_C4CIE_ENABLED            0b0000000000010000      // Dedicated ADC Core #4 Ready Interrupt enabled
+    #define REG_ADCON5H_C4CIE_DISABLED           0b0000000000000000      // Dedicated ADC Core #4 Ready Interrupt disabled
 #endif
 #if (ADC_CORE_COUNT > 6)
-    #define REG_ADCON5L_C5CIE_ENABLED            0b0000000000100000      // Dedicated ADC Core #5 Ready Interrupt enabled
-    #define REG_ADCON5L_C5CIE_DISABLED           0b0000000000000000      // Dedicated ADC Core #5 Ready Interrupt disabled
+    #define REG_ADCON5H_C5CIE_ENABLED            0b0000000000100000      // Dedicated ADC Core #5 Ready Interrupt enabled
+    #define REG_ADCON5H_C5CIE_DISABLED           0b0000000000000000      // Dedicated ADC Core #5 Ready Interrupt disabled
 #endif
 #if (ADC_CORE_COUNT > 7)
-    #define REG_ADCON5L_C6CIE_ENABLED            0b0000000001000000      // Dedicated ADC Core #6 Ready Interrupt enabled
-    #define REG_ADCON5L_C6CIE_DISABLED           0b0000000000000000      // Dedicated ADC Core #6 Ready Interrupt disabled
+    #define REG_ADCON5H_C6CIE_ENABLED            0b0000000001000000      // Dedicated ADC Core #6 Ready Interrupt enabled
+    #define REG_ADCON5H_C6CIE_DISABLED           0b0000000000000000      // Dedicated ADC Core #6 Ready Interrupt disabled
 #endif
 
-#define RES_ADCON5L_CxCIE(adc_core)     (uint16_t)(pow(2, adc_core)) // the shared core is always treated as "Core #7"
+#define RES_ADCON5H_CxCIE(adc_core)     (uint16_t)(pow(2, adc_core)) // the shared core is always treated as "Core #7"
 
 typedef enum {
     ADCON5L_CxCIE_ENABLED = 0b1, // ADC Core #n Ready Interrupt enabled
@@ -2843,7 +2880,7 @@ typedef struct {
 
 typedef union {
     volatile uint32_t value;
-    volatile ADCON5_t ADCON5;
+    volatile ADCON5_t bits;
 } REGBLK_ADCON5_t;
 
 
@@ -3172,7 +3209,7 @@ typedef struct {
 
 typedef union {
     volatile uint32_t value;
-    volatile ADEIE_t ADEIE;
+    volatile ADEIE_t bits;
 } REGBLK_ADEIE_t;
 
 
@@ -3636,7 +3673,7 @@ typedef struct {
 
 typedef union {
     volatile uint32_t value;
-    volatile ADIE_t ADIE;
+    volatile ADIE_t bits;
 } REGBLK_ADIE_t;
 
 
@@ -4408,19 +4445,21 @@ typedef enum {
 
 
 
+typedef struct {
+    volatile REGBLK_ADCON1_t ADCON1;    // ADC CONTROL REGISTER 1 LOW/HIGH
+    volatile REGBLK_ADCON2_t ADCON2;    // ADC CONTROL REGISTER 2 LOW/HIGH
+    volatile REGBLK_ADCON3_t ADCON3;    // ADC CONTROL REGISTER 3 LOW/HIGH
+    volatile REGBLK_ADCON4_t ADCON4;    // ADC CONTROL REGISTER 4 LOW/HIGH
+    volatile REGBLK_ADCON5_t ADCON5;    // ADC CONTROL REGISTER 5 LOW/HIGH
+}__attribute__((packed)) HSADC_MODULE_CONFIG_t; // ADC module base register set
+
+
 
 // Prototypes
 extern volatile uint16_t hsadc_module_power_up(void);
 extern volatile uint16_t hsadc_module_power_down(void);
 
-extern volatile uint16_t hsadc_init_adc_module
-(
-    REGBLK_ADCON1_t cfgADCON1,
-    REGBLK_ADCON2_t cfgADCON2,
-    REGBLK_ADCON3_t cfgADCON3,
-    REGBLK_ADCON4_t cfgADCON4,
-    REGBLK_ADCON5_t cfgADCON5
-    );
+extern volatile uint16_t hsadc_init_adc_module( HSADC_MODULE_CONFIG_t adc_cfg );
 
 extern volatile uint16_t hsadc_init_adc_core(uint16_t index, uint16_t regADCORExL, uint16_t regADCORExH);
 

@@ -115,16 +115,14 @@ inline volatile uint16_t hsadc_module_power_down(void)
  * are set here.
  * ***********************************************************************************************/
 
-inline volatile uint16_t hsadc_init_adc_module(REGBLK_ADCON1_t cfgADCON1, 
-                        REGBLK_ADCON2_t cfgADCON2, 
-                        REGBLK_ADCON3_t cfgADCON3,
-                        REGBLK_ADCON4_t cfgADCON4,
-                        REGBLK_ADCON5_t cfgADCON5
-                        )
+inline volatile uint16_t hsadc_init_adc_module( HSADC_MODULE_CONFIG_t adc_cfg )
 {
     volatile uint16_t fres = 1;
     volatile uint32_t *regptr32;
     volatile uint32_t regbuf32;
+    
+    // Ensure ADC module is powered up before registers are written
+    fres &= hsadc_module_power_up();
     
 	// Reset all ADC configuration registers to defaults
 
@@ -146,9 +144,9 @@ inline volatile uint16_t hsadc_init_adc_module(REGBLK_ADCON1_t cfgADCON1,
 	//   ADC ENABLE is masked out! The ADC has to be enabled by the user in software.
 		
     regptr32 = (volatile uint32_t*) ((volatile uint8_t*)&ADCON1L);
-    *regptr32 = (cfgADCON1.value & (REG_ADCON1_OFF_STATE_WRITE_MASK));
+    *regptr32 = (adc_cfg.ADCON1.value & (REG_ADCON1_OFF_STATE_WRITE_MASK));
     regbuf32 = *regptr32;
-    if(regbuf32 == (cfgADCON1.value & REG_ADCON1_OFF_STATE_WRITE_MASK))
+    if(regbuf32 == (adc_cfg.ADCON1.value & REG_ADCON1_OFF_STATE_WRITE_MASK))
     { fres = 1; }
     else
     { fres = 0; }
@@ -156,9 +154,9 @@ inline volatile uint16_t hsadc_init_adc_module(REGBLK_ADCON1_t cfgADCON1,
 	// Setting ADC configuration block #2 according to user settings.
     
     regptr32 = (volatile uint32_t*) ((volatile uint8_t*)&ADCON2L);
-    *regptr32 = (cfgADCON2.value & (REG_ADCON2_VALID_DATA_WRITE_MASK));
+    *regptr32 = (adc_cfg.ADCON2.value & (REG_ADCON2_VALID_DATA_WRITE_MASK));
     regbuf32 = *regptr32;
-    if(regbuf32 == (cfgADCON2.value & REG_ADCON2_VALID_DATA_WRITE_MASK))
+    if(regbuf32 == (adc_cfg.ADCON2.value & REG_ADCON2_VALID_DATA_WRITE_MASK))
     { fres &= 1; }
     else
     { fres = 0; }
@@ -166,9 +164,9 @@ inline volatile uint16_t hsadc_init_adc_module(REGBLK_ADCON1_t cfgADCON1,
 	// Setting ADC configuration block #3 according to user settings.
     
     regptr32 = (volatile uint32_t*) ((volatile uint8_t*)&ADCON3L);
-    *regptr32 = ((cfgADCON3.value & REG_ADCON3_DISABLE_ADC_CORES_MASK) & (REG_ADCON3_VALID_DATA_WRITE_MASK));
+    *regptr32 = ((adc_cfg.ADCON3.value & REG_ADCON3_DISABLE_ADC_CORES_MASK) & (REG_ADCON3_VALID_DATA_WRITE_MASK));
     regbuf32 = *regptr32;
-    if(regbuf32 == ((cfgADCON3.value & REG_ADCON3_DISABLE_ADC_CORES_MASK) & REG_ADCON3_VALID_DATA_WRITE_MASK))
+    if(regbuf32 == ((adc_cfg.ADCON3.value & REG_ADCON3_DISABLE_ADC_CORES_MASK) & REG_ADCON3_VALID_DATA_WRITE_MASK))
     { fres &= 1; }
     else
     { fres = 0; }
@@ -176,9 +174,9 @@ inline volatile uint16_t hsadc_init_adc_module(REGBLK_ADCON1_t cfgADCON1,
 	// Setting ADC configuration block #3 according to user settings.
     #if defined(ADCON4L)
     regptr32 = (volatile uint32_t*) ((volatile uint8_t*)&ADCON4L);
-    *regptr32 = (cfgADCON4.value & (REG_ADCON4_VALID_DATA_WRITE_MASK));
+    *regptr32 = (adc_cfg.ADCON4.value & (REG_ADCON4_VALID_DATA_WRITE_MASK));
     regbuf32 = *regptr32;
-    if(regbuf32 == (cfgADCON4.value & REG_ADCON4_VALID_DATA_WRITE_MASK))
+    if(regbuf32 == (adc_cfg.ADCON4.value & REG_ADCON4_VALID_DATA_WRITE_MASK))
     { fres &= 1; }
     else
     { fres = 0; }
@@ -187,9 +185,9 @@ inline volatile uint16_t hsadc_init_adc_module(REGBLK_ADCON1_t cfgADCON1,
 	// Setting ADC configuration block #5 according to user settings.
     
     regptr32 = (volatile uint32_t*) ((volatile uint8_t*)&ADCON5L);
-    *regptr32 = ((cfgADCON5.value & REG_ADCON5_DISABLE_ADC_CORES_MASK) & (REG_ADCON5_VALID_DATA_WRITE_MASK));
+    *regptr32 = ((adc_cfg.ADCON5.value & REG_ADCON5_DISABLE_ADC_CORES_MASK) & (REG_ADCON5_VALID_DATA_WRITE_MASK));
     regbuf32 = *regptr32;
-    if(regbuf32 == ((cfgADCON5.value & REG_ADCON5_DISABLE_ADC_CORES_MASK) & REG_ADCON5_VALID_DATA_WRITE_MASK))
+    if(regbuf32 == ((adc_cfg.ADCON5.value & REG_ADCON5_DISABLE_ADC_CORES_MASK) & REG_ADCON5_VALID_DATA_WRITE_MASK))
     { fres &= 1; }
     else
     { fres = 0; }
@@ -513,7 +511,7 @@ inline volatile uint16_t hsadc_power_on_adc_core(uint16_t index)
     if(index == ADC_SHARED_CORE_INDEX) { 
       // Shared Core Power Setting is located in Bit #7, while all others are 
       // enumerated on Bits #0 = dedicated core #0, #1 = dedicated core #1, etc
-        reg_buf  = (REG_ADCON3H_SHREN_ON & REG_ADCON3H_VALID_DATA_WRITE_MSK);
+        reg_buf  = (REG_ADCON3H_SHREN_ENABLED & REG_ADCON3H_VALID_DATA_WRITE_MSK);
         
     }
     else {
