@@ -424,9 +424,9 @@ inline volatile uint16_t hspwm_set_duty_cycle(uint16_t instance, uint16_t regPGx
  *                      executed successfully (0: failure, 1: success)
  * 
  * Description:
- * This function disables a PWM generator defined by parameter INSTANCE. If high resolution mode is 
+ * This function enables a PWM generator defined by parameter INSTANCE. If high resolution mode is 
  * enabled, this function waits until the high resolution ready bit is set before enabling the PWM
- * generator.
+ * generator. This waiting period is timeout protected.
  * ***********************************************************************************************/
 
 inline volatile uint16_t hspwm_enable_pwm(uint16_t instance, bool wait_for_hres)
@@ -437,11 +437,11 @@ inline volatile uint16_t hspwm_enable_pwm(uint16_t instance, bool wait_for_hres)
     volatile uint16_t reg_buf=0;
     volatile uint16_t timeout=0;
     
-    if(wait_for_hres)
+    if(wait_for_hres)   // I high resolution mode, first check if the feature is coming up correctly
     {
-        while((PCLKCONbits.HRRDY == PCLKCON_HRRDY_WAIT) && 
-          (PCLKCONbits.HRERR == PCLKCON_HRERR_NO_ERROR) && 
-            (timeout++ < 5000))
+        while((PCLKCONbits.HRRDY == PCLKCON_HRRDY_WAIT) &&  // Wait for READY bit
+          (PCLKCONbits.HRERR == PCLKCON_HRERR_NO_ERROR) &&  // Observe ERROR bit
+            (timeout++ < 5000))                             // Increment timeout counter
             {
                 Nop();
                 Nop();
@@ -453,10 +453,11 @@ inline volatile uint16_t hspwm_enable_pwm(uint16_t instance, bool wait_for_hres)
 
     }
 
+    // Set ENABLE bit of given PWM generator
     reg_offset = (instance-1) * ((volatile uint16_t)&PG2CONL - (volatile uint16_t)&PG1CONL);
     regptr16 = (volatile uint16_t*) ((volatile uint8_t*)&PG1CONL + reg_offset);
     reg_buf = *regptr16;
-    *regptr16 = reg_buf | REG_PGCON_ON_PWM_ENABLED;
+    *regptr16 = (reg_buf | REG_PGCON_ON_PWM_ENABLED);
     
     return((volatile uint16_t)(volatile bool)(*regptr16 & REG_PGCON_ON_PWM_ENABLED));
 
