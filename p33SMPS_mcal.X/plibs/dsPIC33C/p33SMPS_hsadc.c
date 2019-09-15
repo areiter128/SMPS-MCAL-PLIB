@@ -185,6 +185,45 @@ inline volatile uint16_t hsadc_init_adc_module( HSADC_MODULE_CONFIG_t adc_cfg )
 
 }
 
+
+/*!hsadc_init_adc_channel
+ * ************************************************************************************************
+ * Summary:
+ * Initializes an individual ADC input configuration
+ *
+ * Parameters:
+ *	HSADC_CHANNEL_CONFIG_t = holds all available settings of one ADC input (e.g. AN3)
+ *
+ * Description:
+ * This routine configures the individual settings of an analog input .
+ * ***********************************************************************************************/
+
+inline volatile uint16_t hsadc_init_adc_channel( HSADC_CHANNEL_CONFIG_t adin_cfg ) {
+    
+    volatile uint16_t fres = 1;
+    
+    // Check if given analog input number is available
+    if(adin_cfg.ad_input > ADC_ANINPUT_COUNT) { return(0); }
+    
+    // Set AD input mode (differential or single ended)
+    fres &= hsadc_set_adc_input_mode(adin_cfg.ad_input, 
+            adin_cfg.config.bits.input_mode, adin_cfg.config.bits.data_mode);
+
+    // Set interrupt enable and early interrupt enable
+    fres &= hsadc_set_adc_input_interrupt(adin_cfg.ad_input, 
+            adin_cfg.config.bits.interrupt_enable, adin_cfg.config.bits.early_interrupt_enable);
+    
+    // Set interrupt trigger source
+    fres &= hsadc_set_adc_input_trigger_source(adin_cfg.ad_input, adin_cfg.config.bits.trigger_source);
+
+    // Set interrupt trigger mode (level/edge)
+    fres &= hsadc_set_adc_input_trigger_mode(adin_cfg.ad_input, adin_cfg.config.bits.trigger_mode);
+
+    return(fres);
+    
+}
+
+
 /*!hsadc_init_adc_core
  * ************************************************************************************************
  * Summary:
@@ -261,39 +300,6 @@ volatile uint16_t reg_offset=0;
     
 }
 
-/*!hsadc_init_adc_channel
- * ************************************************************************************************
- * Summary:
- * Initializes an individual ADC input configuration
- *
- * Parameters:
- *	HSADC_CHANNEL_CONFIG_t = holds all available settings of one ADC input (e.g. AN3)
- *
- * Description:
- * This routine configures the individual settings of an analog input .
- * ***********************************************************************************************/
-
-inline volatile uint16_t hsadc_init_adc_channel( HSADC_CHANNEL_CONFIG_t adin_cfg ) {
-    
-    volatile uint16_t fres = 1;
-    
-    // Check if given analog input number is available
-    if(adin_cfg.ad_input > ADC_ANINPUT_COUNT) { return(0); }
-    
-    // Set interrupt enable and early interrupt enable
-    fres &= hsadc_set_adc_input_interrupt(adin_cfg.ad_input, 
-            adin_cfg.config.bits.interrupt_enable, adin_cfg.config.bits.early_interrupt_enable);
-    
-    // Set interrupt trigger source
-    fres &= hsadc_set_adc_input_trigger_source(adin_cfg.ad_input, adin_cfg.config.bits.trigger_source);
-
-    // Set interrupt trigger mode (level/edge)
-    fres &= hsadc_set_adc_input_trigger_mode(adin_cfg.ad_input, adin_cfg.config.bits.trigger_mode);
-
-    return(fres);
-    
-}
-
 
 /*!hsadc_module_enable()
  * ************************************************************************************************
@@ -354,20 +360,81 @@ inline volatile uint16_t hsadc_reset(void)
 
 	ADCON1Lbits.ADON = ADC_OFF;				// Disable ADC
   
-	ADCON1L	= REG_ADCON1L_RESET;			// Disable and reset ADC configuration register 1 low
-	ADCON1H	= REG_ADCON1H_RESET;			// Disable and reset ADC configuration register 1 high
-	ADCON2L	= REG_ADCON2L_RESET;			// Disable and reset ADC configuration register 2 low
-	ADCON2H	= REG_ADCON2H_RESET;			// Disable and reset ADC configuration register 2 high
-    ADCON3L = REG_ADCON3L_RESET;			// Disable and reset ADC configuration register 3 low
-    ADCON3H = REG_ADCON3H_RESET;			// Disable and reset ADC configuration register 3 high
+	ADCON1L	   = REG_ADCON1L_RESET;			// Disable and reset ADC configuration register 1 low
+	ADCON1H	   = REG_ADCON1H_RESET;			// Disable and reset ADC configuration register 1 high
+	ADCON2L	   = REG_ADCON2L_RESET;			// Disable and reset ADC configuration register 2 low
+	ADCON2H	   = REG_ADCON2H_RESET;			// Disable and reset ADC configuration register 2 high
+    ADCON3L    = REG_ADCON3L_RESET;			// Disable and reset ADC configuration register 3 low
+    ADCON3H    = REG_ADCON3H_RESET;			// Disable and reset ADC configuration register 3 high
     #if defined (ADCON4L)
-    ADCON4L = REG_ADCON4L_RESET;			// Disable and reset ADC configuration register 4 low
+    ADCON4L    = REG_ADCON4L_RESET;			// Disable and reset ADC configuration register 4 low
     #endif
     #if defined (ADCON4H)
-    ADCON4H = REG_ADCON4H_RESET;			// Disable and reset ADC configuration register 4 high
+    ADCON4H    = REG_ADCON4H_RESET;			// Disable and reset ADC configuration register 4 high
     #endif
-    ADCON5L = REG_ADCON5L_RESET;			// Disable and reset ADC configuration register 5 low
-    ADCON5H = REG_ADCON5H_RESET;			// Disable and reset ADC configuration register 5 high
+    ADCON5L    = REG_ADCON5L_RESET;			// Disable and reset ADC configuration register 5 low
+    ADCON5H    = REG_ADCON5H_RESET;			// Disable and reset ADC configuration register 5 high
+
+    /* ToDo: Rework RESET routine to filter on available registers
+    ADMOD0L    = REG_ADMOD0L_RESET;
+    ADMOD0H    = REG_ADMOD0H_RESET;
+    ADMOD1L    = REG_ADMOD1L_RESET;   
+    ADMOD1H    = REG_ADMOD1H_RESET;     
+    ADIEL      = REG_ADIEL_RESET;
+    ADIEH      = REG_ADIEH_RESET;
+    ADSTATL    = REG_ADSTATL_RESET;      
+    ADSTATH    = REG_ADSTATH_RESET;  
+    ADCMP0ENL  = REG_ADCMPxENL_RESET;
+    ADCMP0ENH  = REG_ADCMPxENH_RESET; 
+    ADCMP0LO   = REG_ADCMPxLO_RESET;
+    ADCMP0HI   = REG_ADCMPxHI_RESET;
+    ADCMP1ENL  = REG_ADCMPxENL_RESET;
+    ADCMP1ENH  = REG_ADCMPxENH_RESET;
+    ADCMP1HI   = REG_ADCMPxHI_RESET;
+    ADCMP2ENL  = REG_ADCMPxENL_RESET;
+    ADCMP2ENH  = REG_ADCMPxENH_RESET;
+    ADCMP2LO   = REG_ADCMPxLO_RESET;
+    ADCMP2HI   = REG_ADCMPxHI_RESET;
+    ADCMP3ENL  = REG_ADCMPxENL_RESET;
+    ADCMP3ENH  = REG_ADCMPxENH_RESET;
+    ADCMP3LO   = REG_ADCMPxLO_RESET;
+    ADCMP3HI   = REG_ADCMPxHI_RESET;
+    ADFL0DAT   = REG_ADFLxDAT_RESET;
+    ADFL0CON   = REG_ADFLxCON_RESET;
+    ADFL1DAT   = REG_ADFLxDAT_RESET;
+    ADFL1CON   = REG_ADFLxCON_RESET;
+    ADFL2DAT   = REG_ADFLxDAT_RESET;
+    ADFL2CON   = REG_ADFLxCON_RESET;
+    ADFL3DAT   = REG_ADFLxDAT_RESET;
+    ADFL3CON   = REG_ADFLxCON_RESET;
+    ADTRIG0L   = REG_ADTRIGxL_TRGSRC_NONE;
+    ADTRIG0H   = REG_ADTRIGxH_TRGSRC_NONE;
+    ADTRIG1L   = REG_ADTRIGxL_TRGSRC_NONE;
+    ADTRIG1H   = REG_ADTRIGxH_TRGSRC_NONE;
+    ADTRIG2L   = REG_ADTRIGxL_TRGSRC_NONE;
+    ADTRIG2H   = REG_ADTRIGxL_TRGSRC_NONE;
+    ADTRIG3L   = REG_ADTRIGxL_TRGSRC_NONE;
+    ADTRIG3H   = REG_ADTRIGxH_TRGSRC_NONE;
+    ADTRIG4L   = REG_ADTRIGxL_TRGSRC_NONE;
+    ADTRIG4H   = REG_ADTRIGxH_TRGSRC_NONE;
+    ADTRIG5L   = REG_ADTRIGxL_TRGSRC_NONE;
+    ADTRIG5H   = REG_ADTRIGxH_TRGSRC_NONE;
+    ADTRIG6L   = REG_ADTRIGxL_TRGSRC_NONE;
+    ADCMP0CON  = REG_ADCMPxCON_RESET;
+    ADCMP1CON  = REG_ADCMPxCON_RESET;
+    ADCMP2CON  = REG_ADCMPxCON_RESET;
+    ADCMP3CON  = REG_ADCMPxCON_RESET;
+    ADLVLTRGL  = REG_ADLVLTRGL_RESET;
+    ADLVLTRGH  = REG_ADLVLTRGH_RESET;
+    ADCORE0L   = REG_ADCORExL_RESET;
+    ADCORE0H   = REG_ADCORExH_RESET;
+    ADCORE1L   = REG_ADCORExL_RESET;
+    ADCORE1H   = REG_ADCORExH_RESET;
+    ADEIEL     = REG_ADEIEL_RESET;
+    ADEIEH     = REG_ADEIEH_RESET;
+    ADEISTATL  = REG_ADEISTATL_RESET;
+    ADEISTATH  = REG_ADEISTATH_RESET;
+    */
     
 	return(1);
 }
@@ -647,28 +714,27 @@ inline volatile uint16_t hsadc_set_adc_input_interrupt(uint16_t index, uint16_t 
 	
 }
 
-/*!hsadc_set_adc_input_interrupt()
+/*!hsadc_set_adc_input_trigger_mode()
  * ************************************************************************************************
  * Summary:
- * configures the interrupt generation of a single ADC core
+ * Configures the trigger mode of an individual analog input
  *
  * Parameters:	
- *     - index: 
+ *     - uint16_t index: 
  *         index of the ADC input (e.g. 0 for AN, 1 for AN1, etc)
- *     - interrupt_enable: 
- *         0 = no interrupt will be generated
- *         1 = interrupt will be generated
- *     - early_interrupt_enable: 
- *         0 = interrupt will be triggered after conversion is complete
- *         1 = interrupt will be triggered n TADs before conversion is complete
+ *     - ADLVLTRG_e trigger_mode: 
+ *         0 = Edge trigger mode
+ *         1 = level trigger mode
  * 
  * Returns:
  *     0: failure
  *     1: success
  * 
  * Description:
- * The individual ADC cores of the ADC peripheral support the generation of interrupts. Further
- * Those interrupts can be "pulled-in" to compensate the interrupt latency of the controller
+ * The individual analog inputs of the dsPIC can be triggered by many different sources
+ * specified by the trigger source (see function hsadc_set_adc_input_trigger_source()).
+ * This function is used to enable the desired trigger mode by setting the related 
+ * register bits.
  * ***********************************************************************************************/
 
 inline volatile uint16_t hsadc_set_adc_input_trigger_mode(uint16_t index, ADLVLTRG_e trigger_mode)
@@ -701,7 +767,90 @@ inline volatile uint16_t hsadc_set_adc_input_trigger_mode(uint16_t index, ADLVLT
     *regptr |= regval;
     
     // Check if bit has been set
-    fres = (volatile bool)((*regptr & regval) == regval);
+    fres &= (volatile bool)((*regptr & regval) == regval);
+
+    // Return Success/Error bit
+	return(fres);
+	
+}
+
+/*!hsadc_set_adc_input_mode()
+ * ************************************************************************************************
+ * Summary:
+ * Configures the analog input mode of an individual analog input
+ *
+ * Parameters:	
+ *     - index: 
+ *         index of the ADC input (e.g. 0 for AN, 1 for AN1, etc)
+ *     - ADMOD_INPUT_MODE_e input_mode: 
+ *         0 = Single-Ended
+ *         1 = Differential
+ *     - ADMOD_OUTPUT_DATA_MODE_e data_mode:
+ *         0 = unsigned number
+ *         1 = signed number
+ * 
+ * Returns:
+ *     0: failure
+ *     1: success
+ * 
+ * Description:
+ * The individual analog inputs of the dsPIC can be configured in single-ended or differential mode.
+ * Each configuration has to be considered during the hardware design to make sure the signals
+ * are captured correctly.
+ * This function is used to enable the desired mode by setting the related register bits.
+ * ***********************************************************************************************/
+
+inline volatile uint16_t hsadc_set_adc_input_mode(uint16_t index, ADMOD_INPUT_MODE_e input_mode, ADMOD_OUTPUT_DATA_MODE_e data_mode) 
+{
+    volatile uint16_t fres = 1;
+    volatile uint16_t *regptr;
+    volatile uint16_t regval = 0;
+    
+    // Check if channel number exists
+    if (index >= ADC_ANINPUT_COUNT) return(0);
+
+    // Build dual-bit value of settings
+    regval = ((uint16_t)input_mode << 1) | ((uint16_t)data_mode);
+    
+    // Map bit on right register (HIGH or LOW)
+    if (index<8) {   
+        // Setting the analog input mode of channel 0 to 7
+        regptr = (volatile uint16_t *)&ADMOD0L;
+        index <<= 1;    // Multiply index by 2
+        regval = (((volatile uint16_t)input_mode << index) & REG_ADMOD0L_VALID_DATA_MSK);
+    }
+    else if (index<16) {   
+        // Setting the analog input mode of channel 8 to 15
+        index -= 8;     // Scale ANx-number down into single register field
+        regptr = (volatile uint16_t *)&ADMOD0H;
+        index <<= 1;    // Multiply index by 2
+        regval = (((volatile uint16_t)input_mode << index) & REG_ADMOD0H_VALID_DATA_MSK);
+    }
+    else if (index<24) {   
+        // Setting the analog input mode of channel 16 to 23
+        index -= 16;     // Scale ANx-number down into single register field
+        regptr = (volatile uint16_t *)&ADMOD1L;
+        index <<= 1;    // Multiply index by 2
+        regval = (((volatile uint16_t)input_mode << index) & REG_ADMOD1L_VALID_DATA_MSK);
+    }
+    else {
+
+        #ifdef ADLVLTRGH
+        // Setting the analog input mode of channel 24 to 31
+        index -= 24;     // Scale ANx-number down into single register field
+        regptr = (volatile uint16_t *)&ADMOD1H; // Set the Trigger Mode Bit
+        index <<= 1;    // Multiply index by 2
+        regval = (((volatile uint16_t)input_mode << index) & REG_ADMOD1H_VALID_DATA_MSK);
+        #else
+        return(0);  // Return ERROR if register does not exists
+        #endif
+    }
+
+    // write value to register
+    *regptr |= regval;
+    
+    // Check if bit has been set
+    fres &= (volatile bool)((*regptr & regval) == regval);
 
     // Return Success/Error bit
 	return(fres);

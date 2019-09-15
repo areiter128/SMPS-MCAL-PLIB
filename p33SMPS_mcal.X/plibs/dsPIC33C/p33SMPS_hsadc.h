@@ -4030,7 +4030,7 @@ typedef enum {
 
 
 // REGISTER 19-26: ADTRGxL: ADC CHANNEL x TRIGGER SELECTION REGISTER LOW
-
+#define REG_ADTRIGxL_RESET                  0b0000000000000000 // =0x0000
 #define REG_ADTRIGxL_VALID_DATA_MSK         0b0000000000011111 // =0x001F
 
 
@@ -4539,13 +4539,55 @@ typedef enum {
 #define REG_ADCMPxENH_AN31_DISABLED     0b0000000000000000      // Interrupt disabled for AN31
 
 typedef enum {
-	ADCMPxEN_ANx_ENABLED = 0b1,      // Interrupt enabled for ANx
-	ADCMPxEN_ANx_DISABLED = 0b0      // Interrupt disabled for ANx
-} ADCMPxEN_e;
+	ADCMPxEN_ANx_ENABLED = 0b1,      // Conversion result for corresponding channel is used by the comparator
+	ADCMPxEN_ANx_DISABLED = 0b0      // Conversion result for corresponding channel is not used by the comparator
+} ADCMPxEN_e;   // Comparator Enable for Corresponding Input Channels bits
 
+typedef struct {
+    ADCMPxEN_e AN0CMPEN : 1;    // Bit 0: Enable ANx as digital comparator input source
+    ADCMPxEN_e AN1CMPEN : 1;    // Bit 1: Enable ANx as digital comparator input source
+    ADCMPxEN_e AN2CMPEN : 1;    // Bit 2: Enable ANx as digital comparator input source
+    ADCMPxEN_e AN3CMPEN : 1;    // Bit 3: Enable ANx as digital comparator input source
+    ADCMPxEN_e AN4CMPEN : 1;    // Bit 4: Enable ANx as digital comparator input source
+    ADCMPxEN_e AN5CMPEN : 1;    // Bit 5: Enable ANx as digital comparator input source
+    ADCMPxEN_e AN6CMPEN : 1;    // Bit 6: Enable ANx as digital comparator input source
+    ADCMPxEN_e AN7CMPEN : 1;    // Bit 7: Enable ANx as digital comparator input source
+    ADCMPxEN_e AN8CMPEN : 1;    // Bit 8: Enable ANx as digital comparator input source
+    ADCMPxEN_e AN9CMPEN : 1;    // Bit 9: Enable ANx as digital comparator input source
+    ADCMPxEN_e AN10CMPEN : 1;    // Bit 10: Enable ANx as digital comparator input source
+    ADCMPxEN_e AN11CMPEN : 1;    // Bit 11: Enable ANx as digital comparator input source
+    ADCMPxEN_e AN12CMPEN : 1;    // Bit 12: Enable ANx as digital comparator input source
+    ADCMPxEN_e AN13CMPEN : 1;    // Bit 13: Enable ANx as digital comparator input source
+    ADCMPxEN_e AN14CMPEN : 1;    // Bit 14: Enable ANx as digital comparator input source
+    ADCMPxEN_e AN15CMPEN : 1;    // Bit 015 Enable ANx as digital comparator input source
+    
+    ADCMPxEN_e AN16CMPEN : 1;    // Bit 0: Enable ANx as digital comparator input source
+    ADCMPxEN_e AN17CMPEN : 1;    // Bit 1: Enable ANx as digital comparator input source
+    ADCMPxEN_e AN18CMPEN : 1;    // Bit 2: Enable ANx as digital comparator input source
+    ADCMPxEN_e AN19CMPEN : 1;    // Bit 3: Enable ANx as digital comparator input source
+    ADCMPxEN_e AN20CMPEN : 1;    // Bit 4: Enable ANx as digital comparator input source
+    ADCMPxEN_e AN21CMPEN : 1;    // Bit 5: Enable ANx as digital comparator input source
+    ADCMPxEN_e AN22CMPEN : 1;    // Bit 6: Enable ANx as digital comparator input source
+    ADCMPxEN_e AN23CMPEN : 1;    // Bit 7: Enable ANx as digital comparator input source
+    ADCMPxEN_e AN24CMPEN : 1;    // Bit 8: Enable ANx as digital comparator input source
+    ADCMPxEN_e AN25CMPEN : 1;    // Bit 9: Enable ANx as digital comparator input source
+    ADCMPxEN_e AN26CMPEN : 1;    // Bit 10: Enable ANx as digital comparator input source
+    ADCMPxEN_e AN27CMPEN : 1;    // Bit 11: Enable ANx as digital comparator input source
+    ADCMPxEN_e AN28CMPEN : 1;    // Bit 12: Enable ANx as digital comparator input source
+    ADCMPxEN_e AN29CMPEN : 1;    // Bit 13: Enable ANx as digital comparator input source
+    ADCMPxEN_e AN30CMPEN : 1;    // Bit 14: Enable ANx as digital comparator input source
+    ADCMPxEN_e AN31CMPEN : 1;    // Bit 15: Enable ANx as digital comparator input source
+    
+}__attribute__((packed)) ADCMPxEN_t;  // Digital Comparator Input Source Selection
+
+typedef union {
+    volatile ADCMPxEN_t adcmp_source; // Comparator Enable for Corresponding Input Channels bits
+    volatile uint32_t value;
+}REGBLK_ADCMPxEN_t; // Comparator Enable for Corresponding Input Channels bits
 
 // REGISTER 19-33: ADFLxCON: ADC DIGITAL FILTER x CONTROL REGISTER
 
+#define REG_ADFLxDAT_RESET                  0b0000000000000000      // Reset ADFLxDAT Register
 #define REG_ADFLxCON_RESET                  0b0000000000000000      // Reset ADFLxCON Register
 #define REG_ADFLxCON_VALID_DATA_MSK			0b1111111100011111		// Bit mask used to set unimplemented bits to zero
 
@@ -4640,14 +4682,14 @@ typedef enum {
 }ADMOD_OUTPUT_DATA_MODE_e; // Input pin ANx output data mode
 
 typedef struct {
-    volatile AD_CORE_ASSIGNMENT_e core_assigmnment : 1; // Bit 0: Pin ANx is tied to dedicated or shared ADC core
-    volatile ADMOD_INPUT_MODE_e input_mode : 1;         // Bit 1: Input ANx input mode is differential or single-ended
-    volatile ADMOD_OUTPUT_DATA_MODE_e data_mode : 1;    // Bit 2: Input ANx output data mode
+    volatile AD_CORE_ASSIGNMENT_e core_assigmnment : 1; // Bit 0: Pin ANx is tied to dedicated or shared ADC core bit
+    volatile ADMOD_INPUT_MODE_e input_mode : 1;         // Bit 1: Input ANx input mode is differential or single-ended bit
+    volatile ADMOD_OUTPUT_DATA_MODE_e data_mode : 1;    // Bit 2: Input ANx output data mode bit
     volatile ADIE_IE_e interrupt_enable : 1;            // Bit 3: Input ANx interrupt enable bit
     volatile ADEIE_EIEN_e early_interrupt_enable : 1;   // Bit 4: Input ANx early interrupt enable bit
-    volatile ADLVLTRG_e trigger_mode : 1;              // Bit 5: Level Trigger for Corresponding Analog Input Enable bits
-    volatile ADTRIGx_TRGSRC_e trigger_source : 5;       // Bit 10-6: Input ANx trigger source
-    volatile unsigned : 1;                              // Bit 11: (reserved)
+    volatile ADLVLTRG_e trigger_mode : 1;               // Bit 5: Level Trigger for Corresponding Analog Input Enable bit
+    volatile ADTRIGx_TRGSRC_e trigger_source : 5;       // Bit 10-6: Input ANx trigger source bits
+    volatile ADCMPxEN_e adcmp_enable : 1;               // Bit 11: Digital comparator input source enable bit
     volatile unsigned : 1;                              // Bit 12: (reserved)
     volatile unsigned : 1;                              // Bit 13: (reserved)
     volatile unsigned : 1;                              // Bit 14: (reserved)
@@ -4687,6 +4729,7 @@ extern volatile uint16_t hsadc_check_adc_cores_ready(void);
 extern volatile uint16_t hsadc_calibrate_adc_core(uint16_t index, uint16_t calib_mode);
 #endif
 
+extern volatile uint16_t hsadc_set_adc_input_mode(uint16_t index, ADMOD_INPUT_MODE_e input_mode, ADMOD_OUTPUT_DATA_MODE_e data_mode);
 extern volatile uint16_t hsadc_set_adc_input_trigger_source(uint16_t index, ADTRIGx_TRGSRC_e trigger_source);
 extern volatile uint16_t hsadc_set_adc_input_trigger_mode(uint16_t index, ADLVLTRG_e trigger_mode);
 extern volatile uint16_t hsadc_set_adc_input_interrupt(uint16_t index, ADIE_IE_e interrupt_enable, ADEIE_EIEN_e early_interrupt_enable);
