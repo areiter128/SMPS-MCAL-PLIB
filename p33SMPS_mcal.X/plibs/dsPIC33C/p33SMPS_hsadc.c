@@ -90,31 +90,18 @@ inline volatile uint16_t hsadc_module_power_down(void)
 
 }
 
-/*!hsadc_init_adc
+/*!hsadc_init_adc_module
  * ************************************************************************************************
  * Summary:
  * Initializes the basic ADC configuration
  *
  * Parameters:
- *	regADCON1L	= holds the register value for the ADCON register
- *				  => bit 15 of the ADCON1L register, which enables/disables the ADC module,
- *					 will automatically be masked out. Please enable the PWM module by 
- *					 calling hsadc_enable()
- *	regADCON1H	= 
- *	regADCON2L	= 
- *	regADCON2H	= 
- *	regADCON3L	= 
- *	regADCON3H	= 
- *	regADCON4L	= 
- *	regADCON4H	= 
- *	regADCON5L	= 
- *	regADCON5H	= 
+ *	HSADC_MODULE_CONFIG_t adc_cfg = holds the register value for module base registers
  *
  * Description:
  * Basic options like clock source, early interrupts, format options, sampling order and modes
  * are set here.
  * ***********************************************************************************************/
-
 inline volatile uint16_t hsadc_init_adc_module( HSADC_MODULE_CONFIG_t adc_cfg )
 {
     volatile uint16_t fres = 1;
@@ -273,6 +260,40 @@ volatile uint16_t reg_offset=0;
     return(1);
     
 }
+
+/*!hsadc_init_adc_channel
+ * ************************************************************************************************
+ * Summary:
+ * Initializes an individual ADC input configuration
+ *
+ * Parameters:
+ *	HSADC_CHANNEL_CONFIG_t = holds all available settings of one ADC input (e.g. AN3)
+ *
+ * Description:
+ * This routine configures the individual settings of an analog input .
+ * ***********************************************************************************************/
+
+inline volatile uint16_t hsadc_init_adc_channel( HSADC_CHANNEL_CONFIG_t adin_cfg ) {
+    
+    volatile uint16_t fres = 1;
+    
+    // Check if given analog input number is available
+    if(adin_cfg.ad_input > ADC_ANINPUT_COUNT) { return(0); }
+    
+    // Set interrupt enable and early interrupt enable
+    fres &= hsadc_set_adc_input_interrupt(adin_cfg.ad_input, 
+            adin_cfg.config.bits.interrupt_enable, adin_cfg.config.bits.early_interrupt_enable);
+    
+    // Set interrupt trigger source
+    fres &= hsadc_set_adc_input_trigger_source(adin_cfg.ad_input, adin_cfg.config.bits.trigger_source);
+
+    // Set interrupt trigger mode (level/edge)
+    fres &= hsadc_set_adc_input_trigger_mode(adin_cfg.ad_input, adin_cfg.config.bits.trigger_mode);
+
+    return(fres);
+    
+}
+
 
 /*!hsadc_module_enable()
  * ************************************************************************************************
@@ -626,6 +647,67 @@ inline volatile uint16_t hsadc_set_adc_input_interrupt(uint16_t index, uint16_t 
 	
 }
 
+/*!hsadc_set_adc_input_interrupt()
+ * ************************************************************************************************
+ * Summary:
+ * configures the interrupt generation of a single ADC core
+ *
+ * Parameters:	
+ *     - index: 
+ *         index of the ADC input (e.g. 0 for AN, 1 for AN1, etc)
+ *     - interrupt_enable: 
+ *         0 = no interrupt will be generated
+ *         1 = interrupt will be generated
+ *     - early_interrupt_enable: 
+ *         0 = interrupt will be triggered after conversion is complete
+ *         1 = interrupt will be triggered n TADs before conversion is complete
+ * 
+ * Returns:
+ *     0: failure
+ *     1: success
+ * 
+ * Description:
+ * The individual ADC cores of the ADC peripheral support the generation of interrupts. Further
+ * Those interrupts can be "pulled-in" to compensate the interrupt latency of the controller
+ * ***********************************************************************************************/
+
+inline volatile uint16_t hsadc_set_adc_input_trigger_mode(uint16_t index, ADLVLTRG_e trigger_mode)
+{
+    volatile uint16_t fres = 1;
+    volatile uint16_t *regptr;
+    volatile uint16_t regval = 0;
+    
+    // Check if channel number exists
+    if (index >= ADC_ANINPUT_COUNT) return(0);
+
+    // Map bit on right register (HIGH or LOW)
+    if (index<16) {   
+        // Setting the Trigger Mode Bit
+        regptr = (volatile uint16_t *)&ADLVLTRGL;
+        regval = (((volatile uint16_t)trigger_mode << index) & REG_ADSTATL_VALID_DATA_MSK);
+    }
+    else {
+
+        #ifdef ADLVLTRGH
+        index -= 16;    // Scale ANx-number down into single register field
+        regptr = (volatile uint16_t *)&ADLVLTRGH; // Set the Trigger Mode Bit
+        regval = (((volatile uint16_t)trigger_mode << index) & REG_ADSTATH_VALID_DATA_MSK);
+        #else
+        return(0);  // Return ERROR if register does not exists
+        #endif
+    }
+
+    // write value to register
+    *regptr |= regval;
+    
+    // Check if bit has been set
+    fres = (volatile bool)((*regptr & regval) == regval);
+
+    // Return Success/Error bit
+	return(fres);
+	
+}
+
 /*!hsadc_init_adc_comp
  * ************************************************************************************************
  * Summary:
@@ -696,6 +778,46 @@ volatile uint16_t reg_offset=0;
 }
 
 //------------------------------------------------------------------------------
+// PRIVATE FUNCTIONS
 //------------------------------------------------------------------------------
+// ToDo: may be obsolete (and is unfinished anyways) :-)
+//inline volatile uint16_t write_channel_register(uint16_t index, uint16_t *reg_addr, bool value)
+//{
+//    volatile uint16_t *regptr;
+//    
+//    if (index >= ADC_ANINPUT_COUNT) { return(0); }
+//    
+//    if (index<16) {   
+//
+//        // Setting the Early Interrupt Enable Bit
+//        regptr = (volatile uint16_t *)&ADEIEL;
+//        *regptr |= (early_interrupt_enable << index);
+//
+//        // Setting the Interrupt Enable Bit
+//        regptr = (volatile uint16_t *)&ADIEL;
+//        *regptr |= ((volatile uint16_t)value << index);
+//    }
+//    else {
+//
+//        index -= 16;
+//
+//        #ifdef ADEIEH
+//        // Setting the Early Interrupt Enable Bit
+//        regptr = (volatile uint16_t *)&ADEIEH;
+//        *regptr |= (early_interrupt_enable << index);
+//
+//        // Setting the Interrupt Enable Bit
+//        regptr = (volatile uint16_t *)&ADIEH;
+//        *regptr |= (interrupt_enable << index);
+//        #else
+//        return(0);
+//        #endif
+//    }
+//    
+//	return(1);
+//	
+//}
+
+
 
 // EOF

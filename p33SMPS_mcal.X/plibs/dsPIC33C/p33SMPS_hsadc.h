@@ -602,36 +602,36 @@ typedef union {
 #define REG_ADCON2H_REF_STAT_READ_MASK  0b1100000000000000      // Bit-Mask for reading the bandgap reference status bits
 
 
-#define REG_ADCON2L_REFCIE_ON           0b1000000000000000      // Interrupt on Band Gap & Reference Voltage Ready
-#define REG_ADCON2L_REFCIE_OFF          0b0000000000000000      // No Interrupt on Band Gap & Reference Voltage Ready
+#define REG_ADCON2L_REFCIE_ENABLED      0b1000000000000000      // Interrupt on Band Gap & Reference Voltage Ready
+#define REG_ADCON2L_REFCIE_DISABLED     0b0000000000000000      // No Interrupt on Band Gap & Reference Voltage Ready
 
 typedef enum {
-    ADCON2_REFCIE_ON = 0b1, // Common interrupt will be generated when the band gap becomes ready
-    ADCON2_REFCIE_OFF = 0b0 // Common interrupt is disabled for the band gap ready event
+    ADCON2_REFCIE_ENABLED = 0b1, // Common interrupt will be generated when the band gap becomes ready
+    ADCON2_REFCIE_DISABLED = 0b0 // Common interrupt is disabled for the band gap ready event
 } ADCON2_REFCIE_e; // Band Gap and Reference Voltage Ready Common Interrupt Enable bit
 
-#define REG_ADCON2L_REFERCIE_ON         0b0100000000000000      // Interrupt on Band Gap or Reference Voltage Error
-#define REG_ADCON2L_REFERCIE_OFF        0b0000000000000000      // No Interrupt on Band Gap or Reference Voltage Error
+#define REG_ADCON2L_REFERCIE_ENABLED    0b0100000000000000      // Interrupt on Band Gap or Reference Voltage Error
+#define REG_ADCON2L_REFERCIE_DISABLED   0b0000000000000000      // No Interrupt on Band Gap or Reference Voltage Error
 
 typedef enum {
-    ADCON2_REFERCIE_ON = 0b1, // Common interrupt will be generated when a band gap or reference voltage error is detected
-    ADCON2_REFERCIE_OFF = 0b0 // Common interrupt is disabled for the band gap and reference voltage error event
+    ADCON2_REFERCIE_ENABLED = 0b1, // Common interrupt will be generated when a band gap or reference voltage error is detected
+    ADCON2_REFERCIE_DISABLED = 0b0 // Common interrupt is disabled for the band gap and reference voltage error event
 } ADCON2_REFERCIE_e; // Band Gap or Reference Voltage Error Common Interrupt Enable bit
 
-#define REG_ADCON2L_EIEN_ON             0b0001000000000000      // Early Interrupts Enabled
-#define REG_ADCON2L_EIEN_OFF            0b0000000000000000      // Early Interrupts Disabled
+#define REG_ADCON2L_EIEN_ENABLED        0b0001000000000000      // Early Interrupts Enabled
+#define REG_ADCON2L_EIEN_DISABLED       0b0000000000000000      // Early Interrupts Disabled
 
 typedef enum {
-    ADCON2_EIEN_ON = 0b1, // The early interrupt feature is enabled for the input channel interrupts (when the EISTATx flag is set)
-    ADCON2_EIEN_OFF = 0b0 // The individual interrupts are generated when conversion is done (when the ANxRDY flag is set)
+    ADCON2_EIEN_ENABLED = 0b1, // The early interrupt feature is enabled for the input channel interrupts (when the EISTATx flag is set)
+    ADCON2_EIEN_DISABLED = 0b0 // The individual interrupts are generated when conversion is done (when the ANxRDY flag is set)
 } ADCON2_EIEN_e; // Early Interrupts Enable bit
 
-#define REG_ADCON2L_PTGEN_ON           0b0001000000000000      // External Conversion Request Interface bit: PTG Access ON
-#define REG_ADCON2L_PTGEN_OFF          0b0000000000000000      // External Conversion Request Interface bit: PTG Access OFF
+#define REG_ADCON2L_PTGEN_ENABLED      0b0001000000000000      // External Conversion Request Interface bit: PTG Access ON
+#define REG_ADCON2L_PTGEN_DISABLED     0b0000000000000000      // External Conversion Request Interface bit: PTG Access OFF
 
 typedef enum {
-    ADCON2_PTGEN_ON = 0b1, // External Conversion Request Interface bit: PTG Access ON
-    ADCON2_PTGEN_OFF = 0b0 // External Conversion Request Interface bit: PTG Access OFF
+    ADCON2_PTGEN_ENABLED = 0b1, // External Conversion Request Interface bit: PTG Access ON
+    ADCON2_PTGEN_DISABLED = 0b0 // External Conversion Request Interface bit: PTG Access OFF
 } ADCON2_PTGEN_e; // External Conversion Request Interface bit
 
 
@@ -2919,6 +2919,9 @@ typedef union {
 #define REG_ADLVLTRGL_RESET             0b0000000000000000      // Reset ADLVLTRGL Low Register
 #define REG_ADLVLTRGL_VALID_DATA_MSK	0b1111111111111111		// Bit mask used to set unimplemented bits to zero
 
+#define REG_ADLVLTRGL_ALL_LEVEL         0b1111111111111111      // All ANx inputs are Level-Triggered
+#define REG_ADLVLTRGL_ALL_EDGE          0b0000000000000000      // All ANx inputs are Edge-Triggered
+
 #define REG_ADLVLTRGL_AN0_LEVEL         0b0000000000000001      // AN0 is Level-Triggered
 #define REG_ADLVLTRGL_AN0_EDGE          0b0000000000000000      // AN0 is Edge-Triggered
 #define REG_ADLVLTRGL_AN1_LEVEL         0b0000000000000010      // AN1 is Level-Triggered
@@ -2957,6 +2960,9 @@ typedef union {
 #define REG_ADLVLTRGH_RESET             0b0000000000000000      // Reset ADLVLTRGH High Register
 #define REG_ADLVLTRGH_VALID_DATA_MSK	0b0000000000111111		// Bit mask used to set unimplemented bits to zero
 
+#define REG_ADLVLTRGH_ALL_LEVEL         0b1111111111111111      // All ANx inputs are Level-Triggered
+#define REG_ADLVLTRGH_ALL_EDGE          0b0000000000000000      // All ANx inputs are Edge-Triggered
+
 #define REG_ADLVLTRGH_AN16_LEVEL        0b0000000000000001      // AN16 is Level-Triggered
 #define REG_ADLVLTRGH_AN16_EDGE         0b0000000000000000      // AN16 is Edge-Triggered
 #define REG_ADLVLTRGH_AN17_LEVEL        0b0000000000000010      // AN17 is Level-Triggered
@@ -2990,86 +2996,97 @@ typedef union {
 #define REG_ADLVLTRGH_AN31_LEVEL        0b1000000000000000      // AN31 is Level-Triggered
 #define REG_ADLVLTRGH_AN31_EDGE         0b0000000000000000      // AN31 is Edge-Triggered
 
+typedef enum {
+    ADLVLTRGH_ANx_LEVEL = 0b1, // ANx is Level-Triggered
+    ADLVLTRGH_ANx_EDGE = 0b0  // ANx is Edge-Triggered (default)
+}ADLVLTRG_e; // Level Trigger for Corresponding Analog Input Enable bits
+
 
 // REGISTER 19-15: ADEIEH: ADC EARLY INTERRUPT ENABLE REGISTER LOW
 
 #define REG_ADEIEL_RESET                0b0000000000000000      // Reset ADLVLTRGH High Register
 #define REG_ADEIEH_VALID_DATA_MSK		0b0000000000111111		// Bit mask used to set unimplemented bits to zero
 
-#define REG_ADEIEL_AN0_ON               0b0000000000000001      // Early Interrupt Enabled for AN0 
-#define REG_ADEIEL_AN0_OFF              0b0000000000000000      // Early Interrupt Disabled for AN0 
-#define REG_ADEIEL_AN1_ON               0b0000000000000010      // Early Interrupt Enabled for AN1
-#define REG_ADEIEL_AN1_OFF              0b0000000000000000      // Early Interrupt Disabled for AN1 
-#define REG_ADEIEL_AN2_ON               0b0000000000000100      // Early Interrupt Enabled for AN2
-#define REG_ADEIEL_AN2_OFF              0b0000000000000000      // Early Interrupt Disabled for AN2 
-#define REG_ADEIEL_AN3_ON               0b0000000000001000      // Early Interrupt Enabled for AN3
-#define REG_ADEIEL_AN3_OFF              0b0000000000000000      // Early Interrupt Disabled for AN3 
-#define REG_ADEIEL_AN4_ON               0b0000000000010000      // Early Interrupt Enabled for AN4
-#define REG_ADEIEL_AN4_OFF              0b0000000000000000      // Early Interrupt Disabled for AN4 
-#define REG_ADEIEL_AN5_ON               0b0000000000100000      // Early Interrupt Enabled for AN5
-#define REG_ADEIEL_AN5_OFF              0b0000000000000000      // Early Interrupt Disabled for AN5 
-#define REG_ADEIEL_AN6_ON               0b0000000001000000      // Early Interrupt Enabled for AN6
-#define REG_ADEIEL_AN6_OFF              0b0000000000000000      // Early Interrupt Disabled for AN6 
-#define REG_ADEIEL_AN7_ON               0b0000000010000000      // Early Interrupt Enabled for AN7
-#define REG_ADEIEL_AN7_OFF              0b0000000000000000      // Early Interrupt Disabled for AN7 
-#define REG_ADEIEL_AN8_ON               0b0000000100000000      // Early Interrupt Enabled for AN8
-#define REG_ADEIEL_AN8_OFF              0b0000000000000000      // Early Interrupt Disabled for AN8 
-#define REG_ADEIEL_AN9_ON               0b0000001000000000      // Early Interrupt Enabled for AN9
-#define REG_ADEIEL_AN9_OFF              0b0000000000000000      // Early Interrupt Disabled for AN9 
-#define REG_ADEIEL_AN10_ON              0b0000010000000000      // Early Interrupt Enabled for AN10 
-#define REG_ADEIEL_AN10_OFF             0b0000000000000000      // Early Interrupt Disabled for AN10 
-#define REG_ADEIEL_AN11_ON              0b0000100000000000      // Early Interrupt Enabled for AN11
-#define REG_ADEIEL_AN11_OFF             0b0000000000000000      // Early Interrupt Disabled for AN11 
-#define REG_ADEIEL_AN12_ON              0b0001000000000000      // Early Interrupt Enabled for AN12
-#define REG_ADEIEL_AN12_OFF             0b0000000000000000      // Early Interrupt Disabled for AN12 
-#define REG_ADEIEL_AN13_ON              0b0010000000000000      // Early Interrupt Enabled for AN13
-#define REG_ADEIEL_AN13_OFF             0b0000000000000000      // Early Interrupt Disabled for AN13 
-#define REG_ADEIEL_AN14_ON              0b0100000000000000      // Early Interrupt Enabled for AN14
-#define REG_ADEIEL_AN14_OFF             0b0000000000000000      // Early Interrupt Disabled for AN14 
-#define REG_ADEIEL_AN15_ON              0b1000000000000000      // Early Interrupt Enabled for AN15
-#define REG_ADEIEL_AN15_OFF             0b0000000000000000      // Early Interrupt Disabled for AN15
+#define REG_ADEIEL_ALL_ENABLED          0b1111111111111111      // Early Interrupt Enabled for all ANx inputs
+#define REG_ADEIEL_ALL_DISABLED         0b0000000000000000      // Early Interrupt Disabled for all ANx inputs
+
+#define REG_ADEIEL_AN0_ENABLED          0b0000000000000001      // Early Interrupt Enabled for AN0 
+#define REG_ADEIEL_AN0_DISABLED         0b0000000000000000      // Early Interrupt Disabled for AN0 
+#define REG_ADEIEL_AN1_ENABLED          0b0000000000000010      // Early Interrupt Enabled for AN1
+#define REG_ADEIEL_AN1_DISABLED         0b0000000000000000      // Early Interrupt Disabled for AN1 
+#define REG_ADEIEL_AN2_ENABLED          0b0000000000000100      // Early Interrupt Enabled for AN2
+#define REG_ADEIEL_AN2_DISABLED         0b0000000000000000      // Early Interrupt Disabled for AN2 
+#define REG_ADEIEL_AN3_ENABLED          0b0000000000001000      // Early Interrupt Enabled for AN3
+#define REG_ADEIEL_AN3_DISABLED         0b0000000000000000      // Early Interrupt Disabled for AN3 
+#define REG_ADEIEL_AN4_ENABLED          0b0000000000010000      // Early Interrupt Enabled for AN4
+#define REG_ADEIEL_AN4_DISABLED         0b0000000000000000      // Early Interrupt Disabled for AN4 
+#define REG_ADEIEL_AN5_ENABLED          0b0000000000100000      // Early Interrupt Enabled for AN5
+#define REG_ADEIEL_AN5_DISABLED         0b0000000000000000      // Early Interrupt Disabled for AN5 
+#define REG_ADEIEL_AN6_ENABLED          0b0000000001000000      // Early Interrupt Enabled for AN6
+#define REG_ADEIEL_AN6_DISABLED         0b0000000000000000      // Early Interrupt Disabled for AN6 
+#define REG_ADEIEL_AN7_ENABLED          0b0000000010000000      // Early Interrupt Enabled for AN7
+#define REG_ADEIEL_AN7_DISABLED         0b0000000000000000      // Early Interrupt Disabled for AN7 
+#define REG_ADEIEL_AN8_ENABLED          0b0000000100000000      // Early Interrupt Enabled for AN8
+#define REG_ADEIEL_AN8_DISABLED         0b0000000000000000      // Early Interrupt Disabled for AN8 
+#define REG_ADEIEL_AN9_ENABLED          0b0000001000000000      // Early Interrupt Enabled for AN9
+#define REG_ADEIEL_AN9_DISABLED         0b0000000000000000      // Early Interrupt Disabled for AN9 
+#define REG_ADEIEL_AN10_ENABLED         0b0000010000000000      // Early Interrupt Enabled for AN10 
+#define REG_ADEIEL_AN10_DISABLED        0b0000000000000000      // Early Interrupt Disabled for AN10 
+#define REG_ADEIEL_AN11_ENABLED         0b0000100000000000      // Early Interrupt Enabled for AN11
+#define REG_ADEIEL_AN11_DISABLED        0b0000000000000000      // Early Interrupt Disabled for AN11 
+#define REG_ADEIEL_AN12_ENABLED         0b0001000000000000      // Early Interrupt Enabled for AN12
+#define REG_ADEIEL_AN12_DISABLED        0b0000000000000000      // Early Interrupt Disabled for AN12 
+#define REG_ADEIEL_AN13_ENABLED         0b0010000000000000      // Early Interrupt Enabled for AN13
+#define REG_ADEIEL_AN13_DISABLED        0b0000000000000000      // Early Interrupt Disabled for AN13 
+#define REG_ADEIEL_AN14_ENABLED         0b0100000000000000      // Early Interrupt Enabled for AN14
+#define REG_ADEIEL_AN14_DISABLED        0b0000000000000000      // Early Interrupt Disabled for AN14 
+#define REG_ADEIEL_AN15_ENABLED         0b1000000000000000      // Early Interrupt Enabled for AN15
+#define REG_ADEIEL_AN15_DISABLED        0b0000000000000000      // Early Interrupt Disabled for AN15
 
 // REGISTER 19-16: ADEIEH: ADC EARLY INTERRUPT ENABLE REGISTER HIGH
 
 #define REG_ADEIEH_RESET                0b0000000000000000      // Reset ADLVLTRGH High Register
 #define REG_ADEIEH_VALID_DATA_MSK		0b0000000000111111		// Bit mask used to set unimplemented bits to zero
 
-#define REG_ADEIEH_AN16_ON              0b0000000000000001      // Early Interrupt Enabled for AN16
-#define REG_ADEIEH_AN16_OFF             0b0000000000000000      // Early Interrupt Disabled for AN16 
-#define REG_ADEIEH_AN17_ON              0b0000000000000010      // Early Interrupt Enabled for AN17
-#define REG_ADEIEH_AN17_OFF             0b0000000000000000      // Early Interrupt Disabled for AN17 
-#define REG_ADEIEH_AN18_ON              0b0000000000000100      // Early Interrupt Enabled for AN18
-#define REG_ADEIEH_AN18_OFF             0b0000000000000000      // Early Interrupt Disabled for AN18 
-#define REG_ADEIEH_AN19_ON              0b0000000000001000      // Early Interrupt Enabled for AN19
-#define REG_ADEIEH_AN19_OFF             0b0000000000000000      // Early Interrupt Disabled for AN19 
-#define REG_ADEIEH_AN20_ON              0b0000000000010000      // Early Interrupt Enabled for AN20
-#define REG_ADEIEH_AN20_OFF             0b0000000000000000      // Early Interrupt Disabled for AN20 
-#define REG_ADEIEH_AN21_ON              0b0000000000100000      // Early Interrupt Enabled for AN21
-#define REG_ADEIEH_AN21_OFF             0b0000000000000000      // Early Interrupt Disabled for AN21 
-#define REG_ADEIEH_AN22_ON              0b0000000001000000      // Early Interrupt Enabled for AN22
-#define REG_ADEIEH_AN22_OFF             0b0000000000000000      // Early Interrupt Disabled for AN22 
-#define REG_ADEIEH_AN23_ON              0b0000000010000000      // Early Interrupt Enabled for AN23
-#define REG_ADEIEH_AN23_OFF             0b0000000000000000      // Early Interrupt Disabled for AN23 
-#define REG_ADEIEH_AN24_ON              0b0000000100000000      // Early Interrupt Enabled for AN24
-#define REG_ADEIEH_AN24_OFF             0b0000000000000000      // Early Interrupt Disabled for AN24 
-#define REG_ADEIEH_AN25_ON              0b0000001000000000      // Early Interrupt Enabled for AN25
-#define REG_ADEIEH_AN25_OFF             0b0000000000000000      // Early Interrupt Disabled for AN25 
-#define REG_ADEIEH_AN26_ON              0b0000010000000000      // Early Interrupt Enabled for AN26
-#define REG_ADEIEH_AN26_OFF             0b0000000000000000      // Early Interrupt Disabled for AN26 
-#define REG_ADEIEH_AN27_ON              0b0000100000000000      // Early Interrupt Enabled for AN27
-#define REG_ADEIEH_AN27_OFF             0b0000000000000000      // Early Interrupt Disabled for AN27 
-#define REG_ADEIEH_AN28_ON              0b0001000000000000      // Early Interrupt Enabled for AN28
-#define REG_ADEIEH_AN28_OFF             0b0000000000000000      // Early Interrupt Disabled for AN28 
-#define REG_ADEIEH_AN29_ON              0b0010000000000000      // Early Interrupt Enabled for AN29
-#define REG_ADEIEH_AN29_OFF             0b0000000000000000      // Early Interrupt Disabled for AN29 
-#define REG_ADEIEH_AN30_ON              0b0100000000000000      // Early Interrupt Enabled for AN30
-#define REG_ADEIEH_AN30_OFF             0b0000000000000000      // Early Interrupt Disabled for AN30 
-#define REG_ADEIEH_AN31_ON              0b1000000000000000      // Early Interrupt Enabled for AN31
-#define REG_ADEIEH_AN31_OFF             0b0000000000000000      // Early Interrupt Disabled for AN31
+#define REG_ADEIEH_ALL_ENABLED          0b1111111111111111      // Early Interrupt Enabled for all ANx inputs
+#define REG_ADEIEH_ALL_DISABLED         0b0000000000000000      // Early Interrupt Disabled for all ANx inputs
+
+#define REG_ADEIEH_AN16_ENABLED         0b0000000000000001      // Early Interrupt Enabled for AN16
+#define REG_ADEIEH_AN16_DISABLED        0b0000000000000000      // Early Interrupt Disabled for AN16 
+#define REG_ADEIEH_AN17_ENABLED         0b0000000000000010      // Early Interrupt Enabled for AN17
+#define REG_ADEIEH_AN17_DISABLED        0b0000000000000000      // Early Interrupt Disabled for AN17 
+#define REG_ADEIEH_AN18_ENABLED         0b0000000000000100      // Early Interrupt Enabled for AN18
+#define REG_ADEIEH_AN18_DISABLED        0b0000000000000000      // Early Interrupt Disabled for AN18 
+#define REG_ADEIEH_AN19_ENABLED         0b0000000000001000      // Early Interrupt Enabled for AN19
+#define REG_ADEIEH_AN19_DISABLED        0b0000000000000000      // Early Interrupt Disabled for AN19 
+#define REG_ADEIEH_AN20_ENABLED         0b0000000000010000      // Early Interrupt Enabled for AN20
+#define REG_ADEIEH_AN20_DISABLED        0b0000000000000000      // Early Interrupt Disabled for AN20 
+#define REG_ADEIEH_AN21_ENABLED         0b0000000000100000      // Early Interrupt Enabled for AN21
+#define REG_ADEIEH_AN21_DISABLED        0b0000000000000000      // Early Interrupt Disabled for AN21 
+#define REG_ADEIEH_AN22_ENABLED         0b0000000001000000      // Early Interrupt Enabled for AN22
+#define REG_ADEIEH_AN22_DISABLED        0b0000000000000000      // Early Interrupt Disabled for AN22 
+#define REG_ADEIEH_AN23_ENABLED         0b0000000010000000      // Early Interrupt Enabled for AN23
+#define REG_ADEIEH_AN23_DISABLED        0b0000000000000000      // Early Interrupt Disabled for AN23 
+#define REG_ADEIEH_AN24_ENABLED         0b0000000100000000      // Early Interrupt Enabled for AN24
+#define REG_ADEIEH_AN24_DISABLED        0b0000000000000000      // Early Interrupt Disabled for AN24 
+#define REG_ADEIEH_AN25_ENABLED         0b0000001000000000      // Early Interrupt Enabled for AN25
+#define REG_ADEIEH_AN25_DISABLED        0b0000000000000000      // Early Interrupt Disabled for AN25 
+#define REG_ADEIEH_AN26_ENABLED         0b0000010000000000      // Early Interrupt Enabled for AN26
+#define REG_ADEIEH_AN26_DISABLED        0b0000000000000000      // Early Interrupt Disabled for AN26 
+#define REG_ADEIEH_AN27_ENABLED         0b0000100000000000      // Early Interrupt Enabled for AN27
+#define REG_ADEIEH_AN27_DISABLED        0b0000000000000000      // Early Interrupt Disabled for AN27 
+#define REG_ADEIEH_AN28_ENABLED         0b0001000000000000      // Early Interrupt Enabled for AN28
+#define REG_ADEIEH_AN28_DISABLED        0b0000000000000000      // Early Interrupt Disabled for AN28 
+#define REG_ADEIEH_AN29_ENABLED         0b0010000000000000      // Early Interrupt Enabled for AN29
+#define REG_ADEIEH_AN29_DISABLED        0b0000000000000000      // Early Interrupt Disabled for AN29 
+#define REG_ADEIEH_AN30_ENABLED         0b0100000000000000      // Early Interrupt Enabled for AN30
+#define REG_ADEIEH_AN30_DISABLED        0b0000000000000000      // Early Interrupt Disabled for AN30 
+#define REG_ADEIEH_AN31_ENABLED         0b1000000000000000      // Early Interrupt Enabled for AN31
+#define REG_ADEIEH_AN31_DISABLED        0b0000000000000000      // Early Interrupt Disabled for AN31
 
 typedef enum {
-    ADEIE_ANx_ON = 0b1,      // Early Interrupt Enabled for ANx 
-    ADEIE_ANx_OFF = 0b0      // Early Interrupt Disabled for ANx 
+    ADEIE_ANx_ENABLED = 0b1,      // Early Interrupt Enabled for ANx 
+    ADEIE_ANx_DISABLED = 0b0      // Early Interrupt Disabled for ANx 
 }ADEIE_EIEN_e; 
 
 typedef struct {
@@ -3371,6 +3388,63 @@ typedef union {
 #define REG_ADMOD0H_AN15_UNSIGNED        0b0000000000000000      // In differential mode AN15 output will be unsigned
 
 
+#define REG_ADMOD0_AN_SET(x)   ((uint32_t)(pow(2, x)))	// Macro to set register bit based on ANx input number
+
+typedef enum {
+	ADMOD0H_DIFF_DIFF = 0b1,	// ANx operates in Differential mode
+	ADMOD0H_DIFF_SNGE = 0b0		// ANx operates in single ended mode
+} ADMOD0_DIFF_e;	
+
+typedef enum {
+	ADMOD0_SIGN_SIGNED = 0b1,	// ANx AN8 output value will be signed
+	ADMOD0_SIGN_UNSIGNED = 0b0	// ANx AN8 output value will be unsigned
+} ADMOD0_SIGN_e;	
+
+typedef struct {
+    volatile ADMOD0_DIFF_e AN0DIFF : 1; // Differential/Signle Ended mode selection bit
+    volatile ADMOD0_SIGN_e AN0SIGN : 1; // signed/unsigned ANx result selection bit
+    volatile ADMOD0_DIFF_e AN1DIFF : 1; // Differential/Signle Ended mode selection bit
+    volatile ADMOD0_SIGN_e AN1SIGN : 1; // signed/unsigned ANx result selection bit
+    volatile ADMOD0_DIFF_e AN2DIFF : 1; // Differential/Signle Ended mode selection bit
+    volatile ADMOD0_SIGN_e AN2SIGN : 1; // signed/unsigned ANx result selection bit
+    volatile ADMOD0_DIFF_e AN3DIFF : 1; // Differential/Signle Ended mode selection bit
+    volatile ADMOD0_SIGN_e AN3SIGN : 1; // signed/unsigned ANx result selection bit
+
+    volatile ADMOD0_DIFF_e AN4DIFF : 1; // Differential/Signle Ended mode selection bit
+    volatile ADMOD0_SIGN_e AN4SIGN : 1; // signed/unsigned ANx result selection bit
+    volatile ADMOD0_DIFF_e AN5DIFF : 1; // Differential/Signle Ended mode selection bit
+    volatile ADMOD0_SIGN_e AN5SIGN : 1; // signed/unsigned ANx result selection bit
+    volatile ADMOD0_DIFF_e AN6DIFF : 1; // Differential/Signle Ended mode selection bit
+    volatile ADMOD0_SIGN_e AN6SIGN : 1; // signed/unsigned ANx result selection bit
+    volatile ADMOD0_DIFF_e AN7DIFF : 1; // Differential/Signle Ended mode selection bit
+    volatile ADMOD0_SIGN_e AN7SIGN : 1; // signed/unsigned ANx result selection bit
+
+    volatile ADMOD0_DIFF_e AN8DIFF : 1; // Differential/Signle Ended mode selection bit
+    volatile ADMOD0_SIGN_e AN8SIGN : 1; // signed/unsigned ANx result selection bit
+    volatile ADMOD0_DIFF_e AN9DIFF : 1; // Differential/Signle Ended mode selection bit
+    volatile ADMOD0_SIGN_e AN9SIGN : 1; // signed/unsigned ANx result selection bit
+    volatile ADMOD0_DIFF_e AN10DIFF : 1; // Differential/Signle Ended mode selection bit
+    volatile ADMOD0_SIGN_e AN10SIGN : 1; // signed/unsigned ANx result selection bit
+    volatile ADMOD0_DIFF_e AN11DIFF : 1; // Differential/Signle Ended mode selection bit
+    volatile ADMOD0_SIGN_e AN11SIGN : 1; // signed/unsigned ANx result selection bit
+
+    volatile ADMOD0_DIFF_e AN12DIFF : 1; // Differential/Signle Ended mode selection bit
+    volatile ADMOD0_SIGN_e AN12SIGN : 1; // signed/unsigned ANx result selection bit
+    volatile ADMOD0_DIFF_e AN13DIFF : 1; // Differential/Signle Ended mode selection bit
+    volatile ADMOD0_SIGN_e AN13SIGN : 1; // signed/unsigned ANx result selection bit
+    volatile ADMOD0_DIFF_e AN14DIFF : 1; // Differential/Signle Ended mode selection bit
+    volatile ADMOD0_SIGN_e AN14SIGN : 1; // signed/unsigned ANx result selection bit
+    volatile ADMOD0_DIFF_e AN15DIFF : 1; // Differential/Signle Ended mode selection bit
+    volatile ADMOD0_SIGN_e AN15SIGN : 1; // signed/unsigned ANx result selection bit
+
+}__attribute__((packed))ADMOD0_t;
+
+typedef union {
+    volatile uint32_t value;
+    volatile ADMOD0_t bits;
+} REGBLK_ADMOD0_t;
+
+
 // REGISTER 19-21: ADMOD1L: ADC INPUT MODE CONTROL REGISTER 1 LOW
 
 #define REG_ADMOD1L_RESET                0b0000000000000000      // Reset ADLVLTRGH High Register
@@ -3458,38 +3532,41 @@ typedef union {
 #define REG_ADIEL_RESET                 0b0000000000000000      // Reset ADIEL Low Register
 #define REG_ADIEL_VALID_DATA_MSK		0b1111111111111111		// Bit mask used to set unimplemented bits to zero
 
-#define REG_ADIEL_AN0_ON                0b0000000000000001      // Interrupt enabled for AN0 
-#define REG_ADIEL_AN0_OFF               0b0000000000000000      // Interrupt disabled for AN0 
-#define REG_ADIEL_AN1_ON                0b0000000000000010      // Interrupt enabled for AN1
-#define REG_ADIEL_AN1_OFF               0b0000000000000000      // Interrupt disabled for AN1 
-#define REG_ADIEL_AN2_ON                0b0000000000000100      // Interrupt enabled for AN2
-#define REG_ADIEL_AN2_OFF               0b0000000000000000      // Interrupt disabled for AN2 
-#define REG_ADIEL_AN3_ON                0b0000000000001000      // Interrupt enabled for AN3
-#define REG_ADIEL_AN3_OFF               0b0000000000000000      // Interrupt disabled for AN3 
-#define REG_ADIEL_AN4_ON                0b0000000000010000      // Interrupt enabled for AN4
-#define REG_ADIEL_AN4_OFF               0b0000000000000000      // Interrupt disabled for AN4 
-#define REG_ADIEL_AN5_ON                0b0000000000100000      // Interrupt enabled for AN5
-#define REG_ADIEL_AN5_OFF               0b0000000000000000      // Interrupt disabled for AN5 
-#define REG_ADIEL_AN6_ON                0b0000000001000000      // Interrupt enabled for AN6
-#define REG_ADIEL_AN6_OFF               0b0000000000000000      // Interrupt disabled for AN6 
-#define REG_ADIEL_AN7_ON                0b0000000010000000      // Interrupt enabled for AN7
-#define REG_ADIEL_AN7_OFF               0b0000000000000000      // Interrupt disabled for AN7 
-#define REG_ADIEL_AN8_ON                0b0000000100000000      // Interrupt enabled for AN8
-#define REG_ADIEL_AN8_OFF               0b0000000000000000      // Interrupt disabled for AN8 
-#define REG_ADIEL_AN9_ON                0b0000001000000000      // Interrupt enabled for AN9
-#define REG_ADIEL_AN9_OFF               0b0000000000000000      // Interrupt disabled for AN9 
-#define REG_ADIEL_AN10_ON               0b0000010000000000      // Interrupt enabled for AN10 
-#define REG_ADIEL_AN10_OFF              0b0000000000000000      // Interrupt disabled for AN10 
-#define REG_ADIEL_AN11_ON               0b0000100000000000      // Interrupt enabled for AN11
-#define REG_ADIEL_AN11_OFF              0b0000000000000000      // Interrupt disabled for AN11 
-#define REG_ADIEL_AN12_ON               0b0001000000000000      // Interrupt enabled for AN12
-#define REG_ADIEL_AN12_OFF              0b0000000000000000      // Interrupt disabled for AN12 
-#define REG_ADIEL_AN13_ON               0b0010000000000000      // Interrupt enabled for AN13
-#define REG_ADIEL_AN13_OFF              0b0000000000000000      // Interrupt disabled for AN13 
-#define REG_ADIEL_AN14_ON               0b0100000000000000      // Interrupt enabled for AN14
-#define REG_ADIEL_AN14_OFF              0b0000000000000000      // Interrupt disabled for AN14 
-#define REG_ADIEL_AN15_ON               0b1000000000000000      // Interrupt enabled for AN15
-#define REG_ADIEL_AN15_OFF              0b0000000000000000      // Interrupt disabled for AN15
+#define REG_ADIEL_ALL_ENABLED           0b1111111111111111      // Interrupt enabled for all ANx inputs
+#define REG_ADIEL_ALL_DISABLED          0b0000000000000000      // Interrupt disabled for all ANx inputs 
+
+#define REG_ADIEL_AN0_ENABLED           0b0000000000000001      // Interrupt enabled for AN0 
+#define REG_ADIEL_AN0_DISABLED          0b0000000000000000      // Interrupt disabled for AN0 
+#define REG_ADIEL_AN1_ENABLED           0b0000000000000010      // Interrupt enabled for AN1
+#define REG_ADIEL_AN1_DISABLED          0b0000000000000000      // Interrupt disabled for AN1 
+#define REG_ADIEL_AN2_ENABLED           0b0000000000000100      // Interrupt enabled for AN2
+#define REG_ADIEL_AN2_DISABLED          0b0000000000000000      // Interrupt disabled for AN2 
+#define REG_ADIEL_AN3_ENABLED           0b0000000000001000      // Interrupt enabled for AN3
+#define REG_ADIEL_AN3_DISABLED          0b0000000000000000      // Interrupt disabled for AN3 
+#define REG_ADIEL_AN4_ENABLED           0b0000000000010000      // Interrupt enabled for AN4
+#define REG_ADIEL_AN4_DISABLED          0b0000000000000000      // Interrupt disabled for AN4 
+#define REG_ADIEL_AN5_ENABLED           0b0000000000100000      // Interrupt enabled for AN5
+#define REG_ADIEL_AN5_DISABLED          0b0000000000000000      // Interrupt disabled for AN5 
+#define REG_ADIEL_AN6_ENABLED           0b0000000001000000      // Interrupt enabled for AN6
+#define REG_ADIEL_AN6_DISABLED          0b0000000000000000      // Interrupt disabled for AN6 
+#define REG_ADIEL_AN7_ENABLED           0b0000000010000000      // Interrupt enabled for AN7
+#define REG_ADIEL_AN7_DISABLED          0b0000000000000000      // Interrupt disabled for AN7 
+#define REG_ADIEL_AN8_ENABLED           0b0000000100000000      // Interrupt enabled for AN8
+#define REG_ADIEL_AN8_DISABLED          0b0000000000000000      // Interrupt disabled for AN8 
+#define REG_ADIEL_AN9_ENABLED           0b0000001000000000      // Interrupt enabled for AN9
+#define REG_ADIEL_AN9_DISABLED          0b0000000000000000      // Interrupt disabled for AN9 
+#define REG_ADIEL_AN10_ENABLED          0b0000010000000000      // Interrupt enabled for AN10 
+#define REG_ADIEL_AN10_DISABLED         0b0000000000000000      // Interrupt disabled for AN10 
+#define REG_ADIEL_AN11_ENABLED          0b0000100000000000      // Interrupt enabled for AN11
+#define REG_ADIEL_AN11_DISABLED         0b0000000000000000      // Interrupt disabled for AN11 
+#define REG_ADIEL_AN12_ENABLED          0b0001000000000000      // Interrupt enabled for AN12
+#define REG_ADIEL_AN12_DISABLED         0b0000000000000000      // Interrupt disabled for AN12 
+#define REG_ADIEL_AN13_ENABLED          0b0010000000000000      // Interrupt enabled for AN13
+#define REG_ADIEL_AN13_DISABLED         0b0000000000000000      // Interrupt disabled for AN13 
+#define REG_ADIEL_AN14_ENABLED          0b0100000000000000      // Interrupt enabled for AN14
+#define REG_ADIEL_AN14_DISABLED         0b0000000000000000      // Interrupt disabled for AN14 
+#define REG_ADIEL_AN15_ENABLED          0b1000000000000000      // Interrupt enabled for AN15
+#define REG_ADIEL_AN15_DISABLED         0b0000000000000000      // Interrupt disabled for AN15
 
 
 // REGISTER 19-23: ADIEH: ADC INTERRUPT ENABLE REGISTER HIGH
@@ -3497,43 +3574,46 @@ typedef union {
 #define REG_ADIEH_RESET                 0b0000000000000000      // Reset ADIEH High Register
 #define REG_ADIEH_VALID_DATA_MSK		0b0000000000111111		// Bit mask used to set unimplemented bits to zero
 
-#define REG_ADIEH_AN16_ON               0b0000000000000001      // Interrupt enabled for AN16
-#define REG_ADIEH_AN16_OFF              0b0000000000000000      // Interrupt disabled for AN16 
-#define REG_ADIEH_AN17_ON               0b0000000000000010      // Interrupt enabled for AN17
-#define REG_ADIEH_AN17_OFF              0b0000000000000000      // Interrupt disabled for AN17 
-#define REG_ADIEH_AN18_ON               0b0000000000000100      // Interrupt enabled for AN18
-#define REG_ADIEH_AN18_OFF              0b0000000000000000      // Interrupt disabled for AN18 
-#define REG_ADIEH_AN19_ON               0b0000000000001000      // Interrupt enabled for AN19
-#define REG_ADIEH_AN19_OFF              0b0000000000000000      // Interrupt disabled for AN19 
-#define REG_ADIEH_AN20_ON               0b0000000000010000      // Interrupt enabled for AN20
-#define REG_ADIEH_AN20_OFF              0b0000000000000000      // Interrupt disabled for AN20 
-#define REG_ADIEH_AN21_ON               0b0000000000100000      // Interrupt enabled for AN21
-#define REG_ADIEH_AN21_OFF              0b0000000000000000      // Interrupt disabled for AN21 
-#define REG_ADIEH_AN22_ON               0b0000000001000000      // Interrupt enabled for AN22
-#define REG_ADIEH_AN22_OFF              0b0000000000000000      // Interrupt disabled for AN22 
-#define REG_ADIEH_AN23_ON               0b0000000010000000      // Interrupt enabled for AN23
-#define REG_ADIEH_AN23_OFF              0b0000000000000000      // Interrupt disabled for AN23 
-#define REG_ADIEH_AN24_ON               0b0000000100000000      // Interrupt enabled for AN24
-#define REG_ADIEH_AN24_OFF              0b0000000000000000      // Interrupt disabled for AN24 
-#define REG_ADIEH_AN25_ON               0b0000001000000000      // Interrupt enabled for AN25
-#define REG_ADIEH_AN25_OFF              0b0000000000000000      // Interrupt disabled for AN25 
-#define REG_ADIEH_AN26_ON               0b0000010000000000      // Interrupt enabled for AN26
-#define REG_ADIEH_AN26_OFF              0b0000000000000000      // Interrupt disabled for AN26 
-#define REG_ADIEH_AN27_ON               0b0000100000000000      // Interrupt enabled for AN27
-#define REG_ADIEH_AN27_OFF              0b0000000000000000      // Interrupt disabled for AN27 
-#define REG_ADIEH_AN28_ON               0b0001000000000000      // Interrupt enabled for AN28
-#define REG_ADIEH_AN28_OFF              0b0000000000000000      // Interrupt disabled for AN28 
-#define REG_ADIEH_AN29_ON               0b0010000000000000      // Interrupt enabled for AN29
-#define REG_ADIEH_AN29_OFF              0b0000000000000000      // Interrupt disabled for AN29 
-#define REG_ADIEH_AN30_ON               0b0100000000000000      // Interrupt enabled for AN30
-#define REG_ADIEH_AN30_OFF              0b0000000000000000      // Interrupt disabled for AN30 
-#define REG_ADIEH_AN31_ON               0b1000000000000000      // Interrupt enabled for AN31
-#define REG_ADIEH_AN31_OFF              0b0000000000000000      // Interrupt disabled for AN31
+#define REG_ADIEH_ALL_DISABLED          0b0000000000000000      // Interrupt disabled for all ANx inputs
+#define REG_ADIEH_ALL_ENABLED           0b1111111111111111      // Interrupt enabled for all ANx inputs
+
+#define REG_ADIEH_AN16_ENABLED          0b0000000000000001      // Interrupt enabled for AN16
+#define REG_ADIEH_AN16_DISABLED         0b0000000000000000      // Interrupt disabled for AN16 
+#define REG_ADIEH_AN17_ENABLED          0b0000000000000010      // Interrupt enabled for AN17
+#define REG_ADIEH_AN17_DISABLED         0b0000000000000000      // Interrupt disabled for AN17 
+#define REG_ADIEH_AN18_ENABLED          0b0000000000000100      // Interrupt enabled for AN18
+#define REG_ADIEH_AN18_DISABLED         0b0000000000000000      // Interrupt disabled for AN18 
+#define REG_ADIEH_AN19_ENABLED          0b0000000000001000      // Interrupt enabled for AN19
+#define REG_ADIEH_AN19_DISABLED         0b0000000000000000      // Interrupt disabled for AN19 
+#define REG_ADIEH_AN20_ENABLED          0b0000000000010000      // Interrupt enabled for AN20
+#define REG_ADIEH_AN20_DISABLED         0b0000000000000000      // Interrupt disabled for AN20 
+#define REG_ADIEH_AN21_ENABLED          0b0000000000100000      // Interrupt enabled for AN21
+#define REG_ADIEH_AN21_DISABLED         0b0000000000000000      // Interrupt disabled for AN21 
+#define REG_ADIEH_AN22_ENABLED          0b0000000001000000      // Interrupt enabled for AN22
+#define REG_ADIEH_AN22_DISABLED         0b0000000000000000      // Interrupt disabled for AN22 
+#define REG_ADIEH_AN23_ENABLED          0b0000000010000000      // Interrupt enabled for AN23
+#define REG_ADIEH_AN23_DISABLED         0b0000000000000000      // Interrupt disabled for AN23 
+#define REG_ADIEH_AN24_ENABLED          0b0000000100000000      // Interrupt enabled for AN24
+#define REG_ADIEH_AN24_DISABLED         0b0000000000000000      // Interrupt disabled for AN24 
+#define REG_ADIEH_AN25_ENABLED          0b0000001000000000      // Interrupt enabled for AN25
+#define REG_ADIEH_AN25_DISABLED         0b0000000000000000      // Interrupt disabled for AN25 
+#define REG_ADIEH_AN26_ENABLED          0b0000010000000000      // Interrupt enabled for AN26
+#define REG_ADIEH_AN26_DISABLED         0b0000000000000000      // Interrupt disabled for AN26 
+#define REG_ADIEH_AN27_ENABLED          0b0000100000000000      // Interrupt enabled for AN27
+#define REG_ADIEH_AN27_DISABLED         0b0000000000000000      // Interrupt disabled for AN27 
+#define REG_ADIEH_AN28_ENABLED          0b0001000000000000      // Interrupt enabled for AN28
+#define REG_ADIEH_AN28_DISABLED         0b0000000000000000      // Interrupt disabled for AN28 
+#define REG_ADIEH_AN29_ENABLED          0b0010000000000000      // Interrupt enabled for AN29
+#define REG_ADIEH_AN29_DISABLED         0b0000000000000000      // Interrupt disabled for AN29 
+#define REG_ADIEH_AN30_ENABLED          0b0100000000000000      // Interrupt enabled for AN30
+#define REG_ADIEH_AN30_DISABLED         0b0000000000000000      // Interrupt disabled for AN30 
+#define REG_ADIEH_AN31_ENABLED          0b1000000000000000      // Interrupt enabled for AN31
+#define REG_ADIEH_AN31_DISABLED         0b0000000000000000      // Interrupt disabled for AN31
 
 
 typedef enum {
-    ADIE_ANx_ON = 0b1,      // Interrupt Generation Enabled for ANx 
-    ADIE_ANx_OFF = 0b0      // Interrupt Generation Disabled for ANx 
+    ADIE_ANx_ENABLED = 0b1,      // Interrupt Generation Enabled for ANx 
+    ADIE_ANx_DISABLED = 0b0      // Interrupt Generation Disabled for ANx 
 }ADIE_IE_e; 
 
 typedef struct {
@@ -3756,7 +3836,56 @@ typedef union {
 #define REG_ADSTATH_AN31_CLR            0b0000000000000000      // DATA READY bit is cleared for AN31
 
 
-// REGISTER 19-26: ADTRGxH: ADC CHANNEL x TRIGGER SELECTION REGISTER 
+#define REG_ADSTAT_AN_SET(x)   ((uint32_t)(pow(2, x)))	// Macro to set register bit based on ANx input number
+
+typedef enum {
+	ADSTAT_ANx_SET = 0b1,	// DATA READY bit is set for ANx
+	ADSTAT_ANx_CLR = 0b0	// DATA READY bit is cleared for ANx
+} ADSTAT_e;	
+
+typedef struct {
+    volatile ADSTAT_e AN0RDY : 1; // DATA READY bit AN0
+    volatile ADSTAT_e AN1RDY : 1; // DATA READY bit AN1
+    volatile ADSTAT_e AN2RDY : 1; // DATA READY bit AN2
+    volatile ADSTAT_e AN3RDY : 1; // DATA READY bit AN3
+    volatile ADSTAT_e AN4RDY : 1; // DATA READY bit AN4
+    volatile ADSTAT_e AN5RDY : 1; // DATA READY bit AN5
+    volatile ADSTAT_e AN6RDY : 1; // DATA READY bit AN6
+    volatile ADSTAT_e AN7RDY : 1; // DATA READY bit AN7
+    volatile ADSTAT_e AN8RDY : 1; // DATA READY bit AN8
+    volatile ADSTAT_e AN9RDY : 1; // DATA READY bit AN9
+    volatile ADSTAT_e AN10RDY : 1; // DATA READY bit AN10
+    volatile ADSTAT_e AN11RDY : 1; // DATA READY bit AN11
+    volatile ADSTAT_e AN12RDY : 1; // DATA READY bit AN12
+    volatile ADSTAT_e AN13RDY : 1; // DATA READY bit AN13
+    volatile ADSTAT_e AN14RDY : 1; // DATA READY bit AN14
+    volatile ADSTAT_e AN15RDY : 1; // DATA READY bit AN15
+
+    volatile ADSTAT_e AN16RDY : 1; // DATA READY bit AN16
+    volatile ADSTAT_e AN17RDY : 1; // DATA READY bit AN17
+    volatile ADSTAT_e AN18RDY : 1; // DATA READY bit AN18
+    volatile ADSTAT_e AN19RDY : 1; // DATA READY bit AN19
+    volatile ADSTAT_e AN20RDY : 1; // DATA READY bit AN20
+    volatile ADSTAT_e AN21RDY : 1; // DATA READY bit AN21
+    volatile ADSTAT_e AN22RDY : 1; // DATA READY bit AN22
+    volatile ADSTAT_e AN23RDY : 1; // DATA READY bit AN23
+    volatile ADSTAT_e AN24RDY : 1; // DATA READY bit AN24
+    volatile ADSTAT_e AN25RDY : 1; // DATA READY bit AN25
+    volatile ADSTAT_e AN26RDY : 1; // DATA READY bit AN26
+    volatile ADSTAT_e AN27RDY : 1; // DATA READY bit AN27
+    volatile ADSTAT_e AN28RDY : 1; // DATA READY bit AN28
+    volatile ADSTAT_e AN29RDY : 1; // DATA READY bit AN29
+    volatile ADSTAT_e AN30RDY : 1; // DATA READY bit AN30
+    volatile ADSTAT_e AN31RDY : 1; // DATA READY bit AN31
+}__attribute__((packed))ADSTAT_t;
+
+typedef union {
+    volatile uint32_t value;
+    volatile ADSTAT_t bits;
+} REGBLK_ADSTAT_t;
+
+
+// REGISTER 19-26: ADTRGxH: ADC CHANNEL x TRIGGER SOURCE SELECTION REGISTER 
 
 #define REG_ADTRIGx_VALID_DATA_MSK          0b0001111100011111 // =0x1F1F
 #define REG_ADTRIGxH_VALID_DATA_MSK         0b0001111100000000 // =0x1F00
@@ -3862,6 +3991,36 @@ typedef union {
 #define REG_ADTRIGxH_TRGSRC_PWM2_TRIG1      0b0000011000000000 // PWM2 Trigger 1
 #define REG_ADTRIGxH_TRGSRC_PWM1_TRIG2      0b0000010100000000 // PWM1 Trigger 2
 #define REG_ADTRIGxH_TRGSRC_PWM1_TRIG1      0b0000010000000000 // PWM1 Trigger 1
+
+typedef enum {
+    ADTRIGxH_TRGSRC_PTG        = 0b11110, // AD trigger source: PTG
+    ADTRIGxH_TRGSRC_CLC2       = 0b11101, // AD trigger source: CLC2
+    ADTRIGxH_TRGSRC_CLC1       = 0b11100, // AD trigger source: CLC1
+    ADTRIGxH_TRGSRC_MCCP9      = 0b11011, // AD trigger source: MCCP9
+    ADTRIGxH_TRGSRC_SCCP7      = 0b11010, // AD trigger source: SCCP7
+    ADTRIGxH_TRGSRC_SCCP6      = 0b11001, // AD trigger source: SCCP6
+    ADTRIGxH_TRGSRC_SCCP5      = 0b11000, // AD trigger source: SCCP5
+    ADTRIGxH_TRGSRC_SCCP4      = 0b10111, // AD trigger source: SCCP4
+    ADTRIGxH_TRGSRC_SCCP3      = 0b10110, // AD trigger source: SCCP3
+    ADTRIGxH_TRGSRC_SCCP2      = 0b10101, // AD trigger source: SCCP2
+    ADTRIGxH_TRGSRC_SCCP1      = 0b10100, // AD trigger source: SCCP1
+    ADTRIGxH_TRGSRC_PWM8_TRIG2 = 0b10011, // AD trigger source: PWM8 Trigger 2
+    ADTRIGxH_TRGSRC_PWM8_TRIG1 = 0b10010, // AD trigger source: PWM8 Trigger 1
+    ADTRIGxH_TRGSRC_PWM7_TRIG2 = 0b10001, // AD trigger source: PWM7 Trigger 2
+    ADTRIGxH_TRGSRC_PWM7_TRIG1 = 0b10000, // AD trigger source: PWM7 Trigger 1
+    ADTRIGxH_TRGSRC_PWM6_TRIG2 = 0b01111, // AD trigger source: PWM6 Trigger 2
+    ADTRIGxH_TRGSRC_PWM6_TRIG1 = 0b01110, // AD trigger source: PWM6 Trigger 1
+    ADTRIGxH_TRGSRC_PWM5_TRIG2 = 0b01101, // AD trigger source: PWM5 Trigger 2
+    ADTRIGxH_TRGSRC_PWM5_TRIG1 = 0b01100, // AD trigger source: PWM5 Trigger 1
+    ADTRIGxH_TRGSRC_PWM4_TRIG2 = 0b01011, // AD trigger source: PWM4 Trigger 2
+    ADTRIGxH_TRGSRC_PWM4_TRIG1 = 0b01010, // AD trigger source: PWM4 Trigger 1
+    ADTRIGxH_TRGSRC_PWM3_TRIG2 = 0b01001, // AD trigger source: PWM3 Trigger 2
+    ADTRIGxH_TRGSRC_PWM3_TRIG1 = 0b01000, // AD trigger source: PWM3 Trigger 1
+    ADTRIGxH_TRGSRC_PWM2_TRIG2 = 0b00111, // AD trigger source: PWM2 Trigger 2
+    ADTRIGxH_TRGSRC_PWM2_TRIG1 = 0b00110, // AD trigger source: PWM2 Trigger 1
+    ADTRIGxH_TRGSRC_PWM1_TRIG2 = 0b00101, // AD trigger source: PWM1 Trigger 2
+    ADTRIGxH_TRGSRC_PWM1_TRIG1 = 0b00100  // AD trigger source: PWM1 Trigger 1
+}ADTRIGx_TRGSRC_e;
 
 #endif
 
@@ -4273,105 +4432,116 @@ typedef enum {
 #define REG_ADCMPxCON_CHNL_AN1          0b0000000100000000      // ADC Input Number used for comparison
 #define REG_ADCMPxCON_CHNL_AN0          0b0000000000000000      // ADC Input Number used for comparison
 
-#define REG_ADCMPxCON_CMPEN_ON          0b0000000010000000      // ADC Digital Comparator Enabled
-#define REG_ADCMPxCON_CMPEN_OFF         0b0000000000000000      // ADC Digital Comparator Disabled
+#define REG_ADCMPxCON_CMPEN_ENABLED     0b0000000010000000      // ADC Digital Comparator Enabled
+#define REG_ADCMPxCON_CMPEN_DISABLED    0b0000000000000000      // ADC Digital Comparator Disabled
 
-#define REG_ADCMPxCON_IE_ON             0b0000000001000000      // ADC Digital Comparator Common Interrupt Enabled
-#define REG_ADCMPxCON_IE_OFF            0b0000000000000000      // ADC Digital Comparator Common Interrupt Disabled
+#define REG_ADCMPxCON_IE_ENABLED        0b0000000001000000      // ADC Digital Comparator Common Interrupt Enabled
+#define REG_ADCMPxCON_IE_DISABLED       0b0000000000000000      // ADC Digital Comparator Common Interrupt Disabled
 
 #define REG_ADCMPxCON_STAT_ACTIVE       0b0000000000100000      // ADC Digital Comparator Common Interrupt Active
 #define REG_ADCMPxCON_STAT_READY        0b0000000000000000      // ADC Digital Comparator Common Interrupt Pending
 
-#define REG_ADCMPxCON_BTWN_ON           0b0000000000010000      // Generate Interrupt when ADC buffer between min & max
-#define REG_ADCMPxCON_BTWN_OFF          0b0000000000000000      // No Interrupt when ADC buffer between min & max
+#define REG_ADCMPxCON_BTWN_ENABLED      0b0000000000010000      // Generate Interrupt when ADC buffer between min & max
+#define REG_ADCMPxCON_BTWN_DISABLED     0b0000000000000000      // No Interrupt when ADC buffer between min & max
 
-#define REG_ADCMPxCON_HIHI_ON           0b0000000000001000      // Generate Interrupt when ADC buffer >= max
-#define REG_ADCMPxCON_HIHI_OFF          0b0000000000000000      // No Interrupt when ADC buffer >= max
+#define REG_ADCMPxCON_HIHI_ENABLED      0b0000000000001000      // Generate Interrupt when ADC buffer >= max
+#define REG_ADCMPxCON_HIHI_DISABLED     0b0000000000000000      // No Interrupt when ADC buffer >= max
 
-#define REG_ADCMPxCON_HILO_ON           0b0000000000000100      // Generate Interrupt when ADC buffer < min
-#define REG_ADCMPxCON_HILO_OFF          0b0000000000000000      // No Interrupt when ADC buffer < min
+#define REG_ADCMPxCON_HILO_ENABLED      0b0000000000000100      // Generate Interrupt when ADC buffer < min
+#define REG_ADCMPxCON_HILO_DISABLED     0b0000000000000000      // No Interrupt when ADC buffer < min
 
-#define REG_ADCMPxCON_LOHI_ON           0b0000000000000010      // Generate Interrupt when ADC buffer > min
-#define REG_ADCMPxCON_LOHI_OFF          0b0000000000000000      // No Interrupt when ADC buffer > min
+#define REG_ADCMPxCON_LOHI_ENABLED      0b0000000000000010      // Generate Interrupt when ADC buffer > min
+#define REG_ADCMPxCON_LOHI_DISABLED     0b0000000000000000      // No Interrupt when ADC buffer > min
 
-#define REG_ADCMPxCON_LOLO_ON           0b0000000000000001      // Generate Interrupt when ADC buffer < min
-#define REG_ADCMPxCON_LOLO_OFF          0b0000000000000000      // No Interrupt when ADC buffer < min
+#define REG_ADCMPxCON_LOLO_ENABLED      0b0000000000000001      // Generate Interrupt when ADC buffer < min
+#define REG_ADCMPxCON_LOLO_DISABLED     0b0000000000000000      // No Interrupt when ADC buffer < min
 
 // REGISTER 19-31: ADCMPxENL: ADC DIGITAL COMPARATOR x CHANNEL ENABLE REGISTER LOW
 
 #define REG_ADCMPxENL_RESET             0b0000000000000000      // Reset ADCMPxENL Register
 #define REG_ADCMPxENL_VALID_DATA_MSK	0b1111111111111111		// Bit mask used to set unimplemented bits to zero
 
-#define REG_ADCMPxENL_AN0_ON            0b0000000000000001      // Interrupt enabled for AN0 
-#define REG_ADCMPxENL_AN0_OFF           0b0000000000000000      // Interrupt disabled for AN0 
-#define REG_ADCMPxENL_AN1_ON            0b0000000000000010      // Interrupt enabled for AN1
-#define REG_ADCMPxENL_AN1_OFF           0b0000000000000000      // Interrupt disabled for AN1 
-#define REG_ADCMPxENL_AN2_ON            0b0000000000000100      // Interrupt enabled for AN2
-#define REG_ADCMPxENL_AN2_OFF           0b0000000000000000      // Interrupt disabled for AN2 
-#define REG_ADCMPxENL_AN3_ON            0b0000000000001000      // Interrupt enabled for AN3
-#define REG_ADCMPxENL_AN3_OFF           0b0000000000000000      // Interrupt disabled for AN3 
-#define REG_ADCMPxENL_AN4_ON            0b0000000000010000      // Interrupt enabled for AN4
-#define REG_ADCMPxENL_AN4_OFF           0b0000000000000000      // Interrupt disabled for AN4 
-#define REG_ADCMPxENL_AN5_ON            0b0000000000100000      // Interrupt enabled for AN5
-#define REG_ADCMPxENL_AN5_OFF           0b0000000000000000      // Interrupt disabled for AN5 
-#define REG_ADCMPxENL_AN6_ON            0b0000000001000000      // Interrupt enabled for AN6
-#define REG_ADCMPxENL_AN6_OFF           0b0000000000000000      // Interrupt disabled for AN6 
-#define REG_ADCMPxENL_AN7_ON            0b0000000010000000      // Interrupt enabled for AN7
-#define REG_ADCMPxENL_AN7_OFF           0b0000000000000000      // Interrupt disabled for AN7 
-#define REG_ADCMPxENL_AN8_ON            0b0000000100000000      // Interrupt enabled for AN8
-#define REG_ADCMPxENL_AN8_OFF           0b0000000000000000      // Interrupt disabled for AN8 
-#define REG_ADCMPxENL_AN9_ON            0b0000001000000000      // Interrupt enabled for AN9
-#define REG_ADCMPxENL_AN9_OFF           0b0000000000000000      // Interrupt disabled for AN9 
-#define REG_ADCMPxENL_AN10_ON           0b0000010000000000      // Interrupt enabled for AN10 
-#define REG_ADCMPxENL_AN10_OFF          0b0000000000000000      // Interrupt disabled for AN10 
-#define REG_ADCMPxENL_AN11_ON           0b0000100000000000      // Interrupt enabled for AN11
-#define REG_ADCMPxENL_AN11_OFF          0b0000000000000000      // Interrupt disabled for AN11 
-#define REG_ADCMPxENL_AN12_ON           0b0001000000000000      // Interrupt enabled for AN12
-#define REG_ADCMPxENL_AN12_OFF          0b0000000000000000      // Interrupt disabled for AN12 
-#define REG_ADCMPxENL_AN13_ON           0b0010000000000000      // Interrupt enabled for AN13
-#define REG_ADCMPxENL_AN13_OFF          0b0000000000000000      // Interrupt disabled for AN13 
-#define REG_ADCMPxENL_AN14_ON           0b0100000000000000      // Interrupt enabled for AN14
-#define REG_ADCMPxENL_AN14_OFF          0b0000000000000000      // Interrupt disabled for AN14 
-#define REG_ADCMPxENL_AN15_ON           0b1000000000000000      // Interrupt enabled for AN15
-#define REG_ADCMPxENL_AN15_OFF          0b0000000000000000      // Interrupt disabled for AN15
+#define REG_ADCMPxENL_ALL_ENABLED       0b1111111111111111      // Interrupt enabled for AN0 
+#define REG_ADCMPxENL_ALL_DISABLED      0b0000000000000000      // Interrupt disabled for AN0 
+
+#define REG_ADCMPxENL_AN0_ENABLED       0b0000000000000001      // Interrupt enabled for AN0 
+#define REG_ADCMPxENL_AN0_DISABLED      0b0000000000000000      // Interrupt disabled for AN0 
+#define REG_ADCMPxENL_AN1_ENABLED       0b0000000000000010      // Interrupt enabled for AN1
+#define REG_ADCMPxENL_AN1_DISABLED      0b0000000000000000      // Interrupt disabled for AN1 
+#define REG_ADCMPxENL_AN2_ENABLED       0b0000000000000100      // Interrupt enabled for AN2
+#define REG_ADCMPxENL_AN2_DISABLED      0b0000000000000000      // Interrupt disabled for AN2 
+#define REG_ADCMPxENL_AN3_ENABLED       0b0000000000001000      // Interrupt enabled for AN3
+#define REG_ADCMPxENL_AN3_DISABLED      0b0000000000000000      // Interrupt disabled for AN3 
+#define REG_ADCMPxENL_AN4_ENABLED       0b0000000000010000      // Interrupt enabled for AN4
+#define REG_ADCMPxENL_AN4_DISABLED      0b0000000000000000      // Interrupt disabled for AN4 
+#define REG_ADCMPxENL_AN5_ENABLED       0b0000000000100000      // Interrupt enabled for AN5
+#define REG_ADCMPxENL_AN5_DISABLED      0b0000000000000000      // Interrupt disabled for AN5 
+#define REG_ADCMPxENL_AN6_ENABLED       0b0000000001000000      // Interrupt enabled for AN6
+#define REG_ADCMPxENL_AN6_DISABLED      0b0000000000000000      // Interrupt disabled for AN6 
+#define REG_ADCMPxENL_AN7_ENABLED       0b0000000010000000      // Interrupt enabled for AN7
+#define REG_ADCMPxENL_AN7_DISABLED      0b0000000000000000      // Interrupt disabled for AN7 
+#define REG_ADCMPxENL_AN8_ENABLED       0b0000000100000000      // Interrupt enabled for AN8
+#define REG_ADCMPxENL_AN8_DISABLED      0b0000000000000000      // Interrupt disabled for AN8 
+#define REG_ADCMPxENL_AN9_ENABLED       0b0000001000000000      // Interrupt enabled for AN9
+#define REG_ADCMPxENL_AN9_DISABLED      0b0000000000000000      // Interrupt disabled for AN9 
+#define REG_ADCMPxENL_AN10_ENABLED      0b0000010000000000      // Interrupt enabled for AN10 
+#define REG_ADCMPxENL_AN10_DISABLED     0b0000000000000000      // Interrupt disabled for AN10 
+#define REG_ADCMPxENL_AN11_ENABLED      0b0000100000000000      // Interrupt enabled for AN11
+#define REG_ADCMPxENL_AN11_DISABLED     0b0000000000000000      // Interrupt disabled for AN11 
+#define REG_ADCMPxENL_AN12_ENABLED      0b0001000000000000      // Interrupt enabled for AN12
+#define REG_ADCMPxENL_AN12_DISABLED     0b0000000000000000      // Interrupt disabled for AN12 
+#define REG_ADCMPxENL_AN13_ENABLED      0b0010000000000000      // Interrupt enabled for AN13
+#define REG_ADCMPxENL_AN13_DISABLED     0b0000000000000000      // Interrupt disabled for AN13 
+#define REG_ADCMPxENL_AN14_ENABLED      0b0100000000000000      // Interrupt enabled for AN14
+#define REG_ADCMPxENL_AN14_DISABLED     0b0000000000000000      // Interrupt disabled for AN14 
+#define REG_ADCMPxENL_AN15_ENABLED      0b1000000000000000      // Interrupt enabled for AN15
+#define REG_ADCMPxENL_AN15_DISABLED     0b0000000000000000      // Interrupt disabled for AN15
 
 // REGISTER 19-32: ADCMPxENH: ADC DIGITAL COMPARATOR x CHANNEL ENABLE REGISTER HIGH
 
 #define REG_ADCMPxENH_RESET             0b0000000000000000      // Reset ADCMPxENH High Register
 #define REG_ADCMPxENH_VALID_DATA_MSK	0b0000000000111111		// Bit mask used to set unimplemented bits to zero
 
-#define REG_ADCMPxENH_AN16_ON           0b0000000000000001      // Interrupt enabled for AN16
-#define REG_ADCMPxENH_AN16_OFF          0b0000000000000000      // Interrupt disabled for AN16 
-#define REG_ADCMPxENH_AN17_ON           0b0000000000000010      // Interrupt enabled for AN17
-#define REG_ADCMPxENH_AN17_OFF          0b0000000000000000      // Interrupt disabled for AN17 
-#define REG_ADCMPxENH_AN18_ON           0b0000000000000100      // Interrupt enabled for AN18
-#define REG_ADCMPxENH_AN18_OFF          0b0000000000000000      // Interrupt disabled for AN18 
-#define REG_ADCMPxENH_AN19_ON           0b0000000000001000      // Interrupt enabled for AN19
-#define REG_ADCMPxENH_AN19_OFF          0b0000000000000000      // Interrupt disabled for AN19 
-#define REG_ADCMPxENH_AN20_ON           0b0000000000010000      // Interrupt enabled for AN20
-#define REG_ADCMPxENH_AN20_OFF          0b0000000000000000      // Interrupt disabled for AN20 
-#define REG_ADCMPxENH_AN21_ON           0b0000000000100000      // Interrupt enabled for AN21
-#define REG_ADCMPxENH_AN21_OFF          0b0000000000000000      // Interrupt disabled for AN21 
-#define REG_ADCMPxENH_AN22_ON           0b0000000001000000      // Interrupt enabled for AN22
-#define REG_ADCMPxENH_AN22_OFF          0b0000000000000000      // Interrupt disabled for AN22 
-#define REG_ADCMPxENH_AN23_ON           0b0000000010000000      // Interrupt enabled for AN23
-#define REG_ADCMPxENH_AN23_OFF          0b0000000000000000      // Interrupt disabled for AN23 
-#define REG_ADCMPxENH_AN24_ON           0b0000000100000000      // Interrupt enabled for AN24
-#define REG_ADCMPxENH_AN24_OFF          0b0000000000000000      // Interrupt disabled for AN24 
-#define REG_ADCMPxENH_AN25_ON           0b0000001000000000      // Interrupt enabled for AN25
-#define REG_ADCMPxENH_AN25_OFF          0b0000000000000000      // Interrupt disabled for AN25 
-#define REG_ADCMPxENH_AN26_ON           0b0000010000000000      // Interrupt enabled for AN26
-#define REG_ADCMPxENH_AN26_OFF          0b0000000000000000      // Interrupt disabled for AN26 
-#define REG_ADCMPxENH_AN27_ON           0b0000100000000000      // Interrupt enabled for AN27
-#define REG_ADCMPxENH_AN27_OFF          0b0000000000000000      // Interrupt disabled for AN27 
-#define REG_ADCMPxENH_AN28_ON           0b0001000000000000      // Interrupt enabled for AN28
-#define REG_ADCMPxENH_AN28_OFF          0b0000000000000000      // Interrupt disabled for AN28 
-#define REG_ADCMPxENH_AN29_ON           0b0010000000000000      // Interrupt enabled for AN29
-#define REG_ADCMPxENH_AN29_OFF          0b0000000000000000      // Interrupt disabled for AN29 
-#define REG_ADCMPxENH_AN30_ON           0b0100000000000000      // Interrupt enabled for AN30
-#define REG_ADCMPxENH_AN30_OFF          0b0000000000000000      // Interrupt disabled for AN30 
-#define REG_ADCMPxENH_AN31_ON           0b1000000000000000      // Interrupt enabled for AN31
-#define REG_ADCMPxENH_AN31_OFF          0b0000000000000000      // Interrupt disabled for AN31
+#define REG_ADCMPxENH_ALL_ENABLED       0b1111111111111111      // Interrupt enabled for all ANx inputs
+#define REG_ADCMPxENH_ALL_DISABLED      0b0000000000000000      // Interrupt disabled for all ANx inputs
+
+#define REG_ADCMPxENH_AN16_ENABLED      0b0000000000000001      // Interrupt enabled for AN16
+#define REG_ADCMPxENH_AN16_DISABLED     0b0000000000000000      // Interrupt disabled for AN16 
+#define REG_ADCMPxENH_AN17_ENABLED      0b0000000000000010      // Interrupt enabled for AN17
+#define REG_ADCMPxENH_AN17_DISABLED     0b0000000000000000      // Interrupt disabled for AN17 
+#define REG_ADCMPxENH_AN18_ENABLED      0b0000000000000100      // Interrupt enabled for AN18
+#define REG_ADCMPxENH_AN18_DISABLED     0b0000000000000000      // Interrupt disabled for AN18 
+#define REG_ADCMPxENH_AN19_ENABLED      0b0000000000001000      // Interrupt enabled for AN19
+#define REG_ADCMPxENH_AN19_DISABLED     0b0000000000000000      // Interrupt disabled for AN19 
+#define REG_ADCMPxENH_AN20_ENABLED      0b0000000000010000      // Interrupt enabled for AN20
+#define REG_ADCMPxENH_AN20_DISABLED     0b0000000000000000      // Interrupt disabled for AN20 
+#define REG_ADCMPxENH_AN21_ENABLED      0b0000000000100000      // Interrupt enabled for AN21
+#define REG_ADCMPxENH_AN21_DISABLED     0b0000000000000000      // Interrupt disabled for AN21 
+#define REG_ADCMPxENH_AN22_ENABLED      0b0000000001000000      // Interrupt enabled for AN22
+#define REG_ADCMPxENH_AN22_DISABLED     0b0000000000000000      // Interrupt disabled for AN22 
+#define REG_ADCMPxENH_AN23_ENABLED      0b0000000010000000      // Interrupt enabled for AN23
+#define REG_ADCMPxENH_AN23_DISABLED     0b0000000000000000      // Interrupt disabled for AN23 
+#define REG_ADCMPxENH_AN24_ENABLED      0b0000000100000000      // Interrupt enabled for AN24
+#define REG_ADCMPxENH_AN24_DISABLED     0b0000000000000000      // Interrupt disabled for AN24 
+#define REG_ADCMPxENH_AN25_ENABLED      0b0000001000000000      // Interrupt enabled for AN25
+#define REG_ADCMPxENH_AN25_DISABLED     0b0000000000000000      // Interrupt disabled for AN25 
+#define REG_ADCMPxENH_AN26_ENABLED      0b0000010000000000      // Interrupt enabled for AN26
+#define REG_ADCMPxENH_AN26_DISABLED     0b0000000000000000      // Interrupt disabled for AN26 
+#define REG_ADCMPxENH_AN27_ENABLED      0b0000100000000000      // Interrupt enabled for AN27
+#define REG_ADCMPxENH_AN27_DISABLED     0b0000000000000000      // Interrupt disabled for AN27 
+#define REG_ADCMPxENH_AN28_ENABLED      0b0001000000000000      // Interrupt enabled for AN28
+#define REG_ADCMPxENH_AN28_DISABLED     0b0000000000000000      // Interrupt disabled for AN28 
+#define REG_ADCMPxENH_AN29_ENABLED      0b0010000000000000      // Interrupt enabled for AN29
+#define REG_ADCMPxENH_AN29_DISABLED     0b0000000000000000      // Interrupt disabled for AN29 
+#define REG_ADCMPxENH_AN30_ENABLED      0b0100000000000000      // Interrupt enabled for AN30
+#define REG_ADCMPxENH_AN30_DISABLED     0b0000000000000000      // Interrupt disabled for AN30 
+#define REG_ADCMPxENH_AN31_ENABLED      0b1000000000000000      // Interrupt enabled for AN31
+#define REG_ADCMPxENH_AN31_DISABLED     0b0000000000000000      // Interrupt disabled for AN31
+
+typedef enum {
+	ADCMPxEN_ANx_ENABLED = 0b1,      // Interrupt enabled for ANx
+	ADCMPxEN_ANx_DISABLED = 0b0      // Interrupt disabled for ANx
+} ADCMPxEN_e;
 
 
 // REGISTER 19-33: ADFLxCON: ADC DIGITAL FILTER x CONTROL REGISTER
@@ -4379,8 +4549,8 @@ typedef enum {
 #define REG_ADFLxCON_RESET                  0b0000000000000000      // Reset ADFLxCON Register
 #define REG_ADFLxCON_VALID_DATA_MSK			0b1111111100011111		// Bit mask used to set unimplemented bits to zero
 
-#define REG_ADFLxCON_FLEN_ON                0b1000000000000000      // Digital filter enabled
-#define REG_ADFLxCON_FLEN_OFF               0b0000000000000000      // Digital filter disabled
+#define REG_ADFLxCON_FLEN_ENABLED           0b1000000000000000      // Digital filter enabled
+#define REG_ADFLxCON_FLEN_DISABLED          0b0000000000000000      // Digital filter disabled
 
 #define REG_ADFLxCON_MODE_LEFT_ALIGN_256X   0b0111110000000000      // Digital filter result alignment left
 #define REG_ADFLxCON_MODE_LEFT_ALIGN_128X   0b0111100000000000      // Digital filter result alignment left
@@ -4401,8 +4571,8 @@ typedef enum {
 #define REG_ADFLxCON_MODE_RIGHT_ALIGN_16X   0b0000010000000000      // Digital filter result alignment right
 #define REG_ADFLxCON_MODE_RIGHT_ALIGN_4X    0b0000000000000000      // Digital filter result alignment right
 
-#define REG_ADFLxCON_IE_ON                  0b0000001000000000      // Digital filter result ready interrupt enabled
-#define REG_ADFLxCON_IE_OFF                 0b0000000000000000      // Digital filter result ready interrupt disabled
+#define REG_ADFLxCON_IE_ENABLED             0b0000001000000000      // Digital filter result ready interrupt enabled
+#define REG_ADFLxCON_IE_DISABLED            0b0000000000000000      // Digital filter result ready interrupt disabled
 
 #define REG_ADFLxCON_RDY_READY              0b0000000100000000      // Digital filter result ready 
 #define REG_ADFLxCON_RDY_PEND               0b0000000000000000      // Digital filter result pending
@@ -4444,7 +4614,7 @@ typedef enum {
 #define REG_ADFLxCON_INPUT_AN0              0b0000000000000000      // Digital Filter ADC Input Number 
 
 
-
+// High Speed ADC Module Base Rgister Data Structure
 typedef struct {
     volatile REGBLK_ADCON1_t ADCON1;    // ADC CONTROL REGISTER 1 LOW/HIGH
     volatile REGBLK_ADCON2_t ADCON2;    // ADC CONTROL REGISTER 2 LOW/HIGH
@@ -4453,28 +4623,73 @@ typedef struct {
     volatile REGBLK_ADCON5_t ADCON5;    // ADC CONTROL REGISTER 5 LOW/HIGH
 }__attribute__((packed)) HSADC_MODULE_CONFIG_t; // ADC module base register set
 
+// High Speed ADC Input Channel Settings Data Structure
+typedef enum {
+    ANx_CORE_ASSIGNMENT_DEDICATED = 0b1, // Input pin ANx is tied to Dedicated ADC core
+    ANx_CORE_ASSIGNMENT_SHARED = 0b1     // Input pin ANx is tied to Shared ADC core
+}AD_CORE_ASSIGNMENT_e;
 
+typedef enum {
+    ANx_DIFFERENTIAL = 0b1, // Input pin ANx is configured in differential mode
+    ANx_SINGLE_ENDED = 0b0  // Input pin ANx is configured in single-ended mode
+}ADMOD_INPUT_MODE_e;
+
+typedef enum {
+    ANx_DATA_SIGNED = 0b1, // Input pin ANx output data is signed
+    ANx_DATA_UNSIGNED = 0b0  // Input pin ANx output data is unsigned
+}ADMOD_OUTPUT_DATA_MODE_e; // Input pin ANx output data mode
+
+typedef struct {
+    volatile AD_CORE_ASSIGNMENT_e core_assigmnment : 1; // Bit 0: Pin ANx is tied to dedicated or shared ADC core
+    volatile ADMOD_INPUT_MODE_e input_mode : 1;         // Bit 1: Input ANx input mode is differential or single-ended
+    volatile ADMOD_OUTPUT_DATA_MODE_e data_mode : 1;    // Bit 2: Input ANx output data mode
+    volatile ADIE_IE_e interrupt_enable : 1;            // Bit 3: Input ANx interrupt enable bit
+    volatile ADEIE_EIEN_e early_interrupt_enable : 1;   // Bit 4: Input ANx early interrupt enable bit
+    volatile ADLVLTRG_e trigger_mode : 1;              // Bit 5: Level Trigger for Corresponding Analog Input Enable bits
+    volatile ADTRIGx_TRGSRC_e trigger_source : 5;       // Bit 10-6: Input ANx trigger source
+    volatile unsigned : 1;                              // Bit 11: (reserved)
+    volatile unsigned : 1;                              // Bit 12: (reserved)
+    volatile unsigned : 1;                              // Bit 13: (reserved)
+    volatile unsigned : 1;                              // Bit 14: (reserved)
+    volatile unsigned : 1;                              // Bit 15: (reserved)
+}__attribute__((packed)) ANIN_CONFIG_t; // ADC Input Channel Settings 
+
+typedef union {
+    volatile uint16_t value;
+    volatile ANIN_CONFIG_t bits;
+} REGBLK_ANIN_CONFIG_t;
+
+
+typedef struct {
+
+    volatile uint16_t ad_input; // Analog-To-Digital input index (e.g. 3 for AN3)
+    volatile REGBLK_ANIN_CONFIG_t config; // Analog input configuration
+}__attribute__((packed)) HSADC_CHANNEL_CONFIG_t; // ADC Input Channel Settings 
 
 // Prototypes
+extern volatile uint16_t hsadc_init_adc_module( HSADC_MODULE_CONFIG_t adc_cfg );
+extern volatile uint16_t hsadc_init_adc_channel( HSADC_CHANNEL_CONFIG_t adin_cfg );
+
+
 extern volatile uint16_t hsadc_module_power_up(void);
 extern volatile uint16_t hsadc_module_power_down(void);
-
-extern volatile uint16_t hsadc_init_adc_module( HSADC_MODULE_CONFIG_t adc_cfg );
-
-extern volatile uint16_t hsadc_init_adc_core(uint16_t index, uint16_t regADCORExL, uint16_t regADCORExH);
-
-extern volatile uint16_t hsadc_power_on_adc_core(uint16_t index);
 extern volatile uint16_t hsadc_module_enable(void);
 extern volatile uint16_t hsadc_module_disable(void);
+
+extern volatile uint16_t hsadc_init_adc_core(uint16_t index, uint16_t regADCORExL, uint16_t regADCORExH);
+extern volatile uint16_t hsadc_power_on_adc_core(uint16_t index);
 extern volatile uint16_t hsadc_reset(void);
 extern volatile uint16_t hsadc_check_adc_cores_ready(void);
+
+
 
 #if defined (__P33SMPS_EP__)
 extern volatile uint16_t hsadc_calibrate_adc_core(uint16_t index, uint16_t calib_mode);
 #endif
 
-extern volatile uint16_t hsadc_set_adc_input_trigger_source(uint16_t index, uint16_t interrupt_trigger);
-extern volatile uint16_t hsadc_set_adc_input_interrupt(uint16_t index, uint16_t interrupt_enable, uint16_t early_interrupt_enable);
+extern volatile uint16_t hsadc_set_adc_input_trigger_source(uint16_t index, ADTRIGx_TRGSRC_e trigger_source);
+extern volatile uint16_t hsadc_set_adc_input_trigger_mode(uint16_t index, ADLVLTRG_e trigger_mode);
+extern volatile uint16_t hsadc_set_adc_input_interrupt(uint16_t index, ADIE_IE_e interrupt_enable, ADEIE_EIEN_e early_interrupt_enable);
 
 extern volatile uint16_t hsadc_init_adc_comp(uint16_t index, uint16_t input_no, uint16_t regADCMPxCON, uint16_t regADCMPxLO, uint16_t regADCMPxHI);
 
