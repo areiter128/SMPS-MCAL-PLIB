@@ -3401,40 +3401,40 @@ typedef enum {
 } ADMOD0_SIGN_e;	
 
 typedef struct {
-    volatile ADMOD0_DIFF_e AN0DIFF : 1; // Differential/Signle Ended mode selection bit
+    volatile ADMOD0_DIFF_e AN0DIFF : 1; // Differential/Single Ended mode selection bit
     volatile ADMOD0_SIGN_e AN0SIGN : 1; // signed/unsigned ANx result selection bit
-    volatile ADMOD0_DIFF_e AN1DIFF : 1; // Differential/Signle Ended mode selection bit
+    volatile ADMOD0_DIFF_e AN1DIFF : 1; // Differential/Single Ended mode selection bit
     volatile ADMOD0_SIGN_e AN1SIGN : 1; // signed/unsigned ANx result selection bit
-    volatile ADMOD0_DIFF_e AN2DIFF : 1; // Differential/Signle Ended mode selection bit
+    volatile ADMOD0_DIFF_e AN2DIFF : 1; // Differential/Single Ended mode selection bit
     volatile ADMOD0_SIGN_e AN2SIGN : 1; // signed/unsigned ANx result selection bit
-    volatile ADMOD0_DIFF_e AN3DIFF : 1; // Differential/Signle Ended mode selection bit
+    volatile ADMOD0_DIFF_e AN3DIFF : 1; // Differential/Single Ended mode selection bit
     volatile ADMOD0_SIGN_e AN3SIGN : 1; // signed/unsigned ANx result selection bit
 
-    volatile ADMOD0_DIFF_e AN4DIFF : 1; // Differential/Signle Ended mode selection bit
+    volatile ADMOD0_DIFF_e AN4DIFF : 1; // Differential/Single Ended mode selection bit
     volatile ADMOD0_SIGN_e AN4SIGN : 1; // signed/unsigned ANx result selection bit
-    volatile ADMOD0_DIFF_e AN5DIFF : 1; // Differential/Signle Ended mode selection bit
+    volatile ADMOD0_DIFF_e AN5DIFF : 1; // Differential/Single Ended mode selection bit
     volatile ADMOD0_SIGN_e AN5SIGN : 1; // signed/unsigned ANx result selection bit
-    volatile ADMOD0_DIFF_e AN6DIFF : 1; // Differential/Signle Ended mode selection bit
+    volatile ADMOD0_DIFF_e AN6DIFF : 1; // Differential/Single Ended mode selection bit
     volatile ADMOD0_SIGN_e AN6SIGN : 1; // signed/unsigned ANx result selection bit
-    volatile ADMOD0_DIFF_e AN7DIFF : 1; // Differential/Signle Ended mode selection bit
+    volatile ADMOD0_DIFF_e AN7DIFF : 1; // Differential/Single Ended mode selection bit
     volatile ADMOD0_SIGN_e AN7SIGN : 1; // signed/unsigned ANx result selection bit
 
-    volatile ADMOD0_DIFF_e AN8DIFF : 1; // Differential/Signle Ended mode selection bit
+    volatile ADMOD0_DIFF_e AN8DIFF : 1; // Differential/Single Ended mode selection bit
     volatile ADMOD0_SIGN_e AN8SIGN : 1; // signed/unsigned ANx result selection bit
-    volatile ADMOD0_DIFF_e AN9DIFF : 1; // Differential/Signle Ended mode selection bit
+    volatile ADMOD0_DIFF_e AN9DIFF : 1; // Differential/Single Ended mode selection bit
     volatile ADMOD0_SIGN_e AN9SIGN : 1; // signed/unsigned ANx result selection bit
-    volatile ADMOD0_DIFF_e AN10DIFF : 1; // Differential/Signle Ended mode selection bit
+    volatile ADMOD0_DIFF_e AN10DIFF : 1; // Differential/Single Ended mode selection bit
     volatile ADMOD0_SIGN_e AN10SIGN : 1; // signed/unsigned ANx result selection bit
-    volatile ADMOD0_DIFF_e AN11DIFF : 1; // Differential/Signle Ended mode selection bit
+    volatile ADMOD0_DIFF_e AN11DIFF : 1; // Differential/Single Ended mode selection bit
     volatile ADMOD0_SIGN_e AN11SIGN : 1; // signed/unsigned ANx result selection bit
 
-    volatile ADMOD0_DIFF_e AN12DIFF : 1; // Differential/Signle Ended mode selection bit
+    volatile ADMOD0_DIFF_e AN12DIFF : 1; // Differential/Single Ended mode selection bit
     volatile ADMOD0_SIGN_e AN12SIGN : 1; // signed/unsigned ANx result selection bit
-    volatile ADMOD0_DIFF_e AN13DIFF : 1; // Differential/Signle Ended mode selection bit
+    volatile ADMOD0_DIFF_e AN13DIFF : 1; // Differential/Single Ended mode selection bit
     volatile ADMOD0_SIGN_e AN13SIGN : 1; // signed/unsigned ANx result selection bit
-    volatile ADMOD0_DIFF_e AN14DIFF : 1; // Differential/Signle Ended mode selection bit
+    volatile ADMOD0_DIFF_e AN14DIFF : 1; // Differential/Single Ended mode selection bit
     volatile ADMOD0_SIGN_e AN14SIGN : 1; // signed/unsigned ANx result selection bit
-    volatile ADMOD0_DIFF_e AN15DIFF : 1; // Differential/Signle Ended mode selection bit
+    volatile ADMOD0_DIFF_e AN15DIFF : 1; // Differential/Single Ended mode selection bit
     volatile ADMOD0_SIGN_e AN15SIGN : 1; // signed/unsigned ANx result selection bit
 
 }__attribute__((packed))ADMOD0_t;
@@ -4594,30 +4594,73 @@ typedef union {
 #define REG_ADFLxCON_FLEN_ENABLED           0b1000000000000000      // Digital filter enabled
 #define REG_ADFLxCON_FLEN_DISABLED          0b0000000000000000      // Digital filter disabled
 
-#define REG_ADFLxCON_MODE_LEFT_ALIGN_256X   0b0111110000000000      // Digital filter result alignment left
-#define REG_ADFLxCON_MODE_LEFT_ALIGN_128X   0b0111100000000000      // Digital filter result alignment left
-#define REG_ADFLxCON_MODE_LEFT_ALIGN_64X    0b0111010000000000      // Digital filter result alignment left
-#define REG_ADFLxCON_MODE_LEFT_ALIGN_32X    0b0111000000000000      // Digital filter result alignment left
-#define REG_ADFLxCON_MODE_LEFT_ALIGN_16     0b0110110000000000      // Digital filter result alignment left
-#define REG_ADFLxCON_MODE_LEFT_ALIGN_8X     0b0110100000000000      // Digital filter result alignment left
-#define REG_ADFLxCON_MODE_LEFT_ALIGN_4X     0b0110010000000000      // Digital filter result alignment left
-#define REG_ADFLxCON_MODE_LEFT_ALIGN_2X     0b0110000000000000      // Digital filter result alignment left
+typedef enum {
+    ADFLxCON_FLEN_ENABLED  = 0b1, // Analog filter x is enabled
+    ADFLxCON_FLEN_DISABLED = 0b0  // Analog filter x is disabled
+}ADFLxCON_FLEN_e; // Filter Enable bit
 
-#define REG_ADFLxCON_MODE_RIGHT_ALIGN_128X  0b0001110000000000      // Digital filter result alignment right
-#define REG_ADFLxCON_MODE_RIGHT_ALIGN_32X   0b0001100000000000      // Digital filter result alignment right
-#define REG_ADFLxCON_MODE_RIGHT_ALIGN_8X    0b0001010000000000      // Digital filter result alignment right
-#define REG_ADFLxCON_MODE_RIGHT_ALIGN_2X    0b0001000000000000      // Digital filter result alignment right
+#define REG_ADFLxCON_MODE_AVERAGE           0b0110000000000000      // Digital filter operates in Averaging mode
+#define REG_ADFLxCON_MODE_OVERSAMPLE        0b0000000000000000      // Digital filter operates in Oversampling mode
 
-#define REG_ADFLxCON_MODE_RIGHT_ALIGN_256X  0b0000110000000000      // Digital filter result alignment right
-#define REG_ADFLxCON_MODE_RIGHT_ALIGN_64X   0b0000100000000000      // Digital filter result alignment right
-#define REG_ADFLxCON_MODE_RIGHT_ALIGN_16X   0b0000010000000000      // Digital filter result alignment right
-#define REG_ADFLxCON_MODE_RIGHT_ALIGN_4X    0b0000000000000000      // Digital filter result alignment right
+typedef enum {
+    ADFLxCON_MODE_AVERAGE    = 0b11, // Analog filter x is enabled
+    ADFLxCON_MODE_OVERSAMPLE = 0b00  // Analog filter x is disabled
+}ADFLxCON_MODE_e; // Filter Enable bit
+
+
+#define REG_ADFLxCON_OVRSAM_LEFT_ALIGN_256X    0b0000110000000000      // Digital filter result alignment left
+#define REG_ADFLxCON_OVRSAM_LEFT_ALIGN_128X    0b0001110000000000      // Digital filter result alignment left
+#define REG_ADFLxCON_OVRSAM_LEFT_ALIGN_64X     0b0000100000000000      // Digital filter result alignment left
+#define REG_ADFLxCON_OVRSAM_LEFT_ALIGN_32X     0b0001100000000000      // Digital filter result alignment left
+#define REG_ADFLxCON_OVRSAM_LEFT_ALIGN_16      0b0000010000000000      // Digital filter result alignment left
+#define REG_ADFLxCON_OVRSAM_LEFT_ALIGN_8X      0b0001010000000000      // Digital filter result alignment left
+#define REG_ADFLxCON_OVRSAM_LEFT_ALIGN_4X      0b0000000000000000      // Digital filter result alignment left
+#define REG_ADFLxCON_OVRSAM_LEFT_ALIGN_2X      0b0001000000000000      // Digital filter result alignment left
+
+#define REG_ADFLxCON_AVERAGE_RIGHT_ALIGN_256X  0b0111110000000000      // Digital filter result alignment right
+#define REG_ADFLxCON_AVERAGE_RIGHT_ALIGN_128X  0b0111100000000000      // Digital filter result alignment right
+#define REG_ADFLxCON_AVERAGE_RIGHT_ALIGN_64X   0b0111010000000000      // Digital filter result alignment right
+#define REG_ADFLxCON_AVERAGE_RIGHT_ALIGN_32X   0b0111000000000000      // Digital filter result alignment right
+#define REG_ADFLxCON_AVERAGE_RIGHT_ALIGN_16X   0b0110110000000000      // Digital filter result alignment right
+#define REG_ADFLxCON_AVERAGE_RIGHT_ALIGN_8X    0b0111100000000000      // Digital filter result alignment right
+#define REG_ADFLxCON_AVERAGE_RIGHT_ALIGN_4X    0b0110010000000000      // Digital filter result alignment right
+#define REG_ADFLxCON_AVERAGE_RIGHT_ALIGN_2X    0b0110000000000000      // Digital filter result alignment right
+
+typedef enum {
+    ADFLxCON_AVERAGE_RIGHT_ALIGN_256X = 0b11111,      // Digital filter result alignment right
+    ADFLxCON_AVERAGE_RIGHT_ALIGN_128X = 0b11110,      // Digital filter result alignment right
+    ADFLxCON_AVERAGE_RIGHT_ALIGN_64X  = 0b11101,      // Digital filter result alignment right
+    ADFLxCON_AVERAGE_RIGHT_ALIGN_32X  = 0b11100,      // Digital filter result alignment right
+    ADFLxCON_AVERAGE_RIGHT_ALIGN_16X  = 0b11011,      // Digital filter result alignment right
+    ADFLxCON_AVERAGE_RIGHT_ALIGN_8X   = 0b11110,      // Digital filter result alignment right
+    ADFLxCON_AVERAGE_RIGHT_ALIGN_4X   = 0b11001,      // Digital filter result alignment right
+    ADFLxCON_AVERAGE_RIGHT_ALIGN_2X   = 0b11000,       // Digital filter result alignment right
+
+    ADFLxCON_OVRSAM_LEFT_ALIGN_256X   = 0b00011,      // Digital filter result alignment left
+    ADFLxCON_OVRSAM_LEFT_ALIGN_128X   = 0b00111,      // Digital filter result alignment left
+    ADFLxCON_OVRSAM_LEFT_ALIGN_64X    = 0b00010,      // Digital filter result alignment left
+    ADFLxCON_OVRSAM_LEFT_ALIGN_32X    = 0b00110,      // Digital filter result alignment left
+    ADFLxCON_OVRSAM_LEFT_ALIGN_16     = 0b00001,      // Digital filter result alignment left
+    ADFLxCON_OVRSAM_LEFT_ALIGN_8X     = 0b00101,      // Digital filter result alignment left
+    ADFLxCON_OVRSAM_LEFT_ALIGN_4X     = 0b00000,      // Digital filter result alignment left
+    ADFLxCON_OVRSAM_LEFT_ALIGN_2X     = 0b00100       // Digital filter result alignment left
+}ADFLxCON_OVRSAM_e;
 
 #define REG_ADFLxCON_IE_ENABLED             0b0000001000000000      // Digital filter result ready interrupt enabled
 #define REG_ADFLxCON_IE_DISABLED            0b0000000000000000      // Digital filter result ready interrupt disabled
 
+typedef enum {
+    ADFLxCON_IE_ENABLED  = 0b1, // Digital filter result ready interrupt enabled
+    ADFLxCON_IE_DISABLED = 0b0  // Digital filter result ready interrupt disabled
+}ADFLxCON_IE_e; // Filter Common ADC Interrupt Enable bit
+
 #define REG_ADFLxCON_RDY_READY              0b0000000100000000      // Digital filter result ready 
 #define REG_ADFLxCON_RDY_PEND               0b0000000000000000      // Digital filter result pending
+
+typedef enum {
+    ADFLxCON_RDY_READY  = 0b1, // Digital filter result ready 
+    ADFLxCON_RDY_PEND   = 0b0  // Digital filter result pending
+}ADFLxCON_RDY_e; // Oversampling Filter Data Ready Flag bit
 
 #define REG_ADFLxCON_INPUT_MSK              0b0000000001111111      // ADC Core Clock Divider Filter Mask
 #define REG_ADFLxCON_INPUT(x)            (x & REG_ADFLxCON_INPUT_MSK)     // Digital Filter ADC Input Number
@@ -4655,8 +4698,50 @@ typedef union {
 #define REG_ADFLxCON_INPUT_AN1              0b0000000000000001      // Digital Filter ADC Input Number 
 #define REG_ADFLxCON_INPUT_AN0              0b0000000000000000      // Digital Filter ADC Input Number 
 
+typedef enum {
+    ADFLxCON_INPUT_AN25 = 0b11001,      // Digital Filter ADC Input Number 
+    ADFLxCON_INPUT_AN24 = 0b11000,      // Digital Filter ADC Input Number 
+    ADFLxCON_INPUT_AN23 = 0b10111,      // Digital Filter ADC Input Number 
+    ADFLxCON_INPUT_AN22 = 0b10110,      // Digital Filter ADC Input Number 
+    ADFLxCON_INPUT_AN21 = 0b10101,      // Digital Filter ADC Input Number 
+    ADFLxCON_INPUT_AN20 = 0b10100,      // Digital Filter ADC Input Number 
+    ADFLxCON_INPUT_AN19 = 0b10011,      // Digital Filter ADC Input Number 
+    ADFLxCON_INPUT_AN18 = 0b10010,      // Digital Filter ADC Input Number 
+    ADFLxCON_INPUT_AN17 = 0b10001,      // Digital Filter ADC Input Number 
+    ADFLxCON_INPUT_AN16 = 0b10000,      // Digital Filter ADC Input Number 
+    ADFLxCON_INPUT_AN15 = 0b01111,      // Digital Filter ADC Input Number 
+    ADFLxCON_INPUT_AN14 = 0b01110,      // Digital Filter ADC Input Number 
+    ADFLxCON_INPUT_AN13 = 0b01101,      // Digital Filter ADC Input Number 
+    ADFLxCON_INPUT_AN12 = 0b01100,      // Digital Filter ADC Input Number 
+    ADFLxCON_INPUT_AN11 = 0b01011,      // Digital Filter ADC Input Number 
+    ADFLxCON_INPUT_AN10 = 0b01010,      // Digital Filter ADC Input Number 
+    ADFLxCON_INPUT_AN9  = 0b01001,      // Digital Filter ADC Input Number 
+    ADFLxCON_INPUT_AN8  = 0b01000,      // Digital Filter ADC Input Number 
+    ADFLxCON_INPUT_AN7  = 0b00111,      // Digital Filter ADC Input Number 
+    ADFLxCON_INPUT_AN6  = 0b00110,      // Digital Filter ADC Input Number 
+    ADFLxCON_INPUT_AN5  = 0b00101,      // Digital Filter ADC Input Number 
+    ADFLxCON_INPUT_AN4  = 0b00100,      // Digital Filter ADC Input Number 
+    ADFLxCON_INPUT_AN3  = 0b00011,      // Digital Filter ADC Input Number 
+    ADFLxCON_INPUT_AN2  = 0b00010,      // Digital Filter ADC Input Number 
+    ADFLxCON_INPUT_AN1  = 0b00001,      // Digital Filter ADC Input Number 
+    ADFLxCON_INPUT_AN0  = 0b00000       // Digital Filter ADC Input Number 
+}ADFLxCON_INPUT_e;
 
-// High Speed ADC Module Base Rgister Data Structure
+typedef struct {
+    volatile ADFLxCON_INPUT_e input : 5;    // Bit 4-0: Oversampling Filter Input Channel Selection bits
+    volatile unsigned  : 3;                 // Bit 7-5: (reserved)
+    volatile ADFLxCON_RDY_e RDY : 1;        // Bit 8: Oversampling Filter Data Ready Flag bit
+    volatile ADFLxCON_IE_e IE : 1;          // Bit 9: Filter Common ADC Interrupt Enable bit
+    volatile ADFLxCON_OVRSAM_e OVRSAM : 5;  // Bit 14-10: Filter Mode bits + Filter Averaging/Oversampling Ratio bits
+    volatile ADFLxCON_FLEN_e FLEN : 1;      // Bit 15: Filter Enable bit
+}__attribute__((packed)) ADFLxCON_t;        // ADFLxCON: ADC DIGITAL FILTER x CONTROL REGISTER
+
+typedef union {
+    volatile uint16_t value;
+    volatile ADFLxCON_t bits;
+} REGBLK_ADFLxCON_t;    // ADFLxCON: ADC DIGITAL FILTER x CONTROL REGISTER
+
+// High Speed ADC Module Base Register Data Structure
 typedef struct {
     volatile REGBLK_ADCON1_t ADCON1;    // ADC CONTROL REGISTER 1 LOW/HIGH
     volatile REGBLK_ADCON2_t ADCON2;    // ADC CONTROL REGISTER 2 LOW/HIGH

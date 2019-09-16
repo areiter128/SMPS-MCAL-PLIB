@@ -219,6 +219,9 @@ inline volatile uint16_t hsadc_init_adc_channel( HSADC_CHANNEL_CONFIG_t adin_cfg
     // Set interrupt trigger mode (level/edge)
     fres &= hsadc_set_adc_input_trigger_mode(adin_cfg.ad_input, adin_cfg.config.bits.trigger_mode);
 
+    // Set analog input as source for a digital comparator
+    
+    
     return(fres);
     
 }
@@ -926,46 +929,6 @@ volatile uint16_t reg_offset=0;
     
 }
 
-//------------------------------------------------------------------------------
-// PRIVATE FUNCTIONS
-//------------------------------------------------------------------------------
-// ToDo: may be obsolete (and is unfinished anyways) :-)
-//inline volatile uint16_t write_channel_register(uint16_t index, uint16_t *reg_addr, bool value)
-//{
-//    volatile uint16_t *regptr;
-//    
-//    if (index >= ADC_ANINPUT_COUNT) { return(0); }
-//    
-//    if (index<16) {   
-//
-//        // Setting the Early Interrupt Enable Bit
-//        regptr = (volatile uint16_t *)&ADEIEL;
-//        *regptr |= (early_interrupt_enable << index);
-//
-//        // Setting the Interrupt Enable Bit
-//        regptr = (volatile uint16_t *)&ADIEL;
-//        *regptr |= ((volatile uint16_t)value << index);
-//    }
-//    else {
-//
-//        index -= 16;
-//
-//        #ifdef ADEIEH
-//        // Setting the Early Interrupt Enable Bit
-//        regptr = (volatile uint16_t *)&ADEIEH;
-//        *regptr |= (early_interrupt_enable << index);
-//
-//        // Setting the Interrupt Enable Bit
-//        regptr = (volatile uint16_t *)&ADIEH;
-//        *regptr |= (interrupt_enable << index);
-//        #else
-//        return(0);
-//        #endif
-//    }
-//    
-//	return(1);
-//	
-//}
 
 
 
