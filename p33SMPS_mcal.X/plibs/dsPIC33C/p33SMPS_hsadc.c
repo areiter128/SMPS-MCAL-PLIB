@@ -636,7 +636,7 @@ inline volatile uint16_t hsadc_power_on_adc_core(uint16_t index)
  * 
  * ***********************************************************************************************/
 
-inline volatile uint16_t hsadc_set_adc_input_trigger_source(uint16_t index, uint16_t trigger_source)
+inline volatile uint16_t hsadc_set_adc_input_trigger_source(uint16_t index, ADTRIG_TRGSRC_e trigger_source)
 {
 
     volatile uint16_t *regptr;
@@ -872,6 +872,8 @@ inline volatile uint16_t hsadc_set_adc_input_mode(uint16_t index, ADMOD_INPUT_MO
 	
 }
 
+
+
 /*!hsadc_init_adc_comp
  * ************************************************************************************************
  * Summary:
@@ -975,7 +977,6 @@ inline volatile uint16_t hsadc_init_adc_filter(uint16_t index, HSADC_ADFLT_CONFI
     volatile uint16_t fres = 1;
     volatile uint16_t *regptr16;
     volatile uint16_t reg_offset = 0;
-    volatile uint16_t reg_value = 0;
 
 
 	if (index >= (ADC_ADFL_COUNT-1)) return(0);    // Check if analog input number is valid
@@ -993,10 +994,7 @@ inline volatile uint16_t hsadc_init_adc_filter(uint16_t index, HSADC_ADFLT_CONFI
     *regptr16 = (adflt_cfg.ADFLxDAT & REG_ADFLxDAT_VALID_DATA_MSK);     // Write lower threshold value
     fres &= ((*regptr16 & REG_ADFLxDAT_VALID_DATA_MSK) == (adflt_cfg.ADFLxDAT & REG_ADFLxDAT_VALID_DATA_MSK)); // Test if written value matches parameter
 
-
-    // Check if Analog Input digital filter Enable has been set correctly
-    fres &= (volatile bool)(*regptr16 & (1 << reg_value)); // Test if written value matches parameter
-
+    
     return(fres);
     
 }

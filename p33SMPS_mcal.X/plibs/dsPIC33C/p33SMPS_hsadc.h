@@ -2753,8 +2753,8 @@ typedef union {
 #define REG_ADLVLTRGH_AN31_EDGE         0b0000000000000000      // AN31 is Edge-Triggered
 
 typedef enum {
-    ADLVLTRGH_ANx_LEVEL = 0b1, // ANx is Level-Triggered
-    ADLVLTRGH_ANx_EDGE = 0b0  // ANx is Edge-Triggered (default)
+    ADLVLTRG_ANx_LEVEL = 0b1, // ANx is Level-Triggered
+    ADLVLTRG_ANx_EDGE = 0b0  // ANx is Edge-Triggered (default)
 }ADLVLTRG_e; // Level Trigger for Corresponding Analog Input Enable bits
 
 
@@ -3647,9 +3647,9 @@ typedef union {
 #define REG_ADTRIGxH_VALID_DATA_MSK         0b0001111100000000 // =0x1F00
 
 
-#define REG_ADTRIGxH_TRGSRC_ADTRG31         0b0001111100000000 // ADC Trigger #31 (PPS input))
-
 #if defined (__P33SMPS_EP__)
+
+#define REG_ADTRIGxH_TRGSRC_ADTRG31         0b0001111100000000 // ADC Trigger #31 (PPS input))
 
 #if defined (__P33SMPS_EP7__) || defined (__P33SMPS_EP8__)
 
@@ -3748,41 +3748,13 @@ typedef union {
 #define REG_ADTRIGxH_TRGSRC_PWM1_TRIG2      0b0000010100000000 // PWM1 Trigger 2
 #define REG_ADTRIGxH_TRGSRC_PWM1_TRIG1      0b0000010000000000 // PWM1 Trigger 1
 
-typedef enum {
-    ADTRIGxH_TRGSRC_PTG        = 0b11110, // AD trigger source: PTG
-    ADTRIGxH_TRGSRC_CLC2       = 0b11101, // AD trigger source: CLC2
-    ADTRIGxH_TRGSRC_CLC1       = 0b11100, // AD trigger source: CLC1
-    ADTRIGxH_TRGSRC_MCCP9      = 0b11011, // AD trigger source: MCCP9
-    ADTRIGxH_TRGSRC_SCCP7      = 0b11010, // AD trigger source: SCCP7
-    ADTRIGxH_TRGSRC_SCCP6      = 0b11001, // AD trigger source: SCCP6
-    ADTRIGxH_TRGSRC_SCCP5      = 0b11000, // AD trigger source: SCCP5
-    ADTRIGxH_TRGSRC_SCCP4      = 0b10111, // AD trigger source: SCCP4
-    ADTRIGxH_TRGSRC_SCCP3      = 0b10110, // AD trigger source: SCCP3
-    ADTRIGxH_TRGSRC_SCCP2      = 0b10101, // AD trigger source: SCCP2
-    ADTRIGxH_TRGSRC_SCCP1      = 0b10100, // AD trigger source: SCCP1
-    ADTRIGxH_TRGSRC_PWM8_TRIG2 = 0b10011, // AD trigger source: PWM8 Trigger 2
-    ADTRIGxH_TRGSRC_PWM8_TRIG1 = 0b10010, // AD trigger source: PWM8 Trigger 1
-    ADTRIGxH_TRGSRC_PWM7_TRIG2 = 0b10001, // AD trigger source: PWM7 Trigger 2
-    ADTRIGxH_TRGSRC_PWM7_TRIG1 = 0b10000, // AD trigger source: PWM7 Trigger 1
-    ADTRIGxH_TRGSRC_PWM6_TRIG2 = 0b01111, // AD trigger source: PWM6 Trigger 2
-    ADTRIGxH_TRGSRC_PWM6_TRIG1 = 0b01110, // AD trigger source: PWM6 Trigger 1
-    ADTRIGxH_TRGSRC_PWM5_TRIG2 = 0b01101, // AD trigger source: PWM5 Trigger 2
-    ADTRIGxH_TRGSRC_PWM5_TRIG1 = 0b01100, // AD trigger source: PWM5 Trigger 1
-    ADTRIGxH_TRGSRC_PWM4_TRIG2 = 0b01011, // AD trigger source: PWM4 Trigger 2
-    ADTRIGxH_TRGSRC_PWM4_TRIG1 = 0b01010, // AD trigger source: PWM4 Trigger 1
-    ADTRIGxH_TRGSRC_PWM3_TRIG2 = 0b01001, // AD trigger source: PWM3 Trigger 2
-    ADTRIGxH_TRGSRC_PWM3_TRIG1 = 0b01000, // AD trigger source: PWM3 Trigger 1
-    ADTRIGxH_TRGSRC_PWM2_TRIG2 = 0b00111, // AD trigger source: PWM2 Trigger 2
-    ADTRIGxH_TRGSRC_PWM2_TRIG1 = 0b00110, // AD trigger source: PWM2 Trigger 1
-    ADTRIGxH_TRGSRC_PWM1_TRIG2 = 0b00101, // AD trigger source: PWM1 Trigger 2
-    ADTRIGxH_TRGSRC_PWM1_TRIG1 = 0b00100  // AD trigger source: PWM1 Trigger 1
-}ADTRIGx_TRGSRC_e;
-
 #endif
 
 #define REG_ADTRIGxH_TRGSRC_LSWTRG          0b0000001000000000 // Level software trigger
 #define REG_ADTRIGxH_TRGSRC_CSWTRG          0b0000000100000000 // Common Software Trigger
 #define REG_ADTRIGxH_TRGSRC_NONE            0b0000000000000000 // No trigger is selected
+
+
 
 
 // REGISTER 19-26: ADTRGxL: ADC CHANNEL x TRIGGER SELECTION REGISTER LOW
@@ -3898,7 +3870,10 @@ typedef enum {
 #define REG_ADTRIGxL_TRGSRC_NONE            0b0000000000000000 // No trigger is selected
 
 typedef enum {
-    ADTRIGx_TRGSRC_ADTRG31 = 0b11111, // ADC Trigger #31 (PPS input))
+
+    ADTRIGx_TRGSRC_ADTRG31    = 0b11111, // ADC Trigger #31 (PPS input)
+    ADTRIGx_TRGSRC_LSWTRG     = 0b00010, // Level software trigger
+    ADTRIGx_TRGSRC_CSWTRG     = 0b00001, // Common Software Trigger
 
 #if defined (__P33SMPS_EP__)
 
@@ -3971,40 +3946,38 @@ typedef enum {
 
 #elif defined (__P33SMPS_CK__)
 
-    ADTRIGx_TRGSRC_PTG = 0b11110, // PTG
-    ADTRIGx_TRGSRC_CLC2 = 0b11101, // CLC2
-    ADTRIGx_TRGSRC_CLC1 = 0b11100, // CLC1
-    ADTRIGx_TRGSRC_MCCP9 = 0b11011, // MCCP9
-    ADTRIGx_TRGSRC_SCCP7 = 0b11010, // SCCP7
-    ADTRIGx_TRGSRC_SCCP6 = 0b11001, // SCCP6
-    ADTRIGx_TRGSRC_SCCP5 = 0b11000, // SCCP5
-    ADTRIGx_TRGSRC_SCCP4 = 0b10111, // SCCP4
-    ADTRIGx_TRGSRC_SCCP3 = 0b10110, // SCCP3
-    ADTRIGx_TRGSRC_SCCP2 = 0b10101, // SCCP2
-    ADTRIGx_TRGSRC_SCCP1 = 0b10100, // SCCP1
-    ADTRIGx_TRGSRC_PWM8_TRIG2 = 0b10011, // PWM8 Trigger 2
-    ADTRIGx_TRGSRC_PWM8_TRIG1 = 0b10010, // PWM8 Trigger 1
-    ADTRIGx_TRGSRC_PWM7_TRIG2 = 0b10001, // PWM7 Trigger 2
-    ADTRIGx_TRGSRC_PWM7_TRIG1 = 0b10000, // PWM7 Trigger 1
-    ADTRIGx_TRGSRC_PWM6_TRIG2 = 0b01111, // PWM6 Trigger 2
-    ADTRIGx_TRGSRC_PWM6_TRIG1 = 0b01110, // PWM6 Trigger 1
-    ADTRIGx_TRGSRC_PWM5_TRIG2 = 0b01101, // PWM5 Trigger 2
-    ADTRIGx_TRGSRC_PWM5_TRIG1 = 0b01100, // PWM5 Trigger 1
-    ADTRIGx_TRGSRC_PWM4_TRIG2 = 0b01011, // PWM4 Trigger 2
-    ADTRIGx_TRGSRC_PWM4_TRIG1 = 0b01010, // PWM4 Trigger 1
-    ADTRIGx_TRGSRC_PWM3_TRIG2 = 0b01001, // PWM3 Trigger 2
-    ADTRIGx_TRGSRC_PWM3_TRIG1 = 0b01000, // PWM3 Trigger 1
-    ADTRIGx_TRGSRC_PWM2_TRIG2 = 0b00111, // PWM2 Trigger 2
-    ADTRIGx_TRGSRC_PWM2_TRIG1 = 0b00110, // PWM2 Trigger 1
-    ADTRIGx_TRGSRC_PWM1_TRIG2 = 0b00101, // PWM1 Trigger 2
-    ADTRIGx_TRGSRC_PWM1_TRIG1 = 0b00100, // PWM1 Trigger 1
+    ADTRIGx_TRGSRC_PTG        = 0b11110, // AD trigger source: PTG
+    ADTRIGx_TRGSRC_CLC2       = 0b11101, // AD trigger source: CLC2
+    ADTRIGx_TRGSRC_CLC1       = 0b11100, // AD trigger source: CLC1
+    ADTRIGx_TRGSRC_MCCP9      = 0b11011, // AD trigger source: MCCP9
+    ADTRIGx_TRGSRC_SCCP7      = 0b11010, // AD trigger source: SCCP7
+    ADTRIGx_TRGSRC_SCCP6      = 0b11001, // AD trigger source: SCCP6
+    ADTRIGx_TRGSRC_SCCP5      = 0b11000, // AD trigger source: SCCP5
+    ADTRIGx_TRGSRC_SCCP4      = 0b10111, // AD trigger source: SCCP4
+    ADTRIGx_TRGSRC_SCCP3      = 0b10110, // AD trigger source: SCCP3
+    ADTRIGx_TRGSRC_SCCP2      = 0b10101, // AD trigger source: SCCP2
+    ADTRIGx_TRGSRC_SCCP1      = 0b10100, // AD trigger source: SCCP1
+    ADTRIGx_TRGSRC_PWM8_TRIG2 = 0b10011, // AD trigger source: PWM8 Trigger 2
+    ADTRIGx_TRGSRC_PWM8_TRIG1 = 0b10010, // AD trigger source: PWM8 Trigger 1
+    ADTRIGx_TRGSRC_PWM7_TRIG2 = 0b10001, // AD trigger source: PWM7 Trigger 2
+    ADTRIGx_TRGSRC_PWM7_TRIG1 = 0b10000, // AD trigger source: PWM7 Trigger 1
+    ADTRIGx_TRGSRC_PWM6_TRIG2 = 0b01111, // AD trigger source: PWM6 Trigger 2
+    ADTRIGx_TRGSRC_PWM6_TRIG1 = 0b01110, // AD trigger source: PWM6 Trigger 1
+    ADTRIGx_TRGSRC_PWM5_TRIG2 = 0b01101, // AD trigger source: PWM5 Trigger 2
+    ADTRIGx_TRGSRC_PWM5_TRIG1 = 0b01100, // AD trigger source: PWM5 Trigger 1
+    ADTRIGx_TRGSRC_PWM4_TRIG2 = 0b01011, // AD trigger source: PWM4 Trigger 2
+    ADTRIGx_TRGSRC_PWM4_TRIG1 = 0b01010, // AD trigger source: PWM4 Trigger 1
+    ADTRIGx_TRGSRC_PWM3_TRIG2 = 0b01001, // AD trigger source: PWM3 Trigger 2
+    ADTRIGx_TRGSRC_PWM3_TRIG1 = 0b01000, // AD trigger source: PWM3 Trigger 1
+    ADTRIGx_TRGSRC_PWM2_TRIG2 = 0b00111, // AD trigger source: PWM2 Trigger 2
+    ADTRIGx_TRGSRC_PWM2_TRIG1 = 0b00110, // AD trigger source: PWM2 Trigger 1
+    ADTRIGx_TRGSRC_PWM1_TRIG2 = 0b00101, // AD trigger source: PWM1 Trigger 2
+    ADTRIGx_TRGSRC_PWM1_TRIG1 = 0b00100, // AD trigger source: PWM1 Trigger 1
 
 #endif
 
-    ADTRIGx_TRGSRC_LSWTRG = 0b00010, // Level software trigger
-    ADTRIGx_TRGSRC_CSWTRG = 0b00001, // Common Software Trigger
-    ADTRIGx_TRGSRC_NONE = 0b00000 // No trigger is selected
-
+    ADTRIGx_TRGSRC_NONE       = 0b00000 // No trigger is selected
+        
 } ADTRIG_TRGSRC_e;
 
 
@@ -4601,6 +4574,13 @@ typedef union {
     volatile ADFLxCON_t bits;
 } REGBLK_ADFLxCON_t;    // ADFLxCON: ADC DIGITAL FILTER x CONTROL REGISTER
 
+
+// ==============================================================================================
+// Global macros 
+#define ADCBUFx_ADDR(x)  ((x) * ((volatile uint16_t)&ADCBUF1 - (volatile uint16_t)&ADCBUF0))
+
+
+// ==============================================================================================
 // High Speed ADC Module Base Register Data Structure
 typedef struct {
     volatile REGBLK_ADCON1_t ADCON1;    // ADC CONTROL REGISTER 1 LOW/HIGH
@@ -4633,7 +4613,7 @@ typedef struct {
     volatile ADIE_IE_e interrupt_enable : 1;            // Bit 3: Input ANx interrupt enable bit
     volatile ADEIE_EIEN_e early_interrupt_enable : 1;   // Bit 4: Input ANx early interrupt enable bit
     volatile ADLVLTRG_e trigger_mode : 1;               // Bit 5: Level Trigger for Corresponding Analog Input Enable bit
-    volatile ADTRIGx_TRGSRC_e trigger_source : 5;       // Bit 10-6: Input ANx trigger source bits
+    volatile ADTRIG_TRGSRC_e trigger_source : 5;        // Bit 10-6: Input ANx trigger source bits
     volatile unsigned : 1;                              // Bit 11: (reserved)
     volatile unsigned : 1;                              // Bit 12: (reserved)
     volatile unsigned : 1;                              // Bit 13: (reserved)
@@ -4692,7 +4672,7 @@ extern volatile uint16_t hsadc_calibrate_adc_core(uint16_t index, uint16_t calib
 #endif
 
 extern volatile uint16_t hsadc_set_adc_input_mode(uint16_t index, ADMOD_INPUT_MODE_e input_mode, ADMOD_OUTPUT_DATA_MODE_e data_mode);
-extern volatile uint16_t hsadc_set_adc_input_trigger_source(uint16_t index, ADTRIGx_TRGSRC_e trigger_source);
+extern volatile uint16_t hsadc_set_adc_input_trigger_source(uint16_t index, ADTRIG_TRGSRC_e trigger_source);
 extern volatile uint16_t hsadc_set_adc_input_trigger_mode(uint16_t index, ADLVLTRG_e trigger_mode);
 extern volatile uint16_t hsadc_set_adc_input_interrupt(uint16_t index, ADIE_IE_e interrupt_enable, ADEIE_EIEN_e early_interrupt_enable);
 
