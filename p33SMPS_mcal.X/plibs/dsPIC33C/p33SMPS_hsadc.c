@@ -219,9 +219,6 @@ inline volatile uint16_t hsadc_init_adc_channel( HSADC_CHANNEL_CONFIG_t adin_cfg
     // Set interrupt trigger mode (level/edge)
     fres &= hsadc_set_adc_input_trigger_mode(adin_cfg.ad_input, adin_cfg.config.bits.trigger_mode);
 
-    // Set analog input as source for a digital comparator
-    
-    
     return(fres);
     
 }
@@ -251,6 +248,9 @@ volatile uint16_t reg_buf=0;
 volatile uint16_t reg_offset=0;
 #endif
 
+    /* ToDo: Add register contents check after WRITE */
+
+
 	if (index >= ADC_CORE_COUNT) return(0);
 
     if(index != ADC_SHARED_CORE_INDEX)
@@ -261,8 +261,9 @@ volatile uint16_t reg_offset=0;
         #if defined (ADCORE0L)
         // Dual core devices like dsPIC33CH only have shared cores on the master side.
         // Only slave cores have multiple, dedicated cores
-        
-        reg_offset = ( index * ADC_ADCORE_REG_OFFSET );
+
+        reg_offset = (index-1) * ((volatile uint16_t)&ADCORE1L - (volatile uint16_t)&ADCORE0L);
+
         regptr = (volatile uint16_t *)&ADCORE0L + reg_offset;
         reg_buf = (regADCORExL & REG_ADCORExL_VALID_DATA_MSK);
         if((*regptr & REG_ADCORExL_VALID_DATA_MSK) != reg_buf)
@@ -340,7 +341,6 @@ inline volatile uint16_t hsadc_module_disable(void)
 {
 
 	ADCON1Lbits.ADON = ADC_OFF;			// Disable ADC module 
-
 	return(1 - ADCON1Lbits.ADON);
 
 }
@@ -357,8 +357,10 @@ inline volatile uint16_t hsadc_module_disable(void)
  * become GPIOs.
  * ***********************************************************************************************/
 
-inline volatile uint16_t hsadc_reset(void)
-{
+inline volatile uint16_t hsadc_reset(void) {
+    
+    /* ToDo: Add register contents check after WRITE */
+    
 	// Reset all ADC configuration registers to defaults
 
 	ADCON1Lbits.ADON = ADC_OFF;				// Disable ADC
@@ -458,6 +460,8 @@ inline volatile uint16_t hsadc_reset(void)
 inline volatile uint16_t hsadc_check_adc_cores_ready(void)
 {
     volatile uint16_t timeout = 0, rdy_compare = 0, reg_buf = 0;
+
+    /* ToDo: Add register contents check after WRITE */
     
     reg_buf = (ADCON5L & 0x00FF);
     rdy_compare = (reg_buf << 8);
@@ -489,7 +493,8 @@ inline volatile uint16_t hsadc_calibrate_adc_core(uint16_t index, uint16_t calib
     
     if (index >= ADC_CORE_COUNT) return(0);
     
-    reg_offset = ((index >> 1) * ADC_ADCAL_REG_OFFSET);   // Index is divided by 2 due to shared registers
+    // Determine register set offset
+    reg_offset = (index) * ((volatile uint16_t)&ADCAL1L - (volatile uint16_t)&ADCAL0L);
     regptr = (volatile uint16_t *)&ADCAL0L + reg_offset;
     
     // differentiate between odd and even indices due to shared registers
@@ -569,6 +574,8 @@ inline volatile uint16_t hsadc_power_on_adc_core(uint16_t index)
     volatile uint16_t *regptr;
     volatile uint16_t reg_buf=0;
     volatile uint16_t timeout=0;
+
+    /* ToDo: Add register contents check after WRITE */
     
     if (index >= ADC_CORE_COUNT) return(0);
     
@@ -635,10 +642,13 @@ inline volatile uint16_t hsadc_set_adc_input_trigger_source(uint16_t index, uint
     volatile uint16_t *regptr;
     volatile uint16_t reg_offset;
     volatile uint16_t reg_buf=0;
+
+    /* ToDo: Add register contents check after WRITE */
     
     if (index >= ADC_ANINPUT_COUNT) return(0);
 
-    reg_offset = ((index >> 1) * ADC_ADTRIG_REG_OFFSET);   // Index is divided by 2 due to shared registers
+    // Determine register set offset
+    reg_offset = (index) * ((volatile uint16_t)&ADTRIG1L - (volatile uint16_t)&ADTRIG0L);
     regptr = (volatile uint16_t *)&ADTRIG0L + reg_offset;
 
     if (index & 0x0001) {
@@ -683,6 +693,8 @@ inline volatile uint16_t hsadc_set_adc_input_trigger_source(uint16_t index, uint
 inline volatile uint16_t hsadc_set_adc_input_interrupt(uint16_t index, uint16_t interrupt_enable, uint16_t early_interrupt_enable)
 {
     volatile uint16_t *regptr;
+
+    /* ToDo: Add register contents check after WRITE */
     
     if (index >= ADC_ANINPUT_COUNT) return(0);
     
@@ -863,13 +875,11 @@ inline volatile uint16_t hsadc_set_adc_input_mode(uint16_t index, ADMOD_INPUT_MO
 /*!hsadc_init_adc_comp
  * ************************************************************************************************
  * Summary:
- * Initializes an individual digital ADC Comparator configuration
+ * Initializes an individual ADC digital Comparator configuration
  *
  * Parameters:
- *	regADCMPxCON = holds the register value for the ADC comparator configuration register (ADCMPxCON)
- *	regADCMP0ENx = holds the register value for the ADC input used as data input
- *  regADCMPxLO = holds the compare value for the lower trip point threshold
- *  regADCMPxHI = holds the compare value for the upper trip point threshold
+ *	HSADC_ADCMP_CONFIG_t adcmp_cfg = holds the ADC digital comparator configuration and values
+ *                                   of upper and lower comparison thresholds
  * 
  * Description:
  * The ADC peripheral features a digital comparator, which compares the latest sample of a dedicated
@@ -878,57 +888,118 @@ inline volatile uint16_t hsadc_set_adc_input_mode(uint16_t index, ADMOD_INPUT_MO
  * This routine allows configuration of the comparator, the input source and its thresholds.
  * ***********************************************************************************************/
 
-inline volatile uint16_t hsadc_init_adc_comp(uint16_t index, uint16_t input_no, uint16_t regADCMPxCON, uint16_t regADCMPxLO, uint16_t regADCMPxHI)
-{
+inline volatile uint16_t hsadc_init_adc_comp(uint16_t index, HSADC_ADCMP_CONFIG_t adcmp_cfg) {
 
-volatile uint16_t *regptr;
-volatile uint16_t reg_offset=0;
+    volatile uint16_t fres = 1;
+    volatile uint16_t *regptr16;
+    volatile uint16_t reg_offset = 0;
+    volatile uint16_t reg_value = 0;
 
-	if (index >= REG_ADCMP_COUNT) return(0);
 
+	if (index >= (ADC_ADCMP_COUNT-1)) return(0);    // Check if analog input number is valid
+    
+    
     // ADC Comparator Configuration
-    reg_offset = ( index * REG_ADCMP_REG_OFFSET );
-    regptr = (volatile uint16_t *)&ADCMP0CON + reg_offset;
-    *regptr = (regADCMPxCON & REG_ADCMPxCON_VALID_DATA_WR_MSK);
-
+    reg_offset = (index) * ((volatile uint16_t)&ADCMP1CON - (volatile uint16_t)&ADCMP0CON); // Get register offset
+    regptr16 = (volatile uint16_t *)&ADCMP0CON + reg_offset;      // Set digital comparator configuration value
+    *regptr16 = (adcmp_cfg.ADCMPxCON.value & REG_ADCMPxCON_VALID_DATA_WR_MSK); // Write digital comparator value
+    fres &= ((*regptr16 & REG_ADCMPxCON_VALID_DATA_RD_MSK) == (adcmp_cfg.ADCMPxCON.value & REG_ADCMPxCON_VALID_DATA_WR_MSK)); // Test if written value matches parameter
+    
     // Lower Threshold Compare Value
-    reg_offset = ( index * REG_ADCMPxLO_OFFSET );
-    regptr = (volatile uint16_t *)&ADCMP0LO + reg_offset;
-    *regptr = (regADCMPxLO & REG_ADCMPxLO_VALID_DATA_MASK);
+    reg_offset = (index) * ((volatile uint16_t)&ADCMP1LO - (volatile uint16_t)&ADCMP0LO); // Get register offset
+    regptr16 = (volatile uint16_t *)&ADCMP0LO + reg_offset;       // Get lower threshold value
+    *regptr16 = (adcmp_cfg.ADCMPxLO & REG_ADCMPxLO_VALID_DATA_MASK);     // Write lower threshold value
+    fres &= ((*regptr16 & REG_ADCMPxLO_VALID_DATA_MASK) == (adcmp_cfg.ADCMPxLO & REG_ADCMPxLO_VALID_DATA_MASK)); // Test if written value matches parameter
 
     // Upper Threshold Compare Value
-    reg_offset = ( index * REG_ADCMPxHI_OFFSET );
-    regptr = (volatile uint16_t *)&ADCMP0HI + reg_offset;
-    *regptr = (regADCMPxHI & REG_ADCMPxHI_VALID_DATA_MASK);
+    reg_offset = (index) * ((volatile uint16_t)&ADCMP1HI - (volatile uint16_t)&ADCMP0HI); // Get register offset
+    regptr16 = (volatile uint16_t *)&ADCMP0HI + reg_offset;       // Get upper threshold value
+    *regptr16 = (adcmp_cfg.ADCMPxHI & REG_ADCMPxHI_VALID_DATA_MASK);     // Write upper threshold value
+    fres &= ((*regptr16 & REG_ADCMPxHI_VALID_DATA_MASK) == (adcmp_cfg.ADCMPxHI & REG_ADCMPxHI_VALID_DATA_MASK)); // Test if written value matches parameter
     
-    // Assigning ANx inputs for the comparison
-    if (input_no < 16) {   
+    // Assigning ANx inputs to the comparison
+    reg_value = adcmp_cfg.ADCMPxCON.bits.CHNL;
+    reg_value -= 16;
+    
+    if (reg_value < 16) {   
 
         // Enabling the corresponding analog input comparator input
-        reg_offset = ( index * REG_ADCMPxEN_REG_OFFSET );
-        regptr = (volatile uint16_t *)&ADCMP0ENL + reg_offset;
-        *regptr = (1 << input_no);
+        reg_offset = (index) * ((volatile uint16_t)&ADCMP1ENL - (volatile uint16_t)&ADCMP0ENL); // Get register offset
+        regptr16 = (volatile uint16_t *)&ADCMP0ENL + reg_offset;    // Get upper threshold value
+        *regptr16 |= (1 << reg_value);                              // Write upper threshold value
 
     }
-    else if (input_no < 32) {
-
-        input_no -= 16;
+    else if (reg_value < 32) {
 
         #ifdef ADCMP0ENH
         // Enabling the corresponding analog input comparator input
-        reg_offset = ( index * REG_ADCMPxEN_REG_OFFSET );
-        regptr = (volatile uint16_t *)&ADCMP0ENH + reg_offset;
-        *regptr = (1 << input_no);
+        reg_offset = (index) * ((volatile uint16_t)&ADCMP1ENH - (volatile uint16_t)&ADCMP0ENH); // Get register offset
+        regptr16 = (volatile uint16_t *)&ADCMP0ENH + reg_offset;    // Get upper threshold value
+        *regptr16 = (1 << reg_value);                               // Write upper threshold value
         #else
         return(0);
         #endif
     }
     else { return(0); }
-    
-    return(1);
+
+    // Check if Analog Input Comparator Enable has been set correctly
+    fres &= (volatile bool)(*regptr16 & (1 << reg_value)); // Test if written value matches parameter
+
+    return(fres);
     
 }
 
+
+/*!hsadc_init_adc_filter
+ * ************************************************************************************************
+ * Summary:
+ * Initializes an individual ADC digital Filter configuration
+ *
+ * Parameters:
+ *	HSADC_ADFLT_CONFIG_t adflt_cfg = holds the ADC digital filter configuration and values
+ *                                   of upper and lower comparison thresholds
+ * 
+ * Description:
+ * The ADC peripheral features a digital filter, which offers averaging and oversampling 
+ * filter capabilities. Depending on the setting, this filter will be averaging the most recent 
+ * samples of the assigned analog input ANx until the averaging setting is matched and the data
+ * is provided in an independent register FLTxDAT. In oversampling mode, the assigned analog 
+ * input ANx is continuously oversampled until the oversampling setting is matched. 
+ * 
+ * This routine allows configuration of the comparator, the input source and its thresholds.
+ * The filter result register FLTxDAT will be reset or pre-charged, but not updated automatically.
+ * ***********************************************************************************************/
+
+inline volatile uint16_t hsadc_init_adc_filter(uint16_t index, HSADC_ADFLT_CONFIG_t adflt_cfg) {
+
+    volatile uint16_t fres = 1;
+    volatile uint16_t *regptr16;
+    volatile uint16_t reg_offset = 0;
+    volatile uint16_t reg_value = 0;
+
+
+	if (index >= (ADC_ADFL_COUNT-1)) return(0);    // Check if analog input number is valid
+
+    
+    // ADC Comparator Configuration
+    reg_offset = (index) * ((volatile uint16_t)&ADFL1CON - (volatile uint16_t)&ADFL0CON); // Get register offset
+    regptr16 = (volatile uint16_t *)&ADFL0CON + reg_offset;      // Set digital comparator configuration value
+    *regptr16 = (adflt_cfg.ADFLxCON.value & REG_ADFLxCON_VALID_DATA_WR_MSK); // Write digital comparator value
+    fres &= ((*regptr16 & REG_ADFLxCON_VALID_DATA_RD_MSK) == (adflt_cfg.ADFLxCON.value & REG_ADFLxCON_VALID_DATA_WR_MSK)); // Test if written value matches parameter
+    
+    // Lower Threshold Compare Value
+    reg_offset = (index) * ((volatile uint16_t)&ADFL1DAT - (volatile uint16_t)&ADFL0DAT); // Get register offset
+    regptr16 = (volatile uint16_t *)&ADFL0DAT + reg_offset;       // Get lower threshold value
+    *regptr16 = (adflt_cfg.ADFLxDAT & REG_ADFLxDAT_VALID_DATA_MSK);     // Write lower threshold value
+    fres &= ((*regptr16 & REG_ADFLxDAT_VALID_DATA_MSK) == (adflt_cfg.ADFLxDAT & REG_ADFLxDAT_VALID_DATA_MSK)); // Test if written value matches parameter
+
+
+    // Check if Analog Input digital filter Enable has been set correctly
+    fres &= (volatile bool)(*regptr16 & (1 << reg_value)); // Test if written value matches parameter
+
+    return(fres);
+    
+}
 
 
 

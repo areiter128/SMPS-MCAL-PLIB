@@ -51,25 +51,8 @@
     #define ADC_ANINPUT_COUNT       12                  // Number of analog inputs
     #define ADC_SHARED_CORE_INDEX   (ADC_CORE_COUNT - 1)    // Arteficially assigned index for shared ADC core
 
-    #define ADC_ADCONL_REG_OFFSET   2
-    #define ADC_ADCONH_REG_OFFSET   2
-    #define ADC_ADCORE_REG_OFFSET   2
-
-    #define ADC_ADMODL_REG_OFFSET   2
-    #define ADC_ADCONH_REG_OFFSET   2
-    #define ADC_ADCAL_REG_OFFSET    1
-    #define ADC_ADCBUF_REG_OFFSET   1
-
-    #define ADC_ADTRIG_REG_OFFSET   1   
-
     #define REG_AN_INPUT_L_MSK         0b0000111111111111
     #define REG_AN_INPUT_H_MSK         0b0000000000000000
-
-    #define REG_ADCMP_COUNT         2
-    #define REG_ADCMP_REG_OFFSET    2
-    #define REG_ADCMPxEN_REG_OFFSET 4
-    #define REG_ADCMPxLO_OFFSET     4
-    #define REG_ADCMPxHI_OFFSET     4
 
 #elif defined (__P33SMPS_EP5__)
 
@@ -77,24 +60,8 @@
     #define ADC_ANINPUT_COUNT       12                  // Number of analog inputs
     #define ADC_SHARED_CORE_INDEX   (ADC_CORE_COUNT - 1)    // Arteficially assigned index for shared ADC core
 
-    #define ADC_ADCONL_REG_OFFSET   2
-    #define ADC_ADCONH_REG_OFFSET   2
-    #define ADC_ADCORE_REG_OFFSET   2
-
-    #define ADC_ADMODL_REG_OFFSET   2
-    #define ADC_ADCONH_REG_OFFSET   2
-    #define ADC_ADCAL_REG_OFFSET    1
-
-    #define ADC_ADTRIG_REG_OFFSET   1
-
     #define REG_AN_INPUT_L_MSK         0b0000111111111111
     #define REG_AN_INPUT_H_MSK         0b0000000000000000
-
-    #define REG_ADCMP_COUNT         2
-    #define REG_ADCMP_REG_OFFSET    2
-    #define REG_ADCMPxEN_REG_OFFSET 4
-    #define REG_ADCMPxLO_OFFSET     4
-    #define REG_ADCMPxHI_OFFSET     4
 
 #elif defined (__P33SMPS_EP504__) 
 
@@ -102,24 +69,8 @@
     #define ADC_ANINPUT_COUNT       19                  // Number of analog inputs
     #define ADC_SHARED_CORE_INDEX   (ADC_CORE_COUNT - 1)    // Arteficially assigned index for shared ADC core
 
-    #define ADC_ADCONL_REG_OFFSET   2
-    #define ADC_ADCONH_REG_OFFSET   2
-    #define ADC_ADCORE_REG_OFFSET   2
-
-    #define ADC_ADMODL_REG_OFFSET   2
-    #define ADC_ADCONH_REG_OFFSET   2
-    #define ADC_ADCAL_REG_OFFSET    1
-
-    #define ADC_ADTRIG_REG_OFFSET   1
-
     #define REG_AN_INPUT_L_MSK         0b1111111111111111
     #define REG_AN_INPUT_H_MSK         0b0000000000000111
-
-    #define REG_ADCMP_COUNT         2
-    #define REG_ADCMP_REG_OFFSET    2
-    #define REG_ADCMPxEN_REG_OFFSET 4
-    #define REG_ADCMPxLO_OFFSET     4
-    #define REG_ADCMPxHI_OFFSET     4
 
 #elif defined (__P33SMPS_EP505__) 
 
@@ -127,24 +78,8 @@
     #define ADC_ANINPUT_COUNT       19                  // Number of analog inputs
     #define ADC_SHARED_CORE_INDEX   (ADC_CORE_COUNT - 1)    // Arteficially assigned index for shared ADC core
 
-    #define ADC_ADCONL_REG_OFFSET   2
-    #define ADC_ADCONH_REG_OFFSET   2
-    #define ADC_ADCORE_REG_OFFSET   2
-
-    #define ADC_ADMODL_REG_OFFSET   2
-    #define ADC_ADCONH_REG_OFFSET   2
-    #define ADC_ADCAL_REG_OFFSET    1
-
-    #define ADC_ADTRIG_REG_OFFSET   1
-
     #define REG_AN_INPUT_L_MSK         0b1111111111111111
     #define REG_AN_INPUT_H_MSK         0b0000000000000111
-
-    #define REG_ADCMP_COUNT         2
-    #define REG_ADCMP_REG_OFFSET    2
-    #define REG_ADCMPxEN_REG_OFFSET 4
-    #define REG_ADCMPxLO_OFFSET     4
-    #define REG_ADCMPxHI_OFFSET     4
 
 #elif defined (__P33SMPS_EP506__)
 
@@ -152,24 +87,8 @@
     #define ADC_ANINPUT_COUNT       22                  // Number of analog inputs
     #define ADC_SHARED_CORE_INDEX   (ADC_CORE_COUNT - 1)    // Arteficially assigned index for shared ADC core
 
-    #define ADC_ADCONL_REG_OFFSET   2
-    #define ADC_ADCONH_REG_OFFSET   2
-    #define ADC_ADCORE_REG_OFFSET   2
-
-    #define ADC_ADMODL_REG_OFFSET   2
-    #define ADC_ADCONH_REG_OFFSET   2
-    #define ADC_ADCAL_REG_OFFSET    1
-
-    #define ADC_ADTRIG_REG_OFFSET   1
-
     #define REG_ADC_CHANNEL_L_MSK   0b1111111111111111
     #define REG_ADC_CHANNEL_H_MSK   0b0000000000111111
-
-    #define REG_ADCMP_COUNT         2
-    #define REG_ADCMP_REG_OFFSET    2
-    #define REG_ADCMPxEN_REG_OFFSET 4
-    #define REG_ADCMPxLO_OFFSET     4
-    #define REG_ADCMPxHI_OFFSET     4
 
 #elif defined (__P33SMPS_EP702__) || defined (__P33SMPS_EP802__)
 
@@ -177,24 +96,8 @@
     #define ADC_ANINPUT_COUNT       11                  // Number of analog inputs
     #define ADC_SHARED_CORE_INDEX   (ADC_CORE_COUNT - 1)    // Arteficially assigned index for shared ADC core
 
-    #define ADC_ADCONL_REG_OFFSET   2
-    #define ADC_ADCONH_REG_OFFSET   2
-    #define ADC_ADCORE_REG_OFFSET   2
-
-    #define ADC_ADMODL_REG_OFFSET   2
-    #define ADC_ADCONH_REG_OFFSET   2
-    #define ADC_ADCAL_REG_OFFSET    1
-
-    #define ADC_ADTRIG_REG_OFFSET   1
-
     #define REG_AN_INPUT_L_MSK         0b0000111111111111
     #define REG_AN_INPUT_H_MSK         0b0000000000000000
-
-    #define REG_ADCMP_COUNT         2
-    #define REG_ADCMP_REG_OFFSET    2
-    #define REG_ADCMPxEN_REG_OFFSET 4
-    #define REG_ADCMPxLO_OFFSET     4
-    #define REG_ADCMPxHI_OFFSET     4
 
 #elif defined (__P33SMPS_EP704__) || defined (__P33SMPS_EP804__)
 
@@ -202,24 +105,8 @@
     #define ADC_ANINPUT_COUNT       17                  // Number of analog inputs
     #define ADC_SHARED_CORE_INDEX   (ADC_CORE_COUNT - 1)    // Arteficially assigned index for shared ADC core
 
-    #define ADC_ADCONL_REG_OFFSET   2
-    #define ADC_ADCONH_REG_OFFSET   2
-    #define ADC_ADCORE_REG_OFFSET   2
-
-    #define ADC_ADMODL_REG_OFFSET   2
-    #define ADC_ADCONH_REG_OFFSET   2
-    #define ADC_ADCAL_REG_OFFSET    1
-
-    #define ADC_ADTRIG_REG_OFFSET   1
-
     #define REG_AN_INPUT_L_MSK         0b1111111111111111
     #define REG_AN_INPUT_H_MSK         0b0000000000000111
-
-    #define REG_ADCMP_COUNT         2
-    #define REG_ADCMP_REG_OFFSET    2
-    #define REG_ADCMPxEN_REG_OFFSET 4
-    #define REG_ADCMPxLO_OFFSET     4
-    #define REG_ADCMPxHI_OFFSET     4
 
 #elif defined (__P33SMPS_EP705__) || defined (__P33SMPS_EP805__)
 
@@ -227,24 +114,8 @@
     #define ADC_ANINPUT_COUNT       19                  // Number of analog inputs
     #define ADC_SHARED_CORE_INDEX   (ADC_CORE_COUNT - 1)    // Arteficially assigned index for shared ADC core
 
-    #define ADC_ADCONL_REG_OFFSET   2
-    #define ADC_ADCONH_REG_OFFSET   2
-    #define ADC_ADCORE_REG_OFFSET   2
-
-    #define ADC_ADMODL_REG_OFFSET   2
-    #define ADC_ADCONH_REG_OFFSET   2
-    #define ADC_ADCAL_REG_OFFSET    1
-
-    #define ADC_ADTRIG_REG_OFFSET   1
-
     #define REG_AN_INPUT_L_MSK         0b1111111111111111
     #define REG_AN_INPUT_H_MSK         0b0000000000000111
-
-    #define REG_ADCMP_COUNT         2
-    #define REG_ADCMP_REG_OFFSET    2
-    #define REG_ADCMPxEN_REG_OFFSET 4
-    #define REG_ADCMPxLO_OFFSET     4
-    #define REG_ADCMPxHI_OFFSET     4
 
 #elif defined (__P33SMPS_EP706__) || defined (__P33SMPS_EP806__) || \
       defined (__P33SMPS_EP708__) || defined (__P33SMPS_EP808__)
@@ -253,25 +124,8 @@
     #define ADC_ANINPUT_COUNT       22                  // Number of analog inputs
     #define ADC_SHARED_CORE_INDEX   (ADC_CORE_COUNT - 1)    // Arteficially assigned index for shared ADC core
 
-    #define ADC_ADCONL_REG_OFFSET   2
-    #define ADC_ADCONH_REG_OFFSET   2
-    #define ADC_ADCORE_REG_OFFSET   2
-
-    #define ADC_ADMODL_REG_OFFSET   2
-    #define ADC_ADCONH_REG_OFFSET   2
-    #define ADC_ADCAL_REG_OFFSET    1
-
-    #define ADC_ADTRIG_REG_OFFSET   1
-
-
     #define REG_ADC_CHANNEL_L_MSK   0b1111111111111111
     #define REG_ADC_CHANNEL_H_MSK   0b0000000000111111
-
-    #define REG_ADCMP_COUNT         2
-    #define REG_ADCMP_REG_OFFSET    2
-    #define REG_ADCMPxEN_REG_OFFSET 4
-    #define REG_ADCMPxLO_OFFSET     4
-    #define REG_ADCMPxHI_OFFSET     4
 
 #elif defined (__P33SMPS_CH502__)
 
@@ -295,23 +149,6 @@
 
     #endif
 
-    #define ADC_ADCONL_REG_OFFSET   2
-    #define ADC_ADCONH_REG_OFFSET   2
-    #define ADC_ADCORE_REG_OFFSET   2
-
-    #define ADC_ADMODL_REG_OFFSET   2
-    #define ADC_ADCONH_REG_OFFSET   2
-    #define ADC_ADCAL_REG_OFFSET    1
-
-    #define ADC_ADTRIG_REG_OFFSET   1
-
-    // Digital Comparators
-    #define REG_ADCMP_COUNT         4
-    #define REG_ADCMP_REG_OFFSET    2
-    #define REG_ADCMPxEN_REG_OFFSET 4
-    #define REG_ADCMPxLO_OFFSET     4
-    #define REG_ADCMPxHI_OFFSET     4
-
 #elif defined (__P33SMPS_CH503__) || defined (__P33SMPS_CH505__)
 
     #if defined (__P33SMPS_CH_MSTR__)
@@ -334,23 +171,6 @@
 
     #endif
 
-    #define ADC_ADCONL_REG_OFFSET   2
-    #define ADC_ADCONH_REG_OFFSET   2
-    #define ADC_ADCORE_REG_OFFSET   2
-
-    #define ADC_ADMODL_REG_OFFSET   2
-    #define ADC_ADCONH_REG_OFFSET   2
-    #define ADC_ADCAL_REG_OFFSET    1
-
-    #define ADC_ADTRIG_REG_OFFSET   1
-
-    // Digital Comparators
-    #define REG_ADCMP_COUNT         4
-    #define REG_ADCMP_REG_OFFSET    2
-    #define REG_ADCMPxEN_REG_OFFSET 4
-    #define REG_ADCMPxLO_OFFSET     4
-    #define REG_ADCMPxHI_OFFSET     4
-
 #elif defined (__P33SMPS_CH506__) || defined (__P33SMPS_CH508__) || \
       defined (__P33SMPS_CH506S1__) || defined (__P33SMPS_CH508S1__)
 
@@ -363,23 +183,6 @@
         #define REG_ADC_CHANNEL_L_MSK   0b1111111111111111
         #define REG_ADC_CHANNEL_H_MSK   0b0000000000000000
     
-        #define ADC_ADCONL_REG_OFFSET   2
-        #define ADC_ADCONH_REG_OFFSET   2
-        #define ADC_ADCORE_REG_OFFSET   2
-
-        #define ADC_ADMODL_REG_OFFSET   2
-        #define ADC_ADCONH_REG_OFFSET   2
-        #define ADC_ADCAL_REG_OFFSET    1
-
-        #define ADC_ADTRIG_REG_OFFSET   1
-
-        // Digital Comparators
-        #define REG_ADCMP_COUNT         4
-        #define REG_ADCMP_REG_OFFSET    2
-        #define REG_ADCMPxEN_REG_OFFSET 4
-        #define REG_ADCMPxLO_OFFSET     4
-        #define REG_ADCMPxHI_OFFSET     4
-
     #elif defined (__P33SMPS_CH_SLV1__)
 
         #define ADC_CORE_COUNT          3					// Number of ADC Cores available
@@ -388,23 +191,6 @@
 
         #define REG_ADC_CHANNEL_L_MSK   0b1111111111111111
         #define REG_ADC_CHANNEL_H_MSK   0b0000000000000011
-
-        #define ADC_ADCONL_REG_OFFSET   2
-        #define ADC_ADCONH_REG_OFFSET   2
-        #define ADC_ADCORE_REG_OFFSET   2
-
-        #define ADC_ADMODL_REG_OFFSET   2
-        #define ADC_ADCONH_REG_OFFSET   2
-        #define ADC_ADCAL_REG_OFFSET    1
-
-        #define ADC_ADTRIG_REG_OFFSET   1
-
-        // Digital Comparators
-        #define REG_ADCMP_COUNT         4
-        #define REG_ADCMP_REG_OFFSET    2
-        #define REG_ADCMPxEN_REG_OFFSET 4
-        #define REG_ADCMPxLO_OFFSET     4
-        #define REG_ADCMPxHI_OFFSET     4
 
     #endif
 
@@ -417,22 +203,8 @@
     #define REG_ADC_CHANNEL_L_MSK   0b1111111111111111
     #define REG_ADC_CHANNEL_H_MSK   0b0000000000001111
 
-    #define ADC_ADCONL_REG_OFFSET   2
-    #define ADC_ADCONH_REG_OFFSET   2
-    #define ADC_ADCORE_REG_OFFSET   2
-
-    #define ADC_ADMODL_REG_OFFSET   2
-    #define ADC_ADCONH_REG_OFFSET   2
-    #define ADC_ADCAL_REG_OFFSET    1
-
-    #define ADC_ADTRIG_REG_OFFSET   1
-
-    // Digital Comparators
-    #define REG_ADCMP_COUNT         4
-    #define REG_ADCMP_REG_OFFSET    2
-    #define REG_ADCMPxEN_REG_OFFSET 4
-    #define REG_ADCMPxLO_OFFSET     4
-    #define REG_ADCMPxHI_OFFSET     4
+    #define ADC_ADCMP_COUNT         4                   // Number of ADC Digital Comparators
+    #define ADC_ADFL_COUNT          4                   // Number of ADC Digital Filters
 
 #elif defined (__P33SMPS_CK205__) || defined (__P33SMPS_CK505__)
 
@@ -443,22 +215,6 @@
     #define REG_ADC_CHANNEL_L_MSK   0b1111111111111111
     #define REG_ADC_CHANNEL_H_MSK   0b0000000000000111
 
-    #define ADC_ADCONL_REG_OFFSET   2
-    #define ADC_ADCONH_REG_OFFSET   2
-    #define ADC_ADCORE_REG_OFFSET   2
-
-    #define ADC_ADMODL_REG_OFFSET   2
-    #define ADC_ADCONH_REG_OFFSET   2
-    #define ADC_ADCAL_REG_OFFSET    1
-
-    #define ADC_ADTRIG_REG_OFFSET   1
-
-    // Digital Comparators
-    #define REG_ADCMP_COUNT         4
-    #define REG_ADCMP_REG_OFFSET    2
-    #define REG_ADCMPxEN_REG_OFFSET 4
-    #define REG_ADCMPxLO_OFFSET     4
-    #define REG_ADCMPxHI_OFFSET     4
 
 // ToDo: Add device support for missing dsPIC33CKxxMP10x, 20x and 50x device derivatives
 
@@ -4432,29 +4188,123 @@ typedef enum {
 #define REG_ADCMPxCON_CHNL_AN1          0b0000000100000000      // ADC Input Number used for comparison
 #define REG_ADCMPxCON_CHNL_AN0          0b0000000000000000      // ADC Input Number used for comparison
 
+typedef enum {
+    ADCMPxCON_CHNL_AN31 = 0b11111,      // ADC Input Number used for comparison
+    ADCMPxCON_CHNL_AN30 = 0b11110,      // ADC Input Number used for comparison
+    ADCMPxCON_CHNL_AN29 = 0b11101,      // ADC Input Number used for comparison
+    ADCMPxCON_CHNL_AN28 = 0b11100,      // ADC Input Number used for comparison
+    ADCMPxCON_CHNL_AN27 = 0b11011,      // ADC Input Number used for comparison
+    ADCMPxCON_CHNL_AN26 = 0b11010,      // ADC Input Number used for comparison
+    ADCMPxCON_CHNL_AN25 = 0b11001,      // ADC Input Number used for comparison
+    ADCMPxCON_CHNL_AN24 = 0b11000,      // ADC Input Number used for comparison
+    ADCMPxCON_CHNL_AN23 = 0b10111,      // ADC Input Number used for comparison
+    ADCMPxCON_CHNL_AN22 = 0b10110,      // ADC Input Number used for comparison
+    ADCMPxCON_CHNL_AN21 = 0b10101,      // ADC Input Number used for comparison
+    ADCMPxCON_CHNL_AN20 = 0b10100,      // ADC Input Number used for comparison
+    ADCMPxCON_CHNL_AN19 = 0b10011,      // ADC Input Number used for comparison
+    ADCMPxCON_CHNL_AN18 = 0b10010,      // ADC Input Number used for comparison
+    ADCMPxCON_CHNL_AN17 = 0b10001,      // ADC Input Number used for comparison
+    ADCMPxCON_CHNL_AN16 = 0b10000,      // ADC Input Number used for comparison
+    ADCMPxCON_CHNL_AN15 = 0b01111,      // ADC Input Number used for comparison
+    ADCMPxCON_CHNL_AN14 = 0b01110,      // ADC Input Number used for comparison
+    ADCMPxCON_CHNL_AN13 = 0b01101,      // ADC Input Number used for comparison
+    ADCMPxCON_CHNL_AN12 = 0b01100,      // ADC Input Number used for comparison
+    ADCMPxCON_CHNL_AN11 = 0b01011,      // ADC Input Number used for comparison
+    ADCMPxCON_CHNL_AN10 = 0b01010,      // ADC Input Number used for comparison
+    ADCMPxCON_CHNL_AN9  = 0b01001,      // ADC Input Number used for comparison
+    ADCMPxCON_CHNL_AN8  = 0b01000,      // ADC Input Number used for comparison
+    ADCMPxCON_CHNL_AN7  = 0b00111,      // ADC Input Number used for comparison
+    ADCMPxCON_CHNL_AN6  = 0b00110,      // ADC Input Number used for comparison
+    ADCMPxCON_CHNL_AN5  = 0b00101,      // ADC Input Number used for comparison
+    ADCMPxCON_CHNL_AN4  = 0b00100,      // ADC Input Number used for comparison
+    ADCMPxCON_CHNL_AN3  = 0b00011,      // ADC Input Number used for comparison
+    ADCMPxCON_CHNL_AN2  = 0b00010,      // ADC Input Number used for comparison
+    ADCMPxCON_CHNL_AN1  = 0b00001,      // ADC Input Number used for comparison
+    ADCMPxCON_CHNL_AN0  = 0b00000       // ADC Input Number used for comparison
+}ADCMPxCON_CHNL_e; // Input Channel Number bits
+
 #define REG_ADCMPxCON_CMPEN_ENABLED     0b0000000010000000      // ADC Digital Comparator Enabled
 #define REG_ADCMPxCON_CMPEN_DISABLED    0b0000000000000000      // ADC Digital Comparator Disabled
+
+typedef enum {
+    ADCMPxCON_CMPEN_ENABLED  = 0b1, // ADC Digital Comparator Enabled
+    ADCMPxCON_CMPEN_DISABLED = 0b0  // ADC Digital Comparator Disabled
+}ADCMPxCON_CMPEN_e; // Digital Comparator Enable bit
 
 #define REG_ADCMPxCON_IE_ENABLED        0b0000000001000000      // ADC Digital Comparator Common Interrupt Enabled
 #define REG_ADCMPxCON_IE_DISABLED       0b0000000000000000      // ADC Digital Comparator Common Interrupt Disabled
 
+typedef enum {
+    ADCMPxCON_IE_ENABLED  = 0b1, // ADC Digital Comparator Common Interrupt Enabled
+    ADCMPxCON_IE_DISABLED = 0b0  // ADC Digital Comparator Common Interrupt Disabled
+}ADCMPxCON_IE_e; // Digital Comparator Common ADC Interrupt Enable bit
+
 #define REG_ADCMPxCON_STAT_ACTIVE       0b0000000000100000      // ADC Digital Comparator Common Interrupt Active
 #define REG_ADCMPxCON_STAT_READY        0b0000000000000000      // ADC Digital Comparator Common Interrupt Pending
+
+typedef enum {
+    ADCMPxCON_STAT_ACTIVE = 0b1, // ADC Digital Comparator event active
+    ADCMPxCON_STAT_READY  = 0b0  // ADC Digital Comparator event not active
+}ADCMPxCON_STAT_e; // Digital Comparator Event Status bit
 
 #define REG_ADCMPxCON_BTWN_ENABLED      0b0000000000010000      // Generate Interrupt when ADC buffer between min & max
 #define REG_ADCMPxCON_BTWN_DISABLED     0b0000000000000000      // No Interrupt when ADC buffer between min & max
 
+typedef enum {
+    ADCMPxCON_BTWN_ACTIVE = 0b1, // Generate Interrupt when ADC buffer between min & max
+    ADCMPxCON_BTWN_READY  = 0b0  // No Interrupt when ADC buffer between min & max
+}ADCMPxCON_BTWN_e; // Digital Comparator Between Low/High Comparator Event bit
+
 #define REG_ADCMPxCON_HIHI_ENABLED      0b0000000000001000      // Generate Interrupt when ADC buffer >= max
 #define REG_ADCMPxCON_HIHI_DISABLED     0b0000000000000000      // No Interrupt when ADC buffer >= max
 
-#define REG_ADCMPxCON_HILO_ENABLED      0b0000000000000100      // Generate Interrupt when ADC buffer < min
-#define REG_ADCMPxCON_HILO_DISABLED     0b0000000000000000      // No Interrupt when ADC buffer < min
+typedef enum {
+    ADCMPxCON_HIHI_ACTIVE = 0b1, // Generate Interrupt when ADC buffer >= max
+    ADCMPxCON_HIHI_READY  = 0b0  // No Interrupt when ADC buffer >= max
+}ADCMPxCON_HIHI_e; // Digital Comparator Above High Comparator Event bit
 
-#define REG_ADCMPxCON_LOHI_ENABLED      0b0000000000000010      // Generate Interrupt when ADC buffer > min
-#define REG_ADCMPxCON_LOHI_DISABLED     0b0000000000000000      // No Interrupt when ADC buffer > min
+#define REG_ADCMPxCON_HILO_ENABLED      0b0000000000000100      // Generate Interrupt when ADC buffer < max
+#define REG_ADCMPxCON_HILO_DISABLED     0b0000000000000000      // No Interrupt when ADC buffer < max
+
+typedef enum {
+    ADCMPxCON_HILO_ACTIVE = 0b1, // Generate Interrupt when ADC buffer ? max
+    ADCMPxCON_HILO_READY  = 0b0  // No Interrupt when ADC buffer ? max
+}ADCMPxCON_HILO_e; // Digital Comparator Below High Comparator Event bit
+
+#define REG_ADCMPxCON_LOHI_ENABLED      0b0000000000000010      // Generate Interrupt when ADC buffer ? min
+#define REG_ADCMPxCON_LOHI_DISABLED     0b0000000000000000      // No Interrupt when ADC buffer ? min
+
+typedef enum {
+    ADCMPxCON_LOHI_ACTIVE = 0b1, // Generate Interrupt when ADC buffer ? min
+    ADCMPxCON_LOHI_READY  = 0b0  // No Interrupt when ADC buffer ? min
+}ADCMPxCON_LOHI_e; // Digital Comparator Above Low Comparator Event bit
 
 #define REG_ADCMPxCON_LOLO_ENABLED      0b0000000000000001      // Generate Interrupt when ADC buffer < min
 #define REG_ADCMPxCON_LOLO_DISABLED     0b0000000000000000      // No Interrupt when ADC buffer < min
+
+typedef enum {
+    ADCMPxCON_LOLO_ACTIVE = 0b1, // Generate Interrupt when ADC buffer ? min
+    ADCMPxCON_LOLO_READY  = 0b0  // No Interrupt when ADC buffer ? min
+}ADCMPxCON_LOLO_e; // Digital Comparator Below Low Comparator Event bit
+
+typedef struct {
+    volatile ADCMPxCON_LOLO_e LOLO   : 1; // Bit 0: Low/Low Comparator Event bit
+    volatile ADCMPxCON_LOHI_e LOHI   : 1; // Bit 1: Low/High Comparator Event bit
+    volatile ADCMPxCON_HILO_e HILO   : 1; // Bit 2: High/Low Comparator Event bit
+    volatile ADCMPxCON_HIHI_e HIHI   : 1; // Bit 3: High/High Comparator Event bit
+    volatile ADCMPxCON_BTWN_e BTWN   : 1; // Bit 4: Between Low/High Comparator Event bit
+    volatile ADCMPxCON_STAT_e STAT   : 1; // Bit 5: Comparator Event Status bit
+    volatile ADCMPxCON_IE_e   IE     : 1; // Bit 6: Comparator Common ADC Interrupt Enable bit
+    volatile ADCMPxCON_CMPEN_e CMPEN : 1; // Bit 7: Comparator Enable bit
+    volatile ADCMPxCON_CHNL_e CHNL   : 5; // Bit 12-8: Input Channel Number bits
+    volatile unsigned                : 3; // Bit 15-13: (reserved)
+}__attribute__((packed)) ADCMPxCON_t; // ADC DIGITAL COMPARATOR x CONTROL REGISTER
+
+typedef union {
+    volatile uint16_t value; // Analog-To-Digital input index (e.g. 3 for AN3)
+    volatile ADCMPxCON_t bits; // ADC digital comparator configuration
+}__attribute__((packed)) REGBLK_ADCMPxCON_t; // ADC DIGITAL COMPARATOR Settings 
+
 
 // REGISTER 19-31: ADCMPxENL: ADC DIGITAL COMPARATOR x CHANNEL ENABLE REGISTER LOW
 
@@ -4496,6 +4346,11 @@ typedef enum {
 #define REG_ADCMPxENL_AN14_DISABLED     0b0000000000000000      // Interrupt disabled for AN14 
 #define REG_ADCMPxENL_AN15_ENABLED      0b1000000000000000      // Interrupt enabled for AN15
 #define REG_ADCMPxENL_AN15_DISABLED     0b0000000000000000      // Interrupt disabled for AN15
+
+typedef enum {
+ADCMPxENL_ANx_ENABLED  = 0b1,     // Interrupt enabled for ANx 
+ADCMPxENL_ANx_DISABLED = 0b0      // Interrupt disabled for ANx 
+}ADCMPxENL_e;
 
 // REGISTER 19-32: ADCMPxENH: ADC DIGITAL COMPARATOR x CHANNEL ENABLE REGISTER HIGH
 
@@ -4581,7 +4436,7 @@ typedef struct {
 }__attribute__((packed)) ADCMPxEN_t;  // Digital Comparator Input Source Selection
 
 typedef union {
-    volatile ADCMPxEN_t adcmp_source; // Comparator Enable for Corresponding Input Channels bits
+    volatile ADCMPxEN_t bits; // Comparator Enable for Corresponding Input Channels bits
     volatile uint32_t value;
 }REGBLK_ADCMPxEN_t; // Comparator Enable for Corresponding Input Channels bits
 
@@ -4589,7 +4444,12 @@ typedef union {
 
 #define REG_ADFLxDAT_RESET                  0b0000000000000000      // Reset ADFLxDAT Register
 #define REG_ADFLxCON_RESET                  0b0000000000000000      // Reset ADFLxCON Register
-#define REG_ADFLxCON_VALID_DATA_MSK			0b1111111100011111		// Bit mask used to set unimplemented bits to zero
+#define REG_ADFLxCON_VALID_DATA_WR_MSK		0b1111111100011111		// Bit mask used to set unimplemented bits to zero
+#define REG_ADFLxCON_VALID_DATA_RD_MSK		0b1111111100011111		// Bit mask used to set unimplemented bits to zero
+#define REG_ADFLxDAT_VALID_DATA_MSK			0b1111111111111111		// Bit mask used to set unimplemented bits to zero
+
+
+
 
 #define REG_ADFLxCON_FLEN_ENABLED           0b1000000000000000      // Digital filter enabled
 #define REG_ADFLxCON_FLEN_DISABLED          0b0000000000000000      // Digital filter disabled
@@ -4728,7 +4588,7 @@ typedef enum {
 }ADFLxCON_INPUT_e;
 
 typedef struct {
-    volatile ADFLxCON_INPUT_e input : 5;    // Bit 4-0: Oversampling Filter Input Channel Selection bits
+    volatile ADFLxCON_INPUT_e FLCHSEL : 5;  // Bit 4-0: Oversampling Filter Input Channel Selection bits
     volatile unsigned  : 3;                 // Bit 7-5: (reserved)
     volatile ADFLxCON_RDY_e RDY : 1;        // Bit 8: Oversampling Filter Data Ready Flag bit
     volatile ADFLxCON_IE_e IE : 1;          // Bit 9: Filter Common ADC Interrupt Enable bit
@@ -4767,14 +4627,14 @@ typedef enum {
 }ADMOD_OUTPUT_DATA_MODE_e; // Input pin ANx output data mode
 
 typedef struct {
-    volatile AD_CORE_ASSIGNMENT_e core_assigmnment : 1; // Bit 0: Pin ANx is tied to dedicated or shared ADC core bit
+    volatile AD_CORE_ASSIGNMENT_e core_assigmnment : 1; // Bit 0: Pin ANx is tied to dedicated or shared ADC core bit (read only)
     volatile ADMOD_INPUT_MODE_e input_mode : 1;         // Bit 1: Input ANx input mode is differential or single-ended bit
     volatile ADMOD_OUTPUT_DATA_MODE_e data_mode : 1;    // Bit 2: Input ANx output data mode bit
     volatile ADIE_IE_e interrupt_enable : 1;            // Bit 3: Input ANx interrupt enable bit
     volatile ADEIE_EIEN_e early_interrupt_enable : 1;   // Bit 4: Input ANx early interrupt enable bit
     volatile ADLVLTRG_e trigger_mode : 1;               // Bit 5: Level Trigger for Corresponding Analog Input Enable bit
     volatile ADTRIGx_TRGSRC_e trigger_source : 5;       // Bit 10-6: Input ANx trigger source bits
-    volatile ADCMPxEN_e adcmp_enable : 1;               // Bit 11: Digital comparator input source enable bit
+    volatile unsigned : 1;                              // Bit 11: (reserved)
     volatile unsigned : 1;                              // Bit 12: (reserved)
     volatile unsigned : 1;                              // Bit 13: (reserved)
     volatile unsigned : 1;                              // Bit 14: (reserved)
@@ -4792,6 +4652,23 @@ typedef struct {
     volatile uint16_t ad_input; // Analog-To-Digital input index (e.g. 3 for AN3)
     volatile REGBLK_ANIN_CONFIG_t config; // Analog input configuration
 }__attribute__((packed)) HSADC_CHANNEL_CONFIG_t; // ADC Input Channel Settings 
+
+
+// ADC Digital Comparator Object
+
+typedef struct {
+    volatile REGBLK_ADCMPxCON_t ADCMPxCON; // ADC digital comparator configuration
+    volatile uint16_t ADCMPxLO;   // ADC digital comparator Lower Threshold register
+    volatile uint16_t ADCMPxHI;   // ADC digital comparator Upper Threshold register
+}__attribute__((packed)) HSADC_ADCMP_CONFIG_t; // ADC DIGITAL COMPARATOR Settings 
+
+// ADC Digital Comparator Object
+
+typedef struct {
+    volatile REGBLK_ADFLxCON_t ADFLxCON;    // ADC digital filter configuration
+    volatile uint16_t ADFLxDAT;             // ADC digital filter result register
+}__attribute__((packed)) HSADC_ADFLT_CONFIG_t; // ADC DIGITAL FILTER Settings 
+
 
 // Prototypes
 extern volatile uint16_t hsadc_init_adc_module( HSADC_MODULE_CONFIG_t adc_cfg );
@@ -4819,8 +4696,8 @@ extern volatile uint16_t hsadc_set_adc_input_trigger_source(uint16_t index, ADTR
 extern volatile uint16_t hsadc_set_adc_input_trigger_mode(uint16_t index, ADLVLTRG_e trigger_mode);
 extern volatile uint16_t hsadc_set_adc_input_interrupt(uint16_t index, ADIE_IE_e interrupt_enable, ADEIE_EIEN_e early_interrupt_enable);
 
-extern volatile uint16_t hsadc_init_adc_comp(uint16_t index, uint16_t input_no, uint16_t regADCMPxCON, uint16_t regADCMPxLO, uint16_t regADCMPxHI);
-
+extern volatile uint16_t hsadc_init_adc_comp(uint16_t index, HSADC_ADCMP_CONFIG_t adcmp_cfg);
+extern volatile uint16_t hsadc_init_adc_filter(uint16_t index, HSADC_ADFLT_CONFIG_t adflt_cfg);
 
 
 #endif /* dsPIC33CH/CK only */
