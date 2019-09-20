@@ -2662,6 +2662,17 @@ typedef union {
 #define REG_EISEL_2TAD                  0b0000010000000000      // ADCOREx Early Interrupt 2 TADs before ready
 #define REG_EISEL_1TAD                  0b0000000000000000      // ADCOREx Early Interrupt 1 TADs before ready
 
+typedef enum {
+    EISEL_8TAD = 0b111, // ADCOREx Early Interrupt 8 TADs before ready
+    EISEL_7TAD = 0b110, // ADCOREx Early Interrupt 7 TADs before ready
+    EISEL_6TAD = 0b101, // ADCOREx Early Interrupt 6 TADs before ready
+    EISEL_5TAD = 0b100, // ADCOREx Early Interrupt 5 TADs before ready
+    EISEL_4TAD = 0b011, // ADCOREx Early Interrupt 4 TADs before ready
+    EISEL_3TAD = 0b010, // ADCOREx Early Interrupt 3 TADs before ready
+    EISEL_2TAD = 0b001, // ADCOREx Early Interrupt 2 TADs before ready
+    EISEL_1TAD = 0b000  // ADCOREx Early Interrupt 1 TADs before ready
+}EISEL_e;
+
 #define REG_ADC_RES_12BIT               0b0000001100000000      // ADC Core Resolution = 12bit
 #define REG_ADC_RES_10BIT               0b0000001000000000      // ADC Core Resolution = 10bit
 #define REG_ADC_RES_8BIT                0b0000000100000000      // ADC Core Resolution = 8bit
@@ -4577,7 +4588,8 @@ typedef union {
 
 // ==============================================================================================
 // Global macros 
-#define ADCBUFx_ADDR(x)  ((x) * ((volatile uint16_t)&ADCBUF1 - (volatile uint16_t)&ADCBUF0))
+#define ADCBUFx_ADDR(x)  ((x) * ((volatile uint16_t)&ADCBUF1 - (volatile uint16_t)&ADCBUF0)) /// ADCBUFx_ADDR: ADC result buffer address
+
 
 
 // ==============================================================================================
@@ -4612,13 +4624,11 @@ typedef struct {
     volatile ADMOD_OUTPUT_DATA_MODE_e data_mode : 1;    // Bit 2: Input ANx output data mode bit
     volatile ADIE_IE_e interrupt_enable : 1;            // Bit 3: Input ANx interrupt enable bit
     volatile ADEIE_EIEN_e early_interrupt_enable : 1;   // Bit 4: Input ANx early interrupt enable bit
-    volatile ADLVLTRG_e trigger_mode : 1;               // Bit 5: Level Trigger for Corresponding Analog Input Enable bit
-    volatile ADTRIG_TRGSRC_e trigger_source : 5;        // Bit 10-6: Input ANx trigger source bits
+    volatile EISEL_e early_interrupt_tad : 3;           // Bit 5: Input ANx early interrupt enable bit
+    volatile ADLVLTRG_e trigger_mode : 1;               // Bit 6: Level Trigger for Corresponding Analog Input Enable bit
+    volatile ADTRIG_TRGSRC_e trigger_source : 5;        // Bit 11-7: Input ANx trigger source bits
     volatile unsigned : 1;                              // Bit 11: (reserved)
     volatile unsigned : 1;                              // Bit 12: (reserved)
-    volatile unsigned : 1;                              // Bit 13: (reserved)
-    volatile unsigned : 1;                              // Bit 14: (reserved)
-    volatile unsigned : 1;                              // Bit 15: (reserved)
 }__attribute__((packed)) ANIN_CONFIG_t; // ADC Input Channel Settings 
 
 typedef union {
