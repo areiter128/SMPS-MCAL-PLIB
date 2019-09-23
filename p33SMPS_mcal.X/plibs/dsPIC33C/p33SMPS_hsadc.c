@@ -198,7 +198,7 @@ inline volatile uint16_t hsadc_init_adc_module( HSADC_MODULE_CONFIG_t adc_cfg )
  * This routine configures the individual settings of an analog input .
  * ***********************************************************************************************/
 
-inline volatile uint16_t hsadc_init_adc_channel( HSADC_CHANNEL_CONFIG_t adin_cfg ) {
+inline volatile uint16_t hsadc_init_adc_channel( HSADC_INPUT_CONFIG_t adin_cfg ) {
     
     volatile uint16_t fres = 1;
     
@@ -261,6 +261,8 @@ inline volatile uint16_t hsadc_init_adc_core(uint16_t index, HSADC_ADCOREx_CONFI
     
     // Variables for dedicated ADC core configuration
     #if defined (ADCORE0L)
+    volatile REGBLK_ADCON4L_t  regADCON4L;  // ADCON4L register copy for WRITE operating
+    volatile REGBLK_ADCON4H_t  regADCON4H;  // ADCON4H register copy for WRITE operating
     volatile REGBLK_ADCORExL_t regADCORExL; // ADCORExL register copy for WRITE operation
     volatile REGBLK_ADCORExH_t regADCORExH; // ADCORExH register copy for WRITE operation
     volatile uint16_t reg_offset=0;
@@ -300,6 +302,71 @@ inline volatile uint16_t hsadc_init_adc_core(uint16_t index, HSADC_ADCOREx_CONFI
         *regptr = reg_buf;                                      // Write configuration to register
         fres &= (volatile bool)((*regptr & REG_ADCORExH_VALID_DATA_MSK) == reg_buf);  // Check if WRITE operation was successful
 
+        
+        switch (index) { 
+            #if (ADC_CORE_COUNT > 1)
+            case 0: regADCON4L.bits.SAMC0EN = adcore_cfg.sample_delay_enable; break;
+            #endif
+            #if (ADC_CORE_COUNT > 2)
+            case 1: regADCON4L.bits.SAMC1EN = adcore_cfg.sample_delay_enable; break;
+            #endif
+            #if (ADC_CORE_COUNT > 3)
+            case 2: regADCON4L.bits.SAMC2EN = adcore_cfg.sample_delay_enable; break;
+            #endif
+            #if (ADC_CORE_COUNT > 4)
+            case 3: regADCON4L.bits.SAMC3EN = adcore_cfg.sample_delay_enable; break;
+            #endif
+            #if (ADC_CORE_COUNT > 5)
+            case 4: regADCON4L.bits.SAMC4EN = adcore_cfg.sample_delay_enable; break;
+            #endif
+            #if (ADC_CORE_COUNT > 6)
+            case 5: regADCON4L.bits.SAMC5EN = adcore_cfg.sample_delay_enable; break;
+            #endif
+            #if (ADC_CORE_COUNT > 7)
+            case 6: regADCON4L.bits.SAMC6EN = adcore_cfg.sample_delay_enable; break;
+            #endif
+            default:
+                return(0);
+                break;
+        }
+                
+        regptr = (volatile uint16_t *)&ADCON4L;   // Get pointer to ADC configuration register
+        reg_buf = (regADCON4L.value & REG_ADCON4L_VALID_DATA_WRITE_MSK);  // Get value to be written to register
+        *regptr = reg_buf;                                      // Write configuration to register
+        fres &= (volatile bool)((*regptr & REG_ADCON4L_VALID_DATA_WRITE_MSK) == reg_buf);  // Check if WRITE operation was successful
+
+        switch (index) { 
+            #if (ADC_CORE_COUNT > 1)
+            case 0: regADCON4H.bits.C0CHS = adcore_cfg.adc_input_select.C0CHS; break;
+            #endif
+            #if (ADC_CORE_COUNT > 2)
+            case 1: regADCON4H.bits.C1CHS = adcore_cfg.adc_input_select.C1CHS; break;
+            #endif
+            #if (ADC_CORE_COUNT > 3)
+            case 2: regADCON4H.bits.C2CHS = adcore_cfg.adc_input_select.C2CHS; break;
+            #endif
+            #if (ADC_CORE_COUNT > 4)
+            case 3: regADCON4H.bits.C3CHS = adcore_cfg.adc_input_select.C3CHS; break;
+            #endif
+            #if (ADC_CORE_COUNT > 5)
+            case 4: regADCON4H.bits.C4CHS = adcore_cfg.adc_input_select.C4CHS; break;
+            #endif
+            #if (ADC_CORE_COUNT > 6)
+            case 5: regADCON4H.bits.C5CHS = adcore_cfg.adc_input_select.C5CHS; break;
+            #endif
+            #if (ADC_CORE_COUNT > 7)
+            case 6: regADCON4H.bits.C6CHS = adcore_cfg.adc_input_select.C6CHS; break;
+            #endif
+            default:
+                return(0);
+                break;
+        }
+                
+        regptr = (volatile uint16_t *)&ADCON4H;   // Get pointer to ADC configuration register
+        reg_buf = (regADCON4L.value & REG_ADCON4H_VALID_DATA_WRITE_MSK);  // Get value to be written to register
+        *regptr = reg_buf;                                      // Write configuration to register
+        fres &= (volatile bool)((*regptr & REG_ADCON4H_VALID_DATA_WRITE_MSK) == reg_buf);  // Check if WRITE operation was successful
+        
         #endif
         
     }

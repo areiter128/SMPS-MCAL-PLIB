@@ -2229,7 +2229,8 @@ typedef union {
 
 
     // REGISTER ADCON4H: ANALOG-TO-DIGITAL CONTROL REGISTER 4 HIGH
-
+    #if defined (__P33SMPS_EP__)
+    
     #define REG_C3CHS_AN3                   0b0000000000000000      // AN3 Input Default Selection
     #define REG_C3CHS_AN15                  0b0000000001000000      // AN15 Input Selection
 
@@ -2247,6 +2248,8 @@ typedef union {
     #define REG_C0CHS_AN7                   0b0000000000000001      // AN7 Input Selection
     #define REG_C0CHS_AN0ALT                0b0000000000000011      // AN0 Input Alternative Selection
 
+    #endif
+    
     #if defined (__P33SMPS_EP2__)
 
     #define REG_ADCON4_C1CHS_PGA2 0b0000000000001100 // Dedicated ADC Core 1 Input is PGA2 output
@@ -2337,160 +2340,333 @@ typedef union {
     #elif defined (__P33SMPS_CK__)
 
     #if (ADC_CORE_COUNT > 1)
+
     #define REG_ADCON4H_C0CHS_ANA0      0b0000000000000001
     #define REG_ADCON4H_C0CHS_AN0       0b0000000000000000
-    #endif
-    #if (ADC_CORE_COUNT > 2)
-    #define REG_ADCON4H_C1CHS_ANA1      0b0000000000000100
-    #define REG_ADCON4H_C1CHS_AN1       0b0000000000000000
-    #endif
-    #if (ADC_CORE_COUNT > 3)
-    #define REG_ADCON4H_C2CHS_ANA2      0b0000000000010000
-    #define REG_ADCON4H_C2CHS_AN2       0b0000000000000000
-    #endif
-    #if (ADC_CORE_COUNT > 4)
-    #define REG_ADCON4H_C3CHS_ANA3      0b0000000001000000
-    #define REG_ADCON4H_C3CHS_AN3       0b0000000000000000
-    #endif
-    #if (ADC_CORE_COUNT > 5)
-    #define REG_ADCON4H_C4CHS_ANA4      0b0000000100000000
-    #define REG_ADCON4H_C4CHS_AN4       0b0000000000000000
-    #endif
-    #if (ADC_CORE_COUNT > 6)
-    #define REG_ADCON4H_C5CHS_ANA5      0b0000010000000000
-    #define REG_ADCON4H_C5CHS_AN5       0b0000000000000000
-    #endif
-    #if (ADC_CORE_COUNT > 7)
-    #define REG_ADCON4H_C6CHS_ANA5      0b0001000000000000
-    #define REG_ADCON4H_C6CHS_AN5       0b0000000000000000
-    #endif
-    
-    typedef enum {
-        ADCON4_C1CHS_ANA1 = 0b01, // Dedicated ADC Core 1 Input is Slave Core #1 alternative AN1 input
-        ADCON4_C1CHS_AN1 = 0b00 // Dedicated ADC Core 1 Input is Slave Core #1 AN1 input
-    } ADCON4_C1CHS_e; // Dedicated ADC Core 1 Input Channel Selection
 
     typedef enum {
-        ADCON4_C0CHS_ANA0 = 0b01, // Dedicated ADC Core 1 Input is Slave Core #0 alternative AN0 input
-        ADCON4_C0CHS_AN0 = 0b00 // Dedicated ADC Core 1 Input is Slave Core #0 AN0 input
+        ADCON4_C0CHS_ANA0 = 0b01, // Dedicated ADC Core 0 Input is alternative ANA0 input
+        ADCON4_C0CHS_AN0 = 0b00 // Dedicated ADC Core 0 Input is AN0 input
     } ADCON4_C0CHS_e; // Dedicated ADC Core 0 Input Channel Selection
 
     #endif
 
+    #if (ADC_CORE_COUNT > 2)
+    #define REG_ADCON4H_C1CHS_ANA1      0b0000000000000100
+    #define REG_ADCON4H_C1CHS_AN1       0b0000000000000000
+
+    typedef enum {
+        ADCON4_C1CHS_ANA1 = 0b01, // Dedicated ADC Core 1 Input is alternative ANA1 input
+        ADCON4_C1CHS_AN1 = 0b00 // Dedicated ADC Core 1 Input is AN1 input
+    } ADCON4_C1CHS_e; // Dedicated ADC Core 1 Input Channel Selection
+    
+    #endif
+
+    #if (ADC_CORE_COUNT > 3)
+    #define REG_ADCON4H_C2CHS_ANA2      0b0000000000010000
+    #define REG_ADCON4H_C2CHS_AN2       0b0000000000000000
+
+    typedef enum {
+        ADCON4_C2CHS_ANA2 = 0b01, // Dedicated ADC Core 2 Input is alternative ANA2 input
+        ADCON4_C2CHS_AN2 = 0b00 // Dedicated ADC Core 2 Input is AN2 input
+    } ADCON4_C2CHS_e; // Dedicated ADC Core 2 Input Channel Selection
+    
+    #endif
+
+    #if (ADC_CORE_COUNT > 4)
+    #define REG_ADCON4H_C3CHS_ANA3      0b0000000001000000
+    #define REG_ADCON4H_C3CHS_AN3       0b0000000000000000
+
+    typedef enum {
+        ADCON4_C3CHS_ANA3 = 0b01, // Dedicated ADC Core 3 Input is alternative ANA3 input
+        ADCON4_C3CHS_AN3 = 0b00 // Dedicated ADC Core 3 Input is AN3 input
+    } ADCON4_C3CHS_e; // Dedicated ADC Core 3 Input Channel Selection
+    
+    #endif
+
+    #if (ADC_CORE_COUNT > 5)
+    #define REG_ADCON4H_C4CHS_ANA4      0b0000000100000000
+    #define REG_ADCON4H_C4CHS_AN4       0b0000000000000000
+
+    typedef enum {
+        ADCON4_C4CHS_ANA4 = 0b01, // Dedicated ADC Core 4 Input is alternative ANA4 input
+        ADCON4_C4CHS_AN4 = 0b00 // Dedicated ADC Core 4 Input is AN4 input
+    } ADCON4_C4CHS_e; // Dedicated ADC Core 4 Input Channel Selection
+    
+    #endif
+
+    #if (ADC_CORE_COUNT > 6)
+    #define REG_ADCON4H_C5CHS_ANA5      0b0000010000000000
+    #define REG_ADCON4H_C5CHS_AN5       0b0000000000000000
+
+    typedef enum {
+        ADCON4_C5CHS_ANA5 = 0b01, // Dedicated ADC Core 5 Input is alternative ANA5 input
+        ADCON4_C5CHS_AN5 = 0b00 // Dedicated ADC Core 5 Input is AN5 input
+    } ADCON4_C5CHS_e; // Dedicated ADC Core 5 Input Channel Selection
+    
+    #endif
+
+    #if (ADC_CORE_COUNT > 7)
+    #define REG_ADCON4H_C6CHS_ANA5      0b0001000000000000
+    #define REG_ADCON4H_C6CHS_AN5       0b0000000000000000
+
+    typedef enum {
+        ADCON4_C6CHS_ANA6 = 0b01, // Dedicated ADC Core 6 Input is alternative ANA6 input
+        ADCON6_C4CHS_AN6 = 0b00 // Dedicated ADC Core 6 Input is AN6 input
+    } ADCON4_C6CHS_e; // Dedicated ADC Core 6 Input Channel Selection
+    
+    #endif
+
+    
+    #endif
+
+typedef struct {
+        #if (ADC_CORE_COUNT > 1)
+        volatile ADCON4_SAMCxEN_e SAMC0EN : 1;  // Bit 0: Dedicated ADC Core 0 Conversion Delay Enable
+        #else
+        volatile unsigned : 1;  // reserved
+        #endif
+        #if (ADC_CORE_COUNT > 2)
+        volatile ADCON4_SAMCxEN_e SAMC1EN : 1; // Bit 1: Dedicated ADC Core 1 Conversion Delay Enable
+        #else
+        volatile unsigned : 1; // reserved
+        #endif
+        #if (ADC_CORE_COUNT > 3)
+        volatile ADCON4_SAMCxEN_e SAMC2EN : 1; // Bit 2: Dedicated ADC Core 2 Conversion Delay Enable
+        #else
+        volatile unsigned : 1; // reserved
+        #endif
+        #if (ADC_CORE_COUNT > 4)
+        volatile ADCON4_SAMCxEN_e SAMC3EN : 1; // Bit 3: Dedicated ADC Core 3 Conversion Delay Enable
+        #else
+        volatile unsigned : 1; // reserved
+        #endif
+        #if (ADC_CORE_COUNT > 5)
+        volatile ADCON4_SAMCxEN_e SAMC4EN : 1; // Bit 4: Dedicated ADC Core 4 Conversion Delay Enable
+        #else
+        volatile unsigned : 1; // reserved
+        #endif
+        #if (ADC_CORE_COUNT > 6)
+        volatile ADCON4_SAMCxEN_e SAMC5EN : 1; // Bit 5: Dedicated ADC Core 5 Conversion Delay Enable
+        #else
+        volatile unsigned : 1; // reserved
+        #endif
+        #if (ADC_CORE_COUNT > 7)
+        volatile ADCON4_SAMCxEN_e SAMC6EN : 1; // Bit 6: Dedicated ADC Core 6 Conversion Delay Enable
+        #else
+        volatile unsigned : 1; // reserved
+        #endif
+
+        volatile unsigned : 1;                  // Bit 7: reserved
+
+        #if (ADC_CORE_COUNT > 1)
+        volatile ADCON4_SYNCTRGx_e SYNCTRG0 : 1; // Bit 8: ADC Core 0 clock synchronization
+        #else
+        volatile unsigned : 1; // reserved
+        #endif
+        #if (ADC_CORE_COUNT > 2)
+        volatile ADCON4_SYNCTRGx_e SYNCTRG1 : 1; // Bit 9: ADC Core 1 clock synchronization
+        #else
+        volatile unsigned : 1; // reserved
+        #endif
+        #if (ADC_CORE_COUNT > 3)
+        volatile ADCON4_SYNCTRGx_e SYNCTRG2 : 1; // Bit 10: ADC Core 2 clock synchronization
+        #else
+        volatile unsigned : 1; // reserved
+        #endif
+        #if (ADC_CORE_COUNT > 4)
+        volatile ADCON4_SYNCTRGx_e SYNCTRG3 : 1; // Bit 11: ADC Core 3 clock synchronization
+        #else
+        volatile unsigned : 1; // reserved
+        #endif
+        #if (ADC_CORE_COUNT > 5)
+        volatile ADCON4_SYNCTRGx_e SYNCTRG4 : 1; // Bit 12: ADC Core 4 clock synchronization
+        #else
+        volatile unsigned : 1; // reserved
+        #endif
+        #if (ADC_CORE_COUNT > 6)
+        volatile ADCON4_SYNCTRGx_e SYNCTRG5 : 1; // Bit 13: ADC Core 5 clock synchronization
+        #else
+        volatile unsigned : 1; // reserved
+        #endif
+        #if (ADC_CORE_COUNT > 7)
+        volatile ADCON4_SYNCTRGx_e SYNCTRG6 : 1; // Bit 14: ADC Core 6 clock synchronization
+        #else
+        volatile unsigned : 1; // reserved
+        #endif
+
+        volatile unsigned : 1;                  // Bit 15: reserved
+        
+    }  __attribute__((packed)) ADCON4L_t;       // ADCON4L: ADC CONTROL REGISTER 4 LOW
+    
+    typedef union {
+        volatile ADCON4L_t bits;
+        volatile uint16_t value;
+    }REGBLK_ADCON4L_t;        // ADCON4L: ADC CONTROL REGISTER 4 LOW
+    
+    typedef struct {
+        
+        #if (ADC_CORE_COUNT > 1)
+        volatile ADCON4_C0CHS_e C0CHS : 2; // Bit 1-0: ADC Core 0 analog input selection
+        #else
+        volatile unsigned : 2; // reserved
+        #endif
+        #if (ADC_CORE_COUNT > 2)
+        volatile ADCON4_C1CHS_e C1CHS : 2; // Bit 3-2: ADC Core 1 analog input selection
+        #else
+        volatile unsigned : 2; // reserved
+        #endif
+        #if (ADC_CORE_COUNT > 3)
+        volatile ADCON4_C2CHS_e C2CHS : 2; // Bit 5-4: ADC Core 2 analog input selection
+        #else
+        volatile unsigned : 2; // reserved
+        #endif
+        #if (ADC_CORE_COUNT > 4)
+        volatile ADCON4_C3CHS_e C3CHS : 2; // Bit 7-6: ADC Core 3 analog input selection
+        #else
+        volatile unsigned : 2; // reserved
+        #endif
+        #if (ADC_CORE_COUNT > 5)
+        volatile ADCON4_C3CHS_e C4CHS : 2; // Bit 9-8: ADC Core 4 analog input selection
+        #else
+        volatile unsigned : 2; // reserved
+        #endif
+        #if (ADC_CORE_COUNT > 6)
+        volatile ADCON4_C3CHS_e C5CHS : 2; // Bit 11-10: ADC Core 5 analog input selection
+        #else
+        volatile unsigned : 2; // reserved
+        #endif
+        #if (ADC_CORE_COUNT > 7)
+        volatile ADCON4_C3CHS_e C6CHS : 2; // Bit 13-12: ADC Core 6 analog input selection
+        #else
+        volatile unsigned : 2; // reserved
+        #endif
+
+        volatile unsigned : 2;              // Bit 15-14: reserved
+
+    } __attribute__((packed)) ADCON4H_t;
+
+    typedef union {
+        volatile ADCON4H_t bits;
+        volatile uint16_t value;
+    }REGBLK_ADCON4H_t;        // ADCON4H: ADC CONTROL REGISTER 4 HIGH
+    
+    
     typedef struct {
         #if (ADC_CORE_COUNT > 1)
-        volatile ADCON4_SAMCxEN_e SAMC0EN : 1; // Dedicated ADC Core 0 Conversion Delay Enable
+        volatile ADCON4_SAMCxEN_e SAMC0EN : 1;  // Bit 0: Dedicated ADC Core 0 Conversion Delay Enable
         #else
-        volatile unsigned : 1; // reserved
+        volatile unsigned : 1;  // reserved
         #endif
         #if (ADC_CORE_COUNT > 2)
-        volatile ADCON4_SAMCxEN_e SAMC1EN : 1; // Dedicated ADC Core 1 Conversion Delay Enable
+        volatile ADCON4_SAMCxEN_e SAMC1EN : 1; // Bit 1: Dedicated ADC Core 1 Conversion Delay Enable
         #else
         volatile unsigned : 1; // reserved
         #endif
         #if (ADC_CORE_COUNT > 3)
-        volatile ADCON4_SAMCxEN_e SAMC2EN : 1; // Dedicated ADC Core 2 Conversion Delay Enable
+        volatile ADCON4_SAMCxEN_e SAMC2EN : 1; // Bit 2: Dedicated ADC Core 2 Conversion Delay Enable
         #else
         volatile unsigned : 1; // reserved
         #endif
         #if (ADC_CORE_COUNT > 4)
-        volatile ADCON4_SAMCxEN_e SAMC3EN : 1; // Dedicated ADC Core 3 Conversion Delay Enable
+        volatile ADCON4_SAMCxEN_e SAMC3EN : 1; // Bit 3: Dedicated ADC Core 3 Conversion Delay Enable
         #else
         volatile unsigned : 1; // reserved
         #endif
         #if (ADC_CORE_COUNT > 5)
-        volatile ADCON4_SAMCxEN_e SAMC4EN : 1; // Dedicated ADC Core 4 Conversion Delay Enable
+        volatile ADCON4_SAMCxEN_e SAMC4EN : 1; // Bit 4: Dedicated ADC Core 4 Conversion Delay Enable
         #else
         volatile unsigned : 1; // reserved
         #endif
         #if (ADC_CORE_COUNT > 6)
-        volatile ADCON4_SAMCxEN_e SAMC5EN : 1; // Dedicated ADC Core 5 Conversion Delay Enable
+        volatile ADCON4_SAMCxEN_e SAMC5EN : 1; // Bit 5: Dedicated ADC Core 5 Conversion Delay Enable
         #else
         volatile unsigned : 1; // reserved
         #endif
         #if (ADC_CORE_COUNT > 7)
-        volatile ADCON4_SAMCxEN_e SAMC6EN : 1; // Dedicated ADC Core 6 Conversion Delay Enable
+        volatile ADCON4_SAMCxEN_e SAMC6EN : 1; // Bit 6: Dedicated ADC Core 6 Conversion Delay Enable
         #else
         volatile unsigned : 1; // reserved
         #endif
 
-        volatile unsigned : 1; // reserved
+        volatile unsigned : 1;                  // Bit 7: reserved
 
         #if (ADC_CORE_COUNT > 1)
-        volatile ADCON4_SYNCTRGx_e SYNCTRG0 : 1; // ADC Core 0 clock synchronization
+        volatile ADCON4_SYNCTRGx_e SYNCTRG0 : 1; // Bit 8: ADC Core 0 clock synchronization
         #else
         volatile unsigned : 1; // reserved
         #endif
         #if (ADC_CORE_COUNT > 2)
-        volatile ADCON4_SYNCTRGx_e SYNCTRG1 : 1; // ADC Core 1 clock synchronization
+        volatile ADCON4_SYNCTRGx_e SYNCTRG1 : 1; // Bit 9: ADC Core 1 clock synchronization
         #else
         volatile unsigned : 1; // reserved
         #endif
         #if (ADC_CORE_COUNT > 3)
-        volatile ADCON4_SYNCTRGx_e SYNCTRG2 : 1; // ADC Core 2 clock synchronization
+        volatile ADCON4_SYNCTRGx_e SYNCTRG2 : 1; // Bit 10: ADC Core 2 clock synchronization
         #else
         volatile unsigned : 1; // reserved
         #endif
         #if (ADC_CORE_COUNT > 4)
-        volatile ADCON4_SYNCTRGx_e SYNCTRG3 : 1; // ADC Core 3 clock synchronization
+        volatile ADCON4_SYNCTRGx_e SYNCTRG3 : 1; // Bit 11: ADC Core 3 clock synchronization
         #else
         volatile unsigned : 1; // reserved
         #endif
         #if (ADC_CORE_COUNT > 5)
-        volatile ADCON4_SYNCTRGx_e SYNCTRG4 : 1; // ADC Core 4 clock synchronization
+        volatile ADCON4_SYNCTRGx_e SYNCTRG4 : 1; // Bit 12: ADC Core 4 clock synchronization
         #else
         volatile unsigned : 1; // reserved
         #endif
         #if (ADC_CORE_COUNT > 6)
-        volatile ADCON4_SYNCTRGx_e SYNCTRG5 : 1; // ADC Core 5 clock synchronization
+        volatile ADCON4_SYNCTRGx_e SYNCTRG5 : 1; // Bit 13: ADC Core 5 clock synchronization
         #else
         volatile unsigned : 1; // reserved
         #endif
         #if (ADC_CORE_COUNT > 7)
-        volatile ADCON4_SYNCTRGx_e SYNCTRG6 : 1; // ADC Core 6 clock synchronization
+        volatile ADCON4_SYNCTRGx_e SYNCTRG6 : 1; // Bit 14: ADC Core 6 clock synchronization
         #else
         volatile unsigned : 1; // reserved
         #endif
 
-        volatile unsigned : 1; // reserved
+        volatile unsigned : 1;                  // Bit 15: reserved
 
+        
         #if (ADC_CORE_COUNT > 1)
-        volatile ADCON4_C0CHS_e C0CHS : 2; // ADC Core 0 analog input selection
+        volatile ADCON4_C0CHS_e C0CHS : 2; // Bit 1-0: ADC Core 0 analog input selection
         #else
         volatile unsigned : 2; // reserved
         #endif
         #if (ADC_CORE_COUNT > 2)
-        volatile ADCON4_C1CHS_e C1CHS : 2; // ADC Core 1 analog input selection
+        volatile ADCON4_C1CHS_e C1CHS : 2; // Bit 3-2: ADC Core 1 analog input selection
         #else
         volatile unsigned : 2; // reserved
         #endif
         #if (ADC_CORE_COUNT > 3)
-        volatile ADCON4_C2CHS_e C2CHS : 2; // ADC Core 2 analog input selection
+        volatile ADCON4_C2CHS_e C2CHS : 2; // Bit 5-4: ADC Core 2 analog input selection
         #else
         volatile unsigned : 2; // reserved
         #endif
         #if (ADC_CORE_COUNT > 4)
-        volatile ADCON4_C3CHS_e C3CHS : 2; // ADC Core 3 analog input selection
+        volatile ADCON4_C3CHS_e C3CHS : 2; // Bit 7-6: ADC Core 3 analog input selection
         #else
         volatile unsigned : 2; // reserved
         #endif
         #if (ADC_CORE_COUNT > 5)
-        volatile ADCON4_C3CHS_e C4CHS : 2; // ADC Core 4 analog input selection
+        volatile ADCON4_C3CHS_e C4CHS : 2; // Bit 9-8: ADC Core 4 analog input selection
         #else
         volatile unsigned : 2; // reserved
         #endif
         #if (ADC_CORE_COUNT > 6)
-        volatile ADCON4_C3CHS_e C5CHS : 2; // ADC Core 5 analog input selection
+        volatile ADCON4_C3CHS_e C5CHS : 2; // Bit 11-10: ADC Core 5 analog input selection
         #else
         volatile unsigned : 2; // reserved
         #endif
         #if (ADC_CORE_COUNT > 7)
-        volatile ADCON4_C3CHS_e C6CHS : 2; // ADC Core 6 analog input selection
+        volatile ADCON4_C3CHS_e C6CHS : 2; // Bit 13-12: ADC Core 6 analog input selection
         #else
         volatile unsigned : 2; // reserved
         #endif
 
-        volatile unsigned : 2; // reserved
+        volatile unsigned : 2;              // Bit 15-14: reserved
 
     } __attribute__((packed)) ADCON4_t;
 
@@ -2807,7 +2983,7 @@ typedef union {
 #define REG_ADCORExL_VALID_DATA_MSK		0b0000001111111111		// Bit mask used to set unimplemented bits to zero
 
 #define REG_SAMC_MSK                    0b0000001111111111      // ADCOREx Conversion Delay Filter Mask
-#define REG_SAMC(x)						((x-2) & REG_SAMC_MSK) 		// ADCOREx Conversion Delay Value
+#define REG_SAMC(x)						((x-2) & REG_SAMC_MSK) 	// ADCOREx Conversion Delay Value
 
 // REGISTER 19-12: ADCORExH: DEDICATED ADC CORE x CONTROL REGISTER HIGH
 
@@ -2833,8 +3009,8 @@ typedef union {
 
 // ( ADCORE_ADCS enumeration can be found under ADCON1H declarations )
 
-#define REG_ADCS_MSK                    0b0000000001111111      // ADC Core Clock Divider Filter Mask
-#define REG_ADCS(x)                     ((x-2) & REG_ADCS_MSK)  // ADC Core Clock Divider Value
+#define REG_ADCS_MSK       0b0000000001111111      // ADC Core Clock Divider Filter Mask
+#define REG_ADCS(x)        (((volatile uint16_t)(x>>1)) & REG_ADCS_MSK)  // ADC Core Clock Divider Value
 
 // ( ADCORE_RES enumeration can be found under ADCON2L declarations )
 
@@ -4799,6 +4975,8 @@ typedef union {
 typedef struct {
     volatile uint16_t index;            // Index of the ADC core instance
     volatile ADCORE_TYPE_e type;        // ADC core type (shared or dedicated)
+    volatile ADCON4_SAMCxEN_e sample_delay_enable; // ADCON4L setting used to enable/disable dedicated core sample delays
+    volatile ADCON4H_t adc_input_select; // ADC core input selection
     volatile REGBLK_ADCOREx_t config;   // ADC core configuration
 }HSADC_ADCOREx_CONFIG_t; // DEDICATED/SHARED ADC CORE x CONTROL REGISTERS
 
@@ -4880,7 +5058,7 @@ typedef union {
 typedef struct {
     volatile uint16_t ad_input; // Analog-To-Digital input index (e.g. 3 for AN3)
     volatile REGBLK_ANIN_CONFIG_t config; // Analog input configuration
-}__attribute__((packed)) HSADC_CHANNEL_CONFIG_t; // ADC Input Channel Settings 
+}__attribute__((packed)) HSADC_INPUT_CONFIG_t; // ADC Input Channel Settings 
 
 
 // ADC Digital Comparator Object
@@ -4902,7 +5080,7 @@ typedef struct {
 
 // Prototypes
 extern volatile uint16_t hsadc_init_adc_module( HSADC_MODULE_CONFIG_t adc_cfg );
-extern volatile uint16_t hsadc_init_adc_channel( HSADC_CHANNEL_CONFIG_t adin_cfg );
+extern volatile uint16_t hsadc_init_adc_channel( HSADC_INPUT_CONFIG_t adin_cfg );
 
 
 extern volatile uint16_t hsadc_module_power_up(void);
