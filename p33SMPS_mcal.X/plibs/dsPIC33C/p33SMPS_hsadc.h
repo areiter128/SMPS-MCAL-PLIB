@@ -194,29 +194,140 @@
 
     #endif
 
-#elif defined (__P33SMPS_CK506__) || defined (__P33SMPS_CK508__)
+#elif defined (__P33SMPS_CK__)
 
-    #define ADC_CORE_COUNT          3					// Number of ADC Cores available
-    #define ADC_ANINPUT_COUNT       20                  // Number of analog inputs
-    #define ADC_SHARED_CORE_INDEX   (ADC_CORE_COUNT - 1)    // Arteficially assigned index for shared ADC core
+    #define ADC_CORE_COUNT          3 // Number of ADC Cores available
+    #define ADC_SHARED_CORE_INDEX   (ADC_CORE_COUNT - 1) // Arteficially assigned index for shared ADC core
 
-    #define REG_ADC_CHANNEL_L_MSK   0b1111111111111111
-    #define REG_ADC_CHANNEL_H_MSK   0b0000000000001111
+    #define ADC_ADCMP_COUNT         4 // Number of ADC Digital Comparators
+    #define ADC_ADFL_COUNT          4 // Number of ADC Digital Filters
 
-    #define ADC_ADCMP_COUNT         4                   // Number of ADC Digital Comparators
-    #define ADC_ADFL_COUNT          4                   // Number of ADC Digital Filters
+    #if defined (__P33SMPS_CK202__) || defined (__P33SMPS_CK502__)
+        #define ADC_ANINPUT_COUNT       12                  // Number of analog inputs without alternative or internal ports
+        #define REG_ADC_CHANNEL_L_MSK   0b0000111111111111
+        #define REG_ADC_CHANNEL_H_MSK   0b0000001100000000
+    #elif defined (__P33SMPS_CK203__) || defined (__P33SMPS_CK503__)
+        #define ADC_ANINPUT_COUNT       16                  // Number of analog inputs without alternative or internal ports
+        #define REG_ADC_CHANNEL_L_MSK   0b1111111111111111
+        #define REG_ADC_CHANNEL_H_MSK   0b0000001100000000
+    #elif defined (__P33SMPS_CK205__) || defined (__P33SMPS_CK505__)
+        #define ADC_ANINPUT_COUNT       19                  // Number of analog inputs without alternative or internal ports
+        #define REG_ADC_CHANNEL_L_MSK   0b1111111111111111
+        #define REG_ADC_CHANNEL_H_MSK   0b0000001100000111
+    #elif defined (__P33SMPS_CK206__) || defined (__P33SMPS_CK506__)
+        #define ADC_ANINPUT_COUNT       20                  // Number of analog inputs without alternative or internal ports
+        #define REG_ADC_CHANNEL_L_MSK   0b1111111111111111
+        #define REG_ADC_CHANNEL_H_MSK   0b0000001100001111
+    #elif defined (__P33SMPS_CK208__) || defined (__P33SMPS_CK508__)
+        #define ADC_ANINPUT_COUNT       24                  // Number of analog inputs without alternative or internal ports
+        #define REG_ADC_CHANNEL_L_MSK   0b1111111111111111
+        #define REG_ADC_CHANNEL_H_MSK   0b0000001111111111
+    #endif
+    
 
-#elif defined (__P33SMPS_CK205__) || defined (__P33SMPS_CK505__)
+    // All devices
 
-    #define ADC_CORE_COUNT          3					// Number of ADC Cores available
-    #define ADC_ANINPUT_COUNT       19                  // Number of analog inputs
-    #define ADC_SHARED_CORE_INDEX   (ADC_CORE_COUNT - 1)    // Arteficially assigned index for shared ADC core
+    #define ADC_CORE_ANA0  0  // ADC input is assigned to dedicated ADC core (#0) => Alternative input to ADC Core #0
+    #define ADC_CORE_ANA1  1  // ADC input is assigned to dedicated ADC core (#1) => Alternative input to ADC Core #1
 
-    #define REG_ADC_CHANNEL_L_MSK   0b1111111111111111
-    #define REG_ADC_CHANNEL_H_MSK   0b0000000000000111
+    #define ADC_CORE_AN24  2  // ADC input is assigned to shared ADC core (#2) => Temperature Sensor
+    #define ADC_CORE_AN25  2  // ADC input is assigned to shared ADC core (#2) => Bandgap Reference
 
+    #define ADC_CORE_AN0   0  // ADC input is assigned to dedicated ADC core (#0)
+    #define ADC_CORE_AN1   1  // ADC input is assigned to dedicated ADC core (#1)
+    #define ADC_CORE_AN2   2  // ADC input is assigned to shared ADC core (#2)
+    #define ADC_CORE_AN3   2  // ADC input is assigned to shared ADC core (#2)
+    #define ADC_CORE_AN4   2  // ADC input is assigned to shared ADC core (#2)
+    #define ADC_CORE_AN5   2  // ADC input is assigned to shared ADC core (#2)
+    #define ADC_CORE_AN6   2  // ADC input is assigned to shared ADC core (#2)
+    #define ADC_CORE_AN7   2  // ADC input is assigned to shared ADC core (#2)
+    #define ADC_CORE_AN8   2  // ADC input is assigned to shared ADC core (#2)
+    #define ADC_CORE_AN9   2  // ADC input is assigned to shared ADC core (#2)
+    #define ADC_CORE_AN10  2  // ADC input is assigned to shared ADC core (#2)
+    #define ADC_CORE_AN11  2  // ADC input is assigned to shared ADC core (#2)
 
-// ToDo: Add device support for missing dsPIC33CKxxMP10x, 20x and 50x device derivatives
+    #if defined (__P33SMPS_CK203__) || defined (__P33SMPS_CK503__) || \
+        defined (__P33SMPS_CK205__) || defined (__P33SMPS_CK505__) || \
+        defined (__P33SMPS_CK206__) || defined (__P33SMPS_CK506__) || \
+        defined (__P33SMPS_CK208__) || defined (__P33SMPS_CK508__)
+    // 36-/48-/64-/80-pin devices only
+    #define ADC_CORE_AN12  2  // ADC input is assigned to shared ADC core (#2)
+    #define ADC_CORE_AN13  2  // ADC input is assigned to shared ADC core (#2)
+    #define ADC_CORE_AN14  2  // ADC input is assigned to shared ADC core (#2)
+    #define ADC_CORE_AN15  2  // ADC input is assigned to shared ADC core (#2)
+    #endif
+
+    #if defined (__P33SMPS_CK205__) || defined (__P33SMPS_CK505__) || \
+        defined (__P33SMPS_CK206__) || defined (__P33SMPS_CK506__) || \
+        defined (__P33SMPS_CK208__) || defined (__P33SMPS_CK508__)
+    // 48-/64-/80-pin devices only
+    #define ADC_CORE_AN16  2  // ADC input is assigned to shared ADC core (#2)
+    #define ADC_CORE_AN17  2  // ADC input is assigned to shared ADC core (#2)
+    #define ADC_CORE_AN18  2  // ADC input is assigned to shared ADC core (#2)
+    #endif
+
+    #if defined (__P33SMPS_CK206__) || defined (__P33SMPS_CK506__) || \
+        defined (__P33SMPS_CK208__) || defined (__P33SMPS_CK508__)
+    // 64-/80-pin devices only
+    #define ADC_CORE_AN19  2  // ADC input is assigned to shared ADC core (#2)
+    #endif
+    
+    #if defined (__P33SMPS_CK208__) || defined (__P33SMPS_CK508__)
+    // 80-pin devices only
+    #define ADC_CORE_AN20  2  // ADC input is assigned to shared ADC core (#2)
+    #define ADC_CORE_AN21  2  // ADC input is assigned to shared ADC core (#2)
+    #define ADC_CORE_AN22  2  // ADC input is assigned to shared ADC core (#2)
+    #define ADC_CORE_AN23  2  // ADC input is assigned to shared ADC core (#2)
+    #endif
+
+    typedef enum {
+        ADCORE_AN0  = 0,  // ADC input is assigned to dedicated ADC core (#0)
+        ADCORE_ANA0 = 0,  // ADC input is assigned to dedicated ADC core (#0)
+        ADCORE_AN1  = 1,  // ADC input is assigned to dedicated ADC core (#1)
+        ADCORE_ANA1 = 1,  // ADC input is assigned to dedicated ADC core (#1)
+        ADCORE_AN2  = 2,  // ADC input is assigned to shared ADC core (#2)
+        ADCORE_AN3  = 2,  // ADC input is assigned to shared ADC core (#2)
+        ADCORE_AN4  = 2,  // ADC input is assigned to shared ADC core (#2)
+        ADCORE_AN5  = 2,  // ADC input is assigned to shared ADC core (#2)
+        ADCORE_AN6  = 2,  // ADC input is assigned to shared ADC core (#2)
+        ADCORE_AN7  = 2,  // ADC input is assigned to shared ADC core (#2)
+        ADCORE_AN8  = 2,  // ADC input is assigned to shared ADC core (#2)
+        ADCORE_AN9  = 2,  // ADC input is assigned to shared ADC core (#2)
+        ADCORE_AN10 = 2,  // ADC input is assigned to shared ADC core (#2)
+        ADCORE_AN11 = 2,  // ADC input is assigned to shared ADC core (#2)
+    #if defined (__P33SMPS_CK203__) || defined (__P33SMPS_CK503__) || \
+        defined (__P33SMPS_CK205__) || defined (__P33SMPS_CK505__) || \
+        defined (__P33SMPS_CK206__) || defined (__P33SMPS_CK506__) || \
+        defined (__P33SMPS_CK208__) || defined (__P33SMPS_CK508__)
+        ADCORE_AN12 = 2,  // ADC input is assigned to shared ADC core (#2)
+        ADCORE_AN13 = 2,  // ADC input is assigned to shared ADC core (#2)
+        ADCORE_AN14 = 2,  // ADC input is assigned to shared ADC core (#2)
+        ADCORE_AN15 = 2,  // ADC input is assigned to shared ADC core (#2)
+    #endif
+
+    #if defined (__P33SMPS_CK205__) || defined (__P33SMPS_CK505__) || \
+        defined (__P33SMPS_CK206__) || defined (__P33SMPS_CK506__) || \
+        defined (__P33SMPS_CK208__) || defined (__P33SMPS_CK508__)
+        ADCORE_AN16 = 2,  // ADC input is assigned to shared ADC core (#2)
+        ADCORE_AN17 = 2,  // ADC input is assigned to shared ADC core (#2)
+        ADCORE_AN18 = 2,  // ADC input is assigned to shared ADC core (#2)
+    #endif
+
+    #if defined (__P33SMPS_CK206__) || defined (__P33SMPS_CK506__) || \
+        defined (__P33SMPS_CK208__) || defined (__P33SMPS_CK508__)
+        ADCORE_AN19 = 2,  // ADC input is assigned to shared ADC core (#2)
+    #endif
+    
+    #if defined (__P33SMPS_CK208__) || defined (__P33SMPS_CK508__)
+        ADCORE_AN20 = 2,  // ADC input is assigned to shared ADC core (#2)
+        ADCORE_AN21 = 2,  // ADC input is assigned to shared ADC core (#2)
+        ADCORE_AN22 = 2,  // ADC input is assigned to shared ADC core (#2)
+        ADCORE_AN23 = 2,  // ADC input is assigned to shared ADC core (#2)
+    #endif
+
+        ADCORE_AN24 = 2,  // ADC input is assigned to shared ADC core (#2) => Temperature Sensor
+        ADCORE_AN25 = 2   // ADC input is assigned to shared ADC core (#2) => Bandgap Reference
+    }ADC_CORE_INDEX_e;
 
 #else
 
@@ -226,21 +337,21 @@
 
 // Thie following define is used for bit masks and configuration registers depending on the number
 // of available ADc cores and will be used by multiple defines throughout the library
-#define ADCON4_VALID_ADCDORE_BIT_MASK       (uint32_t)(ADCDORE_REGISTER_BIT_MASK)
+#define ADCON4_VALID_ADCDORE_BIT_MSK   (uint32_t)(ADCDORE_REGISTER_BIT_MSK)
 
 // bits are added for each dedicated core, shared core is always available (highest index)
 #if (ADC_CORE_COUNT > 1)
-    #define ADCDORE_REGISTER_BIT_MASK   ((uint32_t)(pow(2, (ADC_CORE_COUNT-1)) - 1) | 0x0080) 
+    #define ADCDORE_REGISTER_BIT_MSK   ((uint32_t)(pow(2, (ADC_CORE_COUNT-1)) - 1) | 0x0080) 
 #else
-    #define ADCDORE_REGISTER_BIT_MASK   ((uint32_t)0x0080) // only the shared core is present
+    #define ADCDORE_REGISTER_BIT_MSK   ((uint32_t)0x0080) // only the shared core is present
 #endif
 
 // Device-specific Defines
-#ifndef DEVICE_VDD
-    #define DEVICE_VDD 3.300 // if device VDD is not defined in this project, define it for standard value of 3.3V
+#ifndef DEVICE_DEFAULT_AVDD
+    #define DEVICE_DEFAULT_AVDD 3.300 // if device VDD is not defined in this project, define it for standard value of 3.3V
 #endif
 
-#define ADC_VREF        DEVICE_VDD     // ADC reference voltage in [V]
+#define ADC_VREF        DEVICE_DEFAULT_AVDD     // ADC reference voltage in [V]
 #define ADC_RES_BIT     12.0    // ADC resolution in integer
 #define ADC_RES         (uint16_t)(pow(2, ADC_RES_BIT)-1)    // ADC resolution in integer
 #define ADC_SCALER      (float)(((float)(ADC_RES))/((float)(ADC_VREF))) // ADC Scaling in ticks/V
@@ -257,27 +368,27 @@
 
 // REGISTER ADCON1L/H: ANALOG-TO-DIGITAL CONTROL REGISTER 1 LOW/HIGH
 
-#define REG_ADCON1_VALID_DATA_WRITE_MASK	0x00E0A000 		// Bit mask used to set unimplemented bits to zero
-#define REG_ADCON1_VALID_DATA_READ_MASK     0x00E0A000		// Bit mask used to read unimplemented bits as zero
-#define REG_ADCON1_OFF_STATE_WRITE_MASK     0x00E02000 		// Bit mask used to set unimplemented bits to zero
+#define REG_ADCON1_VALID_DATA_WRITE_MSK     0x00E0A000 		// Bit mask used to set unimplemented bits to zero
+#define REG_ADCON1_VALID_DATA_READ_MSK      0x00E0A000		// Bit mask used to read unimplemented bits as zero
+#define REG_ADCON1_OFF_STATE_WRITE_MSK      0x00E02000 		// Bit mask used to set unimplemented bits to zero
 
 // REGISTER ADCON1L: ANALOG-TO-DIGITAL CONTROL REGISTER 1 LOW
 
-#define REG_ADCON1L_VALID_DATA_WRITE_MASK	0b1010000000000000		// Bit mask used to set unimplemented bits to zero
-#define REG_ADCON1L_VALID_DATA_READ_MASK	0b1010000000000000		// Bit mask used to read unimplemented bits as zero
-#define REG_ADCON1L_DISABLED_MASK           0b0111111111111111
+#define REG_ADCON1L_VALID_DATA_WRITE_MSK    0b1010000000000000		// Bit mask used to set unimplemented bits to zero
+#define REG_ADCON1L_VALID_DATA_READ_MSK     0b1010000000000000		// Bit mask used to read unimplemented bits as zero
+#define REG_ADCON1L_DISABLED_MSK            0b0111111111111111
 #define REG_ADCON1L_RESET                   0b0000000000000000      // Reset ADCON 1 Low Register
 
 // REGISTER ADCON1H: ANALOG-TO-DIGITAL CONTROL REGISTER 1 HIGH
 
 #define REG_ADCON1H_RESET                   0b0000000001100000      // Reset ADCON 1 High Register
-#define REG_ADCON1H_VALID_DATA_READ_MASK	0b0000000011100000		// Bit mask used to set unimplemented bits to zero
-#define REG_ADCON1H_VALID_DATA_WRITE_MASK	0b0000000011100000		// Bit mask used to read unimplemented bits as zero
+#define REG_ADCON1H_VALID_DATA_READ_MSK	    0b0000000011100000		// Bit mask used to set unimplemented bits to zero
+#define REG_ADCON1H_VALID_DATA_WRITE_MSK	0b0000000011100000		// Bit mask used to read unimplemented bits as zero
 
+#define REG_ADCON1H_EXCLUDE_SHRADC_CFG_MSK	0b1111111110011111		// Bit mask used to read register settings without shared ADC core resolution
 
-
-#define REG_ADCON1L_ADON_ENABLED		0b1000000000000000      // Turn ADC Module On
-#define REG_ADCON1L_ADON_DISABLED		0b0000000000000000      // Turn ADC Module Off
+#define REG_ADCON1L_ADON_ENABLED		    0b1000000000000000      // Turn ADC Module On
+#define REG_ADCON1L_ADON_DISABLED		    0b0000000000000000      // Turn ADC Module Off
 
 typedef enum {
     ADCON1_ADON_ENABLED = 0b1, // ADC module is enabled
@@ -309,53 +420,73 @@ typedef enum {
 #define REG_ADCON1H_SHRRES_6BIT         0b0000000000000000      // Set for 6-bit operation
 
 typedef enum {
-    ADCON1_SHRRES_12BIT = 0b11, // 12-bit resolution
-    ADCON1_SHRRES_10BIT = 0b10, // 10-bit resolution
-    ADCON1_SHRRES_8BIT = 0b01, // 8-bit resolution
-    ADCON1_SHRRES_6BIT = 0b00 // 6-bit resolution
-} ADCON1_SHRRES_e; // Shared ADC Core Resolution Selection bits
+    ADCORE_RES_12BIT = 0b11, // 12-bit resolution
+    ADCORE_RES_10BIT = 0b10, // 10-bit resolution
+    ADCORE_RES_8BIT = 0b01, // 8-bit resolution
+    ADCORE_RES_6BIT = 0b00 // 6-bit resolution
+} ADCOREx_RES_e; // Shared & Dedicated ADC Core Resolution Selection bits
 
 typedef struct {
-    volatile unsigned : 13;
-    volatile ADCON1_ADSIDL_e ADSIDL : 1; // ADC Stop in Idle Mode bit
-    volatile unsigned : 1;
-    volatile ADCON1_ADON_e ADON : 1; // ADC Enable bit
+    volatile unsigned : 13;              // Bit 12-0: (reserved)
+    volatile ADCON1_ADSIDL_e ADSIDL : 1; // Bit 13: ADC Stop in Idle Mode bit
+    volatile unsigned : 1;               // Bit 14: (reserved)
+    volatile ADCON1_ADON_e ADON : 1;     // Bit 15: ADC Enable bit
+} __attribute__((packed))ADCON1L_t; // ADCON1H: ADC CONTROL REGISTER 1 LOW
 
-    volatile unsigned : 5;
-    volatile ADCON1_SHRRES_e SHRRES : 2; // Shared ADC Core Resolution Selection bits
-    volatile ADCON1_FORM_e FORM : 1; // Fractional Data Output Format bit
-    volatile unsigned : 8;
+typedef struct {
+    volatile unsigned : 5;              // Bit 4-0: (reserved)
+    volatile ADCOREx_RES_e SHRRES : 2;  // Bit 6-5: Shared ADC Core Resolution Selection bits
+    volatile ADCON1_FORM_e FORM : 1;    // Bit 7: Fractional Data Output Format bit
+    volatile unsigned : 8;              // Bit 15-8: (reserved)
+} __attribute__((packed))ADCON1H_t;     // ADCON1H: ADC CONTROL REGISTER 1 HIGH
+
+typedef union {
+    volatile ADCON1H_t bits;
+    volatile uint16_t value;
+}REGBLK_ADCON1H_t;     // ADCON1H: ADC CONTROL REGISTER 1 HIGH
+
+typedef struct {
+    volatile unsigned : 13;              // Bit 12-0: (reserved)
+    volatile ADCON1_ADSIDL_e ADSIDL : 1; // Bit 13: ADC Stop in Idle Mode bit
+    volatile unsigned : 1;               // Bit 14: (reserved)
+    volatile ADCON1_ADON_e ADON : 1;     // Bit 15: ADC Enable bit
+
+    volatile unsigned : 5;               // Bit 4-0: (reserved)
+    volatile ADCOREx_RES_e SHRRES : 2;   // Bit 6-5: Shared ADC Core Resolution Selection bits
+    volatile ADCON1_FORM_e FORM : 1;     // Bit 7: Fractional Data Output Format bit
+    volatile unsigned : 8;               // Bit 15-8: (reserved)
 
 } __attribute__((packed))ADCON1_t; // ADCON1: ADC CONTROL REGISTER 1 HIGH/LOW
 
 typedef union {
     volatile uint32_t value;
     volatile ADCON1_t bits;
-} REGBLK_ADCON1_t;
-
+} REGBLK_ADCON1_t; // ADCON1: ADC CONTROL REGISTER 1 HIGH/LOW
 
 // REGISTERS ADCON2L/H: ANALOG-TO-DIGITAL CONTROL REGISTER 2 LOW/HIGH
 
-#define REG_ADCON2_VALID_DATA_WRITE_MASK  0xC3FFDF7F		// Bit mask used to set unimplemented bits to zero
-#define REG_ADCON2_VALID_DATA_READ_MASK   0xC3FFDF7F		// Bit mask used to set unimplemented bits to zero
+#define REG_ADCON2_VALID_DATA_WRITE_MSK  0xC3FFDF7F		// Bit mask used to set unimplemented bits to zero
+#define REG_ADCON2_VALID_DATA_READ_MSK   0xC3FFDF7F		// Bit mask used to set unimplemented bits to zero
 
 
 // REGISTER ADCON2L: ANALOG-TO-DIGITAL CONTROL REGISTER 2 HIGH
 
-#define REG_ADCON2L_RESET               0b0000000000000000      // Reset ADCON 2 Low Register
-#define REG_ADCON2L_VALID_DATA_MSK		0b1101111101111111		// Bit mask used to set unimplemented bits to zero
+#define REG_ADCON2L_RESET                  0b0000000000000000      // Reset ADCON 2 Low Register
+#define REG_ADCON2L_VALID_DATA_MSK		   0b1101111101111111		// Bit mask used to set unimplemented bits to zero
 
-#define REG_ADCON2L_SHRADC_CFG_MASK     0b0001011101111111      // Bit-Mask eliminating all bits not concerning the shared ADC core configuration
-#define REG_ADCON2L_REF_CFG_MASK        0b1100000000000000      // Bit-Mask eliminating all bits not concerning the bandgap reference configuration
+#define REG_ADCON2L_SHRADC_CFG_MSK         0b0001011101111111      // Bit-Mask eliminating all bits not concerning the shared ADC core configuration
+#define REG_ADCON2L_REF_CFG_MSK            0b1100000000000000      // Bit-Mask eliminating all bits not concerning the bandgap reference configuration
+#define REG_ADCON2L_EXCLUDE_SHRADC_CFG_MSK 0b1111100010000000      // Bit-Mask eliminating all shared ADC core configuration bits 
 
 // REGISTER ADCON2H: ANALOG-TO-DIGITAL CONTROL REGISTER 2 HIGH
 
-#define REG_ADCON2H_RESET               0b0000000000000000      // Reset ADCON 2 High Register
-#define REG_ADCON2H_VALID_DATA_MSK		0b1100001111111111		// Bit mask used to set unimplemented bits to zero
+#define REG_ADCON2H_RESET                  0b0000000000000000      // Reset ADCON 2 High Register
+#define REG_ADCON2H_VALID_DATA_MSK		   0b1100001111111111		// Bit mask used to set unimplemented bits to zero
 
-#define REG_ADCON2H_SHRADC_CFG_MASK     0b0000001111111111      // Bit-Mask eliminating all bits not concerning the shared ADC core configuration
-#define REG_ADCON2H_REF_CFG_MASK        0b1100000000000000      // Bit-Mask eliminating all bits not concerning the bandgap reference configuration
-#define REG_ADCON2H_REF_STAT_READ_MASK  0b1100000000000000      // Bit-Mask for reading the bandgap reference status bits
+#define REG_ADCON2H_SHRADC_CFG_MSK         0b0000001111111111      // Bit-Mask eliminating all bits not concerning the shared ADC core configuration
+#define REG_ADCON2H_REF_CFG_MSK            0b1100000000000000      // Bit-Mask eliminating all bits not concerning the bandgap reference configuration
+#define REG_ADCON2H_REF_STAT_READ_MSK      0b1100000000000000      // Bit-Mask for reading the bandgap reference status bits
+#define REG_ADCON2H_EXCLUDE_SHRADC_CFG_MSK 0b1111110000000000      // Bit-Mask eliminating all shared ADC core configuration bits 
 
 
 #define REG_ADCON2L_REFCIE_ENABLED      0b1000000000000000      // Interrupt on Band Gap & Reference Voltage Ready
@@ -401,149 +532,149 @@ typedef enum {
 #define REG_ADCON2L_SHREISEL_1TAD       0b0000000000000000      // Early Interrupts 1 TADs before READY
 
 typedef enum {
-    ADCON2_SHREISEL_8TAD = 0b111, // Early interrupt is set and interrupt is generated 8 TADCORE clocks prior to when the data is ready
-    ADCON2_SHREISEL_7TAD = 0b110, // Early interrupt is set and interrupt is generated 7 TADCORE clocks prior to when the data is ready
-    ADCON2_SHREISEL_6TAD = 0b101, // Early interrupt is set and interrupt is generated 6 TADCORE clocks prior to when the data is ready
-    ADCON2_SHREISEL_5TAD = 0b100, // Early interrupt is set and interrupt is generated 5 TADCORE clocks prior to when the data is ready
-    ADCON2_SHREISEL_4TAD = 0b011, // Early interrupt is set and interrupt is generated 4 TADCORE clocks prior to when the data is ready
-    ADCON2_SHREISEL_3TAD = 0b010, // Early interrupt is set and interrupt is generated 3 TADCORE clocks prior to when the data is ready
-    ADCON2_SHREISEL_2TAD = 0b001, // Early interrupt is set and interrupt is generated 2 TADCORE clocks prior to when the data is ready
-    ADCON2_SHREISEL_1TAD = 0b000 // Early interrupt is set and interrupt is generated 1 TADCORE clocks prior to when the data is ready
-} ADCON2_SHREISEL_e; // Shared Core Early Interrupt Time Selection bits
+    ADCORE_EISEL_8TAD = 0b111, // Early interrupt is set and interrupt is generated 8 TADCORE clocks prior to when the data is ready
+    ADCORE_EISEL_7TAD = 0b110, // Early interrupt is set and interrupt is generated 7 TADCORE clocks prior to when the data is ready
+    ADCORE_EISEL_6TAD = 0b101, // Early interrupt is set and interrupt is generated 6 TADCORE clocks prior to when the data is ready
+    ADCORE_EISEL_5TAD = 0b100, // Early interrupt is set and interrupt is generated 5 TADCORE clocks prior to when the data is ready
+    ADCORE_EISEL_4TAD = 0b011, // Early interrupt is set and interrupt is generated 4 TADCORE clocks prior to when the data is ready
+    ADCORE_EISEL_3TAD = 0b010, // Early interrupt is set and interrupt is generated 3 TADCORE clocks prior to when the data is ready
+    ADCORE_EISEL_2TAD = 0b001, // Early interrupt is set and interrupt is generated 2 TADCORE clocks prior to when the data is ready
+    ADCORE_EISEL_1TAD = 0b000 // Early interrupt is set and interrupt is generated 1 TADCORE clocks prior to when the data is ready
+} ADCOREx_EISEL_e; // Shared & Dedicated Core Early Interrupt Time Selection bits enumeration
 
 #define REG_SHRADCS_MSK                 0b0000000001111111      // Bit-Mask to filter on clock divider value bits
 #define REG_SHRADCS(clkdiv)             ((clkdiv >> 1) & REG_SHRADCS_MSK) 	// Shared ADC Core Input Clock Divider bits. (clkdiv indicates the effective divider ratio)
 
 typedef enum {
-    ADCON2_SHRADCS_DIV_MIN = 0b0000000, // 2 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV2 = 0b0000001, // 2 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV4 = 0b0000010, // 4 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV6 = 0b0000011, // 6 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV8 = 0b0000100, // 8 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV10 = 0b0000101, // 10 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV12 = 0b0000110, // 12 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV14 = 0b0000111, // 14 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV16 = 0b0001000, // 16 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV18 = 0b0001001, // 18 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV20 = 0b0001010, // 20 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV22 = 0b0001011, // 22 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV24 = 0b0001100, // 24 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV26 = 0b0001101, // 26 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV28 = 0b0001110, // 28 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV30 = 0b0001111, // 30 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV32 = 0b0010000, // 32 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV34 = 0b0010001, // 34 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV36 = 0b0010010, // 36 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV38 = 0b0010011, // 38 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV40 = 0b0010100, // 40 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV42 = 0b0010101, // 42 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV44 = 0b0010110, // 44 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV46 = 0b0010111, // 46 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV48 = 0b0011000, // 48 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV50 = 0b0011001, // 50 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV52 = 0b0011010, // 52 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV54 = 0b0011011, // 54 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV56 = 0b0011100, // 56 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV58 = 0b0011101, // 58 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV60 = 0b0011110, // 60 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV62 = 0b0011111, // 62 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV64 = 0b0100000, // 64 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV66 = 0b0100001, // 66 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV68 = 0b0100010, // 68 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV70 = 0b0100011, // 70 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV72 = 0b0100100, // 72 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV74 = 0b0100101, // 74 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV76 = 0b0100110, // 76 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV78 = 0b0100111, // 78 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV80 = 0b0101000, // 80 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV82 = 0b0101001, // 82 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV84 = 0b0101010, // 84 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV86 = 0b0101011, // 86 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV88 = 0b0101100, // 88 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV90 = 0b0101101, // 90 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV92 = 0b0101110, // 92 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV94 = 0b0101111, // 94 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV96 = 0b0110000, // 96 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV98 = 0b0110001, // 98 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV100 = 0b0110010, // 100 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV102 = 0b0110011, // 102 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV104 = 0b0110100, // 104 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV106 = 0b0110101, // 106 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV108 = 0b0110110, // 108 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV110 = 0b0110111, // 110 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV112 = 0b0111000, // 112 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV114 = 0b0111001, // 114 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV116 = 0b0111010, // 116 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV118 = 0b0111011, // 118 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV120 = 0b0111100, // 120 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV122 = 0b0111101, // 122 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV124 = 0b0111110, // 124 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV126 = 0b0111111, // 126 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV128 = 0b1000000, // 128 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV130 = 0b1000001, // 130 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV132 = 0b1000010, // 132 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV134 = 0b1000011, // 134 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV136 = 0b1000100, // 136 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV138 = 0b1000101, // 138 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV140 = 0b1000110, // 140 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV142 = 0b1000111, // 142 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV144 = 0b1001000, // 144 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV146 = 0b1001001, // 146 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV148 = 0b1001010, // 148 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV150 = 0b1001011, // 150 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV152 = 0b1001100, // 152 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV154 = 0b1001101, // 154 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV156 = 0b1001110, // 156 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV158 = 0b1001111, // 158 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV160 = 0b1010000, // 160 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV162 = 0b1010001, // 162 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV164 = 0b1010010, // 164 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV166 = 0b1010011, // 166 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV168 = 0b1010100, // 168 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV170 = 0b1010101, // 170 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV172 = 0b1010110, // 172 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV174 = 0b1010111, // 174 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV176 = 0b1011000, // 176 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV178 = 0b1011001, // 178 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV180 = 0b1011010, // 180 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV182 = 0b1011011, // 182 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV184 = 0b1011100, // 184 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV186 = 0b1011101, // 186 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV188 = 0b1011110, // 188 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV190 = 0b1011111, // 190 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV192 = 0b1100000, // 192 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV194 = 0b1100001, // 194 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV196 = 0b1100010, // 196 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV198 = 0b1100011, // 198 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV200 = 0b1100100, // 200 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV202 = 0b1100101, // 202 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV204 = 0b1100110, // 204 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV206 = 0b1100111, // 206 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV208 = 0b1101000, // 208 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV210 = 0b1101001, // 210 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV212 = 0b1101010, // 212 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV214 = 0b1101011, // 214 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV216 = 0b1101100, // 216 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV218 = 0b1101101, // 218 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV220 = 0b1101110, // 220 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV222 = 0b1101111, // 222 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV224 = 0b1110000, // 224 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV226 = 0b1110001, // 226 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV228 = 0b1110010, // 228 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV230 = 0b1110011, // 230 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV232 = 0b1110100, // 232 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV234 = 0b1110101, // 234 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV236 = 0b1110110, // 236 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV238 = 0b1110111, // 238 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV240 = 0b1111000, // 240 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV242 = 0b1111001, // 242 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV244 = 0b1111010, // 244 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV246 = 0b1111011, // 246 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV248 = 0b1111100, // 248 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV250 = 0b1111101, // 250 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV252 = 0b1111110, // 252 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-    ADCON2_SHRADCS_DIV254 = 0b1111111 // 254 source clock periods (TCORESRC) per TAD clock period (TADCORE)
-} ADCON2_SHRADCS_e; // ADC source clock divider selection
+    ADCORE_ADCS_DEFAULT = 0b0000000, // 2 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV2 = 0b0000001, // 2 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV4 = 0b0000010, // 4 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV6 = 0b0000011, // 6 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV8 = 0b0000100, // 8 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV10 = 0b0000101, // 10 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV12 = 0b0000110, // 12 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV14 = 0b0000111, // 14 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV16 = 0b0001000, // 16 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV18 = 0b0001001, // 18 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV20 = 0b0001010, // 20 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV22 = 0b0001011, // 22 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV24 = 0b0001100, // 24 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV26 = 0b0001101, // 26 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV28 = 0b0001110, // 28 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV30 = 0b0001111, // 30 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV32 = 0b0010000, // 32 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV34 = 0b0010001, // 34 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV36 = 0b0010010, // 36 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV38 = 0b0010011, // 38 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV40 = 0b0010100, // 40 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV42 = 0b0010101, // 42 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV44 = 0b0010110, // 44 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV46 = 0b0010111, // 46 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV48 = 0b0011000, // 48 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV50 = 0b0011001, // 50 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV52 = 0b0011010, // 52 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV54 = 0b0011011, // 54 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV56 = 0b0011100, // 56 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV58 = 0b0011101, // 58 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV60 = 0b0011110, // 60 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV62 = 0b0011111, // 62 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV64 = 0b0100000, // 64 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV66 = 0b0100001, // 66 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV68 = 0b0100010, // 68 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV70 = 0b0100011, // 70 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV72 = 0b0100100, // 72 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV74 = 0b0100101, // 74 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV76 = 0b0100110, // 76 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV78 = 0b0100111, // 78 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV80 = 0b0101000, // 80 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV82 = 0b0101001, // 82 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV84 = 0b0101010, // 84 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV86 = 0b0101011, // 86 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV88 = 0b0101100, // 88 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV90 = 0b0101101, // 90 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV92 = 0b0101110, // 92 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV94 = 0b0101111, // 94 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV96 = 0b0110000, // 96 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV98 = 0b0110001, // 98 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV100 = 0b0110010, // 100 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV102 = 0b0110011, // 102 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV104 = 0b0110100, // 104 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV106 = 0b0110101, // 106 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV108 = 0b0110110, // 108 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV110 = 0b0110111, // 110 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV112 = 0b0111000, // 112 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV114 = 0b0111001, // 114 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV116 = 0b0111010, // 116 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV118 = 0b0111011, // 118 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV120 = 0b0111100, // 120 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV122 = 0b0111101, // 122 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV124 = 0b0111110, // 124 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV126 = 0b0111111, // 126 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV128 = 0b1000000, // 128 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV130 = 0b1000001, // 130 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV132 = 0b1000010, // 132 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV134 = 0b1000011, // 134 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV136 = 0b1000100, // 136 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV138 = 0b1000101, // 138 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV140 = 0b1000110, // 140 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV142 = 0b1000111, // 142 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV144 = 0b1001000, // 144 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV146 = 0b1001001, // 146 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV148 = 0b1001010, // 148 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV150 = 0b1001011, // 150 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV152 = 0b1001100, // 152 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV154 = 0b1001101, // 154 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV156 = 0b1001110, // 156 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV158 = 0b1001111, // 158 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV160 = 0b1010000, // 160 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV162 = 0b1010001, // 162 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV164 = 0b1010010, // 164 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV166 = 0b1010011, // 166 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV168 = 0b1010100, // 168 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV170 = 0b1010101, // 170 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV172 = 0b1010110, // 172 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV174 = 0b1010111, // 174 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV176 = 0b1011000, // 176 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV178 = 0b1011001, // 178 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV180 = 0b1011010, // 180 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV182 = 0b1011011, // 182 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV184 = 0b1011100, // 184 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV186 = 0b1011101, // 186 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV188 = 0b1011110, // 188 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV190 = 0b1011111, // 190 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV192 = 0b1100000, // 192 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV194 = 0b1100001, // 194 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV196 = 0b1100010, // 196 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV198 = 0b1100011, // 198 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV200 = 0b1100100, // 200 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV202 = 0b1100101, // 202 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV204 = 0b1100110, // 204 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV206 = 0b1100111, // 206 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV208 = 0b1101000, // 208 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV210 = 0b1101001, // 210 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV212 = 0b1101010, // 212 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV214 = 0b1101011, // 214 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV216 = 0b1101100, // 216 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV218 = 0b1101101, // 218 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV220 = 0b1101110, // 220 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV222 = 0b1101111, // 222 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV224 = 0b1110000, // 224 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV226 = 0b1110001, // 226 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV228 = 0b1110010, // 228 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV230 = 0b1110011, // 230 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV232 = 0b1110100, // 232 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV234 = 0b1110101, // 234 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV236 = 0b1110110, // 236 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV238 = 0b1110111, // 238 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV240 = 0b1111000, // 240 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV242 = 0b1111001, // 242 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV244 = 0b1111010, // 244 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV246 = 0b1111011, // 246 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV248 = 0b1111100, // 248 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV250 = 0b1111101, // 250 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV252 = 0b1111110, // 252 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+    ADCORE_ADCS_DIV254 = 0b1111111 // 254 source clock periods (TCORESRC) per TAD clock period (TADCORE)
+} ADCOREx_ADCS_e; // Shared & Dedicated ADC core source clock divider selection enumeration
 
 
 #define REG_ADCON2H_REFRDY_READY     0b1000000000000000   // Band gap is ready
@@ -573,1069 +704,1099 @@ typedef struct {
 #define REG_ADCON2H_SHRSAMC(Tdaclk)     ((Tdaclk-2) & REG_ADCON2H_SHRSAMC_MSK) 		// Shared ADC Core Sample Time Selection bits
 
 typedef enum {
-    ADCON2_SHRSAMC_0002 = 0b0000000000, // Sampling time of 2 TADCORE clock periods
-    ADCON2_SHRSAMC_0003 = 0b0000000001, // Sampling time of 3 TADCORE clock periods
-    ADCON2_SHRSAMC_0004 = 0b0000000010, // Sampling time of 4 TADCORE clock periods
-    ADCON2_SHRSAMC_0005 = 0b0000000011, // Sampling time of 5 TADCORE clock periods
-    ADCON2_SHRSAMC_0006 = 0b0000000100, // Sampling time of 6 TADCORE clock periods
-    ADCON2_SHRSAMC_0007 = 0b0000000101, // Sampling time of 7 TADCORE clock periods
-    ADCON2_SHRSAMC_0008 = 0b0000000110, // Sampling time of 8 TADCORE clock periods
-    ADCON2_SHRSAMC_0009 = 0b0000000111, // Sampling time of 9 TADCORE clock periods
-    ADCON2_SHRSAMC_0010 = 0b0000001000, // Sampling time of 10 TADCORE clock periods
-    ADCON2_SHRSAMC_0011 = 0b0000001001, // Sampling time of 11 TADCORE clock periods
-    ADCON2_SHRSAMC_0012 = 0b0000001010, // Sampling time of 12 TADCORE clock periods
-    ADCON2_SHRSAMC_0013 = 0b0000001011, // Sampling time of 13 TADCORE clock periods
-    ADCON2_SHRSAMC_0014 = 0b0000001100, // Sampling time of 14 TADCORE clock periods
-    ADCON2_SHRSAMC_0015 = 0b0000001101, // Sampling time of 15 TADCORE clock periods
-    ADCON2_SHRSAMC_0016 = 0b0000001110, // Sampling time of 16 TADCORE clock periods
-    ADCON2_SHRSAMC_0017 = 0b0000001111, // Sampling time of 17 TADCORE clock periods
-    ADCON2_SHRSAMC_0018 = 0b0000010000, // Sampling time of 18 TADCORE clock periods
-    ADCON2_SHRSAMC_0019 = 0b0000010001, // Sampling time of 19 TADCORE clock periods
-    ADCON2_SHRSAMC_0020 = 0b0000010010, // Sampling time of 20 TADCORE clock periods
-    ADCON2_SHRSAMC_0021 = 0b0000010011, // Sampling time of 21 TADCORE clock periods
-    ADCON2_SHRSAMC_0022 = 0b0000010100, // Sampling time of 22 TADCORE clock periods
-    ADCON2_SHRSAMC_0023 = 0b0000010101, // Sampling time of 23 TADCORE clock periods
-    ADCON2_SHRSAMC_0024 = 0b0000010110, // Sampling time of 24 TADCORE clock periods
-    ADCON2_SHRSAMC_0025 = 0b0000010111, // Sampling time of 25 TADCORE clock periods
-    ADCON2_SHRSAMC_0026 = 0b0000011000, // Sampling time of 26 TADCORE clock periods
-    ADCON2_SHRSAMC_0027 = 0b0000011001, // Sampling time of 27 TADCORE clock periods
-    ADCON2_SHRSAMC_0028 = 0b0000011010, // Sampling time of 28 TADCORE clock periods
-    ADCON2_SHRSAMC_0029 = 0b0000011011, // Sampling time of 29 TADCORE clock periods
-    ADCON2_SHRSAMC_0030 = 0b0000011100, // Sampling time of 30 TADCORE clock periods
-    ADCON2_SHRSAMC_0031 = 0b0000011101, // Sampling time of 31 TADCORE clock periods
-    ADCON2_SHRSAMC_0032 = 0b0000011110, // Sampling time of 32 TADCORE clock periods
-    ADCON2_SHRSAMC_0033 = 0b0000011111, // Sampling time of 33 TADCORE clock periods
-    ADCON2_SHRSAMC_0034 = 0b0000100000, // Sampling time of 34 TADCORE clock periods
-    ADCON2_SHRSAMC_0035 = 0b0000100001, // Sampling time of 35 TADCORE clock periods
-    ADCON2_SHRSAMC_0036 = 0b0000100010, // Sampling time of 36 TADCORE clock periods
-    ADCON2_SHRSAMC_0037 = 0b0000100011, // Sampling time of 37 TADCORE clock periods
-    ADCON2_SHRSAMC_0038 = 0b0000100100, // Sampling time of 38 TADCORE clock periods
-    ADCON2_SHRSAMC_0039 = 0b0000100101, // Sampling time of 39 TADCORE clock periods
-    ADCON2_SHRSAMC_0040 = 0b0000100110, // Sampling time of 40 TADCORE clock periods
-    ADCON2_SHRSAMC_0041 = 0b0000100111, // Sampling time of 41 TADCORE clock periods
-    ADCON2_SHRSAMC_0042 = 0b0000101000, // Sampling time of 42 TADCORE clock periods
-    ADCON2_SHRSAMC_0043 = 0b0000101001, // Sampling time of 43 TADCORE clock periods
-    ADCON2_SHRSAMC_0044 = 0b0000101010, // Sampling time of 44 TADCORE clock periods
-    ADCON2_SHRSAMC_0045 = 0b0000101011, // Sampling time of 45 TADCORE clock periods
-    ADCON2_SHRSAMC_0046 = 0b0000101100, // Sampling time of 46 TADCORE clock periods
-    ADCON2_SHRSAMC_0047 = 0b0000101101, // Sampling time of 47 TADCORE clock periods
-    ADCON2_SHRSAMC_0048 = 0b0000101110, // Sampling time of 48 TADCORE clock periods
-    ADCON2_SHRSAMC_0049 = 0b0000101111, // Sampling time of 49 TADCORE clock periods
-    ADCON2_SHRSAMC_0050 = 0b0000110000, // Sampling time of 50 TADCORE clock periods
-    ADCON2_SHRSAMC_0051 = 0b0000110001, // Sampling time of 51 TADCORE clock periods
-    ADCON2_SHRSAMC_0052 = 0b0000110010, // Sampling time of 52 TADCORE clock periods
-    ADCON2_SHRSAMC_0053 = 0b0000110011, // Sampling time of 53 TADCORE clock periods
-    ADCON2_SHRSAMC_0054 = 0b0000110100, // Sampling time of 54 TADCORE clock periods
-    ADCON2_SHRSAMC_0055 = 0b0000110101, // Sampling time of 55 TADCORE clock periods
-    ADCON2_SHRSAMC_0056 = 0b0000110110, // Sampling time of 56 TADCORE clock periods
-    ADCON2_SHRSAMC_0057 = 0b0000110111, // Sampling time of 57 TADCORE clock periods
-    ADCON2_SHRSAMC_0058 = 0b0000111000, // Sampling time of 58 TADCORE clock periods
-    ADCON2_SHRSAMC_0059 = 0b0000111001, // Sampling time of 59 TADCORE clock periods
-    ADCON2_SHRSAMC_0060 = 0b0000111010, // Sampling time of 60 TADCORE clock periods
-    ADCON2_SHRSAMC_0061 = 0b0000111011, // Sampling time of 61 TADCORE clock periods
-    ADCON2_SHRSAMC_0062 = 0b0000111100, // Sampling time of 62 TADCORE clock periods
-    ADCON2_SHRSAMC_0063 = 0b0000111101, // Sampling time of 63 TADCORE clock periods
-    ADCON2_SHRSAMC_0064 = 0b0000111110, // Sampling time of 64 TADCORE clock periods
-    ADCON2_SHRSAMC_0065 = 0b0000111111, // Sampling time of 65 TADCORE clock periods
-    ADCON2_SHRSAMC_0066 = 0b0001000000, // Sampling time of 66 TADCORE clock periods
-    ADCON2_SHRSAMC_0067 = 0b0001000001, // Sampling time of 67 TADCORE clock periods
-    ADCON2_SHRSAMC_0068 = 0b0001000010, // Sampling time of 68 TADCORE clock periods
-    ADCON2_SHRSAMC_0069 = 0b0001000011, // Sampling time of 69 TADCORE clock periods
-    ADCON2_SHRSAMC_0070 = 0b0001000100, // Sampling time of 70 TADCORE clock periods
-    ADCON2_SHRSAMC_0071 = 0b0001000101, // Sampling time of 71 TADCORE clock periods
-    ADCON2_SHRSAMC_0072 = 0b0001000110, // Sampling time of 72 TADCORE clock periods
-    ADCON2_SHRSAMC_0073 = 0b0001000111, // Sampling time of 73 TADCORE clock periods
-    ADCON2_SHRSAMC_0074 = 0b0001001000, // Sampling time of 74 TADCORE clock periods
-    ADCON2_SHRSAMC_0075 = 0b0001001001, // Sampling time of 75 TADCORE clock periods
-    ADCON2_SHRSAMC_0076 = 0b0001001010, // Sampling time of 76 TADCORE clock periods
-    ADCON2_SHRSAMC_0077 = 0b0001001011, // Sampling time of 77 TADCORE clock periods
-    ADCON2_SHRSAMC_0078 = 0b0001001100, // Sampling time of 78 TADCORE clock periods
-    ADCON2_SHRSAMC_0079 = 0b0001001101, // Sampling time of 79 TADCORE clock periods
-    ADCON2_SHRSAMC_0080 = 0b0001001110, // Sampling time of 80 TADCORE clock periods
-    ADCON2_SHRSAMC_0081 = 0b0001001111, // Sampling time of 81 TADCORE clock periods
-    ADCON2_SHRSAMC_0082 = 0b0001010000, // Sampling time of 82 TADCORE clock periods
-    ADCON2_SHRSAMC_0083 = 0b0001010001, // Sampling time of 83 TADCORE clock periods
-    ADCON2_SHRSAMC_0084 = 0b0001010010, // Sampling time of 84 TADCORE clock periods
-    ADCON2_SHRSAMC_0085 = 0b0001010011, // Sampling time of 85 TADCORE clock periods
-    ADCON2_SHRSAMC_0086 = 0b0001010100, // Sampling time of 86 TADCORE clock periods
-    ADCON2_SHRSAMC_0087 = 0b0001010101, // Sampling time of 87 TADCORE clock periods
-    ADCON2_SHRSAMC_0088 = 0b0001010110, // Sampling time of 88 TADCORE clock periods
-    ADCON2_SHRSAMC_0089 = 0b0001010111, // Sampling time of 89 TADCORE clock periods
-    ADCON2_SHRSAMC_0090 = 0b0001011000, // Sampling time of 90 TADCORE clock periods
-    ADCON2_SHRSAMC_0091 = 0b0001011001, // Sampling time of 91 TADCORE clock periods
-    ADCON2_SHRSAMC_0092 = 0b0001011010, // Sampling time of 92 TADCORE clock periods
-    ADCON2_SHRSAMC_0093 = 0b0001011011, // Sampling time of 93 TADCORE clock periods
-    ADCON2_SHRSAMC_0094 = 0b0001011100, // Sampling time of 94 TADCORE clock periods
-    ADCON2_SHRSAMC_0095 = 0b0001011101, // Sampling time of 95 TADCORE clock periods
-    ADCON2_SHRSAMC_0096 = 0b0001011110, // Sampling time of 96 TADCORE clock periods
-    ADCON2_SHRSAMC_0097 = 0b0001011111, // Sampling time of 97 TADCORE clock periods
-    ADCON2_SHRSAMC_0098 = 0b0001100000, // Sampling time of 98 TADCORE clock periods
-    ADCON2_SHRSAMC_0099 = 0b0001100001, // Sampling time of 99 TADCORE clock periods
-    ADCON2_SHRSAMC_0100 = 0b0001100010, // Sampling time of 100 TADCORE clock periods
-    ADCON2_SHRSAMC_0101 = 0b0001100011, // Sampling time of 101 TADCORE clock periods
-    ADCON2_SHRSAMC_0102 = 0b0001100100, // Sampling time of 102 TADCORE clock periods
-    ADCON2_SHRSAMC_0103 = 0b0001100101, // Sampling time of 103 TADCORE clock periods
-    ADCON2_SHRSAMC_0104 = 0b0001100110, // Sampling time of 104 TADCORE clock periods
-    ADCON2_SHRSAMC_0105 = 0b0001100111, // Sampling time of 105 TADCORE clock periods
-    ADCON2_SHRSAMC_0106 = 0b0001101000, // Sampling time of 106 TADCORE clock periods
-    ADCON2_SHRSAMC_0107 = 0b0001101001, // Sampling time of 107 TADCORE clock periods
-    ADCON2_SHRSAMC_0108 = 0b0001101010, // Sampling time of 108 TADCORE clock periods
-    ADCON2_SHRSAMC_0109 = 0b0001101011, // Sampling time of 109 TADCORE clock periods
-    ADCON2_SHRSAMC_0110 = 0b0001101100, // Sampling time of 110 TADCORE clock periods
-    ADCON2_SHRSAMC_0111 = 0b0001101101, // Sampling time of 111 TADCORE clock periods
-    ADCON2_SHRSAMC_0112 = 0b0001101110, // Sampling time of 112 TADCORE clock periods
-    ADCON2_SHRSAMC_0113 = 0b0001101111, // Sampling time of 113 TADCORE clock periods
-    ADCON2_SHRSAMC_0114 = 0b0001110000, // Sampling time of 114 TADCORE clock periods
-    ADCON2_SHRSAMC_0115 = 0b0001110001, // Sampling time of 115 TADCORE clock periods
-    ADCON2_SHRSAMC_0116 = 0b0001110010, // Sampling time of 116 TADCORE clock periods
-    ADCON2_SHRSAMC_0117 = 0b0001110011, // Sampling time of 117 TADCORE clock periods
-    ADCON2_SHRSAMC_0118 = 0b0001110100, // Sampling time of 118 TADCORE clock periods
-    ADCON2_SHRSAMC_0119 = 0b0001110101, // Sampling time of 119 TADCORE clock periods
-    ADCON2_SHRSAMC_0120 = 0b0001110110, // Sampling time of 120 TADCORE clock periods
-    ADCON2_SHRSAMC_0121 = 0b0001110111, // Sampling time of 121 TADCORE clock periods
-    ADCON2_SHRSAMC_0122 = 0b0001111000, // Sampling time of 122 TADCORE clock periods
-    ADCON2_SHRSAMC_0123 = 0b0001111001, // Sampling time of 123 TADCORE clock periods
-    ADCON2_SHRSAMC_0124 = 0b0001111010, // Sampling time of 124 TADCORE clock periods
-    ADCON2_SHRSAMC_0125 = 0b0001111011, // Sampling time of 125 TADCORE clock periods
-    ADCON2_SHRSAMC_0126 = 0b0001111100, // Sampling time of 126 TADCORE clock periods
-    ADCON2_SHRSAMC_0127 = 0b0001111101, // Sampling time of 127 TADCORE clock periods
-    ADCON2_SHRSAMC_0128 = 0b0001111110, // Sampling time of 128 TADCORE clock periods
-    ADCON2_SHRSAMC_0129 = 0b0001111111, // Sampling time of 129 TADCORE clock periods
-    ADCON2_SHRSAMC_0130 = 0b0010000000, // Sampling time of 130 TADCORE clock periods
-    ADCON2_SHRSAMC_0131 = 0b0010000001, // Sampling time of 131 TADCORE clock periods
-    ADCON2_SHRSAMC_0132 = 0b0010000010, // Sampling time of 132 TADCORE clock periods
-    ADCON2_SHRSAMC_0133 = 0b0010000011, // Sampling time of 133 TADCORE clock periods
-    ADCON2_SHRSAMC_0134 = 0b0010000100, // Sampling time of 134 TADCORE clock periods
-    ADCON2_SHRSAMC_0135 = 0b0010000101, // Sampling time of 135 TADCORE clock periods
-    ADCON2_SHRSAMC_0136 = 0b0010000110, // Sampling time of 136 TADCORE clock periods
-    ADCON2_SHRSAMC_0137 = 0b0010000111, // Sampling time of 137 TADCORE clock periods
-    ADCON2_SHRSAMC_0138 = 0b0010001000, // Sampling time of 138 TADCORE clock periods
-    ADCON2_SHRSAMC_0139 = 0b0010001001, // Sampling time of 139 TADCORE clock periods
-    ADCON2_SHRSAMC_0140 = 0b0010001010, // Sampling time of 140 TADCORE clock periods
-    ADCON2_SHRSAMC_0141 = 0b0010001011, // Sampling time of 141 TADCORE clock periods
-    ADCON2_SHRSAMC_0142 = 0b0010001100, // Sampling time of 142 TADCORE clock periods
-    ADCON2_SHRSAMC_0143 = 0b0010001101, // Sampling time of 143 TADCORE clock periods
-    ADCON2_SHRSAMC_0144 = 0b0010001110, // Sampling time of 144 TADCORE clock periods
-    ADCON2_SHRSAMC_0145 = 0b0010001111, // Sampling time of 145 TADCORE clock periods
-    ADCON2_SHRSAMC_0146 = 0b0010010000, // Sampling time of 146 TADCORE clock periods
-    ADCON2_SHRSAMC_0147 = 0b0010010001, // Sampling time of 147 TADCORE clock periods
-    ADCON2_SHRSAMC_0148 = 0b0010010010, // Sampling time of 148 TADCORE clock periods
-    ADCON2_SHRSAMC_0149 = 0b0010010011, // Sampling time of 149 TADCORE clock periods
-    ADCON2_SHRSAMC_0150 = 0b0010010100, // Sampling time of 150 TADCORE clock periods
-    ADCON2_SHRSAMC_0151 = 0b0010010101, // Sampling time of 151 TADCORE clock periods
-    ADCON2_SHRSAMC_0152 = 0b0010010110, // Sampling time of 152 TADCORE clock periods
-    ADCON2_SHRSAMC_0153 = 0b0010010111, // Sampling time of 153 TADCORE clock periods
-    ADCON2_SHRSAMC_0154 = 0b0010011000, // Sampling time of 154 TADCORE clock periods
-    ADCON2_SHRSAMC_0155 = 0b0010011001, // Sampling time of 155 TADCORE clock periods
-    ADCON2_SHRSAMC_0156 = 0b0010011010, // Sampling time of 156 TADCORE clock periods
-    ADCON2_SHRSAMC_0157 = 0b0010011011, // Sampling time of 157 TADCORE clock periods
-    ADCON2_SHRSAMC_0158 = 0b0010011100, // Sampling time of 158 TADCORE clock periods
-    ADCON2_SHRSAMC_0159 = 0b0010011101, // Sampling time of 159 TADCORE clock periods
-    ADCON2_SHRSAMC_0160 = 0b0010011110, // Sampling time of 160 TADCORE clock periods
-    ADCON2_SHRSAMC_0161 = 0b0010011111, // Sampling time of 161 TADCORE clock periods
-    ADCON2_SHRSAMC_0162 = 0b0010100000, // Sampling time of 162 TADCORE clock periods
-    ADCON2_SHRSAMC_0163 = 0b0010100001, // Sampling time of 163 TADCORE clock periods
-    ADCON2_SHRSAMC_0164 = 0b0010100010, // Sampling time of 164 TADCORE clock periods
-    ADCON2_SHRSAMC_0165 = 0b0010100011, // Sampling time of 165 TADCORE clock periods
-    ADCON2_SHRSAMC_0166 = 0b0010100100, // Sampling time of 166 TADCORE clock periods
-    ADCON2_SHRSAMC_0167 = 0b0010100101, // Sampling time of 167 TADCORE clock periods
-    ADCON2_SHRSAMC_0168 = 0b0010100110, // Sampling time of 168 TADCORE clock periods
-    ADCON2_SHRSAMC_0169 = 0b0010100111, // Sampling time of 169 TADCORE clock periods
-    ADCON2_SHRSAMC_0170 = 0b0010101000, // Sampling time of 170 TADCORE clock periods
-    ADCON2_SHRSAMC_0171 = 0b0010101001, // Sampling time of 171 TADCORE clock periods
-    ADCON2_SHRSAMC_0172 = 0b0010101010, // Sampling time of 172 TADCORE clock periods
-    ADCON2_SHRSAMC_0173 = 0b0010101011, // Sampling time of 173 TADCORE clock periods
-    ADCON2_SHRSAMC_0174 = 0b0010101100, // Sampling time of 174 TADCORE clock periods
-    ADCON2_SHRSAMC_0175 = 0b0010101101, // Sampling time of 175 TADCORE clock periods
-    ADCON2_SHRSAMC_0176 = 0b0010101110, // Sampling time of 176 TADCORE clock periods
-    ADCON2_SHRSAMC_0177 = 0b0010101111, // Sampling time of 177 TADCORE clock periods
-    ADCON2_SHRSAMC_0178 = 0b0010110000, // Sampling time of 178 TADCORE clock periods
-    ADCON2_SHRSAMC_0179 = 0b0010110001, // Sampling time of 179 TADCORE clock periods
-    ADCON2_SHRSAMC_0180 = 0b0010110010, // Sampling time of 180 TADCORE clock periods
-    ADCON2_SHRSAMC_0181 = 0b0010110011, // Sampling time of 181 TADCORE clock periods
-    ADCON2_SHRSAMC_0182 = 0b0010110100, // Sampling time of 182 TADCORE clock periods
-    ADCON2_SHRSAMC_0183 = 0b0010110101, // Sampling time of 183 TADCORE clock periods
-    ADCON2_SHRSAMC_0184 = 0b0010110110, // Sampling time of 184 TADCORE clock periods
-    ADCON2_SHRSAMC_0185 = 0b0010110111, // Sampling time of 185 TADCORE clock periods
-    ADCON2_SHRSAMC_0186 = 0b0010111000, // Sampling time of 186 TADCORE clock periods
-    ADCON2_SHRSAMC_0187 = 0b0010111001, // Sampling time of 187 TADCORE clock periods
-    ADCON2_SHRSAMC_0188 = 0b0010111010, // Sampling time of 188 TADCORE clock periods
-    ADCON2_SHRSAMC_0189 = 0b0010111011, // Sampling time of 189 TADCORE clock periods
-    ADCON2_SHRSAMC_0190 = 0b0010111100, // Sampling time of 190 TADCORE clock periods
-    ADCON2_SHRSAMC_0191 = 0b0010111101, // Sampling time of 191 TADCORE clock periods
-    ADCON2_SHRSAMC_0192 = 0b0010111110, // Sampling time of 192 TADCORE clock periods
-    ADCON2_SHRSAMC_0193 = 0b0010111111, // Sampling time of 193 TADCORE clock periods
-    ADCON2_SHRSAMC_0194 = 0b0011000000, // Sampling time of 194 TADCORE clock periods
-    ADCON2_SHRSAMC_0195 = 0b0011000001, // Sampling time of 195 TADCORE clock periods
-    ADCON2_SHRSAMC_0196 = 0b0011000010, // Sampling time of 196 TADCORE clock periods
-    ADCON2_SHRSAMC_0197 = 0b0011000011, // Sampling time of 197 TADCORE clock periods
-    ADCON2_SHRSAMC_0198 = 0b0011000100, // Sampling time of 198 TADCORE clock periods
-    ADCON2_SHRSAMC_0199 = 0b0011000101, // Sampling time of 199 TADCORE clock periods
-    ADCON2_SHRSAMC_0200 = 0b0011000110, // Sampling time of 200 TADCORE clock periods
-    ADCON2_SHRSAMC_0201 = 0b0011000111, // Sampling time of 201 TADCORE clock periods
-    ADCON2_SHRSAMC_0202 = 0b0011001000, // Sampling time of 202 TADCORE clock periods
-    ADCON2_SHRSAMC_0203 = 0b0011001001, // Sampling time of 203 TADCORE clock periods
-    ADCON2_SHRSAMC_0204 = 0b0011001010, // Sampling time of 204 TADCORE clock periods
-    ADCON2_SHRSAMC_0205 = 0b0011001011, // Sampling time of 205 TADCORE clock periods
-    ADCON2_SHRSAMC_0206 = 0b0011001100, // Sampling time of 206 TADCORE clock periods
-    ADCON2_SHRSAMC_0207 = 0b0011001101, // Sampling time of 207 TADCORE clock periods
-    ADCON2_SHRSAMC_0208 = 0b0011001110, // Sampling time of 208 TADCORE clock periods
-    ADCON2_SHRSAMC_0209 = 0b0011001111, // Sampling time of 209 TADCORE clock periods
-    ADCON2_SHRSAMC_0210 = 0b0011010000, // Sampling time of 210 TADCORE clock periods
-    ADCON2_SHRSAMC_0211 = 0b0011010001, // Sampling time of 211 TADCORE clock periods
-    ADCON2_SHRSAMC_0212 = 0b0011010010, // Sampling time of 212 TADCORE clock periods
-    ADCON2_SHRSAMC_0213 = 0b0011010011, // Sampling time of 213 TADCORE clock periods
-    ADCON2_SHRSAMC_0214 = 0b0011010100, // Sampling time of 214 TADCORE clock periods
-    ADCON2_SHRSAMC_0215 = 0b0011010101, // Sampling time of 215 TADCORE clock periods
-    ADCON2_SHRSAMC_0216 = 0b0011010110, // Sampling time of 216 TADCORE clock periods
-    ADCON2_SHRSAMC_0217 = 0b0011010111, // Sampling time of 217 TADCORE clock periods
-    ADCON2_SHRSAMC_0218 = 0b0011011000, // Sampling time of 218 TADCORE clock periods
-    ADCON2_SHRSAMC_0219 = 0b0011011001, // Sampling time of 219 TADCORE clock periods
-    ADCON2_SHRSAMC_0220 = 0b0011011010, // Sampling time of 220 TADCORE clock periods
-    ADCON2_SHRSAMC_0221 = 0b0011011011, // Sampling time of 221 TADCORE clock periods
-    ADCON2_SHRSAMC_0222 = 0b0011011100, // Sampling time of 222 TADCORE clock periods
-    ADCON2_SHRSAMC_0223 = 0b0011011101, // Sampling time of 223 TADCORE clock periods
-    ADCON2_SHRSAMC_0224 = 0b0011011110, // Sampling time of 224 TADCORE clock periods
-    ADCON2_SHRSAMC_0225 = 0b0011011111, // Sampling time of 225 TADCORE clock periods
-    ADCON2_SHRSAMC_0226 = 0b0011100000, // Sampling time of 226 TADCORE clock periods
-    ADCON2_SHRSAMC_0227 = 0b0011100001, // Sampling time of 227 TADCORE clock periods
-    ADCON2_SHRSAMC_0228 = 0b0011100010, // Sampling time of 228 TADCORE clock periods
-    ADCON2_SHRSAMC_0229 = 0b0011100011, // Sampling time of 229 TADCORE clock periods
-    ADCON2_SHRSAMC_0230 = 0b0011100100, // Sampling time of 230 TADCORE clock periods
-    ADCON2_SHRSAMC_0231 = 0b0011100101, // Sampling time of 231 TADCORE clock periods
-    ADCON2_SHRSAMC_0232 = 0b0011100110, // Sampling time of 232 TADCORE clock periods
-    ADCON2_SHRSAMC_0233 = 0b0011100111, // Sampling time of 233 TADCORE clock periods
-    ADCON2_SHRSAMC_0234 = 0b0011101000, // Sampling time of 234 TADCORE clock periods
-    ADCON2_SHRSAMC_0235 = 0b0011101001, // Sampling time of 235 TADCORE clock periods
-    ADCON2_SHRSAMC_0236 = 0b0011101010, // Sampling time of 236 TADCORE clock periods
-    ADCON2_SHRSAMC_0237 = 0b0011101011, // Sampling time of 237 TADCORE clock periods
-    ADCON2_SHRSAMC_0238 = 0b0011101100, // Sampling time of 238 TADCORE clock periods
-    ADCON2_SHRSAMC_0239 = 0b0011101101, // Sampling time of 239 TADCORE clock periods
-    ADCON2_SHRSAMC_0240 = 0b0011101110, // Sampling time of 240 TADCORE clock periods
-    ADCON2_SHRSAMC_0241 = 0b0011101111, // Sampling time of 241 TADCORE clock periods
-    ADCON2_SHRSAMC_0242 = 0b0011110000, // Sampling time of 242 TADCORE clock periods
-    ADCON2_SHRSAMC_0243 = 0b0011110001, // Sampling time of 243 TADCORE clock periods
-    ADCON2_SHRSAMC_0244 = 0b0011110010, // Sampling time of 244 TADCORE clock periods
-    ADCON2_SHRSAMC_0245 = 0b0011110011, // Sampling time of 245 TADCORE clock periods
-    ADCON2_SHRSAMC_0246 = 0b0011110100, // Sampling time of 246 TADCORE clock periods
-    ADCON2_SHRSAMC_0247 = 0b0011110101, // Sampling time of 247 TADCORE clock periods
-    ADCON2_SHRSAMC_0248 = 0b0011110110, // Sampling time of 248 TADCORE clock periods
-    ADCON2_SHRSAMC_0249 = 0b0011110111, // Sampling time of 249 TADCORE clock periods
-    ADCON2_SHRSAMC_0250 = 0b0011111000, // Sampling time of 250 TADCORE clock periods
-    ADCON2_SHRSAMC_0251 = 0b0011111001, // Sampling time of 251 TADCORE clock periods
-    ADCON2_SHRSAMC_0252 = 0b0011111010, // Sampling time of 252 TADCORE clock periods
-    ADCON2_SHRSAMC_0253 = 0b0011111011, // Sampling time of 253 TADCORE clock periods
-    ADCON2_SHRSAMC_0254 = 0b0011111100, // Sampling time of 254 TADCORE clock periods
-    ADCON2_SHRSAMC_0255 = 0b0011111101, // Sampling time of 255 TADCORE clock periods
-    ADCON2_SHRSAMC_0256 = 0b0011111110, // Sampling time of 256 TADCORE clock periods
-    ADCON2_SHRSAMC_0257 = 0b0011111111, // Sampling time of 257 TADCORE clock periods
-    ADCON2_SHRSAMC_0258 = 0b0100000000, // Sampling time of 258 TADCORE clock periods
-    ADCON2_SHRSAMC_0259 = 0b0100000001, // Sampling time of 259 TADCORE clock periods
-    ADCON2_SHRSAMC_0260 = 0b0100000010, // Sampling time of 260 TADCORE clock periods
-    ADCON2_SHRSAMC_0261 = 0b0100000011, // Sampling time of 261 TADCORE clock periods
-    ADCON2_SHRSAMC_0262 = 0b0100000100, // Sampling time of 262 TADCORE clock periods
-    ADCON2_SHRSAMC_0263 = 0b0100000101, // Sampling time of 263 TADCORE clock periods
-    ADCON2_SHRSAMC_0264 = 0b0100000110, // Sampling time of 264 TADCORE clock periods
-    ADCON2_SHRSAMC_0265 = 0b0100000111, // Sampling time of 265 TADCORE clock periods
-    ADCON2_SHRSAMC_0266 = 0b0100001000, // Sampling time of 266 TADCORE clock periods
-    ADCON2_SHRSAMC_0267 = 0b0100001001, // Sampling time of 267 TADCORE clock periods
-    ADCON2_SHRSAMC_0268 = 0b0100001010, // Sampling time of 268 TADCORE clock periods
-    ADCON2_SHRSAMC_0269 = 0b0100001011, // Sampling time of 269 TADCORE clock periods
-    ADCON2_SHRSAMC_0270 = 0b0100001100, // Sampling time of 270 TADCORE clock periods
-    ADCON2_SHRSAMC_0271 = 0b0100001101, // Sampling time of 271 TADCORE clock periods
-    ADCON2_SHRSAMC_0272 = 0b0100001110, // Sampling time of 272 TADCORE clock periods
-    ADCON2_SHRSAMC_0273 = 0b0100001111, // Sampling time of 273 TADCORE clock periods
-    ADCON2_SHRSAMC_0274 = 0b0100010000, // Sampling time of 274 TADCORE clock periods
-    ADCON2_SHRSAMC_0275 = 0b0100010001, // Sampling time of 275 TADCORE clock periods
-    ADCON2_SHRSAMC_0276 = 0b0100010010, // Sampling time of 276 TADCORE clock periods
-    ADCON2_SHRSAMC_0277 = 0b0100010011, // Sampling time of 277 TADCORE clock periods
-    ADCON2_SHRSAMC_0278 = 0b0100010100, // Sampling time of 278 TADCORE clock periods
-    ADCON2_SHRSAMC_0279 = 0b0100010101, // Sampling time of 279 TADCORE clock periods
-    ADCON2_SHRSAMC_0280 = 0b0100010110, // Sampling time of 280 TADCORE clock periods
-    ADCON2_SHRSAMC_0281 = 0b0100010111, // Sampling time of 281 TADCORE clock periods
-    ADCON2_SHRSAMC_0282 = 0b0100011000, // Sampling time of 282 TADCORE clock periods
-    ADCON2_SHRSAMC_0283 = 0b0100011001, // Sampling time of 283 TADCORE clock periods
-    ADCON2_SHRSAMC_0284 = 0b0100011010, // Sampling time of 284 TADCORE clock periods
-    ADCON2_SHRSAMC_0285 = 0b0100011011, // Sampling time of 285 TADCORE clock periods
-    ADCON2_SHRSAMC_0286 = 0b0100011100, // Sampling time of 286 TADCORE clock periods
-    ADCON2_SHRSAMC_0287 = 0b0100011101, // Sampling time of 287 TADCORE clock periods
-    ADCON2_SHRSAMC_0288 = 0b0100011110, // Sampling time of 288 TADCORE clock periods
-    ADCON2_SHRSAMC_0289 = 0b0100011111, // Sampling time of 289 TADCORE clock periods
-    ADCON2_SHRSAMC_0290 = 0b0100100000, // Sampling time of 290 TADCORE clock periods
-    ADCON2_SHRSAMC_0291 = 0b0100100001, // Sampling time of 291 TADCORE clock periods
-    ADCON2_SHRSAMC_0292 = 0b0100100010, // Sampling time of 292 TADCORE clock periods
-    ADCON2_SHRSAMC_0293 = 0b0100100011, // Sampling time of 293 TADCORE clock periods
-    ADCON2_SHRSAMC_0294 = 0b0100100100, // Sampling time of 294 TADCORE clock periods
-    ADCON2_SHRSAMC_0295 = 0b0100100101, // Sampling time of 295 TADCORE clock periods
-    ADCON2_SHRSAMC_0296 = 0b0100100110, // Sampling time of 296 TADCORE clock periods
-    ADCON2_SHRSAMC_0297 = 0b0100100111, // Sampling time of 297 TADCORE clock periods
-    ADCON2_SHRSAMC_0298 = 0b0100101000, // Sampling time of 298 TADCORE clock periods
-    ADCON2_SHRSAMC_0299 = 0b0100101001, // Sampling time of 299 TADCORE clock periods
-    ADCON2_SHRSAMC_0300 = 0b0100101010, // Sampling time of 300 TADCORE clock periods
-    ADCON2_SHRSAMC_0301 = 0b0100101011, // Sampling time of 301 TADCORE clock periods
-    ADCON2_SHRSAMC_0302 = 0b0100101100, // Sampling time of 302 TADCORE clock periods
-    ADCON2_SHRSAMC_0303 = 0b0100101101, // Sampling time of 303 TADCORE clock periods
-    ADCON2_SHRSAMC_0304 = 0b0100101110, // Sampling time of 304 TADCORE clock periods
-    ADCON2_SHRSAMC_0305 = 0b0100101111, // Sampling time of 305 TADCORE clock periods
-    ADCON2_SHRSAMC_0306 = 0b0100110000, // Sampling time of 306 TADCORE clock periods
-    ADCON2_SHRSAMC_0307 = 0b0100110001, // Sampling time of 307 TADCORE clock periods
-    ADCON2_SHRSAMC_0308 = 0b0100110010, // Sampling time of 308 TADCORE clock periods
-    ADCON2_SHRSAMC_0309 = 0b0100110011, // Sampling time of 309 TADCORE clock periods
-    ADCON2_SHRSAMC_0310 = 0b0100110100, // Sampling time of 310 TADCORE clock periods
-    ADCON2_SHRSAMC_0311 = 0b0100110101, // Sampling time of 311 TADCORE clock periods
-    ADCON2_SHRSAMC_0312 = 0b0100110110, // Sampling time of 312 TADCORE clock periods
-    ADCON2_SHRSAMC_0313 = 0b0100110111, // Sampling time of 313 TADCORE clock periods
-    ADCON2_SHRSAMC_0314 = 0b0100111000, // Sampling time of 314 TADCORE clock periods
-    ADCON2_SHRSAMC_0315 = 0b0100111001, // Sampling time of 315 TADCORE clock periods
-    ADCON2_SHRSAMC_0316 = 0b0100111010, // Sampling time of 316 TADCORE clock periods
-    ADCON2_SHRSAMC_0317 = 0b0100111011, // Sampling time of 317 TADCORE clock periods
-    ADCON2_SHRSAMC_0318 = 0b0100111100, // Sampling time of 318 TADCORE clock periods
-    ADCON2_SHRSAMC_0319 = 0b0100111101, // Sampling time of 319 TADCORE clock periods
-    ADCON2_SHRSAMC_0320 = 0b0100111110, // Sampling time of 320 TADCORE clock periods
-    ADCON2_SHRSAMC_0321 = 0b0100111111, // Sampling time of 321 TADCORE clock periods
-    ADCON2_SHRSAMC_0322 = 0b0101000000, // Sampling time of 322 TADCORE clock periods
-    ADCON2_SHRSAMC_0323 = 0b0101000001, // Sampling time of 323 TADCORE clock periods
-    ADCON2_SHRSAMC_0324 = 0b0101000010, // Sampling time of 324 TADCORE clock periods
-    ADCON2_SHRSAMC_0325 = 0b0101000011, // Sampling time of 325 TADCORE clock periods
-    ADCON2_SHRSAMC_0326 = 0b0101000100, // Sampling time of 326 TADCORE clock periods
-    ADCON2_SHRSAMC_0327 = 0b0101000101, // Sampling time of 327 TADCORE clock periods
-    ADCON2_SHRSAMC_0328 = 0b0101000110, // Sampling time of 328 TADCORE clock periods
-    ADCON2_SHRSAMC_0329 = 0b0101000111, // Sampling time of 329 TADCORE clock periods
-    ADCON2_SHRSAMC_0330 = 0b0101001000, // Sampling time of 330 TADCORE clock periods
-    ADCON2_SHRSAMC_0331 = 0b0101001001, // Sampling time of 331 TADCORE clock periods
-    ADCON2_SHRSAMC_0332 = 0b0101001010, // Sampling time of 332 TADCORE clock periods
-    ADCON2_SHRSAMC_0333 = 0b0101001011, // Sampling time of 333 TADCORE clock periods
-    ADCON2_SHRSAMC_0334 = 0b0101001100, // Sampling time of 334 TADCORE clock periods
-    ADCON2_SHRSAMC_0335 = 0b0101001101, // Sampling time of 335 TADCORE clock periods
-    ADCON2_SHRSAMC_0336 = 0b0101001110, // Sampling time of 336 TADCORE clock periods
-    ADCON2_SHRSAMC_0337 = 0b0101001111, // Sampling time of 337 TADCORE clock periods
-    ADCON2_SHRSAMC_0338 = 0b0101010000, // Sampling time of 338 TADCORE clock periods
-    ADCON2_SHRSAMC_0339 = 0b0101010001, // Sampling time of 339 TADCORE clock periods
-    ADCON2_SHRSAMC_0340 = 0b0101010010, // Sampling time of 340 TADCORE clock periods
-    ADCON2_SHRSAMC_0341 = 0b0101010011, // Sampling time of 341 TADCORE clock periods
-    ADCON2_SHRSAMC_0342 = 0b0101010100, // Sampling time of 342 TADCORE clock periods
-    ADCON2_SHRSAMC_0343 = 0b0101010101, // Sampling time of 343 TADCORE clock periods
-    ADCON2_SHRSAMC_0344 = 0b0101010110, // Sampling time of 344 TADCORE clock periods
-    ADCON2_SHRSAMC_0345 = 0b0101010111, // Sampling time of 345 TADCORE clock periods
-    ADCON2_SHRSAMC_0346 = 0b0101011000, // Sampling time of 346 TADCORE clock periods
-    ADCON2_SHRSAMC_0347 = 0b0101011001, // Sampling time of 347 TADCORE clock periods
-    ADCON2_SHRSAMC_0348 = 0b0101011010, // Sampling time of 348 TADCORE clock periods
-    ADCON2_SHRSAMC_0349 = 0b0101011011, // Sampling time of 349 TADCORE clock periods
-    ADCON2_SHRSAMC_0350 = 0b0101011100, // Sampling time of 350 TADCORE clock periods
-    ADCON2_SHRSAMC_0351 = 0b0101011101, // Sampling time of 351 TADCORE clock periods
-    ADCON2_SHRSAMC_0352 = 0b0101011110, // Sampling time of 352 TADCORE clock periods
-    ADCON2_SHRSAMC_0353 = 0b0101011111, // Sampling time of 353 TADCORE clock periods
-    ADCON2_SHRSAMC_0354 = 0b0101100000, // Sampling time of 354 TADCORE clock periods
-    ADCON2_SHRSAMC_0355 = 0b0101100001, // Sampling time of 355 TADCORE clock periods
-    ADCON2_SHRSAMC_0356 = 0b0101100010, // Sampling time of 356 TADCORE clock periods
-    ADCON2_SHRSAMC_0357 = 0b0101100011, // Sampling time of 357 TADCORE clock periods
-    ADCON2_SHRSAMC_0358 = 0b0101100100, // Sampling time of 358 TADCORE clock periods
-    ADCON2_SHRSAMC_0359 = 0b0101100101, // Sampling time of 359 TADCORE clock periods
-    ADCON2_SHRSAMC_0360 = 0b0101100110, // Sampling time of 360 TADCORE clock periods
-    ADCON2_SHRSAMC_0361 = 0b0101100111, // Sampling time of 361 TADCORE clock periods
-    ADCON2_SHRSAMC_0362 = 0b0101101000, // Sampling time of 362 TADCORE clock periods
-    ADCON2_SHRSAMC_0363 = 0b0101101001, // Sampling time of 363 TADCORE clock periods
-    ADCON2_SHRSAMC_0364 = 0b0101101010, // Sampling time of 364 TADCORE clock periods
-    ADCON2_SHRSAMC_0365 = 0b0101101011, // Sampling time of 365 TADCORE clock periods
-    ADCON2_SHRSAMC_0366 = 0b0101101100, // Sampling time of 366 TADCORE clock periods
-    ADCON2_SHRSAMC_0367 = 0b0101101101, // Sampling time of 367 TADCORE clock periods
-    ADCON2_SHRSAMC_0368 = 0b0101101110, // Sampling time of 368 TADCORE clock periods
-    ADCON2_SHRSAMC_0369 = 0b0101101111, // Sampling time of 369 TADCORE clock periods
-    ADCON2_SHRSAMC_0370 = 0b0101110000, // Sampling time of 370 TADCORE clock periods
-    ADCON2_SHRSAMC_0371 = 0b0101110001, // Sampling time of 371 TADCORE clock periods
-    ADCON2_SHRSAMC_0372 = 0b0101110010, // Sampling time of 372 TADCORE clock periods
-    ADCON2_SHRSAMC_0373 = 0b0101110011, // Sampling time of 373 TADCORE clock periods
-    ADCON2_SHRSAMC_0374 = 0b0101110100, // Sampling time of 374 TADCORE clock periods
-    ADCON2_SHRSAMC_0375 = 0b0101110101, // Sampling time of 375 TADCORE clock periods
-    ADCON2_SHRSAMC_0376 = 0b0101110110, // Sampling time of 376 TADCORE clock periods
-    ADCON2_SHRSAMC_0377 = 0b0101110111, // Sampling time of 377 TADCORE clock periods
-    ADCON2_SHRSAMC_0378 = 0b0101111000, // Sampling time of 378 TADCORE clock periods
-    ADCON2_SHRSAMC_0379 = 0b0101111001, // Sampling time of 379 TADCORE clock periods
-    ADCON2_SHRSAMC_0380 = 0b0101111010, // Sampling time of 380 TADCORE clock periods
-    ADCON2_SHRSAMC_0381 = 0b0101111011, // Sampling time of 381 TADCORE clock periods
-    ADCON2_SHRSAMC_0382 = 0b0101111100, // Sampling time of 382 TADCORE clock periods
-    ADCON2_SHRSAMC_0383 = 0b0101111101, // Sampling time of 383 TADCORE clock periods
-    ADCON2_SHRSAMC_0384 = 0b0101111110, // Sampling time of 384 TADCORE clock periods
-    ADCON2_SHRSAMC_0385 = 0b0101111111, // Sampling time of 385 TADCORE clock periods
-    ADCON2_SHRSAMC_0386 = 0b0110000000, // Sampling time of 386 TADCORE clock periods
-    ADCON2_SHRSAMC_0387 = 0b0110000001, // Sampling time of 387 TADCORE clock periods
-    ADCON2_SHRSAMC_0388 = 0b0110000010, // Sampling time of 388 TADCORE clock periods
-    ADCON2_SHRSAMC_0389 = 0b0110000011, // Sampling time of 389 TADCORE clock periods
-    ADCON2_SHRSAMC_0390 = 0b0110000100, // Sampling time of 390 TADCORE clock periods
-    ADCON2_SHRSAMC_0391 = 0b0110000101, // Sampling time of 391 TADCORE clock periods
-    ADCON2_SHRSAMC_0392 = 0b0110000110, // Sampling time of 392 TADCORE clock periods
-    ADCON2_SHRSAMC_0393 = 0b0110000111, // Sampling time of 393 TADCORE clock periods
-    ADCON2_SHRSAMC_0394 = 0b0110001000, // Sampling time of 394 TADCORE clock periods
-    ADCON2_SHRSAMC_0395 = 0b0110001001, // Sampling time of 395 TADCORE clock periods
-    ADCON2_SHRSAMC_0396 = 0b0110001010, // Sampling time of 396 TADCORE clock periods
-    ADCON2_SHRSAMC_0397 = 0b0110001011, // Sampling time of 397 TADCORE clock periods
-    ADCON2_SHRSAMC_0398 = 0b0110001100, // Sampling time of 398 TADCORE clock periods
-    ADCON2_SHRSAMC_0399 = 0b0110001101, // Sampling time of 399 TADCORE clock periods
-    ADCON2_SHRSAMC_0400 = 0b0110001110, // Sampling time of 400 TADCORE clock periods
-    ADCON2_SHRSAMC_0401 = 0b0110001111, // Sampling time of 401 TADCORE clock periods
-    ADCON2_SHRSAMC_0402 = 0b0110010000, // Sampling time of 402 TADCORE clock periods
-    ADCON2_SHRSAMC_0403 = 0b0110010001, // Sampling time of 403 TADCORE clock periods
-    ADCON2_SHRSAMC_0404 = 0b0110010010, // Sampling time of 404 TADCORE clock periods
-    ADCON2_SHRSAMC_0405 = 0b0110010011, // Sampling time of 405 TADCORE clock periods
-    ADCON2_SHRSAMC_0406 = 0b0110010100, // Sampling time of 406 TADCORE clock periods
-    ADCON2_SHRSAMC_0407 = 0b0110010101, // Sampling time of 407 TADCORE clock periods
-    ADCON2_SHRSAMC_0408 = 0b0110010110, // Sampling time of 408 TADCORE clock periods
-    ADCON2_SHRSAMC_0409 = 0b0110010111, // Sampling time of 409 TADCORE clock periods
-    ADCON2_SHRSAMC_0410 = 0b0110011000, // Sampling time of 410 TADCORE clock periods
-    ADCON2_SHRSAMC_0411 = 0b0110011001, // Sampling time of 411 TADCORE clock periods
-    ADCON2_SHRSAMC_0412 = 0b0110011010, // Sampling time of 412 TADCORE clock periods
-    ADCON2_SHRSAMC_0413 = 0b0110011011, // Sampling time of 413 TADCORE clock periods
-    ADCON2_SHRSAMC_0414 = 0b0110011100, // Sampling time of 414 TADCORE clock periods
-    ADCON2_SHRSAMC_0415 = 0b0110011101, // Sampling time of 415 TADCORE clock periods
-    ADCON2_SHRSAMC_0416 = 0b0110011110, // Sampling time of 416 TADCORE clock periods
-    ADCON2_SHRSAMC_0417 = 0b0110011111, // Sampling time of 417 TADCORE clock periods
-    ADCON2_SHRSAMC_0418 = 0b0110100000, // Sampling time of 418 TADCORE clock periods
-    ADCON2_SHRSAMC_0419 = 0b0110100001, // Sampling time of 419 TADCORE clock periods
-    ADCON2_SHRSAMC_0420 = 0b0110100010, // Sampling time of 420 TADCORE clock periods
-    ADCON2_SHRSAMC_0421 = 0b0110100011, // Sampling time of 421 TADCORE clock periods
-    ADCON2_SHRSAMC_0422 = 0b0110100100, // Sampling time of 422 TADCORE clock periods
-    ADCON2_SHRSAMC_0423 = 0b0110100101, // Sampling time of 423 TADCORE clock periods
-    ADCON2_SHRSAMC_0424 = 0b0110100110, // Sampling time of 424 TADCORE clock periods
-    ADCON2_SHRSAMC_0425 = 0b0110100111, // Sampling time of 425 TADCORE clock periods
-    ADCON2_SHRSAMC_0426 = 0b0110101000, // Sampling time of 426 TADCORE clock periods
-    ADCON2_SHRSAMC_0427 = 0b0110101001, // Sampling time of 427 TADCORE clock periods
-    ADCON2_SHRSAMC_0428 = 0b0110101010, // Sampling time of 428 TADCORE clock periods
-    ADCON2_SHRSAMC_0429 = 0b0110101011, // Sampling time of 429 TADCORE clock periods
-    ADCON2_SHRSAMC_0430 = 0b0110101100, // Sampling time of 430 TADCORE clock periods
-    ADCON2_SHRSAMC_0431 = 0b0110101101, // Sampling time of 431 TADCORE clock periods
-    ADCON2_SHRSAMC_0432 = 0b0110101110, // Sampling time of 432 TADCORE clock periods
-    ADCON2_SHRSAMC_0433 = 0b0110101111, // Sampling time of 433 TADCORE clock periods
-    ADCON2_SHRSAMC_0434 = 0b0110110000, // Sampling time of 434 TADCORE clock periods
-    ADCON2_SHRSAMC_0435 = 0b0110110001, // Sampling time of 435 TADCORE clock periods
-    ADCON2_SHRSAMC_0436 = 0b0110110010, // Sampling time of 436 TADCORE clock periods
-    ADCON2_SHRSAMC_0437 = 0b0110110011, // Sampling time of 437 TADCORE clock periods
-    ADCON2_SHRSAMC_0438 = 0b0110110100, // Sampling time of 438 TADCORE clock periods
-    ADCON2_SHRSAMC_0439 = 0b0110110101, // Sampling time of 439 TADCORE clock periods
-    ADCON2_SHRSAMC_0440 = 0b0110110110, // Sampling time of 440 TADCORE clock periods
-    ADCON2_SHRSAMC_0441 = 0b0110110111, // Sampling time of 441 TADCORE clock periods
-    ADCON2_SHRSAMC_0442 = 0b0110111000, // Sampling time of 442 TADCORE clock periods
-    ADCON2_SHRSAMC_0443 = 0b0110111001, // Sampling time of 443 TADCORE clock periods
-    ADCON2_SHRSAMC_0444 = 0b0110111010, // Sampling time of 444 TADCORE clock periods
-    ADCON2_SHRSAMC_0445 = 0b0110111011, // Sampling time of 445 TADCORE clock periods
-    ADCON2_SHRSAMC_0446 = 0b0110111100, // Sampling time of 446 TADCORE clock periods
-    ADCON2_SHRSAMC_0447 = 0b0110111101, // Sampling time of 447 TADCORE clock periods
-    ADCON2_SHRSAMC_0448 = 0b0110111110, // Sampling time of 448 TADCORE clock periods
-    ADCON2_SHRSAMC_0449 = 0b0110111111, // Sampling time of 449 TADCORE clock periods
-    ADCON2_SHRSAMC_0450 = 0b0111000000, // Sampling time of 450 TADCORE clock periods
-    ADCON2_SHRSAMC_0451 = 0b0111000001, // Sampling time of 451 TADCORE clock periods
-    ADCON2_SHRSAMC_0452 = 0b0111000010, // Sampling time of 452 TADCORE clock periods
-    ADCON2_SHRSAMC_0453 = 0b0111000011, // Sampling time of 453 TADCORE clock periods
-    ADCON2_SHRSAMC_0454 = 0b0111000100, // Sampling time of 454 TADCORE clock periods
-    ADCON2_SHRSAMC_0455 = 0b0111000101, // Sampling time of 455 TADCORE clock periods
-    ADCON2_SHRSAMC_0456 = 0b0111000110, // Sampling time of 456 TADCORE clock periods
-    ADCON2_SHRSAMC_0457 = 0b0111000111, // Sampling time of 457 TADCORE clock periods
-    ADCON2_SHRSAMC_0458 = 0b0111001000, // Sampling time of 458 TADCORE clock periods
-    ADCON2_SHRSAMC_0459 = 0b0111001001, // Sampling time of 459 TADCORE clock periods
-    ADCON2_SHRSAMC_0460 = 0b0111001010, // Sampling time of 460 TADCORE clock periods
-    ADCON2_SHRSAMC_0461 = 0b0111001011, // Sampling time of 461 TADCORE clock periods
-    ADCON2_SHRSAMC_0462 = 0b0111001100, // Sampling time of 462 TADCORE clock periods
-    ADCON2_SHRSAMC_0463 = 0b0111001101, // Sampling time of 463 TADCORE clock periods
-    ADCON2_SHRSAMC_0464 = 0b0111001110, // Sampling time of 464 TADCORE clock periods
-    ADCON2_SHRSAMC_0465 = 0b0111001111, // Sampling time of 465 TADCORE clock periods
-    ADCON2_SHRSAMC_0466 = 0b0111010000, // Sampling time of 466 TADCORE clock periods
-    ADCON2_SHRSAMC_0467 = 0b0111010001, // Sampling time of 467 TADCORE clock periods
-    ADCON2_SHRSAMC_0468 = 0b0111010010, // Sampling time of 468 TADCORE clock periods
-    ADCON2_SHRSAMC_0469 = 0b0111010011, // Sampling time of 469 TADCORE clock periods
-    ADCON2_SHRSAMC_0470 = 0b0111010100, // Sampling time of 470 TADCORE clock periods
-    ADCON2_SHRSAMC_0471 = 0b0111010101, // Sampling time of 471 TADCORE clock periods
-    ADCON2_SHRSAMC_0472 = 0b0111010110, // Sampling time of 472 TADCORE clock periods
-    ADCON2_SHRSAMC_0473 = 0b0111010111, // Sampling time of 473 TADCORE clock periods
-    ADCON2_SHRSAMC_0474 = 0b0111011000, // Sampling time of 474 TADCORE clock periods
-    ADCON2_SHRSAMC_0475 = 0b0111011001, // Sampling time of 475 TADCORE clock periods
-    ADCON2_SHRSAMC_0476 = 0b0111011010, // Sampling time of 476 TADCORE clock periods
-    ADCON2_SHRSAMC_0477 = 0b0111011011, // Sampling time of 477 TADCORE clock periods
-    ADCON2_SHRSAMC_0478 = 0b0111011100, // Sampling time of 478 TADCORE clock periods
-    ADCON2_SHRSAMC_0479 = 0b0111011101, // Sampling time of 479 TADCORE clock periods
-    ADCON2_SHRSAMC_0480 = 0b0111011110, // Sampling time of 480 TADCORE clock periods
-    ADCON2_SHRSAMC_0481 = 0b0111011111, // Sampling time of 481 TADCORE clock periods
-    ADCON2_SHRSAMC_0482 = 0b0111100000, // Sampling time of 482 TADCORE clock periods
-    ADCON2_SHRSAMC_0483 = 0b0111100001, // Sampling time of 483 TADCORE clock periods
-    ADCON2_SHRSAMC_0484 = 0b0111100010, // Sampling time of 484 TADCORE clock periods
-    ADCON2_SHRSAMC_0485 = 0b0111100011, // Sampling time of 485 TADCORE clock periods
-    ADCON2_SHRSAMC_0486 = 0b0111100100, // Sampling time of 486 TADCORE clock periods
-    ADCON2_SHRSAMC_0487 = 0b0111100101, // Sampling time of 487 TADCORE clock periods
-    ADCON2_SHRSAMC_0488 = 0b0111100110, // Sampling time of 488 TADCORE clock periods
-    ADCON2_SHRSAMC_0489 = 0b0111100111, // Sampling time of 489 TADCORE clock periods
-    ADCON2_SHRSAMC_0490 = 0b0111101000, // Sampling time of 490 TADCORE clock periods
-    ADCON2_SHRSAMC_0491 = 0b0111101001, // Sampling time of 491 TADCORE clock periods
-    ADCON2_SHRSAMC_0492 = 0b0111101010, // Sampling time of 492 TADCORE clock periods
-    ADCON2_SHRSAMC_0493 = 0b0111101011, // Sampling time of 493 TADCORE clock periods
-    ADCON2_SHRSAMC_0494 = 0b0111101100, // Sampling time of 494 TADCORE clock periods
-    ADCON2_SHRSAMC_0495 = 0b0111101101, // Sampling time of 495 TADCORE clock periods
-    ADCON2_SHRSAMC_0496 = 0b0111101110, // Sampling time of 496 TADCORE clock periods
-    ADCON2_SHRSAMC_0497 = 0b0111101111, // Sampling time of 497 TADCORE clock periods
-    ADCON2_SHRSAMC_0498 = 0b0111110000, // Sampling time of 498 TADCORE clock periods
-    ADCON2_SHRSAMC_0499 = 0b0111110001, // Sampling time of 499 TADCORE clock periods
-    ADCON2_SHRSAMC_0500 = 0b0111110010, // Sampling time of 500 TADCORE clock periods
-    ADCON2_SHRSAMC_0501 = 0b0111110011, // Sampling time of 501 TADCORE clock periods
-    ADCON2_SHRSAMC_0502 = 0b0111110100, // Sampling time of 502 TADCORE clock periods
-    ADCON2_SHRSAMC_0503 = 0b0111110101, // Sampling time of 503 TADCORE clock periods
-    ADCON2_SHRSAMC_0504 = 0b0111110110, // Sampling time of 504 TADCORE clock periods
-    ADCON2_SHRSAMC_0505 = 0b0111110111, // Sampling time of 505 TADCORE clock periods
-    ADCON2_SHRSAMC_0506 = 0b0111111000, // Sampling time of 506 TADCORE clock periods
-    ADCON2_SHRSAMC_0507 = 0b0111111001, // Sampling time of 507 TADCORE clock periods
-    ADCON2_SHRSAMC_0508 = 0b0111111010, // Sampling time of 508 TADCORE clock periods
-    ADCON2_SHRSAMC_0509 = 0b0111111011, // Sampling time of 509 TADCORE clock periods
-    ADCON2_SHRSAMC_0510 = 0b0111111100, // Sampling time of 510 TADCORE clock periods
-    ADCON2_SHRSAMC_0511 = 0b0111111101, // Sampling time of 511 TADCORE clock periods
-    ADCON2_SHRSAMC_0512 = 0b0111111110, // Sampling time of 512 TADCORE clock periods
-    ADCON2_SHRSAMC_0513 = 0b0111111111, // Sampling time of 513 TADCORE clock periods
-    ADCON2_SHRSAMC_0514 = 0b1000000000, // Sampling time of 514 TADCORE clock periods
-    ADCON2_SHRSAMC_0515 = 0b1000000001, // Sampling time of 515 TADCORE clock periods
-    ADCON2_SHRSAMC_0516 = 0b1000000010, // Sampling time of 516 TADCORE clock periods
-    ADCON2_SHRSAMC_0517 = 0b1000000011, // Sampling time of 517 TADCORE clock periods
-    ADCON2_SHRSAMC_0518 = 0b1000000100, // Sampling time of 518 TADCORE clock periods
-    ADCON2_SHRSAMC_0519 = 0b1000000101, // Sampling time of 519 TADCORE clock periods
-    ADCON2_SHRSAMC_0520 = 0b1000000110, // Sampling time of 520 TADCORE clock periods
-    ADCON2_SHRSAMC_0521 = 0b1000000111, // Sampling time of 521 TADCORE clock periods
-    ADCON2_SHRSAMC_0522 = 0b1000001000, // Sampling time of 522 TADCORE clock periods
-    ADCON2_SHRSAMC_0523 = 0b1000001001, // Sampling time of 523 TADCORE clock periods
-    ADCON2_SHRSAMC_0524 = 0b1000001010, // Sampling time of 524 TADCORE clock periods
-    ADCON2_SHRSAMC_0525 = 0b1000001011, // Sampling time of 525 TADCORE clock periods
-    ADCON2_SHRSAMC_0526 = 0b1000001100, // Sampling time of 526 TADCORE clock periods
-    ADCON2_SHRSAMC_0527 = 0b1000001101, // Sampling time of 527 TADCORE clock periods
-    ADCON2_SHRSAMC_0528 = 0b1000001110, // Sampling time of 528 TADCORE clock periods
-    ADCON2_SHRSAMC_0529 = 0b1000001111, // Sampling time of 529 TADCORE clock periods
-    ADCON2_SHRSAMC_0530 = 0b1000010000, // Sampling time of 530 TADCORE clock periods
-    ADCON2_SHRSAMC_0531 = 0b1000010001, // Sampling time of 531 TADCORE clock periods
-    ADCON2_SHRSAMC_0532 = 0b1000010010, // Sampling time of 532 TADCORE clock periods
-    ADCON2_SHRSAMC_0533 = 0b1000010011, // Sampling time of 533 TADCORE clock periods
-    ADCON2_SHRSAMC_0534 = 0b1000010100, // Sampling time of 534 TADCORE clock periods
-    ADCON2_SHRSAMC_0535 = 0b1000010101, // Sampling time of 535 TADCORE clock periods
-    ADCON2_SHRSAMC_0536 = 0b1000010110, // Sampling time of 536 TADCORE clock periods
-    ADCON2_SHRSAMC_0537 = 0b1000010111, // Sampling time of 537 TADCORE clock periods
-    ADCON2_SHRSAMC_0538 = 0b1000011000, // Sampling time of 538 TADCORE clock periods
-    ADCON2_SHRSAMC_0539 = 0b1000011001, // Sampling time of 539 TADCORE clock periods
-    ADCON2_SHRSAMC_0540 = 0b1000011010, // Sampling time of 540 TADCORE clock periods
-    ADCON2_SHRSAMC_0541 = 0b1000011011, // Sampling time of 541 TADCORE clock periods
-    ADCON2_SHRSAMC_0542 = 0b1000011100, // Sampling time of 542 TADCORE clock periods
-    ADCON2_SHRSAMC_0543 = 0b1000011101, // Sampling time of 543 TADCORE clock periods
-    ADCON2_SHRSAMC_0544 = 0b1000011110, // Sampling time of 544 TADCORE clock periods
-    ADCON2_SHRSAMC_0545 = 0b1000011111, // Sampling time of 545 TADCORE clock periods
-    ADCON2_SHRSAMC_0546 = 0b1000100000, // Sampling time of 546 TADCORE clock periods
-    ADCON2_SHRSAMC_0547 = 0b1000100001, // Sampling time of 547 TADCORE clock periods
-    ADCON2_SHRSAMC_0548 = 0b1000100010, // Sampling time of 548 TADCORE clock periods
-    ADCON2_SHRSAMC_0549 = 0b1000100011, // Sampling time of 549 TADCORE clock periods
-    ADCON2_SHRSAMC_0550 = 0b1000100100, // Sampling time of 550 TADCORE clock periods
-    ADCON2_SHRSAMC_0551 = 0b1000100101, // Sampling time of 551 TADCORE clock periods
-    ADCON2_SHRSAMC_0552 = 0b1000100110, // Sampling time of 552 TADCORE clock periods
-    ADCON2_SHRSAMC_0553 = 0b1000100111, // Sampling time of 553 TADCORE clock periods
-    ADCON2_SHRSAMC_0554 = 0b1000101000, // Sampling time of 554 TADCORE clock periods
-    ADCON2_SHRSAMC_0555 = 0b1000101001, // Sampling time of 555 TADCORE clock periods
-    ADCON2_SHRSAMC_0556 = 0b1000101010, // Sampling time of 556 TADCORE clock periods
-    ADCON2_SHRSAMC_0557 = 0b1000101011, // Sampling time of 557 TADCORE clock periods
-    ADCON2_SHRSAMC_0558 = 0b1000101100, // Sampling time of 558 TADCORE clock periods
-    ADCON2_SHRSAMC_0559 = 0b1000101101, // Sampling time of 559 TADCORE clock periods
-    ADCON2_SHRSAMC_0560 = 0b1000101110, // Sampling time of 560 TADCORE clock periods
-    ADCON2_SHRSAMC_0561 = 0b1000101111, // Sampling time of 561 TADCORE clock periods
-    ADCON2_SHRSAMC_0562 = 0b1000110000, // Sampling time of 562 TADCORE clock periods
-    ADCON2_SHRSAMC_0563 = 0b1000110001, // Sampling time of 563 TADCORE clock periods
-    ADCON2_SHRSAMC_0564 = 0b1000110010, // Sampling time of 564 TADCORE clock periods
-    ADCON2_SHRSAMC_0565 = 0b1000110011, // Sampling time of 565 TADCORE clock periods
-    ADCON2_SHRSAMC_0566 = 0b1000110100, // Sampling time of 566 TADCORE clock periods
-    ADCON2_SHRSAMC_0567 = 0b1000110101, // Sampling time of 567 TADCORE clock periods
-    ADCON2_SHRSAMC_0568 = 0b1000110110, // Sampling time of 568 TADCORE clock periods
-    ADCON2_SHRSAMC_0569 = 0b1000110111, // Sampling time of 569 TADCORE clock periods
-    ADCON2_SHRSAMC_0570 = 0b1000111000, // Sampling time of 570 TADCORE clock periods
-    ADCON2_SHRSAMC_0571 = 0b1000111001, // Sampling time of 571 TADCORE clock periods
-    ADCON2_SHRSAMC_0572 = 0b1000111010, // Sampling time of 572 TADCORE clock periods
-    ADCON2_SHRSAMC_0573 = 0b1000111011, // Sampling time of 573 TADCORE clock periods
-    ADCON2_SHRSAMC_0574 = 0b1000111100, // Sampling time of 574 TADCORE clock periods
-    ADCON2_SHRSAMC_0575 = 0b1000111101, // Sampling time of 575 TADCORE clock periods
-    ADCON2_SHRSAMC_0576 = 0b1000111110, // Sampling time of 576 TADCORE clock periods
-    ADCON2_SHRSAMC_0577 = 0b1000111111, // Sampling time of 577 TADCORE clock periods
-    ADCON2_SHRSAMC_0578 = 0b1001000000, // Sampling time of 578 TADCORE clock periods
-    ADCON2_SHRSAMC_0579 = 0b1001000001, // Sampling time of 579 TADCORE clock periods
-    ADCON2_SHRSAMC_0580 = 0b1001000010, // Sampling time of 580 TADCORE clock periods
-    ADCON2_SHRSAMC_0581 = 0b1001000011, // Sampling time of 581 TADCORE clock periods
-    ADCON2_SHRSAMC_0582 = 0b1001000100, // Sampling time of 582 TADCORE clock periods
-    ADCON2_SHRSAMC_0583 = 0b1001000101, // Sampling time of 583 TADCORE clock periods
-    ADCON2_SHRSAMC_0584 = 0b1001000110, // Sampling time of 584 TADCORE clock periods
-    ADCON2_SHRSAMC_0585 = 0b1001000111, // Sampling time of 585 TADCORE clock periods
-    ADCON2_SHRSAMC_0586 = 0b1001001000, // Sampling time of 586 TADCORE clock periods
-    ADCON2_SHRSAMC_0587 = 0b1001001001, // Sampling time of 587 TADCORE clock periods
-    ADCON2_SHRSAMC_0588 = 0b1001001010, // Sampling time of 588 TADCORE clock periods
-    ADCON2_SHRSAMC_0589 = 0b1001001011, // Sampling time of 589 TADCORE clock periods
-    ADCON2_SHRSAMC_0590 = 0b1001001100, // Sampling time of 590 TADCORE clock periods
-    ADCON2_SHRSAMC_0591 = 0b1001001101, // Sampling time of 591 TADCORE clock periods
-    ADCON2_SHRSAMC_0592 = 0b1001001110, // Sampling time of 592 TADCORE clock periods
-    ADCON2_SHRSAMC_0593 = 0b1001001111, // Sampling time of 593 TADCORE clock periods
-    ADCON2_SHRSAMC_0594 = 0b1001010000, // Sampling time of 594 TADCORE clock periods
-    ADCON2_SHRSAMC_0595 = 0b1001010001, // Sampling time of 595 TADCORE clock periods
-    ADCON2_SHRSAMC_0596 = 0b1001010010, // Sampling time of 596 TADCORE clock periods
-    ADCON2_SHRSAMC_0597 = 0b1001010011, // Sampling time of 597 TADCORE clock periods
-    ADCON2_SHRSAMC_0598 = 0b1001010100, // Sampling time of 598 TADCORE clock periods
-    ADCON2_SHRSAMC_0599 = 0b1001010101, // Sampling time of 599 TADCORE clock periods
-    ADCON2_SHRSAMC_0600 = 0b1001010110, // Sampling time of 600 TADCORE clock periods
-    ADCON2_SHRSAMC_0601 = 0b1001010111, // Sampling time of 601 TADCORE clock periods
-    ADCON2_SHRSAMC_0602 = 0b1001011000, // Sampling time of 602 TADCORE clock periods
-    ADCON2_SHRSAMC_0603 = 0b1001011001, // Sampling time of 603 TADCORE clock periods
-    ADCON2_SHRSAMC_0604 = 0b1001011010, // Sampling time of 604 TADCORE clock periods
-    ADCON2_SHRSAMC_0605 = 0b1001011011, // Sampling time of 605 TADCORE clock periods
-    ADCON2_SHRSAMC_0606 = 0b1001011100, // Sampling time of 606 TADCORE clock periods
-    ADCON2_SHRSAMC_0607 = 0b1001011101, // Sampling time of 607 TADCORE clock periods
-    ADCON2_SHRSAMC_0608 = 0b1001011110, // Sampling time of 608 TADCORE clock periods
-    ADCON2_SHRSAMC_0609 = 0b1001011111, // Sampling time of 609 TADCORE clock periods
-    ADCON2_SHRSAMC_0610 = 0b1001100000, // Sampling time of 610 TADCORE clock periods
-    ADCON2_SHRSAMC_0611 = 0b1001100001, // Sampling time of 611 TADCORE clock periods
-    ADCON2_SHRSAMC_0612 = 0b1001100010, // Sampling time of 612 TADCORE clock periods
-    ADCON2_SHRSAMC_0613 = 0b1001100011, // Sampling time of 613 TADCORE clock periods
-    ADCON2_SHRSAMC_0614 = 0b1001100100, // Sampling time of 614 TADCORE clock periods
-    ADCON2_SHRSAMC_0615 = 0b1001100101, // Sampling time of 615 TADCORE clock periods
-    ADCON2_SHRSAMC_0616 = 0b1001100110, // Sampling time of 616 TADCORE clock periods
-    ADCON2_SHRSAMC_0617 = 0b1001100111, // Sampling time of 617 TADCORE clock periods
-    ADCON2_SHRSAMC_0618 = 0b1001101000, // Sampling time of 618 TADCORE clock periods
-    ADCON2_SHRSAMC_0619 = 0b1001101001, // Sampling time of 619 TADCORE clock periods
-    ADCON2_SHRSAMC_0620 = 0b1001101010, // Sampling time of 620 TADCORE clock periods
-    ADCON2_SHRSAMC_0621 = 0b1001101011, // Sampling time of 621 TADCORE clock periods
-    ADCON2_SHRSAMC_0622 = 0b1001101100, // Sampling time of 622 TADCORE clock periods
-    ADCON2_SHRSAMC_0623 = 0b1001101101, // Sampling time of 623 TADCORE clock periods
-    ADCON2_SHRSAMC_0624 = 0b1001101110, // Sampling time of 624 TADCORE clock periods
-    ADCON2_SHRSAMC_0625 = 0b1001101111, // Sampling time of 625 TADCORE clock periods
-    ADCON2_SHRSAMC_0626 = 0b1001110000, // Sampling time of 626 TADCORE clock periods
-    ADCON2_SHRSAMC_0627 = 0b1001110001, // Sampling time of 627 TADCORE clock periods
-    ADCON2_SHRSAMC_0628 = 0b1001110010, // Sampling time of 628 TADCORE clock periods
-    ADCON2_SHRSAMC_0629 = 0b1001110011, // Sampling time of 629 TADCORE clock periods
-    ADCON2_SHRSAMC_0630 = 0b1001110100, // Sampling time of 630 TADCORE clock periods
-    ADCON2_SHRSAMC_0631 = 0b1001110101, // Sampling time of 631 TADCORE clock periods
-    ADCON2_SHRSAMC_0632 = 0b1001110110, // Sampling time of 632 TADCORE clock periods
-    ADCON2_SHRSAMC_0633 = 0b1001110111, // Sampling time of 633 TADCORE clock periods
-    ADCON2_SHRSAMC_0634 = 0b1001111000, // Sampling time of 634 TADCORE clock periods
-    ADCON2_SHRSAMC_0635 = 0b1001111001, // Sampling time of 635 TADCORE clock periods
-    ADCON2_SHRSAMC_0636 = 0b1001111010, // Sampling time of 636 TADCORE clock periods
-    ADCON2_SHRSAMC_0637 = 0b1001111011, // Sampling time of 637 TADCORE clock periods
-    ADCON2_SHRSAMC_0638 = 0b1001111100, // Sampling time of 638 TADCORE clock periods
-    ADCON2_SHRSAMC_0639 = 0b1001111101, // Sampling time of 639 TADCORE clock periods
-    ADCON2_SHRSAMC_0640 = 0b1001111110, // Sampling time of 640 TADCORE clock periods
-    ADCON2_SHRSAMC_0641 = 0b1001111111, // Sampling time of 641 TADCORE clock periods
-    ADCON2_SHRSAMC_0642 = 0b1010000000, // Sampling time of 642 TADCORE clock periods
-    ADCON2_SHRSAMC_0643 = 0b1010000001, // Sampling time of 643 TADCORE clock periods
-    ADCON2_SHRSAMC_0644 = 0b1010000010, // Sampling time of 644 TADCORE clock periods
-    ADCON2_SHRSAMC_0645 = 0b1010000011, // Sampling time of 645 TADCORE clock periods
-    ADCON2_SHRSAMC_0646 = 0b1010000100, // Sampling time of 646 TADCORE clock periods
-    ADCON2_SHRSAMC_0647 = 0b1010000101, // Sampling time of 647 TADCORE clock periods
-    ADCON2_SHRSAMC_0648 = 0b1010000110, // Sampling time of 648 TADCORE clock periods
-    ADCON2_SHRSAMC_0649 = 0b1010000111, // Sampling time of 649 TADCORE clock periods
-    ADCON2_SHRSAMC_0650 = 0b1010001000, // Sampling time of 650 TADCORE clock periods
-    ADCON2_SHRSAMC_0651 = 0b1010001001, // Sampling time of 651 TADCORE clock periods
-    ADCON2_SHRSAMC_0652 = 0b1010001010, // Sampling time of 652 TADCORE clock periods
-    ADCON2_SHRSAMC_0653 = 0b1010001011, // Sampling time of 653 TADCORE clock periods
-    ADCON2_SHRSAMC_0654 = 0b1010001100, // Sampling time of 654 TADCORE clock periods
-    ADCON2_SHRSAMC_0655 = 0b1010001101, // Sampling time of 655 TADCORE clock periods
-    ADCON2_SHRSAMC_0656 = 0b1010001110, // Sampling time of 656 TADCORE clock periods
-    ADCON2_SHRSAMC_0657 = 0b1010001111, // Sampling time of 657 TADCORE clock periods
-    ADCON2_SHRSAMC_0658 = 0b1010010000, // Sampling time of 658 TADCORE clock periods
-    ADCON2_SHRSAMC_0659 = 0b1010010001, // Sampling time of 659 TADCORE clock periods
-    ADCON2_SHRSAMC_0660 = 0b1010010010, // Sampling time of 660 TADCORE clock periods
-    ADCON2_SHRSAMC_0661 = 0b1010010011, // Sampling time of 661 TADCORE clock periods
-    ADCON2_SHRSAMC_0662 = 0b1010010100, // Sampling time of 662 TADCORE clock periods
-    ADCON2_SHRSAMC_0663 = 0b1010010101, // Sampling time of 663 TADCORE clock periods
-    ADCON2_SHRSAMC_0664 = 0b1010010110, // Sampling time of 664 TADCORE clock periods
-    ADCON2_SHRSAMC_0665 = 0b1010010111, // Sampling time of 665 TADCORE clock periods
-    ADCON2_SHRSAMC_0666 = 0b1010011000, // Sampling time of 666 TADCORE clock periods
-    ADCON2_SHRSAMC_0667 = 0b1010011001, // Sampling time of 667 TADCORE clock periods
-    ADCON2_SHRSAMC_0668 = 0b1010011010, // Sampling time of 668 TADCORE clock periods
-    ADCON2_SHRSAMC_0669 = 0b1010011011, // Sampling time of 669 TADCORE clock periods
-    ADCON2_SHRSAMC_0670 = 0b1010011100, // Sampling time of 670 TADCORE clock periods
-    ADCON2_SHRSAMC_0671 = 0b1010011101, // Sampling time of 671 TADCORE clock periods
-    ADCON2_SHRSAMC_0672 = 0b1010011110, // Sampling time of 672 TADCORE clock periods
-    ADCON2_SHRSAMC_0673 = 0b1010011111, // Sampling time of 673 TADCORE clock periods
-    ADCON2_SHRSAMC_0674 = 0b1010100000, // Sampling time of 674 TADCORE clock periods
-    ADCON2_SHRSAMC_0675 = 0b1010100001, // Sampling time of 675 TADCORE clock periods
-    ADCON2_SHRSAMC_0676 = 0b1010100010, // Sampling time of 676 TADCORE clock periods
-    ADCON2_SHRSAMC_0677 = 0b1010100011, // Sampling time of 677 TADCORE clock periods
-    ADCON2_SHRSAMC_0678 = 0b1010100100, // Sampling time of 678 TADCORE clock periods
-    ADCON2_SHRSAMC_0679 = 0b1010100101, // Sampling time of 679 TADCORE clock periods
-    ADCON2_SHRSAMC_0680 = 0b1010100110, // Sampling time of 680 TADCORE clock periods
-    ADCON2_SHRSAMC_0681 = 0b1010100111, // Sampling time of 681 TADCORE clock periods
-    ADCON2_SHRSAMC_0682 = 0b1010101000, // Sampling time of 682 TADCORE clock periods
-    ADCON2_SHRSAMC_0683 = 0b1010101001, // Sampling time of 683 TADCORE clock periods
-    ADCON2_SHRSAMC_0684 = 0b1010101010, // Sampling time of 684 TADCORE clock periods
-    ADCON2_SHRSAMC_0685 = 0b1010101011, // Sampling time of 685 TADCORE clock periods
-    ADCON2_SHRSAMC_0686 = 0b1010101100, // Sampling time of 686 TADCORE clock periods
-    ADCON2_SHRSAMC_0687 = 0b1010101101, // Sampling time of 687 TADCORE clock periods
-    ADCON2_SHRSAMC_0688 = 0b1010101110, // Sampling time of 688 TADCORE clock periods
-    ADCON2_SHRSAMC_0689 = 0b1010101111, // Sampling time of 689 TADCORE clock periods
-    ADCON2_SHRSAMC_0690 = 0b1010110000, // Sampling time of 690 TADCORE clock periods
-    ADCON2_SHRSAMC_0691 = 0b1010110001, // Sampling time of 691 TADCORE clock periods
-    ADCON2_SHRSAMC_0692 = 0b1010110010, // Sampling time of 692 TADCORE clock periods
-    ADCON2_SHRSAMC_0693 = 0b1010110011, // Sampling time of 693 TADCORE clock periods
-    ADCON2_SHRSAMC_0694 = 0b1010110100, // Sampling time of 694 TADCORE clock periods
-    ADCON2_SHRSAMC_0695 = 0b1010110101, // Sampling time of 695 TADCORE clock periods
-    ADCON2_SHRSAMC_0696 = 0b1010110110, // Sampling time of 696 TADCORE clock periods
-    ADCON2_SHRSAMC_0697 = 0b1010110111, // Sampling time of 697 TADCORE clock periods
-    ADCON2_SHRSAMC_0698 = 0b1010111000, // Sampling time of 698 TADCORE clock periods
-    ADCON2_SHRSAMC_0699 = 0b1010111001, // Sampling time of 699 TADCORE clock periods
-    ADCON2_SHRSAMC_0700 = 0b1010111010, // Sampling time of 700 TADCORE clock periods
-    ADCON2_SHRSAMC_0701 = 0b1010111011, // Sampling time of 701 TADCORE clock periods
-    ADCON2_SHRSAMC_0702 = 0b1010111100, // Sampling time of 702 TADCORE clock periods
-    ADCON2_SHRSAMC_0703 = 0b1010111101, // Sampling time of 703 TADCORE clock periods
-    ADCON2_SHRSAMC_0704 = 0b1010111110, // Sampling time of 704 TADCORE clock periods
-    ADCON2_SHRSAMC_0705 = 0b1010111111, // Sampling time of 705 TADCORE clock periods
-    ADCON2_SHRSAMC_0706 = 0b1011000000, // Sampling time of 706 TADCORE clock periods
-    ADCON2_SHRSAMC_0707 = 0b1011000001, // Sampling time of 707 TADCORE clock periods
-    ADCON2_SHRSAMC_0708 = 0b1011000010, // Sampling time of 708 TADCORE clock periods
-    ADCON2_SHRSAMC_0709 = 0b1011000011, // Sampling time of 709 TADCORE clock periods
-    ADCON2_SHRSAMC_0710 = 0b1011000100, // Sampling time of 710 TADCORE clock periods
-    ADCON2_SHRSAMC_0711 = 0b1011000101, // Sampling time of 711 TADCORE clock periods
-    ADCON2_SHRSAMC_0712 = 0b1011000110, // Sampling time of 712 TADCORE clock periods
-    ADCON2_SHRSAMC_0713 = 0b1011000111, // Sampling time of 713 TADCORE clock periods
-    ADCON2_SHRSAMC_0714 = 0b1011001000, // Sampling time of 714 TADCORE clock periods
-    ADCON2_SHRSAMC_0715 = 0b1011001001, // Sampling time of 715 TADCORE clock periods
-    ADCON2_SHRSAMC_0716 = 0b1011001010, // Sampling time of 716 TADCORE clock periods
-    ADCON2_SHRSAMC_0717 = 0b1011001011, // Sampling time of 717 TADCORE clock periods
-    ADCON2_SHRSAMC_0718 = 0b1011001100, // Sampling time of 718 TADCORE clock periods
-    ADCON2_SHRSAMC_0719 = 0b1011001101, // Sampling time of 719 TADCORE clock periods
-    ADCON2_SHRSAMC_0720 = 0b1011001110, // Sampling time of 720 TADCORE clock periods
-    ADCON2_SHRSAMC_0721 = 0b1011001111, // Sampling time of 721 TADCORE clock periods
-    ADCON2_SHRSAMC_0722 = 0b1011010000, // Sampling time of 722 TADCORE clock periods
-    ADCON2_SHRSAMC_0723 = 0b1011010001, // Sampling time of 723 TADCORE clock periods
-    ADCON2_SHRSAMC_0724 = 0b1011010010, // Sampling time of 724 TADCORE clock periods
-    ADCON2_SHRSAMC_0725 = 0b1011010011, // Sampling time of 725 TADCORE clock periods
-    ADCON2_SHRSAMC_0726 = 0b1011010100, // Sampling time of 726 TADCORE clock periods
-    ADCON2_SHRSAMC_0727 = 0b1011010101, // Sampling time of 727 TADCORE clock periods
-    ADCON2_SHRSAMC_0728 = 0b1011010110, // Sampling time of 728 TADCORE clock periods
-    ADCON2_SHRSAMC_0729 = 0b1011010111, // Sampling time of 729 TADCORE clock periods
-    ADCON2_SHRSAMC_0730 = 0b1011011000, // Sampling time of 730 TADCORE clock periods
-    ADCON2_SHRSAMC_0731 = 0b1011011001, // Sampling time of 731 TADCORE clock periods
-    ADCON2_SHRSAMC_0732 = 0b1011011010, // Sampling time of 732 TADCORE clock periods
-    ADCON2_SHRSAMC_0733 = 0b1011011011, // Sampling time of 733 TADCORE clock periods
-    ADCON2_SHRSAMC_0734 = 0b1011011100, // Sampling time of 734 TADCORE clock periods
-    ADCON2_SHRSAMC_0735 = 0b1011011101, // Sampling time of 735 TADCORE clock periods
-    ADCON2_SHRSAMC_0736 = 0b1011011110, // Sampling time of 736 TADCORE clock periods
-    ADCON2_SHRSAMC_0737 = 0b1011011111, // Sampling time of 737 TADCORE clock periods
-    ADCON2_SHRSAMC_0738 = 0b1011100000, // Sampling time of 738 TADCORE clock periods
-    ADCON2_SHRSAMC_0739 = 0b1011100001, // Sampling time of 739 TADCORE clock periods
-    ADCON2_SHRSAMC_0740 = 0b1011100010, // Sampling time of 740 TADCORE clock periods
-    ADCON2_SHRSAMC_0741 = 0b1011100011, // Sampling time of 741 TADCORE clock periods
-    ADCON2_SHRSAMC_0742 = 0b1011100100, // Sampling time of 742 TADCORE clock periods
-    ADCON2_SHRSAMC_0743 = 0b1011100101, // Sampling time of 743 TADCORE clock periods
-    ADCON2_SHRSAMC_0744 = 0b1011100110, // Sampling time of 744 TADCORE clock periods
-    ADCON2_SHRSAMC_0745 = 0b1011100111, // Sampling time of 745 TADCORE clock periods
-    ADCON2_SHRSAMC_0746 = 0b1011101000, // Sampling time of 746 TADCORE clock periods
-    ADCON2_SHRSAMC_0747 = 0b1011101001, // Sampling time of 747 TADCORE clock periods
-    ADCON2_SHRSAMC_0748 = 0b1011101010, // Sampling time of 748 TADCORE clock periods
-    ADCON2_SHRSAMC_0749 = 0b1011101011, // Sampling time of 749 TADCORE clock periods
-    ADCON2_SHRSAMC_0750 = 0b1011101100, // Sampling time of 750 TADCORE clock periods
-    ADCON2_SHRSAMC_0751 = 0b1011101101, // Sampling time of 751 TADCORE clock periods
-    ADCON2_SHRSAMC_0752 = 0b1011101110, // Sampling time of 752 TADCORE clock periods
-    ADCON2_SHRSAMC_0753 = 0b1011101111, // Sampling time of 753 TADCORE clock periods
-    ADCON2_SHRSAMC_0754 = 0b1011110000, // Sampling time of 754 TADCORE clock periods
-    ADCON2_SHRSAMC_0755 = 0b1011110001, // Sampling time of 755 TADCORE clock periods
-    ADCON2_SHRSAMC_0756 = 0b1011110010, // Sampling time of 756 TADCORE clock periods
-    ADCON2_SHRSAMC_0757 = 0b1011110011, // Sampling time of 757 TADCORE clock periods
-    ADCON2_SHRSAMC_0758 = 0b1011110100, // Sampling time of 758 TADCORE clock periods
-    ADCON2_SHRSAMC_0759 = 0b1011110101, // Sampling time of 759 TADCORE clock periods
-    ADCON2_SHRSAMC_0760 = 0b1011110110, // Sampling time of 760 TADCORE clock periods
-    ADCON2_SHRSAMC_0761 = 0b1011110111, // Sampling time of 761 TADCORE clock periods
-    ADCON2_SHRSAMC_0762 = 0b1011111000, // Sampling time of 762 TADCORE clock periods
-    ADCON2_SHRSAMC_0763 = 0b1011111001, // Sampling time of 763 TADCORE clock periods
-    ADCON2_SHRSAMC_0764 = 0b1011111010, // Sampling time of 764 TADCORE clock periods
-    ADCON2_SHRSAMC_0765 = 0b1011111011, // Sampling time of 765 TADCORE clock periods
-    ADCON2_SHRSAMC_0766 = 0b1011111100, // Sampling time of 766 TADCORE clock periods
-    ADCON2_SHRSAMC_0767 = 0b1011111101, // Sampling time of 767 TADCORE clock periods
-    ADCON2_SHRSAMC_0768 = 0b1011111110, // Sampling time of 768 TADCORE clock periods
-    ADCON2_SHRSAMC_0769 = 0b1011111111, // Sampling time of 769 TADCORE clock periods
-    ADCON2_SHRSAMC_0770 = 0b1100000000, // Sampling time of 770 TADCORE clock periods
-    ADCON2_SHRSAMC_0771 = 0b1100000001, // Sampling time of 771 TADCORE clock periods
-    ADCON2_SHRSAMC_0772 = 0b1100000010, // Sampling time of 772 TADCORE clock periods
-    ADCON2_SHRSAMC_0773 = 0b1100000011, // Sampling time of 773 TADCORE clock periods
-    ADCON2_SHRSAMC_0774 = 0b1100000100, // Sampling time of 774 TADCORE clock periods
-    ADCON2_SHRSAMC_0775 = 0b1100000101, // Sampling time of 775 TADCORE clock periods
-    ADCON2_SHRSAMC_0776 = 0b1100000110, // Sampling time of 776 TADCORE clock periods
-    ADCON2_SHRSAMC_0777 = 0b1100000111, // Sampling time of 777 TADCORE clock periods
-    ADCON2_SHRSAMC_0778 = 0b1100001000, // Sampling time of 778 TADCORE clock periods
-    ADCON2_SHRSAMC_0779 = 0b1100001001, // Sampling time of 779 TADCORE clock periods
-    ADCON2_SHRSAMC_0780 = 0b1100001010, // Sampling time of 780 TADCORE clock periods
-    ADCON2_SHRSAMC_0781 = 0b1100001011, // Sampling time of 781 TADCORE clock periods
-    ADCON2_SHRSAMC_0782 = 0b1100001100, // Sampling time of 782 TADCORE clock periods
-    ADCON2_SHRSAMC_0783 = 0b1100001101, // Sampling time of 783 TADCORE clock periods
-    ADCON2_SHRSAMC_0784 = 0b1100001110, // Sampling time of 784 TADCORE clock periods
-    ADCON2_SHRSAMC_0785 = 0b1100001111, // Sampling time of 785 TADCORE clock periods
-    ADCON2_SHRSAMC_0786 = 0b1100010000, // Sampling time of 786 TADCORE clock periods
-    ADCON2_SHRSAMC_0787 = 0b1100010001, // Sampling time of 787 TADCORE clock periods
-    ADCON2_SHRSAMC_0788 = 0b1100010010, // Sampling time of 788 TADCORE clock periods
-    ADCON2_SHRSAMC_0789 = 0b1100010011, // Sampling time of 789 TADCORE clock periods
-    ADCON2_SHRSAMC_0790 = 0b1100010100, // Sampling time of 790 TADCORE clock periods
-    ADCON2_SHRSAMC_0791 = 0b1100010101, // Sampling time of 791 TADCORE clock periods
-    ADCON2_SHRSAMC_0792 = 0b1100010110, // Sampling time of 792 TADCORE clock periods
-    ADCON2_SHRSAMC_0793 = 0b1100010111, // Sampling time of 793 TADCORE clock periods
-    ADCON2_SHRSAMC_0794 = 0b1100011000, // Sampling time of 794 TADCORE clock periods
-    ADCON2_SHRSAMC_0795 = 0b1100011001, // Sampling time of 795 TADCORE clock periods
-    ADCON2_SHRSAMC_0796 = 0b1100011010, // Sampling time of 796 TADCORE clock periods
-    ADCON2_SHRSAMC_0797 = 0b1100011011, // Sampling time of 797 TADCORE clock periods
-    ADCON2_SHRSAMC_0798 = 0b1100011100, // Sampling time of 798 TADCORE clock periods
-    ADCON2_SHRSAMC_0799 = 0b1100011101, // Sampling time of 799 TADCORE clock periods
-    ADCON2_SHRSAMC_0800 = 0b1100011110, // Sampling time of 800 TADCORE clock periods
-    ADCON2_SHRSAMC_0801 = 0b1100011111, // Sampling time of 801 TADCORE clock periods
-    ADCON2_SHRSAMC_0802 = 0b1100100000, // Sampling time of 802 TADCORE clock periods
-    ADCON2_SHRSAMC_0803 = 0b1100100001, // Sampling time of 803 TADCORE clock periods
-    ADCON2_SHRSAMC_0804 = 0b1100100010, // Sampling time of 804 TADCORE clock periods
-    ADCON2_SHRSAMC_0805 = 0b1100100011, // Sampling time of 805 TADCORE clock periods
-    ADCON2_SHRSAMC_0806 = 0b1100100100, // Sampling time of 806 TADCORE clock periods
-    ADCON2_SHRSAMC_0807 = 0b1100100101, // Sampling time of 807 TADCORE clock periods
-    ADCON2_SHRSAMC_0808 = 0b1100100110, // Sampling time of 808 TADCORE clock periods
-    ADCON2_SHRSAMC_0809 = 0b1100100111, // Sampling time of 809 TADCORE clock periods
-    ADCON2_SHRSAMC_0810 = 0b1100101000, // Sampling time of 810 TADCORE clock periods
-    ADCON2_SHRSAMC_0811 = 0b1100101001, // Sampling time of 811 TADCORE clock periods
-    ADCON2_SHRSAMC_0812 = 0b1100101010, // Sampling time of 812 TADCORE clock periods
-    ADCON2_SHRSAMC_0813 = 0b1100101011, // Sampling time of 813 TADCORE clock periods
-    ADCON2_SHRSAMC_0814 = 0b1100101100, // Sampling time of 814 TADCORE clock periods
-    ADCON2_SHRSAMC_0815 = 0b1100101101, // Sampling time of 815 TADCORE clock periods
-    ADCON2_SHRSAMC_0816 = 0b1100101110, // Sampling time of 816 TADCORE clock periods
-    ADCON2_SHRSAMC_0817 = 0b1100101111, // Sampling time of 817 TADCORE clock periods
-    ADCON2_SHRSAMC_0818 = 0b1100110000, // Sampling time of 818 TADCORE clock periods
-    ADCON2_SHRSAMC_0819 = 0b1100110001, // Sampling time of 819 TADCORE clock periods
-    ADCON2_SHRSAMC_0820 = 0b1100110010, // Sampling time of 820 TADCORE clock periods
-    ADCON2_SHRSAMC_0821 = 0b1100110011, // Sampling time of 821 TADCORE clock periods
-    ADCON2_SHRSAMC_0822 = 0b1100110100, // Sampling time of 822 TADCORE clock periods
-    ADCON2_SHRSAMC_0823 = 0b1100110101, // Sampling time of 823 TADCORE clock periods
-    ADCON2_SHRSAMC_0824 = 0b1100110110, // Sampling time of 824 TADCORE clock periods
-    ADCON2_SHRSAMC_0825 = 0b1100110111, // Sampling time of 825 TADCORE clock periods
-    ADCON2_SHRSAMC_0826 = 0b1100111000, // Sampling time of 826 TADCORE clock periods
-    ADCON2_SHRSAMC_0827 = 0b1100111001, // Sampling time of 827 TADCORE clock periods
-    ADCON2_SHRSAMC_0828 = 0b1100111010, // Sampling time of 828 TADCORE clock periods
-    ADCON2_SHRSAMC_0829 = 0b1100111011, // Sampling time of 829 TADCORE clock periods
-    ADCON2_SHRSAMC_0830 = 0b1100111100, // Sampling time of 830 TADCORE clock periods
-    ADCON2_SHRSAMC_0831 = 0b1100111101, // Sampling time of 831 TADCORE clock periods
-    ADCON2_SHRSAMC_0832 = 0b1100111110, // Sampling time of 832 TADCORE clock periods
-    ADCON2_SHRSAMC_0833 = 0b1100111111, // Sampling time of 833 TADCORE clock periods
-    ADCON2_SHRSAMC_0834 = 0b1101000000, // Sampling time of 834 TADCORE clock periods
-    ADCON2_SHRSAMC_0835 = 0b1101000001, // Sampling time of 835 TADCORE clock periods
-    ADCON2_SHRSAMC_0836 = 0b1101000010, // Sampling time of 836 TADCORE clock periods
-    ADCON2_SHRSAMC_0837 = 0b1101000011, // Sampling time of 837 TADCORE clock periods
-    ADCON2_SHRSAMC_0838 = 0b1101000100, // Sampling time of 838 TADCORE clock periods
-    ADCON2_SHRSAMC_0839 = 0b1101000101, // Sampling time of 839 TADCORE clock periods
-    ADCON2_SHRSAMC_0840 = 0b1101000110, // Sampling time of 840 TADCORE clock periods
-    ADCON2_SHRSAMC_0841 = 0b1101000111, // Sampling time of 841 TADCORE clock periods
-    ADCON2_SHRSAMC_0842 = 0b1101001000, // Sampling time of 842 TADCORE clock periods
-    ADCON2_SHRSAMC_0843 = 0b1101001001, // Sampling time of 843 TADCORE clock periods
-    ADCON2_SHRSAMC_0844 = 0b1101001010, // Sampling time of 844 TADCORE clock periods
-    ADCON2_SHRSAMC_0845 = 0b1101001011, // Sampling time of 845 TADCORE clock periods
-    ADCON2_SHRSAMC_0846 = 0b1101001100, // Sampling time of 846 TADCORE clock periods
-    ADCON2_SHRSAMC_0847 = 0b1101001101, // Sampling time of 847 TADCORE clock periods
-    ADCON2_SHRSAMC_0848 = 0b1101001110, // Sampling time of 848 TADCORE clock periods
-    ADCON2_SHRSAMC_0849 = 0b1101001111, // Sampling time of 849 TADCORE clock periods
-    ADCON2_SHRSAMC_0850 = 0b1101010000, // Sampling time of 850 TADCORE clock periods
-    ADCON2_SHRSAMC_0851 = 0b1101010001, // Sampling time of 851 TADCORE clock periods
-    ADCON2_SHRSAMC_0852 = 0b1101010010, // Sampling time of 852 TADCORE clock periods
-    ADCON2_SHRSAMC_0853 = 0b1101010011, // Sampling time of 853 TADCORE clock periods
-    ADCON2_SHRSAMC_0854 = 0b1101010100, // Sampling time of 854 TADCORE clock periods
-    ADCON2_SHRSAMC_0855 = 0b1101010101, // Sampling time of 855 TADCORE clock periods
-    ADCON2_SHRSAMC_0856 = 0b1101010110, // Sampling time of 856 TADCORE clock periods
-    ADCON2_SHRSAMC_0857 = 0b1101010111, // Sampling time of 857 TADCORE clock periods
-    ADCON2_SHRSAMC_0858 = 0b1101011000, // Sampling time of 858 TADCORE clock periods
-    ADCON2_SHRSAMC_0859 = 0b1101011001, // Sampling time of 859 TADCORE clock periods
-    ADCON2_SHRSAMC_0860 = 0b1101011010, // Sampling time of 860 TADCORE clock periods
-    ADCON2_SHRSAMC_0861 = 0b1101011011, // Sampling time of 861 TADCORE clock periods
-    ADCON2_SHRSAMC_0862 = 0b1101011100, // Sampling time of 862 TADCORE clock periods
-    ADCON2_SHRSAMC_0863 = 0b1101011101, // Sampling time of 863 TADCORE clock periods
-    ADCON2_SHRSAMC_0864 = 0b1101011110, // Sampling time of 864 TADCORE clock periods
-    ADCON2_SHRSAMC_0865 = 0b1101011111, // Sampling time of 865 TADCORE clock periods
-    ADCON2_SHRSAMC_0866 = 0b1101100000, // Sampling time of 866 TADCORE clock periods
-    ADCON2_SHRSAMC_0867 = 0b1101100001, // Sampling time of 867 TADCORE clock periods
-    ADCON2_SHRSAMC_0868 = 0b1101100010, // Sampling time of 868 TADCORE clock periods
-    ADCON2_SHRSAMC_0869 = 0b1101100011, // Sampling time of 869 TADCORE clock periods
-    ADCON2_SHRSAMC_0870 = 0b1101100100, // Sampling time of 870 TADCORE clock periods
-    ADCON2_SHRSAMC_0871 = 0b1101100101, // Sampling time of 871 TADCORE clock periods
-    ADCON2_SHRSAMC_0872 = 0b1101100110, // Sampling time of 872 TADCORE clock periods
-    ADCON2_SHRSAMC_0873 = 0b1101100111, // Sampling time of 873 TADCORE clock periods
-    ADCON2_SHRSAMC_0874 = 0b1101101000, // Sampling time of 874 TADCORE clock periods
-    ADCON2_SHRSAMC_0875 = 0b1101101001, // Sampling time of 875 TADCORE clock periods
-    ADCON2_SHRSAMC_0876 = 0b1101101010, // Sampling time of 876 TADCORE clock periods
-    ADCON2_SHRSAMC_0877 = 0b1101101011, // Sampling time of 877 TADCORE clock periods
-    ADCON2_SHRSAMC_0878 = 0b1101101100, // Sampling time of 878 TADCORE clock periods
-    ADCON2_SHRSAMC_0879 = 0b1101101101, // Sampling time of 879 TADCORE clock periods
-    ADCON2_SHRSAMC_0880 = 0b1101101110, // Sampling time of 880 TADCORE clock periods
-    ADCON2_SHRSAMC_0881 = 0b1101101111, // Sampling time of 881 TADCORE clock periods
-    ADCON2_SHRSAMC_0882 = 0b1101110000, // Sampling time of 882 TADCORE clock periods
-    ADCON2_SHRSAMC_0883 = 0b1101110001, // Sampling time of 883 TADCORE clock periods
-    ADCON2_SHRSAMC_0884 = 0b1101110010, // Sampling time of 884 TADCORE clock periods
-    ADCON2_SHRSAMC_0885 = 0b1101110011, // Sampling time of 885 TADCORE clock periods
-    ADCON2_SHRSAMC_0886 = 0b1101110100, // Sampling time of 886 TADCORE clock periods
-    ADCON2_SHRSAMC_0887 = 0b1101110101, // Sampling time of 887 TADCORE clock periods
-    ADCON2_SHRSAMC_0888 = 0b1101110110, // Sampling time of 888 TADCORE clock periods
-    ADCON2_SHRSAMC_0889 = 0b1101110111, // Sampling time of 889 TADCORE clock periods
-    ADCON2_SHRSAMC_0890 = 0b1101111000, // Sampling time of 890 TADCORE clock periods
-    ADCON2_SHRSAMC_0891 = 0b1101111001, // Sampling time of 891 TADCORE clock periods
-    ADCON2_SHRSAMC_0892 = 0b1101111010, // Sampling time of 892 TADCORE clock periods
-    ADCON2_SHRSAMC_0893 = 0b1101111011, // Sampling time of 893 TADCORE clock periods
-    ADCON2_SHRSAMC_0894 = 0b1101111100, // Sampling time of 894 TADCORE clock periods
-    ADCON2_SHRSAMC_0895 = 0b1101111101, // Sampling time of 895 TADCORE clock periods
-    ADCON2_SHRSAMC_0896 = 0b1101111110, // Sampling time of 896 TADCORE clock periods
-    ADCON2_SHRSAMC_0897 = 0b1101111111, // Sampling time of 897 TADCORE clock periods
-    ADCON2_SHRSAMC_0898 = 0b1110000000, // Sampling time of 898 TADCORE clock periods
-    ADCON2_SHRSAMC_0899 = 0b1110000001, // Sampling time of 899 TADCORE clock periods
-    ADCON2_SHRSAMC_0900 = 0b1110000010, // Sampling time of 900 TADCORE clock periods
-    ADCON2_SHRSAMC_0901 = 0b1110000011, // Sampling time of 901 TADCORE clock periods
-    ADCON2_SHRSAMC_0902 = 0b1110000100, // Sampling time of 902 TADCORE clock periods
-    ADCON2_SHRSAMC_0903 = 0b1110000101, // Sampling time of 903 TADCORE clock periods
-    ADCON2_SHRSAMC_0904 = 0b1110000110, // Sampling time of 904 TADCORE clock periods
-    ADCON2_SHRSAMC_0905 = 0b1110000111, // Sampling time of 905 TADCORE clock periods
-    ADCON2_SHRSAMC_0906 = 0b1110001000, // Sampling time of 906 TADCORE clock periods
-    ADCON2_SHRSAMC_0907 = 0b1110001001, // Sampling time of 907 TADCORE clock periods
-    ADCON2_SHRSAMC_0908 = 0b1110001010, // Sampling time of 908 TADCORE clock periods
-    ADCON2_SHRSAMC_0909 = 0b1110001011, // Sampling time of 909 TADCORE clock periods
-    ADCON2_SHRSAMC_0910 = 0b1110001100, // Sampling time of 910 TADCORE clock periods
-    ADCON2_SHRSAMC_0911 = 0b1110001101, // Sampling time of 911 TADCORE clock periods
-    ADCON2_SHRSAMC_0912 = 0b1110001110, // Sampling time of 912 TADCORE clock periods
-    ADCON2_SHRSAMC_0913 = 0b1110001111, // Sampling time of 913 TADCORE clock periods
-    ADCON2_SHRSAMC_0914 = 0b1110010000, // Sampling time of 914 TADCORE clock periods
-    ADCON2_SHRSAMC_0915 = 0b1110010001, // Sampling time of 915 TADCORE clock periods
-    ADCON2_SHRSAMC_0916 = 0b1110010010, // Sampling time of 916 TADCORE clock periods
-    ADCON2_SHRSAMC_0917 = 0b1110010011, // Sampling time of 917 TADCORE clock periods
-    ADCON2_SHRSAMC_0918 = 0b1110010100, // Sampling time of 918 TADCORE clock periods
-    ADCON2_SHRSAMC_0919 = 0b1110010101, // Sampling time of 919 TADCORE clock periods
-    ADCON2_SHRSAMC_0920 = 0b1110010110, // Sampling time of 920 TADCORE clock periods
-    ADCON2_SHRSAMC_0921 = 0b1110010111, // Sampling time of 921 TADCORE clock periods
-    ADCON2_SHRSAMC_0922 = 0b1110011000, // Sampling time of 922 TADCORE clock periods
-    ADCON2_SHRSAMC_0923 = 0b1110011001, // Sampling time of 923 TADCORE clock periods
-    ADCON2_SHRSAMC_0924 = 0b1110011010, // Sampling time of 924 TADCORE clock periods
-    ADCON2_SHRSAMC_0925 = 0b1110011011, // Sampling time of 925 TADCORE clock periods
-    ADCON2_SHRSAMC_0926 = 0b1110011100, // Sampling time of 926 TADCORE clock periods
-    ADCON2_SHRSAMC_0927 = 0b1110011101, // Sampling time of 927 TADCORE clock periods
-    ADCON2_SHRSAMC_0928 = 0b1110011110, // Sampling time of 928 TADCORE clock periods
-    ADCON2_SHRSAMC_0929 = 0b1110011111, // Sampling time of 929 TADCORE clock periods
-    ADCON2_SHRSAMC_0930 = 0b1110100000, // Sampling time of 930 TADCORE clock periods
-    ADCON2_SHRSAMC_0931 = 0b1110100001, // Sampling time of 931 TADCORE clock periods
-    ADCON2_SHRSAMC_0932 = 0b1110100010, // Sampling time of 932 TADCORE clock periods
-    ADCON2_SHRSAMC_0933 = 0b1110100011, // Sampling time of 933 TADCORE clock periods
-    ADCON2_SHRSAMC_0934 = 0b1110100100, // Sampling time of 934 TADCORE clock periods
-    ADCON2_SHRSAMC_0935 = 0b1110100101, // Sampling time of 935 TADCORE clock periods
-    ADCON2_SHRSAMC_0936 = 0b1110100110, // Sampling time of 936 TADCORE clock periods
-    ADCON2_SHRSAMC_0937 = 0b1110100111, // Sampling time of 937 TADCORE clock periods
-    ADCON2_SHRSAMC_0938 = 0b1110101000, // Sampling time of 938 TADCORE clock periods
-    ADCON2_SHRSAMC_0939 = 0b1110101001, // Sampling time of 939 TADCORE clock periods
-    ADCON2_SHRSAMC_0940 = 0b1110101010, // Sampling time of 940 TADCORE clock periods
-    ADCON2_SHRSAMC_0941 = 0b1110101011, // Sampling time of 941 TADCORE clock periods
-    ADCON2_SHRSAMC_0942 = 0b1110101100, // Sampling time of 942 TADCORE clock periods
-    ADCON2_SHRSAMC_0943 = 0b1110101101, // Sampling time of 943 TADCORE clock periods
-    ADCON2_SHRSAMC_0944 = 0b1110101110, // Sampling time of 944 TADCORE clock periods
-    ADCON2_SHRSAMC_0945 = 0b1110101111, // Sampling time of 945 TADCORE clock periods
-    ADCON2_SHRSAMC_0946 = 0b1110110000, // Sampling time of 946 TADCORE clock periods
-    ADCON2_SHRSAMC_0947 = 0b1110110001, // Sampling time of 947 TADCORE clock periods
-    ADCON2_SHRSAMC_0948 = 0b1110110010, // Sampling time of 948 TADCORE clock periods
-    ADCON2_SHRSAMC_0949 = 0b1110110011, // Sampling time of 949 TADCORE clock periods
-    ADCON2_SHRSAMC_0950 = 0b1110110100, // Sampling time of 950 TADCORE clock periods
-    ADCON2_SHRSAMC_0951 = 0b1110110101, // Sampling time of 951 TADCORE clock periods
-    ADCON2_SHRSAMC_0952 = 0b1110110110, // Sampling time of 952 TADCORE clock periods
-    ADCON2_SHRSAMC_0953 = 0b1110110111, // Sampling time of 953 TADCORE clock periods
-    ADCON2_SHRSAMC_0954 = 0b1110111000, // Sampling time of 954 TADCORE clock periods
-    ADCON2_SHRSAMC_0955 = 0b1110111001, // Sampling time of 955 TADCORE clock periods
-    ADCON2_SHRSAMC_0956 = 0b1110111010, // Sampling time of 956 TADCORE clock periods
-    ADCON2_SHRSAMC_0957 = 0b1110111011, // Sampling time of 957 TADCORE clock periods
-    ADCON2_SHRSAMC_0958 = 0b1110111100, // Sampling time of 958 TADCORE clock periods
-    ADCON2_SHRSAMC_0959 = 0b1110111101, // Sampling time of 959 TADCORE clock periods
-    ADCON2_SHRSAMC_0960 = 0b1110111110, // Sampling time of 960 TADCORE clock periods
-    ADCON2_SHRSAMC_0961 = 0b1110111111, // Sampling time of 961 TADCORE clock periods
-    ADCON2_SHRSAMC_0962 = 0b1111000000, // Sampling time of 962 TADCORE clock periods
-    ADCON2_SHRSAMC_0963 = 0b1111000001, // Sampling time of 963 TADCORE clock periods
-    ADCON2_SHRSAMC_0964 = 0b1111000010, // Sampling time of 964 TADCORE clock periods
-    ADCON2_SHRSAMC_0965 = 0b1111000011, // Sampling time of 965 TADCORE clock periods
-    ADCON2_SHRSAMC_0966 = 0b1111000100, // Sampling time of 966 TADCORE clock periods
-    ADCON2_SHRSAMC_0967 = 0b1111000101, // Sampling time of 967 TADCORE clock periods
-    ADCON2_SHRSAMC_0968 = 0b1111000110, // Sampling time of 968 TADCORE clock periods
-    ADCON2_SHRSAMC_0969 = 0b1111000111, // Sampling time of 969 TADCORE clock periods
-    ADCON2_SHRSAMC_0970 = 0b1111001000, // Sampling time of 970 TADCORE clock periods
-    ADCON2_SHRSAMC_0971 = 0b1111001001, // Sampling time of 971 TADCORE clock periods
-    ADCON2_SHRSAMC_0972 = 0b1111001010, // Sampling time of 972 TADCORE clock periods
-    ADCON2_SHRSAMC_0973 = 0b1111001011, // Sampling time of 973 TADCORE clock periods
-    ADCON2_SHRSAMC_0974 = 0b1111001100, // Sampling time of 974 TADCORE clock periods
-    ADCON2_SHRSAMC_0975 = 0b1111001101, // Sampling time of 975 TADCORE clock periods
-    ADCON2_SHRSAMC_0976 = 0b1111001110, // Sampling time of 976 TADCORE clock periods
-    ADCON2_SHRSAMC_0977 = 0b1111001111, // Sampling time of 977 TADCORE clock periods
-    ADCON2_SHRSAMC_0978 = 0b1111010000, // Sampling time of 978 TADCORE clock periods
-    ADCON2_SHRSAMC_0979 = 0b1111010001, // Sampling time of 979 TADCORE clock periods
-    ADCON2_SHRSAMC_0980 = 0b1111010010, // Sampling time of 980 TADCORE clock periods
-    ADCON2_SHRSAMC_0981 = 0b1111010011, // Sampling time of 981 TADCORE clock periods
-    ADCON2_SHRSAMC_0982 = 0b1111010100, // Sampling time of 982 TADCORE clock periods
-    ADCON2_SHRSAMC_0983 = 0b1111010101, // Sampling time of 983 TADCORE clock periods
-    ADCON2_SHRSAMC_0984 = 0b1111010110, // Sampling time of 984 TADCORE clock periods
-    ADCON2_SHRSAMC_0985 = 0b1111010111, // Sampling time of 985 TADCORE clock periods
-    ADCON2_SHRSAMC_0986 = 0b1111011000, // Sampling time of 986 TADCORE clock periods
-    ADCON2_SHRSAMC_0987 = 0b1111011001, // Sampling time of 987 TADCORE clock periods
-    ADCON2_SHRSAMC_0988 = 0b1111011010, // Sampling time of 988 TADCORE clock periods
-    ADCON2_SHRSAMC_0989 = 0b1111011011, // Sampling time of 989 TADCORE clock periods
-    ADCON2_SHRSAMC_0990 = 0b1111011100, // Sampling time of 990 TADCORE clock periods
-    ADCON2_SHRSAMC_0991 = 0b1111011101, // Sampling time of 991 TADCORE clock periods
-    ADCON2_SHRSAMC_0992 = 0b1111011110, // Sampling time of 992 TADCORE clock periods
-    ADCON2_SHRSAMC_0993 = 0b1111011111, // Sampling time of 993 TADCORE clock periods
-    ADCON2_SHRSAMC_0994 = 0b1111100000, // Sampling time of 994 TADCORE clock periods
-    ADCON2_SHRSAMC_0995 = 0b1111100001, // Sampling time of 995 TADCORE clock periods
-    ADCON2_SHRSAMC_0996 = 0b1111100010, // Sampling time of 996 TADCORE clock periods
-    ADCON2_SHRSAMC_0997 = 0b1111100011, // Sampling time of 997 TADCORE clock periods
-    ADCON2_SHRSAMC_0998 = 0b1111100100, // Sampling time of 998 TADCORE clock periods
-    ADCON2_SHRSAMC_0999 = 0b1111100101, // Sampling time of 999 TADCORE clock periods
-    ADCON2_SHRSAMC_1000 = 0b1111100110, // Sampling time of 1000 TADCORE clock periods
-    ADCON2_SHRSAMC_1001 = 0b1111100111, // Sampling time of 1001 TADCORE clock periods
-    ADCON2_SHRSAMC_1002 = 0b1111101000, // Sampling time of 1002 TADCORE clock periods
-    ADCON2_SHRSAMC_1003 = 0b1111101001, // Sampling time of 1003 TADCORE clock periods
-    ADCON2_SHRSAMC_1004 = 0b1111101010, // Sampling time of 1004 TADCORE clock periods
-    ADCON2_SHRSAMC_1005 = 0b1111101011, // Sampling time of 1005 TADCORE clock periods
-    ADCON2_SHRSAMC_1006 = 0b1111101100, // Sampling time of 1006 TADCORE clock periods
-    ADCON2_SHRSAMC_1007 = 0b1111101101, // Sampling time of 1007 TADCORE clock periods
-    ADCON2_SHRSAMC_1008 = 0b1111101110, // Sampling time of 1008 TADCORE clock periods
-    ADCON2_SHRSAMC_1009 = 0b1111101111, // Sampling time of 1009 TADCORE clock periods
-    ADCON2_SHRSAMC_1010 = 0b1111110000, // Sampling time of 1010 TADCORE clock periods
-    ADCON2_SHRSAMC_1011 = 0b1111110001, // Sampling time of 1011 TADCORE clock periods
-    ADCON2_SHRSAMC_1012 = 0b1111110010, // Sampling time of 1012 TADCORE clock periods
-    ADCON2_SHRSAMC_1013 = 0b1111110011, // Sampling time of 1013 TADCORE clock periods
-    ADCON2_SHRSAMC_1014 = 0b1111110100, // Sampling time of 1014 TADCORE clock periods
-    ADCON2_SHRSAMC_1015 = 0b1111110101, // Sampling time of 1015 TADCORE clock periods
-    ADCON2_SHRSAMC_1016 = 0b1111110110, // Sampling time of 1016 TADCORE clock periods
-    ADCON2_SHRSAMC_1017 = 0b1111110111, // Sampling time of 1017 TADCORE clock periods
-    ADCON2_SHRSAMC_1018 = 0b1111111000, // Sampling time of 1018 TADCORE clock periods
-    ADCON2_SHRSAMC_1019 = 0b1111111001, // Sampling time of 1019 TADCORE clock periods
-    ADCON2_SHRSAMC_1020 = 0b1111111010, // Sampling time of 1020 TADCORE clock periods
-    ADCON2_SHRSAMC_1021 = 0b1111111011, // Sampling time of 1021 TADCORE clock periods
-    ADCON2_SHRSAMC_1022 = 0b1111111100, // Sampling time of 1022 TADCORE clock periods
-    ADCON2_SHRSAMC_1023 = 0b1111111101, // Sampling time of 1023 TADCORE clock periods
-    ADCON2_SHRSAMC_1024 = 0b1111111110, // Sampling time of 1024 TADCORE clock periods
-    ADCON2_SHRSAMC_1025 = 0b1111111111 // Sampling time of 1025 TADCORE clock periods
-} ADCON2_SHRSAMC_e; // Shared ADC Core Sample Time Selection bits
+    ADCORE_SAMC_DEFAULT = 0b0000000000, // Sampling time of 2 TADCORE clock periods
+    ADCORE_SAMC_0002 = 0b0000000000, // Sampling time of 2 TADCORE clock periods
+    ADCORE_SAMC_0003 = 0b0000000001, // Sampling time of 3 TADCORE clock periods
+    ADCORE_SAMC_0004 = 0b0000000010, // Sampling time of 4 TADCORE clock periods
+    ADCORE_SAMC_0005 = 0b0000000011, // Sampling time of 5 TADCORE clock periods
+    ADCORE_SAMC_0006 = 0b0000000100, // Sampling time of 6 TADCORE clock periods
+    ADCORE_SAMC_0007 = 0b0000000101, // Sampling time of 7 TADCORE clock periods
+    ADCORE_SAMC_0008 = 0b0000000110, // Sampling time of 8 TADCORE clock periods
+    ADCORE_SAMC_0009 = 0b0000000111, // Sampling time of 9 TADCORE clock periods
+    ADCORE_SAMC_0010 = 0b0000001000, // Sampling time of 10 TADCORE clock periods
+    ADCORE_SAMC_0011 = 0b0000001001, // Sampling time of 11 TADCORE clock periods
+    ADCORE_SAMC_0012 = 0b0000001010, // Sampling time of 12 TADCORE clock periods
+    ADCORE_SAMC_0013 = 0b0000001011, // Sampling time of 13 TADCORE clock periods
+    ADCORE_SAMC_0014 = 0b0000001100, // Sampling time of 14 TADCORE clock periods
+    ADCORE_SAMC_0015 = 0b0000001101, // Sampling time of 15 TADCORE clock periods
+    ADCORE_SAMC_0016 = 0b0000001110, // Sampling time of 16 TADCORE clock periods
+    ADCORE_SAMC_0017 = 0b0000001111, // Sampling time of 17 TADCORE clock periods
+    ADCORE_SAMC_0018 = 0b0000010000, // Sampling time of 18 TADCORE clock periods
+    ADCORE_SAMC_0019 = 0b0000010001, // Sampling time of 19 TADCORE clock periods
+    ADCORE_SAMC_0020 = 0b0000010010, // Sampling time of 20 TADCORE clock periods
+    ADCORE_SAMC_0021 = 0b0000010011, // Sampling time of 21 TADCORE clock periods
+    ADCORE_SAMC_0022 = 0b0000010100, // Sampling time of 22 TADCORE clock periods
+    ADCORE_SAMC_0023 = 0b0000010101, // Sampling time of 23 TADCORE clock periods
+    ADCORE_SAMC_0024 = 0b0000010110, // Sampling time of 24 TADCORE clock periods
+    ADCORE_SAMC_0025 = 0b0000010111, // Sampling time of 25 TADCORE clock periods
+    ADCORE_SAMC_0026 = 0b0000011000, // Sampling time of 26 TADCORE clock periods
+    ADCORE_SAMC_0027 = 0b0000011001, // Sampling time of 27 TADCORE clock periods
+    ADCORE_SAMC_0028 = 0b0000011010, // Sampling time of 28 TADCORE clock periods
+    ADCORE_SAMC_0029 = 0b0000011011, // Sampling time of 29 TADCORE clock periods
+    ADCORE_SAMC_0030 = 0b0000011100, // Sampling time of 30 TADCORE clock periods
+    ADCORE_SAMC_0031 = 0b0000011101, // Sampling time of 31 TADCORE clock periods
+    ADCORE_SAMC_0032 = 0b0000011110, // Sampling time of 32 TADCORE clock periods
+    ADCORE_SAMC_0033 = 0b0000011111, // Sampling time of 33 TADCORE clock periods
+    ADCORE_SAMC_0034 = 0b0000100000, // Sampling time of 34 TADCORE clock periods
+    ADCORE_SAMC_0035 = 0b0000100001, // Sampling time of 35 TADCORE clock periods
+    ADCORE_SAMC_0036 = 0b0000100010, // Sampling time of 36 TADCORE clock periods
+    ADCORE_SAMC_0037 = 0b0000100011, // Sampling time of 37 TADCORE clock periods
+    ADCORE_SAMC_0038 = 0b0000100100, // Sampling time of 38 TADCORE clock periods
+    ADCORE_SAMC_0039 = 0b0000100101, // Sampling time of 39 TADCORE clock periods
+    ADCORE_SAMC_0040 = 0b0000100110, // Sampling time of 40 TADCORE clock periods
+    ADCORE_SAMC_0041 = 0b0000100111, // Sampling time of 41 TADCORE clock periods
+    ADCORE_SAMC_0042 = 0b0000101000, // Sampling time of 42 TADCORE clock periods
+    ADCORE_SAMC_0043 = 0b0000101001, // Sampling time of 43 TADCORE clock periods
+    ADCORE_SAMC_0044 = 0b0000101010, // Sampling time of 44 TADCORE clock periods
+    ADCORE_SAMC_0045 = 0b0000101011, // Sampling time of 45 TADCORE clock periods
+    ADCORE_SAMC_0046 = 0b0000101100, // Sampling time of 46 TADCORE clock periods
+    ADCORE_SAMC_0047 = 0b0000101101, // Sampling time of 47 TADCORE clock periods
+    ADCORE_SAMC_0048 = 0b0000101110, // Sampling time of 48 TADCORE clock periods
+    ADCORE_SAMC_0049 = 0b0000101111, // Sampling time of 49 TADCORE clock periods
+    ADCORE_SAMC_0050 = 0b0000110000, // Sampling time of 50 TADCORE clock periods
+    ADCORE_SAMC_0051 = 0b0000110001, // Sampling time of 51 TADCORE clock periods
+    ADCORE_SAMC_0052 = 0b0000110010, // Sampling time of 52 TADCORE clock periods
+    ADCORE_SAMC_0053 = 0b0000110011, // Sampling time of 53 TADCORE clock periods
+    ADCORE_SAMC_0054 = 0b0000110100, // Sampling time of 54 TADCORE clock periods
+    ADCORE_SAMC_0055 = 0b0000110101, // Sampling time of 55 TADCORE clock periods
+    ADCORE_SAMC_0056 = 0b0000110110, // Sampling time of 56 TADCORE clock periods
+    ADCORE_SAMC_0057 = 0b0000110111, // Sampling time of 57 TADCORE clock periods
+    ADCORE_SAMC_0058 = 0b0000111000, // Sampling time of 58 TADCORE clock periods
+    ADCORE_SAMC_0059 = 0b0000111001, // Sampling time of 59 TADCORE clock periods
+    ADCORE_SAMC_0060 = 0b0000111010, // Sampling time of 60 TADCORE clock periods
+    ADCORE_SAMC_0061 = 0b0000111011, // Sampling time of 61 TADCORE clock periods
+    ADCORE_SAMC_0062 = 0b0000111100, // Sampling time of 62 TADCORE clock periods
+    ADCORE_SAMC_0063 = 0b0000111101, // Sampling time of 63 TADCORE clock periods
+    ADCORE_SAMC_0064 = 0b0000111110, // Sampling time of 64 TADCORE clock periods
+    ADCORE_SAMC_0065 = 0b0000111111, // Sampling time of 65 TADCORE clock periods
+    ADCORE_SAMC_0066 = 0b0001000000, // Sampling time of 66 TADCORE clock periods
+    ADCORE_SAMC_0067 = 0b0001000001, // Sampling time of 67 TADCORE clock periods
+    ADCORE_SAMC_0068 = 0b0001000010, // Sampling time of 68 TADCORE clock periods
+    ADCORE_SAMC_0069 = 0b0001000011, // Sampling time of 69 TADCORE clock periods
+    ADCORE_SAMC_0070 = 0b0001000100, // Sampling time of 70 TADCORE clock periods
+    ADCORE_SAMC_0071 = 0b0001000101, // Sampling time of 71 TADCORE clock periods
+    ADCORE_SAMC_0072 = 0b0001000110, // Sampling time of 72 TADCORE clock periods
+    ADCORE_SAMC_0073 = 0b0001000111, // Sampling time of 73 TADCORE clock periods
+    ADCORE_SAMC_0074 = 0b0001001000, // Sampling time of 74 TADCORE clock periods
+    ADCORE_SAMC_0075 = 0b0001001001, // Sampling time of 75 TADCORE clock periods
+    ADCORE_SAMC_0076 = 0b0001001010, // Sampling time of 76 TADCORE clock periods
+    ADCORE_SAMC_0077 = 0b0001001011, // Sampling time of 77 TADCORE clock periods
+    ADCORE_SAMC_0078 = 0b0001001100, // Sampling time of 78 TADCORE clock periods
+    ADCORE_SAMC_0079 = 0b0001001101, // Sampling time of 79 TADCORE clock periods
+    ADCORE_SAMC_0080 = 0b0001001110, // Sampling time of 80 TADCORE clock periods
+    ADCORE_SAMC_0081 = 0b0001001111, // Sampling time of 81 TADCORE clock periods
+    ADCORE_SAMC_0082 = 0b0001010000, // Sampling time of 82 TADCORE clock periods
+    ADCORE_SAMC_0083 = 0b0001010001, // Sampling time of 83 TADCORE clock periods
+    ADCORE_SAMC_0084 = 0b0001010010, // Sampling time of 84 TADCORE clock periods
+    ADCORE_SAMC_0085 = 0b0001010011, // Sampling time of 85 TADCORE clock periods
+    ADCORE_SAMC_0086 = 0b0001010100, // Sampling time of 86 TADCORE clock periods
+    ADCORE_SAMC_0087 = 0b0001010101, // Sampling time of 87 TADCORE clock periods
+    ADCORE_SAMC_0088 = 0b0001010110, // Sampling time of 88 TADCORE clock periods
+    ADCORE_SAMC_0089 = 0b0001010111, // Sampling time of 89 TADCORE clock periods
+    ADCORE_SAMC_0090 = 0b0001011000, // Sampling time of 90 TADCORE clock periods
+    ADCORE_SAMC_0091 = 0b0001011001, // Sampling time of 91 TADCORE clock periods
+    ADCORE_SAMC_0092 = 0b0001011010, // Sampling time of 92 TADCORE clock periods
+    ADCORE_SAMC_0093 = 0b0001011011, // Sampling time of 93 TADCORE clock periods
+    ADCORE_SAMC_0094 = 0b0001011100, // Sampling time of 94 TADCORE clock periods
+    ADCORE_SAMC_0095 = 0b0001011101, // Sampling time of 95 TADCORE clock periods
+    ADCORE_SAMC_0096 = 0b0001011110, // Sampling time of 96 TADCORE clock periods
+    ADCORE_SAMC_0097 = 0b0001011111, // Sampling time of 97 TADCORE clock periods
+    ADCORE_SAMC_0098 = 0b0001100000, // Sampling time of 98 TADCORE clock periods
+    ADCORE_SAMC_0099 = 0b0001100001, // Sampling time of 99 TADCORE clock periods
+    ADCORE_SAMC_0100 = 0b0001100010, // Sampling time of 100 TADCORE clock periods
+    ADCORE_SAMC_0101 = 0b0001100011, // Sampling time of 101 TADCORE clock periods
+    ADCORE_SAMC_0102 = 0b0001100100, // Sampling time of 102 TADCORE clock periods
+    ADCORE_SAMC_0103 = 0b0001100101, // Sampling time of 103 TADCORE clock periods
+    ADCORE_SAMC_0104 = 0b0001100110, // Sampling time of 104 TADCORE clock periods
+    ADCORE_SAMC_0105 = 0b0001100111, // Sampling time of 105 TADCORE clock periods
+    ADCORE_SAMC_0106 = 0b0001101000, // Sampling time of 106 TADCORE clock periods
+    ADCORE_SAMC_0107 = 0b0001101001, // Sampling time of 107 TADCORE clock periods
+    ADCORE_SAMC_0108 = 0b0001101010, // Sampling time of 108 TADCORE clock periods
+    ADCORE_SAMC_0109 = 0b0001101011, // Sampling time of 109 TADCORE clock periods
+    ADCORE_SAMC_0110 = 0b0001101100, // Sampling time of 110 TADCORE clock periods
+    ADCORE_SAMC_0111 = 0b0001101101, // Sampling time of 111 TADCORE clock periods
+    ADCORE_SAMC_0112 = 0b0001101110, // Sampling time of 112 TADCORE clock periods
+    ADCORE_SAMC_0113 = 0b0001101111, // Sampling time of 113 TADCORE clock periods
+    ADCORE_SAMC_0114 = 0b0001110000, // Sampling time of 114 TADCORE clock periods
+    ADCORE_SAMC_0115 = 0b0001110001, // Sampling time of 115 TADCORE clock periods
+    ADCORE_SAMC_0116 = 0b0001110010, // Sampling time of 116 TADCORE clock periods
+    ADCORE_SAMC_0117 = 0b0001110011, // Sampling time of 117 TADCORE clock periods
+    ADCORE_SAMC_0118 = 0b0001110100, // Sampling time of 118 TADCORE clock periods
+    ADCORE_SAMC_0119 = 0b0001110101, // Sampling time of 119 TADCORE clock periods
+    ADCORE_SAMC_0120 = 0b0001110110, // Sampling time of 120 TADCORE clock periods
+    ADCORE_SAMC_0121 = 0b0001110111, // Sampling time of 121 TADCORE clock periods
+    ADCORE_SAMC_0122 = 0b0001111000, // Sampling time of 122 TADCORE clock periods
+    ADCORE_SAMC_0123 = 0b0001111001, // Sampling time of 123 TADCORE clock periods
+    ADCORE_SAMC_0124 = 0b0001111010, // Sampling time of 124 TADCORE clock periods
+    ADCORE_SAMC_0125 = 0b0001111011, // Sampling time of 125 TADCORE clock periods
+    ADCORE_SAMC_0126 = 0b0001111100, // Sampling time of 126 TADCORE clock periods
+    ADCORE_SAMC_0127 = 0b0001111101, // Sampling time of 127 TADCORE clock periods
+    ADCORE_SAMC_0128 = 0b0001111110, // Sampling time of 128 TADCORE clock periods
+    ADCORE_SAMC_0129 = 0b0001111111, // Sampling time of 129 TADCORE clock periods
+    ADCORE_SAMC_0130 = 0b0010000000, // Sampling time of 130 TADCORE clock periods
+    ADCORE_SAMC_0131 = 0b0010000001, // Sampling time of 131 TADCORE clock periods
+    ADCORE_SAMC_0132 = 0b0010000010, // Sampling time of 132 TADCORE clock periods
+    ADCORE_SAMC_0133 = 0b0010000011, // Sampling time of 133 TADCORE clock periods
+    ADCORE_SAMC_0134 = 0b0010000100, // Sampling time of 134 TADCORE clock periods
+    ADCORE_SAMC_0135 = 0b0010000101, // Sampling time of 135 TADCORE clock periods
+    ADCORE_SAMC_0136 = 0b0010000110, // Sampling time of 136 TADCORE clock periods
+    ADCORE_SAMC_0137 = 0b0010000111, // Sampling time of 137 TADCORE clock periods
+    ADCORE_SAMC_0138 = 0b0010001000, // Sampling time of 138 TADCORE clock periods
+    ADCORE_SAMC_0139 = 0b0010001001, // Sampling time of 139 TADCORE clock periods
+    ADCORE_SAMC_0140 = 0b0010001010, // Sampling time of 140 TADCORE clock periods
+    ADCORE_SAMC_0141 = 0b0010001011, // Sampling time of 141 TADCORE clock periods
+    ADCORE_SAMC_0142 = 0b0010001100, // Sampling time of 142 TADCORE clock periods
+    ADCORE_SAMC_0143 = 0b0010001101, // Sampling time of 143 TADCORE clock periods
+    ADCORE_SAMC_0144 = 0b0010001110, // Sampling time of 144 TADCORE clock periods
+    ADCORE_SAMC_0145 = 0b0010001111, // Sampling time of 145 TADCORE clock periods
+    ADCORE_SAMC_0146 = 0b0010010000, // Sampling time of 146 TADCORE clock periods
+    ADCORE_SAMC_0147 = 0b0010010001, // Sampling time of 147 TADCORE clock periods
+    ADCORE_SAMC_0148 = 0b0010010010, // Sampling time of 148 TADCORE clock periods
+    ADCORE_SAMC_0149 = 0b0010010011, // Sampling time of 149 TADCORE clock periods
+    ADCORE_SAMC_0150 = 0b0010010100, // Sampling time of 150 TADCORE clock periods
+    ADCORE_SAMC_0151 = 0b0010010101, // Sampling time of 151 TADCORE clock periods
+    ADCORE_SAMC_0152 = 0b0010010110, // Sampling time of 152 TADCORE clock periods
+    ADCORE_SAMC_0153 = 0b0010010111, // Sampling time of 153 TADCORE clock periods
+    ADCORE_SAMC_0154 = 0b0010011000, // Sampling time of 154 TADCORE clock periods
+    ADCORE_SAMC_0155 = 0b0010011001, // Sampling time of 155 TADCORE clock periods
+    ADCORE_SAMC_0156 = 0b0010011010, // Sampling time of 156 TADCORE clock periods
+    ADCORE_SAMC_0157 = 0b0010011011, // Sampling time of 157 TADCORE clock periods
+    ADCORE_SAMC_0158 = 0b0010011100, // Sampling time of 158 TADCORE clock periods
+    ADCORE_SAMC_0159 = 0b0010011101, // Sampling time of 159 TADCORE clock periods
+    ADCORE_SAMC_0160 = 0b0010011110, // Sampling time of 160 TADCORE clock periods
+    ADCORE_SAMC_0161 = 0b0010011111, // Sampling time of 161 TADCORE clock periods
+    ADCORE_SAMC_0162 = 0b0010100000, // Sampling time of 162 TADCORE clock periods
+    ADCORE_SAMC_0163 = 0b0010100001, // Sampling time of 163 TADCORE clock periods
+    ADCORE_SAMC_0164 = 0b0010100010, // Sampling time of 164 TADCORE clock periods
+    ADCORE_SAMC_0165 = 0b0010100011, // Sampling time of 165 TADCORE clock periods
+    ADCORE_SAMC_0166 = 0b0010100100, // Sampling time of 166 TADCORE clock periods
+    ADCORE_SAMC_0167 = 0b0010100101, // Sampling time of 167 TADCORE clock periods
+    ADCORE_SAMC_0168 = 0b0010100110, // Sampling time of 168 TADCORE clock periods
+    ADCORE_SAMC_0169 = 0b0010100111, // Sampling time of 169 TADCORE clock periods
+    ADCORE_SAMC_0170 = 0b0010101000, // Sampling time of 170 TADCORE clock periods
+    ADCORE_SAMC_0171 = 0b0010101001, // Sampling time of 171 TADCORE clock periods
+    ADCORE_SAMC_0172 = 0b0010101010, // Sampling time of 172 TADCORE clock periods
+    ADCORE_SAMC_0173 = 0b0010101011, // Sampling time of 173 TADCORE clock periods
+    ADCORE_SAMC_0174 = 0b0010101100, // Sampling time of 174 TADCORE clock periods
+    ADCORE_SAMC_0175 = 0b0010101101, // Sampling time of 175 TADCORE clock periods
+    ADCORE_SAMC_0176 = 0b0010101110, // Sampling time of 176 TADCORE clock periods
+    ADCORE_SAMC_0177 = 0b0010101111, // Sampling time of 177 TADCORE clock periods
+    ADCORE_SAMC_0178 = 0b0010110000, // Sampling time of 178 TADCORE clock periods
+    ADCORE_SAMC_0179 = 0b0010110001, // Sampling time of 179 TADCORE clock periods
+    ADCORE_SAMC_0180 = 0b0010110010, // Sampling time of 180 TADCORE clock periods
+    ADCORE_SAMC_0181 = 0b0010110011, // Sampling time of 181 TADCORE clock periods
+    ADCORE_SAMC_0182 = 0b0010110100, // Sampling time of 182 TADCORE clock periods
+    ADCORE_SAMC_0183 = 0b0010110101, // Sampling time of 183 TADCORE clock periods
+    ADCORE_SAMC_0184 = 0b0010110110, // Sampling time of 184 TADCORE clock periods
+    ADCORE_SAMC_0185 = 0b0010110111, // Sampling time of 185 TADCORE clock periods
+    ADCORE_SAMC_0186 = 0b0010111000, // Sampling time of 186 TADCORE clock periods
+    ADCORE_SAMC_0187 = 0b0010111001, // Sampling time of 187 TADCORE clock periods
+    ADCORE_SAMC_0188 = 0b0010111010, // Sampling time of 188 TADCORE clock periods
+    ADCORE_SAMC_0189 = 0b0010111011, // Sampling time of 189 TADCORE clock periods
+    ADCORE_SAMC_0190 = 0b0010111100, // Sampling time of 190 TADCORE clock periods
+    ADCORE_SAMC_0191 = 0b0010111101, // Sampling time of 191 TADCORE clock periods
+    ADCORE_SAMC_0192 = 0b0010111110, // Sampling time of 192 TADCORE clock periods
+    ADCORE_SAMC_0193 = 0b0010111111, // Sampling time of 193 TADCORE clock periods
+    ADCORE_SAMC_0194 = 0b0011000000, // Sampling time of 194 TADCORE clock periods
+    ADCORE_SAMC_0195 = 0b0011000001, // Sampling time of 195 TADCORE clock periods
+    ADCORE_SAMC_0196 = 0b0011000010, // Sampling time of 196 TADCORE clock periods
+    ADCORE_SAMC_0197 = 0b0011000011, // Sampling time of 197 TADCORE clock periods
+    ADCORE_SAMC_0198 = 0b0011000100, // Sampling time of 198 TADCORE clock periods
+    ADCORE_SAMC_0199 = 0b0011000101, // Sampling time of 199 TADCORE clock periods
+    ADCORE_SAMC_0200 = 0b0011000110, // Sampling time of 200 TADCORE clock periods
+    ADCORE_SAMC_0201 = 0b0011000111, // Sampling time of 201 TADCORE clock periods
+    ADCORE_SAMC_0202 = 0b0011001000, // Sampling time of 202 TADCORE clock periods
+    ADCORE_SAMC_0203 = 0b0011001001, // Sampling time of 203 TADCORE clock periods
+    ADCORE_SAMC_0204 = 0b0011001010, // Sampling time of 204 TADCORE clock periods
+    ADCORE_SAMC_0205 = 0b0011001011, // Sampling time of 205 TADCORE clock periods
+    ADCORE_SAMC_0206 = 0b0011001100, // Sampling time of 206 TADCORE clock periods
+    ADCORE_SAMC_0207 = 0b0011001101, // Sampling time of 207 TADCORE clock periods
+    ADCORE_SAMC_0208 = 0b0011001110, // Sampling time of 208 TADCORE clock periods
+    ADCORE_SAMC_0209 = 0b0011001111, // Sampling time of 209 TADCORE clock periods
+    ADCORE_SAMC_0210 = 0b0011010000, // Sampling time of 210 TADCORE clock periods
+    ADCORE_SAMC_0211 = 0b0011010001, // Sampling time of 211 TADCORE clock periods
+    ADCORE_SAMC_0212 = 0b0011010010, // Sampling time of 212 TADCORE clock periods
+    ADCORE_SAMC_0213 = 0b0011010011, // Sampling time of 213 TADCORE clock periods
+    ADCORE_SAMC_0214 = 0b0011010100, // Sampling time of 214 TADCORE clock periods
+    ADCORE_SAMC_0215 = 0b0011010101, // Sampling time of 215 TADCORE clock periods
+    ADCORE_SAMC_0216 = 0b0011010110, // Sampling time of 216 TADCORE clock periods
+    ADCORE_SAMC_0217 = 0b0011010111, // Sampling time of 217 TADCORE clock periods
+    ADCORE_SAMC_0218 = 0b0011011000, // Sampling time of 218 TADCORE clock periods
+    ADCORE_SAMC_0219 = 0b0011011001, // Sampling time of 219 TADCORE clock periods
+    ADCORE_SAMC_0220 = 0b0011011010, // Sampling time of 220 TADCORE clock periods
+    ADCORE_SAMC_0221 = 0b0011011011, // Sampling time of 221 TADCORE clock periods
+    ADCORE_SAMC_0222 = 0b0011011100, // Sampling time of 222 TADCORE clock periods
+    ADCORE_SAMC_0223 = 0b0011011101, // Sampling time of 223 TADCORE clock periods
+    ADCORE_SAMC_0224 = 0b0011011110, // Sampling time of 224 TADCORE clock periods
+    ADCORE_SAMC_0225 = 0b0011011111, // Sampling time of 225 TADCORE clock periods
+    ADCORE_SAMC_0226 = 0b0011100000, // Sampling time of 226 TADCORE clock periods
+    ADCORE_SAMC_0227 = 0b0011100001, // Sampling time of 227 TADCORE clock periods
+    ADCORE_SAMC_0228 = 0b0011100010, // Sampling time of 228 TADCORE clock periods
+    ADCORE_SAMC_0229 = 0b0011100011, // Sampling time of 229 TADCORE clock periods
+    ADCORE_SAMC_0230 = 0b0011100100, // Sampling time of 230 TADCORE clock periods
+    ADCORE_SAMC_0231 = 0b0011100101, // Sampling time of 231 TADCORE clock periods
+    ADCORE_SAMC_0232 = 0b0011100110, // Sampling time of 232 TADCORE clock periods
+    ADCORE_SAMC_0233 = 0b0011100111, // Sampling time of 233 TADCORE clock periods
+    ADCORE_SAMC_0234 = 0b0011101000, // Sampling time of 234 TADCORE clock periods
+    ADCORE_SAMC_0235 = 0b0011101001, // Sampling time of 235 TADCORE clock periods
+    ADCORE_SAMC_0236 = 0b0011101010, // Sampling time of 236 TADCORE clock periods
+    ADCORE_SAMC_0237 = 0b0011101011, // Sampling time of 237 TADCORE clock periods
+    ADCORE_SAMC_0238 = 0b0011101100, // Sampling time of 238 TADCORE clock periods
+    ADCORE_SAMC_0239 = 0b0011101101, // Sampling time of 239 TADCORE clock periods
+    ADCORE_SAMC_0240 = 0b0011101110, // Sampling time of 240 TADCORE clock periods
+    ADCORE_SAMC_0241 = 0b0011101111, // Sampling time of 241 TADCORE clock periods
+    ADCORE_SAMC_0242 = 0b0011110000, // Sampling time of 242 TADCORE clock periods
+    ADCORE_SAMC_0243 = 0b0011110001, // Sampling time of 243 TADCORE clock periods
+    ADCORE_SAMC_0244 = 0b0011110010, // Sampling time of 244 TADCORE clock periods
+    ADCORE_SAMC_0245 = 0b0011110011, // Sampling time of 245 TADCORE clock periods
+    ADCORE_SAMC_0246 = 0b0011110100, // Sampling time of 246 TADCORE clock periods
+    ADCORE_SAMC_0247 = 0b0011110101, // Sampling time of 247 TADCORE clock periods
+    ADCORE_SAMC_0248 = 0b0011110110, // Sampling time of 248 TADCORE clock periods
+    ADCORE_SAMC_0249 = 0b0011110111, // Sampling time of 249 TADCORE clock periods
+    ADCORE_SAMC_0250 = 0b0011111000, // Sampling time of 250 TADCORE clock periods
+    ADCORE_SAMC_0251 = 0b0011111001, // Sampling time of 251 TADCORE clock periods
+    ADCORE_SAMC_0252 = 0b0011111010, // Sampling time of 252 TADCORE clock periods
+    ADCORE_SAMC_0253 = 0b0011111011, // Sampling time of 253 TADCORE clock periods
+    ADCORE_SAMC_0254 = 0b0011111100, // Sampling time of 254 TADCORE clock periods
+    ADCORE_SAMC_0255 = 0b0011111101, // Sampling time of 255 TADCORE clock periods
+    ADCORE_SAMC_0256 = 0b0011111110, // Sampling time of 256 TADCORE clock periods
+    ADCORE_SAMC_0257 = 0b0011111111, // Sampling time of 257 TADCORE clock periods
+    ADCORE_SAMC_0258 = 0b0100000000, // Sampling time of 258 TADCORE clock periods
+    ADCORE_SAMC_0259 = 0b0100000001, // Sampling time of 259 TADCORE clock periods
+    ADCORE_SAMC_0260 = 0b0100000010, // Sampling time of 260 TADCORE clock periods
+    ADCORE_SAMC_0261 = 0b0100000011, // Sampling time of 261 TADCORE clock periods
+    ADCORE_SAMC_0262 = 0b0100000100, // Sampling time of 262 TADCORE clock periods
+    ADCORE_SAMC_0263 = 0b0100000101, // Sampling time of 263 TADCORE clock periods
+    ADCORE_SAMC_0264 = 0b0100000110, // Sampling time of 264 TADCORE clock periods
+    ADCORE_SAMC_0265 = 0b0100000111, // Sampling time of 265 TADCORE clock periods
+    ADCORE_SAMC_0266 = 0b0100001000, // Sampling time of 266 TADCORE clock periods
+    ADCORE_SAMC_0267 = 0b0100001001, // Sampling time of 267 TADCORE clock periods
+    ADCORE_SAMC_0268 = 0b0100001010, // Sampling time of 268 TADCORE clock periods
+    ADCORE_SAMC_0269 = 0b0100001011, // Sampling time of 269 TADCORE clock periods
+    ADCORE_SAMC_0270 = 0b0100001100, // Sampling time of 270 TADCORE clock periods
+    ADCORE_SAMC_0271 = 0b0100001101, // Sampling time of 271 TADCORE clock periods
+    ADCORE_SAMC_0272 = 0b0100001110, // Sampling time of 272 TADCORE clock periods
+    ADCORE_SAMC_0273 = 0b0100001111, // Sampling time of 273 TADCORE clock periods
+    ADCORE_SAMC_0274 = 0b0100010000, // Sampling time of 274 TADCORE clock periods
+    ADCORE_SAMC_0275 = 0b0100010001, // Sampling time of 275 TADCORE clock periods
+    ADCORE_SAMC_0276 = 0b0100010010, // Sampling time of 276 TADCORE clock periods
+    ADCORE_SAMC_0277 = 0b0100010011, // Sampling time of 277 TADCORE clock periods
+    ADCORE_SAMC_0278 = 0b0100010100, // Sampling time of 278 TADCORE clock periods
+    ADCORE_SAMC_0279 = 0b0100010101, // Sampling time of 279 TADCORE clock periods
+    ADCORE_SAMC_0280 = 0b0100010110, // Sampling time of 280 TADCORE clock periods
+    ADCORE_SAMC_0281 = 0b0100010111, // Sampling time of 281 TADCORE clock periods
+    ADCORE_SAMC_0282 = 0b0100011000, // Sampling time of 282 TADCORE clock periods
+    ADCORE_SAMC_0283 = 0b0100011001, // Sampling time of 283 TADCORE clock periods
+    ADCORE_SAMC_0284 = 0b0100011010, // Sampling time of 284 TADCORE clock periods
+    ADCORE_SAMC_0285 = 0b0100011011, // Sampling time of 285 TADCORE clock periods
+    ADCORE_SAMC_0286 = 0b0100011100, // Sampling time of 286 TADCORE clock periods
+    ADCORE_SAMC_0287 = 0b0100011101, // Sampling time of 287 TADCORE clock periods
+    ADCORE_SAMC_0288 = 0b0100011110, // Sampling time of 288 TADCORE clock periods
+    ADCORE_SAMC_0289 = 0b0100011111, // Sampling time of 289 TADCORE clock periods
+    ADCORE_SAMC_0290 = 0b0100100000, // Sampling time of 290 TADCORE clock periods
+    ADCORE_SAMC_0291 = 0b0100100001, // Sampling time of 291 TADCORE clock periods
+    ADCORE_SAMC_0292 = 0b0100100010, // Sampling time of 292 TADCORE clock periods
+    ADCORE_SAMC_0293 = 0b0100100011, // Sampling time of 293 TADCORE clock periods
+    ADCORE_SAMC_0294 = 0b0100100100, // Sampling time of 294 TADCORE clock periods
+    ADCORE_SAMC_0295 = 0b0100100101, // Sampling time of 295 TADCORE clock periods
+    ADCORE_SAMC_0296 = 0b0100100110, // Sampling time of 296 TADCORE clock periods
+    ADCORE_SAMC_0297 = 0b0100100111, // Sampling time of 297 TADCORE clock periods
+    ADCORE_SAMC_0298 = 0b0100101000, // Sampling time of 298 TADCORE clock periods
+    ADCORE_SAMC_0299 = 0b0100101001, // Sampling time of 299 TADCORE clock periods
+    ADCORE_SAMC_0300 = 0b0100101010, // Sampling time of 300 TADCORE clock periods
+    ADCORE_SAMC_0301 = 0b0100101011, // Sampling time of 301 TADCORE clock periods
+    ADCORE_SAMC_0302 = 0b0100101100, // Sampling time of 302 TADCORE clock periods
+    ADCORE_SAMC_0303 = 0b0100101101, // Sampling time of 303 TADCORE clock periods
+    ADCORE_SAMC_0304 = 0b0100101110, // Sampling time of 304 TADCORE clock periods
+    ADCORE_SAMC_0305 = 0b0100101111, // Sampling time of 305 TADCORE clock periods
+    ADCORE_SAMC_0306 = 0b0100110000, // Sampling time of 306 TADCORE clock periods
+    ADCORE_SAMC_0307 = 0b0100110001, // Sampling time of 307 TADCORE clock periods
+    ADCORE_SAMC_0308 = 0b0100110010, // Sampling time of 308 TADCORE clock periods
+    ADCORE_SAMC_0309 = 0b0100110011, // Sampling time of 309 TADCORE clock periods
+    ADCORE_SAMC_0310 = 0b0100110100, // Sampling time of 310 TADCORE clock periods
+    ADCORE_SAMC_0311 = 0b0100110101, // Sampling time of 311 TADCORE clock periods
+    ADCORE_SAMC_0312 = 0b0100110110, // Sampling time of 312 TADCORE clock periods
+    ADCORE_SAMC_0313 = 0b0100110111, // Sampling time of 313 TADCORE clock periods
+    ADCORE_SAMC_0314 = 0b0100111000, // Sampling time of 314 TADCORE clock periods
+    ADCORE_SAMC_0315 = 0b0100111001, // Sampling time of 315 TADCORE clock periods
+    ADCORE_SAMC_0316 = 0b0100111010, // Sampling time of 316 TADCORE clock periods
+    ADCORE_SAMC_0317 = 0b0100111011, // Sampling time of 317 TADCORE clock periods
+    ADCORE_SAMC_0318 = 0b0100111100, // Sampling time of 318 TADCORE clock periods
+    ADCORE_SAMC_0319 = 0b0100111101, // Sampling time of 319 TADCORE clock periods
+    ADCORE_SAMC_0320 = 0b0100111110, // Sampling time of 320 TADCORE clock periods
+    ADCORE_SAMC_0321 = 0b0100111111, // Sampling time of 321 TADCORE clock periods
+    ADCORE_SAMC_0322 = 0b0101000000, // Sampling time of 322 TADCORE clock periods
+    ADCORE_SAMC_0323 = 0b0101000001, // Sampling time of 323 TADCORE clock periods
+    ADCORE_SAMC_0324 = 0b0101000010, // Sampling time of 324 TADCORE clock periods
+    ADCORE_SAMC_0325 = 0b0101000011, // Sampling time of 325 TADCORE clock periods
+    ADCORE_SAMC_0326 = 0b0101000100, // Sampling time of 326 TADCORE clock periods
+    ADCORE_SAMC_0327 = 0b0101000101, // Sampling time of 327 TADCORE clock periods
+    ADCORE_SAMC_0328 = 0b0101000110, // Sampling time of 328 TADCORE clock periods
+    ADCORE_SAMC_0329 = 0b0101000111, // Sampling time of 329 TADCORE clock periods
+    ADCORE_SAMC_0330 = 0b0101001000, // Sampling time of 330 TADCORE clock periods
+    ADCORE_SAMC_0331 = 0b0101001001, // Sampling time of 331 TADCORE clock periods
+    ADCORE_SAMC_0332 = 0b0101001010, // Sampling time of 332 TADCORE clock periods
+    ADCORE_SAMC_0333 = 0b0101001011, // Sampling time of 333 TADCORE clock periods
+    ADCORE_SAMC_0334 = 0b0101001100, // Sampling time of 334 TADCORE clock periods
+    ADCORE_SAMC_0335 = 0b0101001101, // Sampling time of 335 TADCORE clock periods
+    ADCORE_SAMC_0336 = 0b0101001110, // Sampling time of 336 TADCORE clock periods
+    ADCORE_SAMC_0337 = 0b0101001111, // Sampling time of 337 TADCORE clock periods
+    ADCORE_SAMC_0338 = 0b0101010000, // Sampling time of 338 TADCORE clock periods
+    ADCORE_SAMC_0339 = 0b0101010001, // Sampling time of 339 TADCORE clock periods
+    ADCORE_SAMC_0340 = 0b0101010010, // Sampling time of 340 TADCORE clock periods
+    ADCORE_SAMC_0341 = 0b0101010011, // Sampling time of 341 TADCORE clock periods
+    ADCORE_SAMC_0342 = 0b0101010100, // Sampling time of 342 TADCORE clock periods
+    ADCORE_SAMC_0343 = 0b0101010101, // Sampling time of 343 TADCORE clock periods
+    ADCORE_SAMC_0344 = 0b0101010110, // Sampling time of 344 TADCORE clock periods
+    ADCORE_SAMC_0345 = 0b0101010111, // Sampling time of 345 TADCORE clock periods
+    ADCORE_SAMC_0346 = 0b0101011000, // Sampling time of 346 TADCORE clock periods
+    ADCORE_SAMC_0347 = 0b0101011001, // Sampling time of 347 TADCORE clock periods
+    ADCORE_SAMC_0348 = 0b0101011010, // Sampling time of 348 TADCORE clock periods
+    ADCORE_SAMC_0349 = 0b0101011011, // Sampling time of 349 TADCORE clock periods
+    ADCORE_SAMC_0350 = 0b0101011100, // Sampling time of 350 TADCORE clock periods
+    ADCORE_SAMC_0351 = 0b0101011101, // Sampling time of 351 TADCORE clock periods
+    ADCORE_SAMC_0352 = 0b0101011110, // Sampling time of 352 TADCORE clock periods
+    ADCORE_SAMC_0353 = 0b0101011111, // Sampling time of 353 TADCORE clock periods
+    ADCORE_SAMC_0354 = 0b0101100000, // Sampling time of 354 TADCORE clock periods
+    ADCORE_SAMC_0355 = 0b0101100001, // Sampling time of 355 TADCORE clock periods
+    ADCORE_SAMC_0356 = 0b0101100010, // Sampling time of 356 TADCORE clock periods
+    ADCORE_SAMC_0357 = 0b0101100011, // Sampling time of 357 TADCORE clock periods
+    ADCORE_SAMC_0358 = 0b0101100100, // Sampling time of 358 TADCORE clock periods
+    ADCORE_SAMC_0359 = 0b0101100101, // Sampling time of 359 TADCORE clock periods
+    ADCORE_SAMC_0360 = 0b0101100110, // Sampling time of 360 TADCORE clock periods
+    ADCORE_SAMC_0361 = 0b0101100111, // Sampling time of 361 TADCORE clock periods
+    ADCORE_SAMC_0362 = 0b0101101000, // Sampling time of 362 TADCORE clock periods
+    ADCORE_SAMC_0363 = 0b0101101001, // Sampling time of 363 TADCORE clock periods
+    ADCORE_SAMC_0364 = 0b0101101010, // Sampling time of 364 TADCORE clock periods
+    ADCORE_SAMC_0365 = 0b0101101011, // Sampling time of 365 TADCORE clock periods
+    ADCORE_SAMC_0366 = 0b0101101100, // Sampling time of 366 TADCORE clock periods
+    ADCORE_SAMC_0367 = 0b0101101101, // Sampling time of 367 TADCORE clock periods
+    ADCORE_SAMC_0368 = 0b0101101110, // Sampling time of 368 TADCORE clock periods
+    ADCORE_SAMC_0369 = 0b0101101111, // Sampling time of 369 TADCORE clock periods
+    ADCORE_SAMC_0370 = 0b0101110000, // Sampling time of 370 TADCORE clock periods
+    ADCORE_SAMC_0371 = 0b0101110001, // Sampling time of 371 TADCORE clock periods
+    ADCORE_SAMC_0372 = 0b0101110010, // Sampling time of 372 TADCORE clock periods
+    ADCORE_SAMC_0373 = 0b0101110011, // Sampling time of 373 TADCORE clock periods
+    ADCORE_SAMC_0374 = 0b0101110100, // Sampling time of 374 TADCORE clock periods
+    ADCORE_SAMC_0375 = 0b0101110101, // Sampling time of 375 TADCORE clock periods
+    ADCORE_SAMC_0376 = 0b0101110110, // Sampling time of 376 TADCORE clock periods
+    ADCORE_SAMC_0377 = 0b0101110111, // Sampling time of 377 TADCORE clock periods
+    ADCORE_SAMC_0378 = 0b0101111000, // Sampling time of 378 TADCORE clock periods
+    ADCORE_SAMC_0379 = 0b0101111001, // Sampling time of 379 TADCORE clock periods
+    ADCORE_SAMC_0380 = 0b0101111010, // Sampling time of 380 TADCORE clock periods
+    ADCORE_SAMC_0381 = 0b0101111011, // Sampling time of 381 TADCORE clock periods
+    ADCORE_SAMC_0382 = 0b0101111100, // Sampling time of 382 TADCORE clock periods
+    ADCORE_SAMC_0383 = 0b0101111101, // Sampling time of 383 TADCORE clock periods
+    ADCORE_SAMC_0384 = 0b0101111110, // Sampling time of 384 TADCORE clock periods
+    ADCORE_SAMC_0385 = 0b0101111111, // Sampling time of 385 TADCORE clock periods
+    ADCORE_SAMC_0386 = 0b0110000000, // Sampling time of 386 TADCORE clock periods
+    ADCORE_SAMC_0387 = 0b0110000001, // Sampling time of 387 TADCORE clock periods
+    ADCORE_SAMC_0388 = 0b0110000010, // Sampling time of 388 TADCORE clock periods
+    ADCORE_SAMC_0389 = 0b0110000011, // Sampling time of 389 TADCORE clock periods
+    ADCORE_SAMC_0390 = 0b0110000100, // Sampling time of 390 TADCORE clock periods
+    ADCORE_SAMC_0391 = 0b0110000101, // Sampling time of 391 TADCORE clock periods
+    ADCORE_SAMC_0392 = 0b0110000110, // Sampling time of 392 TADCORE clock periods
+    ADCORE_SAMC_0393 = 0b0110000111, // Sampling time of 393 TADCORE clock periods
+    ADCORE_SAMC_0394 = 0b0110001000, // Sampling time of 394 TADCORE clock periods
+    ADCORE_SAMC_0395 = 0b0110001001, // Sampling time of 395 TADCORE clock periods
+    ADCORE_SAMC_0396 = 0b0110001010, // Sampling time of 396 TADCORE clock periods
+    ADCORE_SAMC_0397 = 0b0110001011, // Sampling time of 397 TADCORE clock periods
+    ADCORE_SAMC_0398 = 0b0110001100, // Sampling time of 398 TADCORE clock periods
+    ADCORE_SAMC_0399 = 0b0110001101, // Sampling time of 399 TADCORE clock periods
+    ADCORE_SAMC_0400 = 0b0110001110, // Sampling time of 400 TADCORE clock periods
+    ADCORE_SAMC_0401 = 0b0110001111, // Sampling time of 401 TADCORE clock periods
+    ADCORE_SAMC_0402 = 0b0110010000, // Sampling time of 402 TADCORE clock periods
+    ADCORE_SAMC_0403 = 0b0110010001, // Sampling time of 403 TADCORE clock periods
+    ADCORE_SAMC_0404 = 0b0110010010, // Sampling time of 404 TADCORE clock periods
+    ADCORE_SAMC_0405 = 0b0110010011, // Sampling time of 405 TADCORE clock periods
+    ADCORE_SAMC_0406 = 0b0110010100, // Sampling time of 406 TADCORE clock periods
+    ADCORE_SAMC_0407 = 0b0110010101, // Sampling time of 407 TADCORE clock periods
+    ADCORE_SAMC_0408 = 0b0110010110, // Sampling time of 408 TADCORE clock periods
+    ADCORE_SAMC_0409 = 0b0110010111, // Sampling time of 409 TADCORE clock periods
+    ADCORE_SAMC_0410 = 0b0110011000, // Sampling time of 410 TADCORE clock periods
+    ADCORE_SAMC_0411 = 0b0110011001, // Sampling time of 411 TADCORE clock periods
+    ADCORE_SAMC_0412 = 0b0110011010, // Sampling time of 412 TADCORE clock periods
+    ADCORE_SAMC_0413 = 0b0110011011, // Sampling time of 413 TADCORE clock periods
+    ADCORE_SAMC_0414 = 0b0110011100, // Sampling time of 414 TADCORE clock periods
+    ADCORE_SAMC_0415 = 0b0110011101, // Sampling time of 415 TADCORE clock periods
+    ADCORE_SAMC_0416 = 0b0110011110, // Sampling time of 416 TADCORE clock periods
+    ADCORE_SAMC_0417 = 0b0110011111, // Sampling time of 417 TADCORE clock periods
+    ADCORE_SAMC_0418 = 0b0110100000, // Sampling time of 418 TADCORE clock periods
+    ADCORE_SAMC_0419 = 0b0110100001, // Sampling time of 419 TADCORE clock periods
+    ADCORE_SAMC_0420 = 0b0110100010, // Sampling time of 420 TADCORE clock periods
+    ADCORE_SAMC_0421 = 0b0110100011, // Sampling time of 421 TADCORE clock periods
+    ADCORE_SAMC_0422 = 0b0110100100, // Sampling time of 422 TADCORE clock periods
+    ADCORE_SAMC_0423 = 0b0110100101, // Sampling time of 423 TADCORE clock periods
+    ADCORE_SAMC_0424 = 0b0110100110, // Sampling time of 424 TADCORE clock periods
+    ADCORE_SAMC_0425 = 0b0110100111, // Sampling time of 425 TADCORE clock periods
+    ADCORE_SAMC_0426 = 0b0110101000, // Sampling time of 426 TADCORE clock periods
+    ADCORE_SAMC_0427 = 0b0110101001, // Sampling time of 427 TADCORE clock periods
+    ADCORE_SAMC_0428 = 0b0110101010, // Sampling time of 428 TADCORE clock periods
+    ADCORE_SAMC_0429 = 0b0110101011, // Sampling time of 429 TADCORE clock periods
+    ADCORE_SAMC_0430 = 0b0110101100, // Sampling time of 430 TADCORE clock periods
+    ADCORE_SAMC_0431 = 0b0110101101, // Sampling time of 431 TADCORE clock periods
+    ADCORE_SAMC_0432 = 0b0110101110, // Sampling time of 432 TADCORE clock periods
+    ADCORE_SAMC_0433 = 0b0110101111, // Sampling time of 433 TADCORE clock periods
+    ADCORE_SAMC_0434 = 0b0110110000, // Sampling time of 434 TADCORE clock periods
+    ADCORE_SAMC_0435 = 0b0110110001, // Sampling time of 435 TADCORE clock periods
+    ADCORE_SAMC_0436 = 0b0110110010, // Sampling time of 436 TADCORE clock periods
+    ADCORE_SAMC_0437 = 0b0110110011, // Sampling time of 437 TADCORE clock periods
+    ADCORE_SAMC_0438 = 0b0110110100, // Sampling time of 438 TADCORE clock periods
+    ADCORE_SAMC_0439 = 0b0110110101, // Sampling time of 439 TADCORE clock periods
+    ADCORE_SAMC_0440 = 0b0110110110, // Sampling time of 440 TADCORE clock periods
+    ADCORE_SAMC_0441 = 0b0110110111, // Sampling time of 441 TADCORE clock periods
+    ADCORE_SAMC_0442 = 0b0110111000, // Sampling time of 442 TADCORE clock periods
+    ADCORE_SAMC_0443 = 0b0110111001, // Sampling time of 443 TADCORE clock periods
+    ADCORE_SAMC_0444 = 0b0110111010, // Sampling time of 444 TADCORE clock periods
+    ADCORE_SAMC_0445 = 0b0110111011, // Sampling time of 445 TADCORE clock periods
+    ADCORE_SAMC_0446 = 0b0110111100, // Sampling time of 446 TADCORE clock periods
+    ADCORE_SAMC_0447 = 0b0110111101, // Sampling time of 447 TADCORE clock periods
+    ADCORE_SAMC_0448 = 0b0110111110, // Sampling time of 448 TADCORE clock periods
+    ADCORE_SAMC_0449 = 0b0110111111, // Sampling time of 449 TADCORE clock periods
+    ADCORE_SAMC_0450 = 0b0111000000, // Sampling time of 450 TADCORE clock periods
+    ADCORE_SAMC_0451 = 0b0111000001, // Sampling time of 451 TADCORE clock periods
+    ADCORE_SAMC_0452 = 0b0111000010, // Sampling time of 452 TADCORE clock periods
+    ADCORE_SAMC_0453 = 0b0111000011, // Sampling time of 453 TADCORE clock periods
+    ADCORE_SAMC_0454 = 0b0111000100, // Sampling time of 454 TADCORE clock periods
+    ADCORE_SAMC_0455 = 0b0111000101, // Sampling time of 455 TADCORE clock periods
+    ADCORE_SAMC_0456 = 0b0111000110, // Sampling time of 456 TADCORE clock periods
+    ADCORE_SAMC_0457 = 0b0111000111, // Sampling time of 457 TADCORE clock periods
+    ADCORE_SAMC_0458 = 0b0111001000, // Sampling time of 458 TADCORE clock periods
+    ADCORE_SAMC_0459 = 0b0111001001, // Sampling time of 459 TADCORE clock periods
+    ADCORE_SAMC_0460 = 0b0111001010, // Sampling time of 460 TADCORE clock periods
+    ADCORE_SAMC_0461 = 0b0111001011, // Sampling time of 461 TADCORE clock periods
+    ADCORE_SAMC_0462 = 0b0111001100, // Sampling time of 462 TADCORE clock periods
+    ADCORE_SAMC_0463 = 0b0111001101, // Sampling time of 463 TADCORE clock periods
+    ADCORE_SAMC_0464 = 0b0111001110, // Sampling time of 464 TADCORE clock periods
+    ADCORE_SAMC_0465 = 0b0111001111, // Sampling time of 465 TADCORE clock periods
+    ADCORE_SAMC_0466 = 0b0111010000, // Sampling time of 466 TADCORE clock periods
+    ADCORE_SAMC_0467 = 0b0111010001, // Sampling time of 467 TADCORE clock periods
+    ADCORE_SAMC_0468 = 0b0111010010, // Sampling time of 468 TADCORE clock periods
+    ADCORE_SAMC_0469 = 0b0111010011, // Sampling time of 469 TADCORE clock periods
+    ADCORE_SAMC_0470 = 0b0111010100, // Sampling time of 470 TADCORE clock periods
+    ADCORE_SAMC_0471 = 0b0111010101, // Sampling time of 471 TADCORE clock periods
+    ADCORE_SAMC_0472 = 0b0111010110, // Sampling time of 472 TADCORE clock periods
+    ADCORE_SAMC_0473 = 0b0111010111, // Sampling time of 473 TADCORE clock periods
+    ADCORE_SAMC_0474 = 0b0111011000, // Sampling time of 474 TADCORE clock periods
+    ADCORE_SAMC_0475 = 0b0111011001, // Sampling time of 475 TADCORE clock periods
+    ADCORE_SAMC_0476 = 0b0111011010, // Sampling time of 476 TADCORE clock periods
+    ADCORE_SAMC_0477 = 0b0111011011, // Sampling time of 477 TADCORE clock periods
+    ADCORE_SAMC_0478 = 0b0111011100, // Sampling time of 478 TADCORE clock periods
+    ADCORE_SAMC_0479 = 0b0111011101, // Sampling time of 479 TADCORE clock periods
+    ADCORE_SAMC_0480 = 0b0111011110, // Sampling time of 480 TADCORE clock periods
+    ADCORE_SAMC_0481 = 0b0111011111, // Sampling time of 481 TADCORE clock periods
+    ADCORE_SAMC_0482 = 0b0111100000, // Sampling time of 482 TADCORE clock periods
+    ADCORE_SAMC_0483 = 0b0111100001, // Sampling time of 483 TADCORE clock periods
+    ADCORE_SAMC_0484 = 0b0111100010, // Sampling time of 484 TADCORE clock periods
+    ADCORE_SAMC_0485 = 0b0111100011, // Sampling time of 485 TADCORE clock periods
+    ADCORE_SAMC_0486 = 0b0111100100, // Sampling time of 486 TADCORE clock periods
+    ADCORE_SAMC_0487 = 0b0111100101, // Sampling time of 487 TADCORE clock periods
+    ADCORE_SAMC_0488 = 0b0111100110, // Sampling time of 488 TADCORE clock periods
+    ADCORE_SAMC_0489 = 0b0111100111, // Sampling time of 489 TADCORE clock periods
+    ADCORE_SAMC_0490 = 0b0111101000, // Sampling time of 490 TADCORE clock periods
+    ADCORE_SAMC_0491 = 0b0111101001, // Sampling time of 491 TADCORE clock periods
+    ADCORE_SAMC_0492 = 0b0111101010, // Sampling time of 492 TADCORE clock periods
+    ADCORE_SAMC_0493 = 0b0111101011, // Sampling time of 493 TADCORE clock periods
+    ADCORE_SAMC_0494 = 0b0111101100, // Sampling time of 494 TADCORE clock periods
+    ADCORE_SAMC_0495 = 0b0111101101, // Sampling time of 495 TADCORE clock periods
+    ADCORE_SAMC_0496 = 0b0111101110, // Sampling time of 496 TADCORE clock periods
+    ADCORE_SAMC_0497 = 0b0111101111, // Sampling time of 497 TADCORE clock periods
+    ADCORE_SAMC_0498 = 0b0111110000, // Sampling time of 498 TADCORE clock periods
+    ADCORE_SAMC_0499 = 0b0111110001, // Sampling time of 499 TADCORE clock periods
+    ADCORE_SAMC_0500 = 0b0111110010, // Sampling time of 500 TADCORE clock periods
+    ADCORE_SAMC_0501 = 0b0111110011, // Sampling time of 501 TADCORE clock periods
+    ADCORE_SAMC_0502 = 0b0111110100, // Sampling time of 502 TADCORE clock periods
+    ADCORE_SAMC_0503 = 0b0111110101, // Sampling time of 503 TADCORE clock periods
+    ADCORE_SAMC_0504 = 0b0111110110, // Sampling time of 504 TADCORE clock periods
+    ADCORE_SAMC_0505 = 0b0111110111, // Sampling time of 505 TADCORE clock periods
+    ADCORE_SAMC_0506 = 0b0111111000, // Sampling time of 506 TADCORE clock periods
+    ADCORE_SAMC_0507 = 0b0111111001, // Sampling time of 507 TADCORE clock periods
+    ADCORE_SAMC_0508 = 0b0111111010, // Sampling time of 508 TADCORE clock periods
+    ADCORE_SAMC_0509 = 0b0111111011, // Sampling time of 509 TADCORE clock periods
+    ADCORE_SAMC_0510 = 0b0111111100, // Sampling time of 510 TADCORE clock periods
+    ADCORE_SAMC_0511 = 0b0111111101, // Sampling time of 511 TADCORE clock periods
+    ADCORE_SAMC_0512 = 0b0111111110, // Sampling time of 512 TADCORE clock periods
+    ADCORE_SAMC_0513 = 0b0111111111, // Sampling time of 513 TADCORE clock periods
+    ADCORE_SAMC_0514 = 0b1000000000, // Sampling time of 514 TADCORE clock periods
+    ADCORE_SAMC_0515 = 0b1000000001, // Sampling time of 515 TADCORE clock periods
+    ADCORE_SAMC_0516 = 0b1000000010, // Sampling time of 516 TADCORE clock periods
+    ADCORE_SAMC_0517 = 0b1000000011, // Sampling time of 517 TADCORE clock periods
+    ADCORE_SAMC_0518 = 0b1000000100, // Sampling time of 518 TADCORE clock periods
+    ADCORE_SAMC_0519 = 0b1000000101, // Sampling time of 519 TADCORE clock periods
+    ADCORE_SAMC_0520 = 0b1000000110, // Sampling time of 520 TADCORE clock periods
+    ADCORE_SAMC_0521 = 0b1000000111, // Sampling time of 521 TADCORE clock periods
+    ADCORE_SAMC_0522 = 0b1000001000, // Sampling time of 522 TADCORE clock periods
+    ADCORE_SAMC_0523 = 0b1000001001, // Sampling time of 523 TADCORE clock periods
+    ADCORE_SAMC_0524 = 0b1000001010, // Sampling time of 524 TADCORE clock periods
+    ADCORE_SAMC_0525 = 0b1000001011, // Sampling time of 525 TADCORE clock periods
+    ADCORE_SAMC_0526 = 0b1000001100, // Sampling time of 526 TADCORE clock periods
+    ADCORE_SAMC_0527 = 0b1000001101, // Sampling time of 527 TADCORE clock periods
+    ADCORE_SAMC_0528 = 0b1000001110, // Sampling time of 528 TADCORE clock periods
+    ADCORE_SAMC_0529 = 0b1000001111, // Sampling time of 529 TADCORE clock periods
+    ADCORE_SAMC_0530 = 0b1000010000, // Sampling time of 530 TADCORE clock periods
+    ADCORE_SAMC_0531 = 0b1000010001, // Sampling time of 531 TADCORE clock periods
+    ADCORE_SAMC_0532 = 0b1000010010, // Sampling time of 532 TADCORE clock periods
+    ADCORE_SAMC_0533 = 0b1000010011, // Sampling time of 533 TADCORE clock periods
+    ADCORE_SAMC_0534 = 0b1000010100, // Sampling time of 534 TADCORE clock periods
+    ADCORE_SAMC_0535 = 0b1000010101, // Sampling time of 535 TADCORE clock periods
+    ADCORE_SAMC_0536 = 0b1000010110, // Sampling time of 536 TADCORE clock periods
+    ADCORE_SAMC_0537 = 0b1000010111, // Sampling time of 537 TADCORE clock periods
+    ADCORE_SAMC_0538 = 0b1000011000, // Sampling time of 538 TADCORE clock periods
+    ADCORE_SAMC_0539 = 0b1000011001, // Sampling time of 539 TADCORE clock periods
+    ADCORE_SAMC_0540 = 0b1000011010, // Sampling time of 540 TADCORE clock periods
+    ADCORE_SAMC_0541 = 0b1000011011, // Sampling time of 541 TADCORE clock periods
+    ADCORE_SAMC_0542 = 0b1000011100, // Sampling time of 542 TADCORE clock periods
+    ADCORE_SAMC_0543 = 0b1000011101, // Sampling time of 543 TADCORE clock periods
+    ADCORE_SAMC_0544 = 0b1000011110, // Sampling time of 544 TADCORE clock periods
+    ADCORE_SAMC_0545 = 0b1000011111, // Sampling time of 545 TADCORE clock periods
+    ADCORE_SAMC_0546 = 0b1000100000, // Sampling time of 546 TADCORE clock periods
+    ADCORE_SAMC_0547 = 0b1000100001, // Sampling time of 547 TADCORE clock periods
+    ADCORE_SAMC_0548 = 0b1000100010, // Sampling time of 548 TADCORE clock periods
+    ADCORE_SAMC_0549 = 0b1000100011, // Sampling time of 549 TADCORE clock periods
+    ADCORE_SAMC_0550 = 0b1000100100, // Sampling time of 550 TADCORE clock periods
+    ADCORE_SAMC_0551 = 0b1000100101, // Sampling time of 551 TADCORE clock periods
+    ADCORE_SAMC_0552 = 0b1000100110, // Sampling time of 552 TADCORE clock periods
+    ADCORE_SAMC_0553 = 0b1000100111, // Sampling time of 553 TADCORE clock periods
+    ADCORE_SAMC_0554 = 0b1000101000, // Sampling time of 554 TADCORE clock periods
+    ADCORE_SAMC_0555 = 0b1000101001, // Sampling time of 555 TADCORE clock periods
+    ADCORE_SAMC_0556 = 0b1000101010, // Sampling time of 556 TADCORE clock periods
+    ADCORE_SAMC_0557 = 0b1000101011, // Sampling time of 557 TADCORE clock periods
+    ADCORE_SAMC_0558 = 0b1000101100, // Sampling time of 558 TADCORE clock periods
+    ADCORE_SAMC_0559 = 0b1000101101, // Sampling time of 559 TADCORE clock periods
+    ADCORE_SAMC_0560 = 0b1000101110, // Sampling time of 560 TADCORE clock periods
+    ADCORE_SAMC_0561 = 0b1000101111, // Sampling time of 561 TADCORE clock periods
+    ADCORE_SAMC_0562 = 0b1000110000, // Sampling time of 562 TADCORE clock periods
+    ADCORE_SAMC_0563 = 0b1000110001, // Sampling time of 563 TADCORE clock periods
+    ADCORE_SAMC_0564 = 0b1000110010, // Sampling time of 564 TADCORE clock periods
+    ADCORE_SAMC_0565 = 0b1000110011, // Sampling time of 565 TADCORE clock periods
+    ADCORE_SAMC_0566 = 0b1000110100, // Sampling time of 566 TADCORE clock periods
+    ADCORE_SAMC_0567 = 0b1000110101, // Sampling time of 567 TADCORE clock periods
+    ADCORE_SAMC_0568 = 0b1000110110, // Sampling time of 568 TADCORE clock periods
+    ADCORE_SAMC_0569 = 0b1000110111, // Sampling time of 569 TADCORE clock periods
+    ADCORE_SAMC_0570 = 0b1000111000, // Sampling time of 570 TADCORE clock periods
+    ADCORE_SAMC_0571 = 0b1000111001, // Sampling time of 571 TADCORE clock periods
+    ADCORE_SAMC_0572 = 0b1000111010, // Sampling time of 572 TADCORE clock periods
+    ADCORE_SAMC_0573 = 0b1000111011, // Sampling time of 573 TADCORE clock periods
+    ADCORE_SAMC_0574 = 0b1000111100, // Sampling time of 574 TADCORE clock periods
+    ADCORE_SAMC_0575 = 0b1000111101, // Sampling time of 575 TADCORE clock periods
+    ADCORE_SAMC_0576 = 0b1000111110, // Sampling time of 576 TADCORE clock periods
+    ADCORE_SAMC_0577 = 0b1000111111, // Sampling time of 577 TADCORE clock periods
+    ADCORE_SAMC_0578 = 0b1001000000, // Sampling time of 578 TADCORE clock periods
+    ADCORE_SAMC_0579 = 0b1001000001, // Sampling time of 579 TADCORE clock periods
+    ADCORE_SAMC_0580 = 0b1001000010, // Sampling time of 580 TADCORE clock periods
+    ADCORE_SAMC_0581 = 0b1001000011, // Sampling time of 581 TADCORE clock periods
+    ADCORE_SAMC_0582 = 0b1001000100, // Sampling time of 582 TADCORE clock periods
+    ADCORE_SAMC_0583 = 0b1001000101, // Sampling time of 583 TADCORE clock periods
+    ADCORE_SAMC_0584 = 0b1001000110, // Sampling time of 584 TADCORE clock periods
+    ADCORE_SAMC_0585 = 0b1001000111, // Sampling time of 585 TADCORE clock periods
+    ADCORE_SAMC_0586 = 0b1001001000, // Sampling time of 586 TADCORE clock periods
+    ADCORE_SAMC_0587 = 0b1001001001, // Sampling time of 587 TADCORE clock periods
+    ADCORE_SAMC_0588 = 0b1001001010, // Sampling time of 588 TADCORE clock periods
+    ADCORE_SAMC_0589 = 0b1001001011, // Sampling time of 589 TADCORE clock periods
+    ADCORE_SAMC_0590 = 0b1001001100, // Sampling time of 590 TADCORE clock periods
+    ADCORE_SAMC_0591 = 0b1001001101, // Sampling time of 591 TADCORE clock periods
+    ADCORE_SAMC_0592 = 0b1001001110, // Sampling time of 592 TADCORE clock periods
+    ADCORE_SAMC_0593 = 0b1001001111, // Sampling time of 593 TADCORE clock periods
+    ADCORE_SAMC_0594 = 0b1001010000, // Sampling time of 594 TADCORE clock periods
+    ADCORE_SAMC_0595 = 0b1001010001, // Sampling time of 595 TADCORE clock periods
+    ADCORE_SAMC_0596 = 0b1001010010, // Sampling time of 596 TADCORE clock periods
+    ADCORE_SAMC_0597 = 0b1001010011, // Sampling time of 597 TADCORE clock periods
+    ADCORE_SAMC_0598 = 0b1001010100, // Sampling time of 598 TADCORE clock periods
+    ADCORE_SAMC_0599 = 0b1001010101, // Sampling time of 599 TADCORE clock periods
+    ADCORE_SAMC_0600 = 0b1001010110, // Sampling time of 600 TADCORE clock periods
+    ADCORE_SAMC_0601 = 0b1001010111, // Sampling time of 601 TADCORE clock periods
+    ADCORE_SAMC_0602 = 0b1001011000, // Sampling time of 602 TADCORE clock periods
+    ADCORE_SAMC_0603 = 0b1001011001, // Sampling time of 603 TADCORE clock periods
+    ADCORE_SAMC_0604 = 0b1001011010, // Sampling time of 604 TADCORE clock periods
+    ADCORE_SAMC_0605 = 0b1001011011, // Sampling time of 605 TADCORE clock periods
+    ADCORE_SAMC_0606 = 0b1001011100, // Sampling time of 606 TADCORE clock periods
+    ADCORE_SAMC_0607 = 0b1001011101, // Sampling time of 607 TADCORE clock periods
+    ADCORE_SAMC_0608 = 0b1001011110, // Sampling time of 608 TADCORE clock periods
+    ADCORE_SAMC_0609 = 0b1001011111, // Sampling time of 609 TADCORE clock periods
+    ADCORE_SAMC_0610 = 0b1001100000, // Sampling time of 610 TADCORE clock periods
+    ADCORE_SAMC_0611 = 0b1001100001, // Sampling time of 611 TADCORE clock periods
+    ADCORE_SAMC_0612 = 0b1001100010, // Sampling time of 612 TADCORE clock periods
+    ADCORE_SAMC_0613 = 0b1001100011, // Sampling time of 613 TADCORE clock periods
+    ADCORE_SAMC_0614 = 0b1001100100, // Sampling time of 614 TADCORE clock periods
+    ADCORE_SAMC_0615 = 0b1001100101, // Sampling time of 615 TADCORE clock periods
+    ADCORE_SAMC_0616 = 0b1001100110, // Sampling time of 616 TADCORE clock periods
+    ADCORE_SAMC_0617 = 0b1001100111, // Sampling time of 617 TADCORE clock periods
+    ADCORE_SAMC_0618 = 0b1001101000, // Sampling time of 618 TADCORE clock periods
+    ADCORE_SAMC_0619 = 0b1001101001, // Sampling time of 619 TADCORE clock periods
+    ADCORE_SAMC_0620 = 0b1001101010, // Sampling time of 620 TADCORE clock periods
+    ADCORE_SAMC_0621 = 0b1001101011, // Sampling time of 621 TADCORE clock periods
+    ADCORE_SAMC_0622 = 0b1001101100, // Sampling time of 622 TADCORE clock periods
+    ADCORE_SAMC_0623 = 0b1001101101, // Sampling time of 623 TADCORE clock periods
+    ADCORE_SAMC_0624 = 0b1001101110, // Sampling time of 624 TADCORE clock periods
+    ADCORE_SAMC_0625 = 0b1001101111, // Sampling time of 625 TADCORE clock periods
+    ADCORE_SAMC_0626 = 0b1001110000, // Sampling time of 626 TADCORE clock periods
+    ADCORE_SAMC_0627 = 0b1001110001, // Sampling time of 627 TADCORE clock periods
+    ADCORE_SAMC_0628 = 0b1001110010, // Sampling time of 628 TADCORE clock periods
+    ADCORE_SAMC_0629 = 0b1001110011, // Sampling time of 629 TADCORE clock periods
+    ADCORE_SAMC_0630 = 0b1001110100, // Sampling time of 630 TADCORE clock periods
+    ADCORE_SAMC_0631 = 0b1001110101, // Sampling time of 631 TADCORE clock periods
+    ADCORE_SAMC_0632 = 0b1001110110, // Sampling time of 632 TADCORE clock periods
+    ADCORE_SAMC_0633 = 0b1001110111, // Sampling time of 633 TADCORE clock periods
+    ADCORE_SAMC_0634 = 0b1001111000, // Sampling time of 634 TADCORE clock periods
+    ADCORE_SAMC_0635 = 0b1001111001, // Sampling time of 635 TADCORE clock periods
+    ADCORE_SAMC_0636 = 0b1001111010, // Sampling time of 636 TADCORE clock periods
+    ADCORE_SAMC_0637 = 0b1001111011, // Sampling time of 637 TADCORE clock periods
+    ADCORE_SAMC_0638 = 0b1001111100, // Sampling time of 638 TADCORE clock periods
+    ADCORE_SAMC_0639 = 0b1001111101, // Sampling time of 639 TADCORE clock periods
+    ADCORE_SAMC_0640 = 0b1001111110, // Sampling time of 640 TADCORE clock periods
+    ADCORE_SAMC_0641 = 0b1001111111, // Sampling time of 641 TADCORE clock periods
+    ADCORE_SAMC_0642 = 0b1010000000, // Sampling time of 642 TADCORE clock periods
+    ADCORE_SAMC_0643 = 0b1010000001, // Sampling time of 643 TADCORE clock periods
+    ADCORE_SAMC_0644 = 0b1010000010, // Sampling time of 644 TADCORE clock periods
+    ADCORE_SAMC_0645 = 0b1010000011, // Sampling time of 645 TADCORE clock periods
+    ADCORE_SAMC_0646 = 0b1010000100, // Sampling time of 646 TADCORE clock periods
+    ADCORE_SAMC_0647 = 0b1010000101, // Sampling time of 647 TADCORE clock periods
+    ADCORE_SAMC_0648 = 0b1010000110, // Sampling time of 648 TADCORE clock periods
+    ADCORE_SAMC_0649 = 0b1010000111, // Sampling time of 649 TADCORE clock periods
+    ADCORE_SAMC_0650 = 0b1010001000, // Sampling time of 650 TADCORE clock periods
+    ADCORE_SAMC_0651 = 0b1010001001, // Sampling time of 651 TADCORE clock periods
+    ADCORE_SAMC_0652 = 0b1010001010, // Sampling time of 652 TADCORE clock periods
+    ADCORE_SAMC_0653 = 0b1010001011, // Sampling time of 653 TADCORE clock periods
+    ADCORE_SAMC_0654 = 0b1010001100, // Sampling time of 654 TADCORE clock periods
+    ADCORE_SAMC_0655 = 0b1010001101, // Sampling time of 655 TADCORE clock periods
+    ADCORE_SAMC_0656 = 0b1010001110, // Sampling time of 656 TADCORE clock periods
+    ADCORE_SAMC_0657 = 0b1010001111, // Sampling time of 657 TADCORE clock periods
+    ADCORE_SAMC_0658 = 0b1010010000, // Sampling time of 658 TADCORE clock periods
+    ADCORE_SAMC_0659 = 0b1010010001, // Sampling time of 659 TADCORE clock periods
+    ADCORE_SAMC_0660 = 0b1010010010, // Sampling time of 660 TADCORE clock periods
+    ADCORE_SAMC_0661 = 0b1010010011, // Sampling time of 661 TADCORE clock periods
+    ADCORE_SAMC_0662 = 0b1010010100, // Sampling time of 662 TADCORE clock periods
+    ADCORE_SAMC_0663 = 0b1010010101, // Sampling time of 663 TADCORE clock periods
+    ADCORE_SAMC_0664 = 0b1010010110, // Sampling time of 664 TADCORE clock periods
+    ADCORE_SAMC_0665 = 0b1010010111, // Sampling time of 665 TADCORE clock periods
+    ADCORE_SAMC_0666 = 0b1010011000, // Sampling time of 666 TADCORE clock periods
+    ADCORE_SAMC_0667 = 0b1010011001, // Sampling time of 667 TADCORE clock periods
+    ADCORE_SAMC_0668 = 0b1010011010, // Sampling time of 668 TADCORE clock periods
+    ADCORE_SAMC_0669 = 0b1010011011, // Sampling time of 669 TADCORE clock periods
+    ADCORE_SAMC_0670 = 0b1010011100, // Sampling time of 670 TADCORE clock periods
+    ADCORE_SAMC_0671 = 0b1010011101, // Sampling time of 671 TADCORE clock periods
+    ADCORE_SAMC_0672 = 0b1010011110, // Sampling time of 672 TADCORE clock periods
+    ADCORE_SAMC_0673 = 0b1010011111, // Sampling time of 673 TADCORE clock periods
+    ADCORE_SAMC_0674 = 0b1010100000, // Sampling time of 674 TADCORE clock periods
+    ADCORE_SAMC_0675 = 0b1010100001, // Sampling time of 675 TADCORE clock periods
+    ADCORE_SAMC_0676 = 0b1010100010, // Sampling time of 676 TADCORE clock periods
+    ADCORE_SAMC_0677 = 0b1010100011, // Sampling time of 677 TADCORE clock periods
+    ADCORE_SAMC_0678 = 0b1010100100, // Sampling time of 678 TADCORE clock periods
+    ADCORE_SAMC_0679 = 0b1010100101, // Sampling time of 679 TADCORE clock periods
+    ADCORE_SAMC_0680 = 0b1010100110, // Sampling time of 680 TADCORE clock periods
+    ADCORE_SAMC_0681 = 0b1010100111, // Sampling time of 681 TADCORE clock periods
+    ADCORE_SAMC_0682 = 0b1010101000, // Sampling time of 682 TADCORE clock periods
+    ADCORE_SAMC_0683 = 0b1010101001, // Sampling time of 683 TADCORE clock periods
+    ADCORE_SAMC_0684 = 0b1010101010, // Sampling time of 684 TADCORE clock periods
+    ADCORE_SAMC_0685 = 0b1010101011, // Sampling time of 685 TADCORE clock periods
+    ADCORE_SAMC_0686 = 0b1010101100, // Sampling time of 686 TADCORE clock periods
+    ADCORE_SAMC_0687 = 0b1010101101, // Sampling time of 687 TADCORE clock periods
+    ADCORE_SAMC_0688 = 0b1010101110, // Sampling time of 688 TADCORE clock periods
+    ADCORE_SAMC_0689 = 0b1010101111, // Sampling time of 689 TADCORE clock periods
+    ADCORE_SAMC_0690 = 0b1010110000, // Sampling time of 690 TADCORE clock periods
+    ADCORE_SAMC_0691 = 0b1010110001, // Sampling time of 691 TADCORE clock periods
+    ADCORE_SAMC_0692 = 0b1010110010, // Sampling time of 692 TADCORE clock periods
+    ADCORE_SAMC_0693 = 0b1010110011, // Sampling time of 693 TADCORE clock periods
+    ADCORE_SAMC_0694 = 0b1010110100, // Sampling time of 694 TADCORE clock periods
+    ADCORE_SAMC_0695 = 0b1010110101, // Sampling time of 695 TADCORE clock periods
+    ADCORE_SAMC_0696 = 0b1010110110, // Sampling time of 696 TADCORE clock periods
+    ADCORE_SAMC_0697 = 0b1010110111, // Sampling time of 697 TADCORE clock periods
+    ADCORE_SAMC_0698 = 0b1010111000, // Sampling time of 698 TADCORE clock periods
+    ADCORE_SAMC_0699 = 0b1010111001, // Sampling time of 699 TADCORE clock periods
+    ADCORE_SAMC_0700 = 0b1010111010, // Sampling time of 700 TADCORE clock periods
+    ADCORE_SAMC_0701 = 0b1010111011, // Sampling time of 701 TADCORE clock periods
+    ADCORE_SAMC_0702 = 0b1010111100, // Sampling time of 702 TADCORE clock periods
+    ADCORE_SAMC_0703 = 0b1010111101, // Sampling time of 703 TADCORE clock periods
+    ADCORE_SAMC_0704 = 0b1010111110, // Sampling time of 704 TADCORE clock periods
+    ADCORE_SAMC_0705 = 0b1010111111, // Sampling time of 705 TADCORE clock periods
+    ADCORE_SAMC_0706 = 0b1011000000, // Sampling time of 706 TADCORE clock periods
+    ADCORE_SAMC_0707 = 0b1011000001, // Sampling time of 707 TADCORE clock periods
+    ADCORE_SAMC_0708 = 0b1011000010, // Sampling time of 708 TADCORE clock periods
+    ADCORE_SAMC_0709 = 0b1011000011, // Sampling time of 709 TADCORE clock periods
+    ADCORE_SAMC_0710 = 0b1011000100, // Sampling time of 710 TADCORE clock periods
+    ADCORE_SAMC_0711 = 0b1011000101, // Sampling time of 711 TADCORE clock periods
+    ADCORE_SAMC_0712 = 0b1011000110, // Sampling time of 712 TADCORE clock periods
+    ADCORE_SAMC_0713 = 0b1011000111, // Sampling time of 713 TADCORE clock periods
+    ADCORE_SAMC_0714 = 0b1011001000, // Sampling time of 714 TADCORE clock periods
+    ADCORE_SAMC_0715 = 0b1011001001, // Sampling time of 715 TADCORE clock periods
+    ADCORE_SAMC_0716 = 0b1011001010, // Sampling time of 716 TADCORE clock periods
+    ADCORE_SAMC_0717 = 0b1011001011, // Sampling time of 717 TADCORE clock periods
+    ADCORE_SAMC_0718 = 0b1011001100, // Sampling time of 718 TADCORE clock periods
+    ADCORE_SAMC_0719 = 0b1011001101, // Sampling time of 719 TADCORE clock periods
+    ADCORE_SAMC_0720 = 0b1011001110, // Sampling time of 720 TADCORE clock periods
+    ADCORE_SAMC_0721 = 0b1011001111, // Sampling time of 721 TADCORE clock periods
+    ADCORE_SAMC_0722 = 0b1011010000, // Sampling time of 722 TADCORE clock periods
+    ADCORE_SAMC_0723 = 0b1011010001, // Sampling time of 723 TADCORE clock periods
+    ADCORE_SAMC_0724 = 0b1011010010, // Sampling time of 724 TADCORE clock periods
+    ADCORE_SAMC_0725 = 0b1011010011, // Sampling time of 725 TADCORE clock periods
+    ADCORE_SAMC_0726 = 0b1011010100, // Sampling time of 726 TADCORE clock periods
+    ADCORE_SAMC_0727 = 0b1011010101, // Sampling time of 727 TADCORE clock periods
+    ADCORE_SAMC_0728 = 0b1011010110, // Sampling time of 728 TADCORE clock periods
+    ADCORE_SAMC_0729 = 0b1011010111, // Sampling time of 729 TADCORE clock periods
+    ADCORE_SAMC_0730 = 0b1011011000, // Sampling time of 730 TADCORE clock periods
+    ADCORE_SAMC_0731 = 0b1011011001, // Sampling time of 731 TADCORE clock periods
+    ADCORE_SAMC_0732 = 0b1011011010, // Sampling time of 732 TADCORE clock periods
+    ADCORE_SAMC_0733 = 0b1011011011, // Sampling time of 733 TADCORE clock periods
+    ADCORE_SAMC_0734 = 0b1011011100, // Sampling time of 734 TADCORE clock periods
+    ADCORE_SAMC_0735 = 0b1011011101, // Sampling time of 735 TADCORE clock periods
+    ADCORE_SAMC_0736 = 0b1011011110, // Sampling time of 736 TADCORE clock periods
+    ADCORE_SAMC_0737 = 0b1011011111, // Sampling time of 737 TADCORE clock periods
+    ADCORE_SAMC_0738 = 0b1011100000, // Sampling time of 738 TADCORE clock periods
+    ADCORE_SAMC_0739 = 0b1011100001, // Sampling time of 739 TADCORE clock periods
+    ADCORE_SAMC_0740 = 0b1011100010, // Sampling time of 740 TADCORE clock periods
+    ADCORE_SAMC_0741 = 0b1011100011, // Sampling time of 741 TADCORE clock periods
+    ADCORE_SAMC_0742 = 0b1011100100, // Sampling time of 742 TADCORE clock periods
+    ADCORE_SAMC_0743 = 0b1011100101, // Sampling time of 743 TADCORE clock periods
+    ADCORE_SAMC_0744 = 0b1011100110, // Sampling time of 744 TADCORE clock periods
+    ADCORE_SAMC_0745 = 0b1011100111, // Sampling time of 745 TADCORE clock periods
+    ADCORE_SAMC_0746 = 0b1011101000, // Sampling time of 746 TADCORE clock periods
+    ADCORE_SAMC_0747 = 0b1011101001, // Sampling time of 747 TADCORE clock periods
+    ADCORE_SAMC_0748 = 0b1011101010, // Sampling time of 748 TADCORE clock periods
+    ADCORE_SAMC_0749 = 0b1011101011, // Sampling time of 749 TADCORE clock periods
+    ADCORE_SAMC_0750 = 0b1011101100, // Sampling time of 750 TADCORE clock periods
+    ADCORE_SAMC_0751 = 0b1011101101, // Sampling time of 751 TADCORE clock periods
+    ADCORE_SAMC_0752 = 0b1011101110, // Sampling time of 752 TADCORE clock periods
+    ADCORE_SAMC_0753 = 0b1011101111, // Sampling time of 753 TADCORE clock periods
+    ADCORE_SAMC_0754 = 0b1011110000, // Sampling time of 754 TADCORE clock periods
+    ADCORE_SAMC_0755 = 0b1011110001, // Sampling time of 755 TADCORE clock periods
+    ADCORE_SAMC_0756 = 0b1011110010, // Sampling time of 756 TADCORE clock periods
+    ADCORE_SAMC_0757 = 0b1011110011, // Sampling time of 757 TADCORE clock periods
+    ADCORE_SAMC_0758 = 0b1011110100, // Sampling time of 758 TADCORE clock periods
+    ADCORE_SAMC_0759 = 0b1011110101, // Sampling time of 759 TADCORE clock periods
+    ADCORE_SAMC_0760 = 0b1011110110, // Sampling time of 760 TADCORE clock periods
+    ADCORE_SAMC_0761 = 0b1011110111, // Sampling time of 761 TADCORE clock periods
+    ADCORE_SAMC_0762 = 0b1011111000, // Sampling time of 762 TADCORE clock periods
+    ADCORE_SAMC_0763 = 0b1011111001, // Sampling time of 763 TADCORE clock periods
+    ADCORE_SAMC_0764 = 0b1011111010, // Sampling time of 764 TADCORE clock periods
+    ADCORE_SAMC_0765 = 0b1011111011, // Sampling time of 765 TADCORE clock periods
+    ADCORE_SAMC_0766 = 0b1011111100, // Sampling time of 766 TADCORE clock periods
+    ADCORE_SAMC_0767 = 0b1011111101, // Sampling time of 767 TADCORE clock periods
+    ADCORE_SAMC_0768 = 0b1011111110, // Sampling time of 768 TADCORE clock periods
+    ADCORE_SAMC_0769 = 0b1011111111, // Sampling time of 769 TADCORE clock periods
+    ADCORE_SAMC_0770 = 0b1100000000, // Sampling time of 770 TADCORE clock periods
+    ADCORE_SAMC_0771 = 0b1100000001, // Sampling time of 771 TADCORE clock periods
+    ADCORE_SAMC_0772 = 0b1100000010, // Sampling time of 772 TADCORE clock periods
+    ADCORE_SAMC_0773 = 0b1100000011, // Sampling time of 773 TADCORE clock periods
+    ADCORE_SAMC_0774 = 0b1100000100, // Sampling time of 774 TADCORE clock periods
+    ADCORE_SAMC_0775 = 0b1100000101, // Sampling time of 775 TADCORE clock periods
+    ADCORE_SAMC_0776 = 0b1100000110, // Sampling time of 776 TADCORE clock periods
+    ADCORE_SAMC_0777 = 0b1100000111, // Sampling time of 777 TADCORE clock periods
+    ADCORE_SAMC_0778 = 0b1100001000, // Sampling time of 778 TADCORE clock periods
+    ADCORE_SAMC_0779 = 0b1100001001, // Sampling time of 779 TADCORE clock periods
+    ADCORE_SAMC_0780 = 0b1100001010, // Sampling time of 780 TADCORE clock periods
+    ADCORE_SAMC_0781 = 0b1100001011, // Sampling time of 781 TADCORE clock periods
+    ADCORE_SAMC_0782 = 0b1100001100, // Sampling time of 782 TADCORE clock periods
+    ADCORE_SAMC_0783 = 0b1100001101, // Sampling time of 783 TADCORE clock periods
+    ADCORE_SAMC_0784 = 0b1100001110, // Sampling time of 784 TADCORE clock periods
+    ADCORE_SAMC_0785 = 0b1100001111, // Sampling time of 785 TADCORE clock periods
+    ADCORE_SAMC_0786 = 0b1100010000, // Sampling time of 786 TADCORE clock periods
+    ADCORE_SAMC_0787 = 0b1100010001, // Sampling time of 787 TADCORE clock periods
+    ADCORE_SAMC_0788 = 0b1100010010, // Sampling time of 788 TADCORE clock periods
+    ADCORE_SAMC_0789 = 0b1100010011, // Sampling time of 789 TADCORE clock periods
+    ADCORE_SAMC_0790 = 0b1100010100, // Sampling time of 790 TADCORE clock periods
+    ADCORE_SAMC_0791 = 0b1100010101, // Sampling time of 791 TADCORE clock periods
+    ADCORE_SAMC_0792 = 0b1100010110, // Sampling time of 792 TADCORE clock periods
+    ADCORE_SAMC_0793 = 0b1100010111, // Sampling time of 793 TADCORE clock periods
+    ADCORE_SAMC_0794 = 0b1100011000, // Sampling time of 794 TADCORE clock periods
+    ADCORE_SAMC_0795 = 0b1100011001, // Sampling time of 795 TADCORE clock periods
+    ADCORE_SAMC_0796 = 0b1100011010, // Sampling time of 796 TADCORE clock periods
+    ADCORE_SAMC_0797 = 0b1100011011, // Sampling time of 797 TADCORE clock periods
+    ADCORE_SAMC_0798 = 0b1100011100, // Sampling time of 798 TADCORE clock periods
+    ADCORE_SAMC_0799 = 0b1100011101, // Sampling time of 799 TADCORE clock periods
+    ADCORE_SAMC_0800 = 0b1100011110, // Sampling time of 800 TADCORE clock periods
+    ADCORE_SAMC_0801 = 0b1100011111, // Sampling time of 801 TADCORE clock periods
+    ADCORE_SAMC_0802 = 0b1100100000, // Sampling time of 802 TADCORE clock periods
+    ADCORE_SAMC_0803 = 0b1100100001, // Sampling time of 803 TADCORE clock periods
+    ADCORE_SAMC_0804 = 0b1100100010, // Sampling time of 804 TADCORE clock periods
+    ADCORE_SAMC_0805 = 0b1100100011, // Sampling time of 805 TADCORE clock periods
+    ADCORE_SAMC_0806 = 0b1100100100, // Sampling time of 806 TADCORE clock periods
+    ADCORE_SAMC_0807 = 0b1100100101, // Sampling time of 807 TADCORE clock periods
+    ADCORE_SAMC_0808 = 0b1100100110, // Sampling time of 808 TADCORE clock periods
+    ADCORE_SAMC_0809 = 0b1100100111, // Sampling time of 809 TADCORE clock periods
+    ADCORE_SAMC_0810 = 0b1100101000, // Sampling time of 810 TADCORE clock periods
+    ADCORE_SAMC_0811 = 0b1100101001, // Sampling time of 811 TADCORE clock periods
+    ADCORE_SAMC_0812 = 0b1100101010, // Sampling time of 812 TADCORE clock periods
+    ADCORE_SAMC_0813 = 0b1100101011, // Sampling time of 813 TADCORE clock periods
+    ADCORE_SAMC_0814 = 0b1100101100, // Sampling time of 814 TADCORE clock periods
+    ADCORE_SAMC_0815 = 0b1100101101, // Sampling time of 815 TADCORE clock periods
+    ADCORE_SAMC_0816 = 0b1100101110, // Sampling time of 816 TADCORE clock periods
+    ADCORE_SAMC_0817 = 0b1100101111, // Sampling time of 817 TADCORE clock periods
+    ADCORE_SAMC_0818 = 0b1100110000, // Sampling time of 818 TADCORE clock periods
+    ADCORE_SAMC_0819 = 0b1100110001, // Sampling time of 819 TADCORE clock periods
+    ADCORE_SAMC_0820 = 0b1100110010, // Sampling time of 820 TADCORE clock periods
+    ADCORE_SAMC_0821 = 0b1100110011, // Sampling time of 821 TADCORE clock periods
+    ADCORE_SAMC_0822 = 0b1100110100, // Sampling time of 822 TADCORE clock periods
+    ADCORE_SAMC_0823 = 0b1100110101, // Sampling time of 823 TADCORE clock periods
+    ADCORE_SAMC_0824 = 0b1100110110, // Sampling time of 824 TADCORE clock periods
+    ADCORE_SAMC_0825 = 0b1100110111, // Sampling time of 825 TADCORE clock periods
+    ADCORE_SAMC_0826 = 0b1100111000, // Sampling time of 826 TADCORE clock periods
+    ADCORE_SAMC_0827 = 0b1100111001, // Sampling time of 827 TADCORE clock periods
+    ADCORE_SAMC_0828 = 0b1100111010, // Sampling time of 828 TADCORE clock periods
+    ADCORE_SAMC_0829 = 0b1100111011, // Sampling time of 829 TADCORE clock periods
+    ADCORE_SAMC_0830 = 0b1100111100, // Sampling time of 830 TADCORE clock periods
+    ADCORE_SAMC_0831 = 0b1100111101, // Sampling time of 831 TADCORE clock periods
+    ADCORE_SAMC_0832 = 0b1100111110, // Sampling time of 832 TADCORE clock periods
+    ADCORE_SAMC_0833 = 0b1100111111, // Sampling time of 833 TADCORE clock periods
+    ADCORE_SAMC_0834 = 0b1101000000, // Sampling time of 834 TADCORE clock periods
+    ADCORE_SAMC_0835 = 0b1101000001, // Sampling time of 835 TADCORE clock periods
+    ADCORE_SAMC_0836 = 0b1101000010, // Sampling time of 836 TADCORE clock periods
+    ADCORE_SAMC_0837 = 0b1101000011, // Sampling time of 837 TADCORE clock periods
+    ADCORE_SAMC_0838 = 0b1101000100, // Sampling time of 838 TADCORE clock periods
+    ADCORE_SAMC_0839 = 0b1101000101, // Sampling time of 839 TADCORE clock periods
+    ADCORE_SAMC_0840 = 0b1101000110, // Sampling time of 840 TADCORE clock periods
+    ADCORE_SAMC_0841 = 0b1101000111, // Sampling time of 841 TADCORE clock periods
+    ADCORE_SAMC_0842 = 0b1101001000, // Sampling time of 842 TADCORE clock periods
+    ADCORE_SAMC_0843 = 0b1101001001, // Sampling time of 843 TADCORE clock periods
+    ADCORE_SAMC_0844 = 0b1101001010, // Sampling time of 844 TADCORE clock periods
+    ADCORE_SAMC_0845 = 0b1101001011, // Sampling time of 845 TADCORE clock periods
+    ADCORE_SAMC_0846 = 0b1101001100, // Sampling time of 846 TADCORE clock periods
+    ADCORE_SAMC_0847 = 0b1101001101, // Sampling time of 847 TADCORE clock periods
+    ADCORE_SAMC_0848 = 0b1101001110, // Sampling time of 848 TADCORE clock periods
+    ADCORE_SAMC_0849 = 0b1101001111, // Sampling time of 849 TADCORE clock periods
+    ADCORE_SAMC_0850 = 0b1101010000, // Sampling time of 850 TADCORE clock periods
+    ADCORE_SAMC_0851 = 0b1101010001, // Sampling time of 851 TADCORE clock periods
+    ADCORE_SAMC_0852 = 0b1101010010, // Sampling time of 852 TADCORE clock periods
+    ADCORE_SAMC_0853 = 0b1101010011, // Sampling time of 853 TADCORE clock periods
+    ADCORE_SAMC_0854 = 0b1101010100, // Sampling time of 854 TADCORE clock periods
+    ADCORE_SAMC_0855 = 0b1101010101, // Sampling time of 855 TADCORE clock periods
+    ADCORE_SAMC_0856 = 0b1101010110, // Sampling time of 856 TADCORE clock periods
+    ADCORE_SAMC_0857 = 0b1101010111, // Sampling time of 857 TADCORE clock periods
+    ADCORE_SAMC_0858 = 0b1101011000, // Sampling time of 858 TADCORE clock periods
+    ADCORE_SAMC_0859 = 0b1101011001, // Sampling time of 859 TADCORE clock periods
+    ADCORE_SAMC_0860 = 0b1101011010, // Sampling time of 860 TADCORE clock periods
+    ADCORE_SAMC_0861 = 0b1101011011, // Sampling time of 861 TADCORE clock periods
+    ADCORE_SAMC_0862 = 0b1101011100, // Sampling time of 862 TADCORE clock periods
+    ADCORE_SAMC_0863 = 0b1101011101, // Sampling time of 863 TADCORE clock periods
+    ADCORE_SAMC_0864 = 0b1101011110, // Sampling time of 864 TADCORE clock periods
+    ADCORE_SAMC_0865 = 0b1101011111, // Sampling time of 865 TADCORE clock periods
+    ADCORE_SAMC_0866 = 0b1101100000, // Sampling time of 866 TADCORE clock periods
+    ADCORE_SAMC_0867 = 0b1101100001, // Sampling time of 867 TADCORE clock periods
+    ADCORE_SAMC_0868 = 0b1101100010, // Sampling time of 868 TADCORE clock periods
+    ADCORE_SAMC_0869 = 0b1101100011, // Sampling time of 869 TADCORE clock periods
+    ADCORE_SAMC_0870 = 0b1101100100, // Sampling time of 870 TADCORE clock periods
+    ADCORE_SAMC_0871 = 0b1101100101, // Sampling time of 871 TADCORE clock periods
+    ADCORE_SAMC_0872 = 0b1101100110, // Sampling time of 872 TADCORE clock periods
+    ADCORE_SAMC_0873 = 0b1101100111, // Sampling time of 873 TADCORE clock periods
+    ADCORE_SAMC_0874 = 0b1101101000, // Sampling time of 874 TADCORE clock periods
+    ADCORE_SAMC_0875 = 0b1101101001, // Sampling time of 875 TADCORE clock periods
+    ADCORE_SAMC_0876 = 0b1101101010, // Sampling time of 876 TADCORE clock periods
+    ADCORE_SAMC_0877 = 0b1101101011, // Sampling time of 877 TADCORE clock periods
+    ADCORE_SAMC_0878 = 0b1101101100, // Sampling time of 878 TADCORE clock periods
+    ADCORE_SAMC_0879 = 0b1101101101, // Sampling time of 879 TADCORE clock periods
+    ADCORE_SAMC_0880 = 0b1101101110, // Sampling time of 880 TADCORE clock periods
+    ADCORE_SAMC_0881 = 0b1101101111, // Sampling time of 881 TADCORE clock periods
+    ADCORE_SAMC_0882 = 0b1101110000, // Sampling time of 882 TADCORE clock periods
+    ADCORE_SAMC_0883 = 0b1101110001, // Sampling time of 883 TADCORE clock periods
+    ADCORE_SAMC_0884 = 0b1101110010, // Sampling time of 884 TADCORE clock periods
+    ADCORE_SAMC_0885 = 0b1101110011, // Sampling time of 885 TADCORE clock periods
+    ADCORE_SAMC_0886 = 0b1101110100, // Sampling time of 886 TADCORE clock periods
+    ADCORE_SAMC_0887 = 0b1101110101, // Sampling time of 887 TADCORE clock periods
+    ADCORE_SAMC_0888 = 0b1101110110, // Sampling time of 888 TADCORE clock periods
+    ADCORE_SAMC_0889 = 0b1101110111, // Sampling time of 889 TADCORE clock periods
+    ADCORE_SAMC_0890 = 0b1101111000, // Sampling time of 890 TADCORE clock periods
+    ADCORE_SAMC_0891 = 0b1101111001, // Sampling time of 891 TADCORE clock periods
+    ADCORE_SAMC_0892 = 0b1101111010, // Sampling time of 892 TADCORE clock periods
+    ADCORE_SAMC_0893 = 0b1101111011, // Sampling time of 893 TADCORE clock periods
+    ADCORE_SAMC_0894 = 0b1101111100, // Sampling time of 894 TADCORE clock periods
+    ADCORE_SAMC_0895 = 0b1101111101, // Sampling time of 895 TADCORE clock periods
+    ADCORE_SAMC_0896 = 0b1101111110, // Sampling time of 896 TADCORE clock periods
+    ADCORE_SAMC_0897 = 0b1101111111, // Sampling time of 897 TADCORE clock periods
+    ADCORE_SAMC_0898 = 0b1110000000, // Sampling time of 898 TADCORE clock periods
+    ADCORE_SAMC_0899 = 0b1110000001, // Sampling time of 899 TADCORE clock periods
+    ADCORE_SAMC_0900 = 0b1110000010, // Sampling time of 900 TADCORE clock periods
+    ADCORE_SAMC_0901 = 0b1110000011, // Sampling time of 901 TADCORE clock periods
+    ADCORE_SAMC_0902 = 0b1110000100, // Sampling time of 902 TADCORE clock periods
+    ADCORE_SAMC_0903 = 0b1110000101, // Sampling time of 903 TADCORE clock periods
+    ADCORE_SAMC_0904 = 0b1110000110, // Sampling time of 904 TADCORE clock periods
+    ADCORE_SAMC_0905 = 0b1110000111, // Sampling time of 905 TADCORE clock periods
+    ADCORE_SAMC_0906 = 0b1110001000, // Sampling time of 906 TADCORE clock periods
+    ADCORE_SAMC_0907 = 0b1110001001, // Sampling time of 907 TADCORE clock periods
+    ADCORE_SAMC_0908 = 0b1110001010, // Sampling time of 908 TADCORE clock periods
+    ADCORE_SAMC_0909 = 0b1110001011, // Sampling time of 909 TADCORE clock periods
+    ADCORE_SAMC_0910 = 0b1110001100, // Sampling time of 910 TADCORE clock periods
+    ADCORE_SAMC_0911 = 0b1110001101, // Sampling time of 911 TADCORE clock periods
+    ADCORE_SAMC_0912 = 0b1110001110, // Sampling time of 912 TADCORE clock periods
+    ADCORE_SAMC_0913 = 0b1110001111, // Sampling time of 913 TADCORE clock periods
+    ADCORE_SAMC_0914 = 0b1110010000, // Sampling time of 914 TADCORE clock periods
+    ADCORE_SAMC_0915 = 0b1110010001, // Sampling time of 915 TADCORE clock periods
+    ADCORE_SAMC_0916 = 0b1110010010, // Sampling time of 916 TADCORE clock periods
+    ADCORE_SAMC_0917 = 0b1110010011, // Sampling time of 917 TADCORE clock periods
+    ADCORE_SAMC_0918 = 0b1110010100, // Sampling time of 918 TADCORE clock periods
+    ADCORE_SAMC_0919 = 0b1110010101, // Sampling time of 919 TADCORE clock periods
+    ADCORE_SAMC_0920 = 0b1110010110, // Sampling time of 920 TADCORE clock periods
+    ADCORE_SAMC_0921 = 0b1110010111, // Sampling time of 921 TADCORE clock periods
+    ADCORE_SAMC_0922 = 0b1110011000, // Sampling time of 922 TADCORE clock periods
+    ADCORE_SAMC_0923 = 0b1110011001, // Sampling time of 923 TADCORE clock periods
+    ADCORE_SAMC_0924 = 0b1110011010, // Sampling time of 924 TADCORE clock periods
+    ADCORE_SAMC_0925 = 0b1110011011, // Sampling time of 925 TADCORE clock periods
+    ADCORE_SAMC_0926 = 0b1110011100, // Sampling time of 926 TADCORE clock periods
+    ADCORE_SAMC_0927 = 0b1110011101, // Sampling time of 927 TADCORE clock periods
+    ADCORE_SAMC_0928 = 0b1110011110, // Sampling time of 928 TADCORE clock periods
+    ADCORE_SAMC_0929 = 0b1110011111, // Sampling time of 929 TADCORE clock periods
+    ADCORE_SAMC_0930 = 0b1110100000, // Sampling time of 930 TADCORE clock periods
+    ADCORE_SAMC_0931 = 0b1110100001, // Sampling time of 931 TADCORE clock periods
+    ADCORE_SAMC_0932 = 0b1110100010, // Sampling time of 932 TADCORE clock periods
+    ADCORE_SAMC_0933 = 0b1110100011, // Sampling time of 933 TADCORE clock periods
+    ADCORE_SAMC_0934 = 0b1110100100, // Sampling time of 934 TADCORE clock periods
+    ADCORE_SAMC_0935 = 0b1110100101, // Sampling time of 935 TADCORE clock periods
+    ADCORE_SAMC_0936 = 0b1110100110, // Sampling time of 936 TADCORE clock periods
+    ADCORE_SAMC_0937 = 0b1110100111, // Sampling time of 937 TADCORE clock periods
+    ADCORE_SAMC_0938 = 0b1110101000, // Sampling time of 938 TADCORE clock periods
+    ADCORE_SAMC_0939 = 0b1110101001, // Sampling time of 939 TADCORE clock periods
+    ADCORE_SAMC_0940 = 0b1110101010, // Sampling time of 940 TADCORE clock periods
+    ADCORE_SAMC_0941 = 0b1110101011, // Sampling time of 941 TADCORE clock periods
+    ADCORE_SAMC_0942 = 0b1110101100, // Sampling time of 942 TADCORE clock periods
+    ADCORE_SAMC_0943 = 0b1110101101, // Sampling time of 943 TADCORE clock periods
+    ADCORE_SAMC_0944 = 0b1110101110, // Sampling time of 944 TADCORE clock periods
+    ADCORE_SAMC_0945 = 0b1110101111, // Sampling time of 945 TADCORE clock periods
+    ADCORE_SAMC_0946 = 0b1110110000, // Sampling time of 946 TADCORE clock periods
+    ADCORE_SAMC_0947 = 0b1110110001, // Sampling time of 947 TADCORE clock periods
+    ADCORE_SAMC_0948 = 0b1110110010, // Sampling time of 948 TADCORE clock periods
+    ADCORE_SAMC_0949 = 0b1110110011, // Sampling time of 949 TADCORE clock periods
+    ADCORE_SAMC_0950 = 0b1110110100, // Sampling time of 950 TADCORE clock periods
+    ADCORE_SAMC_0951 = 0b1110110101, // Sampling time of 951 TADCORE clock periods
+    ADCORE_SAMC_0952 = 0b1110110110, // Sampling time of 952 TADCORE clock periods
+    ADCORE_SAMC_0953 = 0b1110110111, // Sampling time of 953 TADCORE clock periods
+    ADCORE_SAMC_0954 = 0b1110111000, // Sampling time of 954 TADCORE clock periods
+    ADCORE_SAMC_0955 = 0b1110111001, // Sampling time of 955 TADCORE clock periods
+    ADCORE_SAMC_0956 = 0b1110111010, // Sampling time of 956 TADCORE clock periods
+    ADCORE_SAMC_0957 = 0b1110111011, // Sampling time of 957 TADCORE clock periods
+    ADCORE_SAMC_0958 = 0b1110111100, // Sampling time of 958 TADCORE clock periods
+    ADCORE_SAMC_0959 = 0b1110111101, // Sampling time of 959 TADCORE clock periods
+    ADCORE_SAMC_0960 = 0b1110111110, // Sampling time of 960 TADCORE clock periods
+    ADCORE_SAMC_0961 = 0b1110111111, // Sampling time of 961 TADCORE clock periods
+    ADCORE_SAMC_0962 = 0b1111000000, // Sampling time of 962 TADCORE clock periods
+    ADCORE_SAMC_0963 = 0b1111000001, // Sampling time of 963 TADCORE clock periods
+    ADCORE_SAMC_0964 = 0b1111000010, // Sampling time of 964 TADCORE clock periods
+    ADCORE_SAMC_0965 = 0b1111000011, // Sampling time of 965 TADCORE clock periods
+    ADCORE_SAMC_0966 = 0b1111000100, // Sampling time of 966 TADCORE clock periods
+    ADCORE_SAMC_0967 = 0b1111000101, // Sampling time of 967 TADCORE clock periods
+    ADCORE_SAMC_0968 = 0b1111000110, // Sampling time of 968 TADCORE clock periods
+    ADCORE_SAMC_0969 = 0b1111000111, // Sampling time of 969 TADCORE clock periods
+    ADCORE_SAMC_0970 = 0b1111001000, // Sampling time of 970 TADCORE clock periods
+    ADCORE_SAMC_0971 = 0b1111001001, // Sampling time of 971 TADCORE clock periods
+    ADCORE_SAMC_0972 = 0b1111001010, // Sampling time of 972 TADCORE clock periods
+    ADCORE_SAMC_0973 = 0b1111001011, // Sampling time of 973 TADCORE clock periods
+    ADCORE_SAMC_0974 = 0b1111001100, // Sampling time of 974 TADCORE clock periods
+    ADCORE_SAMC_0975 = 0b1111001101, // Sampling time of 975 TADCORE clock periods
+    ADCORE_SAMC_0976 = 0b1111001110, // Sampling time of 976 TADCORE clock periods
+    ADCORE_SAMC_0977 = 0b1111001111, // Sampling time of 977 TADCORE clock periods
+    ADCORE_SAMC_0978 = 0b1111010000, // Sampling time of 978 TADCORE clock periods
+    ADCORE_SAMC_0979 = 0b1111010001, // Sampling time of 979 TADCORE clock periods
+    ADCORE_SAMC_0980 = 0b1111010010, // Sampling time of 980 TADCORE clock periods
+    ADCORE_SAMC_0981 = 0b1111010011, // Sampling time of 981 TADCORE clock periods
+    ADCORE_SAMC_0982 = 0b1111010100, // Sampling time of 982 TADCORE clock periods
+    ADCORE_SAMC_0983 = 0b1111010101, // Sampling time of 983 TADCORE clock periods
+    ADCORE_SAMC_0984 = 0b1111010110, // Sampling time of 984 TADCORE clock periods
+    ADCORE_SAMC_0985 = 0b1111010111, // Sampling time of 985 TADCORE clock periods
+    ADCORE_SAMC_0986 = 0b1111011000, // Sampling time of 986 TADCORE clock periods
+    ADCORE_SAMC_0987 = 0b1111011001, // Sampling time of 987 TADCORE clock periods
+    ADCORE_SAMC_0988 = 0b1111011010, // Sampling time of 988 TADCORE clock periods
+    ADCORE_SAMC_0989 = 0b1111011011, // Sampling time of 989 TADCORE clock periods
+    ADCORE_SAMC_0990 = 0b1111011100, // Sampling time of 990 TADCORE clock periods
+    ADCORE_SAMC_0991 = 0b1111011101, // Sampling time of 991 TADCORE clock periods
+    ADCORE_SAMC_0992 = 0b1111011110, // Sampling time of 992 TADCORE clock periods
+    ADCORE_SAMC_0993 = 0b1111011111, // Sampling time of 993 TADCORE clock periods
+    ADCORE_SAMC_0994 = 0b1111100000, // Sampling time of 994 TADCORE clock periods
+    ADCORE_SAMC_0995 = 0b1111100001, // Sampling time of 995 TADCORE clock periods
+    ADCORE_SAMC_0996 = 0b1111100010, // Sampling time of 996 TADCORE clock periods
+    ADCORE_SAMC_0997 = 0b1111100011, // Sampling time of 997 TADCORE clock periods
+    ADCORE_SAMC_0998 = 0b1111100100, // Sampling time of 998 TADCORE clock periods
+    ADCORE_SAMC_0999 = 0b1111100101, // Sampling time of 999 TADCORE clock periods
+    ADCORE_SAMC_1000 = 0b1111100110, // Sampling time of 1000 TADCORE clock periods
+    ADCORE_SAMC_1001 = 0b1111100111, // Sampling time of 1001 TADCORE clock periods
+    ADCORE_SAMC_1002 = 0b1111101000, // Sampling time of 1002 TADCORE clock periods
+    ADCORE_SAMC_1003 = 0b1111101001, // Sampling time of 1003 TADCORE clock periods
+    ADCORE_SAMC_1004 = 0b1111101010, // Sampling time of 1004 TADCORE clock periods
+    ADCORE_SAMC_1005 = 0b1111101011, // Sampling time of 1005 TADCORE clock periods
+    ADCORE_SAMC_1006 = 0b1111101100, // Sampling time of 1006 TADCORE clock periods
+    ADCORE_SAMC_1007 = 0b1111101101, // Sampling time of 1007 TADCORE clock periods
+    ADCORE_SAMC_1008 = 0b1111101110, // Sampling time of 1008 TADCORE clock periods
+    ADCORE_SAMC_1009 = 0b1111101111, // Sampling time of 1009 TADCORE clock periods
+    ADCORE_SAMC_1010 = 0b1111110000, // Sampling time of 1010 TADCORE clock periods
+    ADCORE_SAMC_1011 = 0b1111110001, // Sampling time of 1011 TADCORE clock periods
+    ADCORE_SAMC_1012 = 0b1111110010, // Sampling time of 1012 TADCORE clock periods
+    ADCORE_SAMC_1013 = 0b1111110011, // Sampling time of 1013 TADCORE clock periods
+    ADCORE_SAMC_1014 = 0b1111110100, // Sampling time of 1014 TADCORE clock periods
+    ADCORE_SAMC_1015 = 0b1111110101, // Sampling time of 1015 TADCORE clock periods
+    ADCORE_SAMC_1016 = 0b1111110110, // Sampling time of 1016 TADCORE clock periods
+    ADCORE_SAMC_1017 = 0b1111110111, // Sampling time of 1017 TADCORE clock periods
+    ADCORE_SAMC_1018 = 0b1111111000, // Sampling time of 1018 TADCORE clock periods
+    ADCORE_SAMC_1019 = 0b1111111001, // Sampling time of 1019 TADCORE clock periods
+    ADCORE_SAMC_1020 = 0b1111111010, // Sampling time of 1020 TADCORE clock periods
+    ADCORE_SAMC_1021 = 0b1111111011, // Sampling time of 1021 TADCORE clock periods
+    ADCORE_SAMC_1022 = 0b1111111100, // Sampling time of 1022 TADCORE clock periods
+    ADCORE_SAMC_1023 = 0b1111111101, // Sampling time of 1023 TADCORE clock periods
+    ADCORE_SAMC_1024 = 0b1111111110, // Sampling time of 1024 TADCORE clock periods
+    ADCORE_SAMC_1025 = 0b1111111111 // Sampling time of 1025 TADCORE clock periods
+} ADCOREx_SAMC_e; // Shared ADC Core Sample Time Selection bits
 
 typedef struct {
-    volatile ADCON2_SHRADCS_e SHRADCS : 7;   // Bit 6-0: Shared ADC Core Input Clock Divider
+    volatile ADCOREx_ADCS_e SHRADCS : 7;    // Bit 6-0: Shared ADC Core Input Clock Divider
+    volatile unsigned : 1;                  // Bit 7: (reserved))
+    volatile ADCOREx_EISEL_e SHREISEL : 3;  // Bit 10-8: Shared Core Early Interrupt Time Selection
+    volatile ADCON2_PTGEN_e PTGEN : 1;      // Bit 11: PTG Trigger Enable
+    volatile ADCON2_EIEN_e EIEN : 1;        // Bit 12: Early Interrupts Enable
+    volatile unsigned : 1;                  // Bit 13: (reserved))
+    volatile ADCON2_REFERCIE_e REFERCIE : 1; // Bit 14: Band Gap or Reference Voltage Error Common Interrupt Enable
+    volatile ADCON2_REFCIE_e REFCIE : 1;    // Bit 15: Band Gap and Reference Voltage Ready Common Interrupt Enable
+} __attribute__((packed)) ADCON2L_t; // ADCON2L: ADC CONTROL REGISTER 2 LOW
+
+typedef union {
+    volatile ADCON2L_t bits;
+    volatile uint16_t value;
+} REGBLK_ADCON2L_t; // ADCON2L: ADC CONTROL REGISTER 2 LOW
+
+
+typedef struct {
+    volatile ADCOREx_SAMC_e SHRSAMC : 10;  // Bit 9-0: Shared ADC Core Sample Time Selection bits
+    volatile unsigned : 4;                   // Bit 13-10: (reserved)
+    volatile ADCON2_REFERR_e REFERR : 1;     // Bit 14: Band Gap or Reference Voltage Error Flag bit
+    volatile ADCON2_REFRDY_e REFRDY : 1;     // Bit 15: Band Gap Reference status
+} __attribute__((packed)) ADCON2H_t; // ADCON2H: ADC CONTROL REGISTER 2 HIGH
+
+typedef union {
+    volatile ADCON2H_t bits;
+    volatile uint16_t value;
+} REGBLK_ADCON2H_t; // ADCON2H: ADC CONTROL REGISTER 2 HIGH
+
+typedef struct {
+    volatile ADCOREx_ADCS_e SHRADCS : 7;     // Bit 6-0: Shared ADC Core Input Clock Divider
     volatile unsigned : 1;                   // Bit 7: (reserved))
-    volatile ADCON2_SHREISEL_e SHREISEL : 3; // Bit 10-8: Shared Core Early Interrupt Time Selection
+    volatile ADCOREx_EISEL_e SHREISEL : 3;   // Bit 10-8: Shared Core Early Interrupt Time Selection
     volatile ADCON2_PTGEN_e PTGEN : 1;       // Bit 11: PTG Trigger Enable
     volatile ADCON2_EIEN_e EIEN : 1;         // Bit 12: Early Interrupts Enable
     volatile unsigned : 1;                   // Bit 13: (reserved))
     volatile ADCON2_REFERCIE_e REFERCIE : 1; // Bit 14: Band Gap or Reference Voltage Error Common Interrupt Enable
     volatile ADCON2_REFCIE_e REFCIE : 1;     // Bit 15: Band Gap and Reference Voltage Ready Common Interrupt Enable
 
-    volatile ADCON2_SHRSAMC_e SHRSAMC : 10;  // Bit 9-0: Shared ADC Core Sample Time Selection bits
+    volatile ADCOREx_SAMC_e SHRSAMC : 10;    // Bit 9-0: Shared ADC Core Sample Time Selection bits
     volatile unsigned : 4;                   // Bit 13-10: (reserved)
     volatile ADCON2_REFERR_e REFERR : 1;     // Bit 14: Band Gap or Reference Voltage Error Flag bit
     volatile ADCON2_REFRDY_e REFRDY : 1;     // Bit 15: Band Gap Reference status
 
-} __attribute__((packed)) ADCON2_t; // ADCON2L: ADC CONTROL REGISTER 2 LOW
+} __attribute__((packed)) ADCON2_t; // ADCON2: ADC CONTROL REGISTER 2 HIGH/LOW
 
 typedef union {
     volatile uint32_t value;
     volatile ADCON2_t bits;
-} REGBLK_ADCON2_t;
+} REGBLK_ADCON2_t; // ADCON2: ADC CONTROL REGISTER 2 HIGH/LOW
 
 // REGISTERS ADCON3L/H: ANALOG-TO-DIGITAL CONTROL REGISTER 3 LOW/HIGH
 
 // the least significant bits of the valid data mask cover the enable bits of dedicated ADC cores
 // As the number of ADC cores differ, tailored bit masks are required
-#define REG_ADCON3_VALID_DATA_WRITE_MASK  ((0xFF80FABF) | (uint32_t)(ADCDORE_REGISTER_BIT_MASK << 16))
-#define REG_ADCON3_VALID_DATA_READ_MASK   ((0xFF80FABF) | (uint32_t)(ADCDORE_REGISTER_BIT_MASK << 16))
-#define REG_ADCON3_DISABLE_ADC_CORES_MASK (0xFF00FFFF)
+#define REG_ADCON3_VALID_DATA_WRITE_MSK   ((0xFF80FABF) | (uint32_t)(ADCDORE_REGISTER_BIT_MSK << 16))
+#define REG_ADCON3_VALID_DATA_READ_MSK    ((0xFF80FABF) | (uint32_t)(ADCDORE_REGISTER_BIT_MSK << 16))
+#define REG_ADCON3_DISABLE_ADC_CORES_MSK  (0xFF00FFFF)
 
-#define REG_ADCON3L_RESET                 0b0000010101000000 // Reset ADCON 3 Low Register
-#define REG_ADCON3L_VALID_DATA_WRITE_MASK 0b1111101010111111 // Bit mask used to set unimplemented bits to zero
-#define REG_ADCON3L_VALID_DATA_READ_MASK  0b1111111111111111 // Bit mask used to set unimplemented bits to zero
+#define REG_ADCON3L_RESET                0b0000010101000000 // Reset ADCON 3 Low Register
+#define REG_ADCON3L_VALID_DATA_WRITE_MSK 0b1111101010111111 // Bit mask used to set unimplemented bits to zero
+#define REG_ADCON3L_VALID_DATA_READ_MSK  0b1111111111111111 // Bit mask used to set unimplemented bits to zero
 
 #define REG_ADCON3H_RESET                0b1100000000000000      // Reset ADCON 3 High Register
-#define REG_ADCON3H_VALID_DATA_WRITE_MSK (0xFF80 | (uint16_t)ADCDORE_REGISTER_BIT_MASK)	// Bit mask used to set unimplemented bits to zero
-#define REG_ADCON3H_VALID_DATA_READ_MSK  (0xFF80 | (uint16_t)ADCDORE_REGISTER_BIT_MASK)	// Bit mask used to set unimplemented bits to zero
+#define REG_ADCON3H_VALID_DATA_WRITE_MSK (0xFF80 | (uint16_t)ADCDORE_REGISTER_BIT_MSK)	// Bit mask used to set unimplemented bits to zero
+#define REG_ADCON3H_VALID_DATA_READ_MSK  (0xFF80 | (uint16_t)ADCDORE_REGISTER_BIT_MSK)	// Bit mask used to set unimplemented bits to zero
 #define REG_ADCON3H_DISABLE_ADC_CORES_MSK (0xFF00)	// Bit mask used to set unimplemented bits to zero
 
 #define REG_ADCON3L_REFSEL_AVDD_AVSS    0b0000000000000000      // Vref = AVDD to AVSS
@@ -1984,16 +2145,16 @@ typedef union {
 #if (ADC_CORE_COUNT > 1)
 // REGISTER ADCON4: ANALOG-TO-DIGITAL CONTROL REGISTER 4 LOW/HIGH
 
-    #define REG_ADCON4_VALID_DATA_WRITE_MASK    (uint32_t)(0xFFFF0000 | ADCDORE_REGISTER_BIT_MASK)
-    #define REG_ADCON4_VALID_DATA_READ_MASK     REG_ADCON4_VALID_DATA_WRITE_MASK
+    #define REG_ADCON4_VALID_DATA_WRITE_MSK    (uint32_t)(0xFFFF0000 | ADCDORE_REGISTER_BIT_MSK)
+    #define REG_ADCON4_VALID_DATA_READ_MSK     REG_ADCON4_VALID_DATA_WRITE_MSK
 
     #define REG_ADCON4L_RESET                   0b0000000000000000  // Reset ADCON 4 Low Register
-    #define REG_ADCON4L_VALID_DATA_WRITE_MASK   0b0000111100001111  // Bit mask used to set unimplemented bits to zero
-    #define REG_ADCON4L_VALID_DATA_READ_MASK    0b0000111100001111	// Bit mask used to set unimplemented bits to zero
+    #define REG_ADCON4L_VALID_DATA_WRITE_MSK    0b0000111100001111  // Bit mask used to set unimplemented bits to zero
+    #define REG_ADCON4L_VALID_DATA_READ_MSK     0b0000111100001111	// Bit mask used to set unimplemented bits to zero
 
     #define REG_ADCON4H_RESET                   0b0000000000000000  // Reset ADCON 4 High Register
-    #define REG_ADCON4H_VALID_DATA_WRITE_MASK	0b0000000011111111	// Bit mask used to set unimplemented bits to zero
-    #define REG_ADCON4H_VALID_DATA_READ_MASK	0b0000000011111111	// Bit mask used to set unimplemented bits to zero
+    #define REG_ADCON4H_VALID_DATA_WRITE_MSK    0b0000000011111111	// Bit mask used to set unimplemented bits to zero
+    #define REG_ADCON4H_VALID_DATA_READ_MSK     0b0000000011111111	// Bit mask used to set unimplemented bits to zero
 
     #define REG_SYNCTRGSHR_SYNC_TO_SOURCE   0b0100000000000000      // Shared Core synchronized to source clock
     #define REG_SYNCTRGSHR_INDEPENDENT      0b0000000000000000      // Shared Core not synchronized to source clock
@@ -2350,18 +2511,18 @@ typedef union {
 
 // REGISTERS ADCON5L/H: ANALOG-TO-DIGITAL CONTROL REGISTER 5 LOW/HIGH
 
-#define REG_ADCON5_VALID_DATA_WRITE_MASK    (uint32_t)(0x0F000000 | (ADCDORE_REGISTER_BIT_MASK << 16) | (ADCDORE_REGISTER_BIT_MASK << 8) | ADCDORE_REGISTER_BIT_MASK)
-#define REG_ADCON5_VALID_DATA_READ_MASK     (uint32_t)(0x0F000000 | (ADCDORE_REGISTER_BIT_MASK << 16) | ADCDORE_REGISTER_BIT_MASK)
-#define REG_ADCON5_DISABLE_ADC_CORES_MASK   (uint32_t)(0xFFFFFF00)
+#define REG_ADCON5_VALID_DATA_WRITE_MSK     (uint32_t)(0x0F000000 | (ADCDORE_REGISTER_BIT_MSK << 16) | (ADCDORE_REGISTER_BIT_MSK << 8) | ADCDORE_REGISTER_BIT_MSK)
+#define REG_ADCON5_VALID_DATA_READ_MSK      (uint32_t)(0x0F000000 | (ADCDORE_REGISTER_BIT_MSK << 16) | ADCDORE_REGISTER_BIT_MSK)
+#define REG_ADCON5_DISABLE_ADC_CORES_MSK    (uint32_t)(0xFFFFFF00)
 
 #define REG_ADCON5L_RESET                   0b0000000000000000          // Reset ADCON 5 Low Register (all ADC cores turned off)
-#define REG_ADCON5L_VALID_DATA_WRITE_MASK	(uint16_t)ADCDORE_REGISTER_BIT_MASK	// Bit mask used to set unimplemented bits to zero
-#define REG_ADCON5L_VALID_DATA_READ_MASK	(uint16_t)((ADCDORE_REGISTER_BIT_MASK << 8) | ADCDORE_REGISTER_BIT_MASK)	// Bit mask used to set unimplemented bits to zero
-#define REG_ADCON5L_DISABLE_ADC_CORES_MASK  (uint16_t)(0xFF00)
+#define REG_ADCON5L_VALID_DATA_WRITE_MSK    (uint16_t)ADCDORE_REGISTER_BIT_MSK	// Bit mask used to set unimplemented bits to zero
+#define REG_ADCON5L_VALID_DATA_READ_MSK     (uint16_t)((ADCDORE_REGISTER_BIT_MSK << 8) | ADCDORE_REGISTER_BIT_MSK)	// Bit mask used to set unimplemented bits to zero
+#define REG_ADCON5L_DISABLE_ADC_CORES_MSK   (uint16_t)(0xFF00)
 
 #define REG_ADCON5H_RESET                   (0x0F00)      // Reset ADCON 5 High Register (maximum warm-up time, all ADC CORE READY ISRs off)
-#define REG_ADCON5H_VALID_DATA_WRITE_MASK	(uint16_t)(0x0F00 | ADCDORE_REGISTER_BIT_MASK)		// Bit mask used to set unimplemented bits to zero
-#define REG_ADCON5H_VALID_DATA_READ_MASK	(uint16_t)(0x0F00 | ADCDORE_REGISTER_BIT_MASK)		// Bit mask used to set unimplemented bits to zero
+#define REG_ADCON5H_VALID_DATA_WRITE_MSK    (uint16_t)(0x0F00 | ADCDORE_REGISTER_BIT_MSK)		// Bit mask used to set unimplemented bits to zero
+#define REG_ADCON5H_VALID_DATA_READ_MSK     (uint16_t)(0x0F00 | ADCDORE_REGISTER_BIT_MSK)		// Bit mask used to set unimplemented bits to zero
 
 #define REG_ADCON5L_SHRRDY_PWROK        0b1000000000000000      // Sharder ADC Core powered and ready
 #define REG_ADCON5L_SHRRDY_FF           0b1000000000000000      // Sharder ADC Core is not powered
@@ -2662,24 +2823,20 @@ typedef union {
 #define REG_EISEL_2TAD                  0b0000010000000000      // ADCOREx Early Interrupt 2 TADs before ready
 #define REG_EISEL_1TAD                  0b0000000000000000      // ADCOREx Early Interrupt 1 TADs before ready
 
-typedef enum {
-    EISEL_8TAD = 0b111, // ADCOREx Early Interrupt 8 TADs before ready
-    EISEL_7TAD = 0b110, // ADCOREx Early Interrupt 7 TADs before ready
-    EISEL_6TAD = 0b101, // ADCOREx Early Interrupt 6 TADs before ready
-    EISEL_5TAD = 0b100, // ADCOREx Early Interrupt 5 TADs before ready
-    EISEL_4TAD = 0b011, // ADCOREx Early Interrupt 4 TADs before ready
-    EISEL_3TAD = 0b010, // ADCOREx Early Interrupt 3 TADs before ready
-    EISEL_2TAD = 0b001, // ADCOREx Early Interrupt 2 TADs before ready
-    EISEL_1TAD = 0b000  // ADCOREx Early Interrupt 1 TADs before ready
-}EISEL_e;
+// ( ADCORE_EISEL enumeration can be found under ADCON2L declarations )
 
-#define REG_ADC_RES_12BIT               0b0000001100000000      // ADC Core Resolution = 12bit
-#define REG_ADC_RES_10BIT               0b0000001000000000      // ADC Core Resolution = 10bit
-#define REG_ADC_RES_8BIT                0b0000000100000000      // ADC Core Resolution = 8bit
-#define REG_ADC_RES_6BIT                0b0000000000000000      // ADC Core Resolution = 6bit
+
+#define REG_ADC_RES_12BIT  0b0000001100000000      // ADC Core Resolution = 12bit
+#define REG_ADC_RES_10BIT  0b0000001000000000      // ADC Core Resolution = 10bit
+#define REG_ADC_RES_8BIT   0b0000000100000000      // ADC Core Resolution = 8bit
+#define REG_ADC_RES_6BIT   0b0000000000000000      // ADC Core Resolution = 6bit
+
+// ( ADCORE_ADCS enumeration can be found under ADCON1H declarations )
 
 #define REG_ADCS_MSK                    0b0000000001111111      // ADC Core Clock Divider Filter Mask
-#define REG_ADCS(x)                     ((x-2) & REG_ADCS_MSK)  		// ADC Core Clock Divider Value
+#define REG_ADCS(x)                     ((x-2) & REG_ADCS_MSK)  // ADC Core Clock Divider Value
+
+// ( ADCORE_RES enumeration can be found under ADCON2L declarations )
 
 // REGISTER 19-13: ADLVLTRGL: ADC LEVEL_SENSITIVE TRIGGER CONTROL REGISTER LOW
 
@@ -4130,10 +4287,10 @@ typedef enum {
 #define REG_ADCMPxCON_VALID_DATA_WR_MSK	0b0000000011011111		// Bit mask used to set unimplemented bits to zero
 
 #define REG_ADCMPxLO_RESET              0b0000000000000000      // ADC Digital Comparator Lower Compare Value Reset
-#define REG_ADCMPxLO_VALID_DATA_MASK    0b1111111111111111      // Bit mask used to set unimplemented bits to zero
+#define REG_ADCMPxLO_VALID_DATA_MSK     0b1111111111111111      // Bit mask used to set unimplemented bits to zero
 
 #define REG_ADCMPxHI_RESET              0b0000000000000000      // ADC Digital Comparator Upper Compare Value Reset
-#define REG_ADCMPxHI_VALID_DATA_MASK    0b1111111111111111      // Bit mask used to set unimplemented bits to zero
+#define REG_ADCMPxHI_VALID_DATA_MSK     0b1111111111111111      // Bit mask used to set unimplemented bits to zero
 
 #define REG_ADCMPxCON_CHNL_MSK			0b0001111100000000		// ADC Input Number used for comparison
 #define REG_ADCMPxCON_CHNL(x)        ((x << 8) & REG_ADCMPxCON_CHNL_MSK)    // ADC Input Number used for comparison
@@ -4332,8 +4489,8 @@ typedef union {
 #define REG_ADCMPxENL_AN15_DISABLED     0b0000000000000000      // Interrupt disabled for AN15
 
 typedef enum {
-ADCMPxENL_ANx_ENABLED  = 0b1,     // Interrupt enabled for ANx 
-ADCMPxENL_ANx_DISABLED = 0b0      // Interrupt disabled for ANx 
+    ADCMPxENL_ANx_ENABLED  = 0b1,     // Interrupt enabled for ANx 
+    ADCMPxENL_ANx_DISABLED = 0b0      // Interrupt disabled for ANx 
 }ADCMPxENL_e;
 
 // REGISTER 19-32: ADCMPxENH: ADC DIGITAL COMPARATOR x CHANNEL ENABLE REGISTER HIGH
@@ -4398,7 +4555,7 @@ typedef struct {
     ADCMPxEN_e AN12CMPEN : 1;    // Bit 12: Enable ANx as digital comparator input source
     ADCMPxEN_e AN13CMPEN : 1;    // Bit 13: Enable ANx as digital comparator input source
     ADCMPxEN_e AN14CMPEN : 1;    // Bit 14: Enable ANx as digital comparator input source
-    ADCMPxEN_e AN15CMPEN : 1;    // Bit 015 Enable ANx as digital comparator input source
+    ADCMPxEN_e AN15CMPEN : 1;    // Bit 15: Enable ANx as digital comparator input source
     
     ADCMPxEN_e AN16CMPEN : 1;    // Bit 0: Enable ANx as digital comparator input source
     ADCMPxEN_e AN17CMPEN : 1;    // Bit 1: Enable ANx as digital comparator input source
@@ -4591,9 +4748,89 @@ typedef union {
 #define ADCBUFx_ADDR(x)  ((x) * ((volatile uint16_t)&ADCBUF1 - (volatile uint16_t)&ADCBUF0)) /// ADCBUFx_ADDR: ADC result buffer address
 
 
+// ==============================================================================================
+// // High Speed ADC Core Settings Data Structure (Dedicated ADC Code 0-6 and Shared ADC Core)
+// ==============================================================================================
+
+typedef enum {
+    ADCORE_TYPE_DEDICATED = 0b1, // ADC core is Dedicated ADC core
+    ADCORE_TYPE_SHARED = 0b1     // ADC core is Shared ADC core
+}ADCORE_TYPE_e;
+
+typedef struct {
+    volatile ADCOREx_SAMC_e SAMC : 10;  // Bit 9-0: Dedicated ADC Core x Conversion Delay Selection bits
+    volatile unsigned : 6;              // Bit 15-10: (reserved)
+} __attribute__((packed)) ADCORExL_t;   // DEDICATED ADC CORE x CONTROL REGISTER LOW
+
+typedef union {
+    volatile ADCORExL_t bits;
+    volatile uint16_t value;
+}REGBLK_ADCORExL_t; // DEDICATED ADC CORE x CONTROL REGISTER LOW
+
+typedef struct {
+    volatile ADCOREx_ADCS_e ADCS : 7;   // Bit 6-0: ADC Core x Input Clock Divider bits
+    volatile unsigned : 1;              // Bit 7: (reserved)
+    volatile ADCOREx_RES_e RES : 2;     // Bit 9-8: ADC Core x Resolution Selection bits
+    volatile ADCOREx_EISEL_e EISEL : 3; // Bit 12-10: ADC Core x Early Interrupt Time Selection bits
+    volatile unsigned : 3;              // Bit 15-13: (reserved)
+}__attribute__((packed)) ADCORExH_t;    // DEDICATED ADC CORE x CONTROL REGISTER HIGH
+
+typedef union {
+    volatile ADCORExH_t bits;
+    volatile uint16_t value;
+}REGBLK_ADCORExH_t; // DEDICATED ADC CORE x CONTROL REGISTER HIGH
+
+typedef struct {
+    volatile ADCOREx_SAMC_e SAMC : 10;  // Bit 9-0: Dedicated ADC Core x Conversion Delay Selection bits
+    volatile unsigned : 6;              // Bit 15-10: (reserved)
+
+    volatile ADCOREx_ADCS_e ADCS : 7;   // Bit 6-0: ADC Core x Input Clock Divider bits
+    volatile unsigned : 1;              // Bit 7: (reserved)
+    volatile ADCOREx_RES_e RES : 2;     // Bit 9-8: ADC Core x Resolution Selection bits
+    volatile ADCOREx_EISEL_e EISEL : 3; // Bit 12-10: ADC Core x Early Interrupt Time Selection bits
+    volatile unsigned : 3;              // Bit 15-13: (reserved)
+}__attribute__((packed)) ADCOREx_t;     // DEDICATED ADC CORE x CONTROL REGISTER HIGH
+
+typedef union {
+    volatile ADCOREx_t bits;  // DEDICATED ADC CORE x CONTROL REGISTER
+    volatile uint32_t value;  // REGISTER HIGH/LOW VALUE (32-bit)
+}REGBLK_ADCOREx_t; // DEDICATED ADC CORE x CONTROL REGISTER HIGH/LOW
+
+typedef struct {
+    volatile uint16_t index;            // Index of the ADC core instance
+    volatile ADCORE_TYPE_e type;        // ADC core type (shared or dedicated)
+    volatile REGBLK_ADCOREx_t config;   // ADC core configuration
+}HSADC_ADCOREx_CONFIG_t; // DEDICATED/SHARED ADC CORE x CONTROL REGISTERS
+
+typedef struct {
+    #if (ADC_CORE_COUNT>1)
+    volatile HSADC_ADCOREx_CONFIG_t ADCORE0;    // Configuration of ADC core #0
+    #endif
+    #if (ADC_CORE_COUNT>2)
+    volatile HSADC_ADCOREx_CONFIG_t ADCORE1;    // Configuration of ADC core #1
+    #endif
+    #if (ADC_CORE_COUNT>3)
+    volatile HSADC_ADCOREx_CONFIG_t ADCORE2;    // Configuration of ADC core #2
+    #endif
+    #if (ADC_CORE_COUNT>4)
+    volatile HSADC_ADCOREx_CONFIG_t ADCORE3;    // Configuration of ADC core #3
+    #endif
+    #if (ADC_CORE_COUNT>5)
+    volatile HSADC_ADCOREx_CONFIG_t ADCORE4;    // Configuration of ADC core #4
+    #endif
+    #if (ADC_CORE_COUNT>6)
+    volatile HSADC_ADCOREx_CONFIG_t ADCORE5;    // Configuration of ADC core #5
+    #endif
+    #if (ADC_CORE_COUNT>7)
+    volatile HSADC_ADCOREx_CONFIG_t ADCORE6;    // Configuration of ADC core #6
+    #endif
+    volatile HSADC_ADCOREx_CONFIG_t SHRADCORE;  // Configuration of shared ADC
+}HSADC_MODULE_ADCORE_CONFIG_t;
 
 // ==============================================================================================
-// High Speed ADC Module Base Register Data Structure
+// High Speed ADC Module Base Register Data Structure (ADCONx Registers)
+// ==============================================================================================
+
 typedef struct {
     volatile REGBLK_ADCON1_t ADCON1;    // ADC CONTROL REGISTER 1 LOW/HIGH
     volatile REGBLK_ADCON2_t ADCON2;    // ADC CONTROL REGISTER 2 LOW/HIGH
@@ -4602,11 +4839,15 @@ typedef struct {
     volatile REGBLK_ADCON5_t ADCON5;    // ADC CONTROL REGISTER 5 LOW/HIGH
 }__attribute__((packed)) HSADC_MODULE_CONFIG_t; // ADC module base register set
 
-// High Speed ADC Input Channel Settings Data Structure
+
+// ==============================================================================================
+// // High Speed ADC Input Channel Settings Data Structure (ANx inputs 0-31)
+// ==============================================================================================
+
 typedef enum {
     ANx_CORE_ASSIGNMENT_DEDICATED = 0b1, // Input pin ANx is tied to Dedicated ADC core
     ANx_CORE_ASSIGNMENT_SHARED = 0b1     // Input pin ANx is tied to Shared ADC core
-}AD_CORE_ASSIGNMENT_e;
+}ADCORE_ASSIGNMENT_e;
 
 typedef enum {
     ANx_DIFFERENTIAL = 0b1, // Input pin ANx is configured in differential mode
@@ -4619,13 +4860,13 @@ typedef enum {
 }ADMOD_OUTPUT_DATA_MODE_e; // Input pin ANx output data mode
 
 typedef struct {
-    volatile AD_CORE_ASSIGNMENT_e core_assigmnment : 1; // Bit 0: Pin ANx is tied to dedicated or shared ADC core bit (read only)
+    volatile ADCORE_ASSIGNMENT_e core_assigmnment : 1; // Bit 0: Pin ANx is tied to dedicated or shared ADC core bit (read only)
     volatile ADMOD_INPUT_MODE_e input_mode : 1;         // Bit 1: Input ANx input mode is differential or single-ended bit
     volatile ADMOD_OUTPUT_DATA_MODE_e data_mode : 1;    // Bit 2: Input ANx output data mode bit
     volatile ADIE_IE_e interrupt_enable : 1;            // Bit 3: Input ANx interrupt enable bit
     volatile ADEIE_EIEN_e early_interrupt_enable : 1;   // Bit 4: Input ANx early interrupt enable bit
-    volatile EISEL_e early_interrupt_tad : 3;           // Bit 5: Input ANx early interrupt enable bit
-    volatile ADLVLTRG_e trigger_mode : 1;               // Bit 6: Level Trigger for Corresponding Analog Input Enable bit
+    volatile ADCOREx_EISEL_e early_interrupt_tad : 3;   // Bit 5: Input ANx early interrupt period selection bits
+    volatile ADLVLTRG_e trigger_mode : 1;               // Bit 6: Level Trigger for corresponding Analog Input Enable bit
     volatile ADTRIG_TRGSRC_e trigger_source : 5;        // Bit 11-7: Input ANx trigger source bits
     volatile unsigned : 1;                              // Bit 11: (reserved)
     volatile unsigned : 1;                              // Bit 12: (reserved)
@@ -4636,9 +4877,7 @@ typedef union {
     volatile ANIN_CONFIG_t bits;
 } REGBLK_ANIN_CONFIG_t;
 
-
 typedef struct {
-
     volatile uint16_t ad_input; // Analog-To-Digital input index (e.g. 3 for AN3)
     volatile REGBLK_ANIN_CONFIG_t config; // Analog input configuration
 }__attribute__((packed)) HSADC_CHANNEL_CONFIG_t; // ADC Input Channel Settings 
@@ -4648,6 +4887,7 @@ typedef struct {
 
 typedef struct {
     volatile REGBLK_ADCMPxCON_t ADCMPxCON; // ADC digital comparator configuration
+    volatile REGBLK_ADCMPxEN_t ADCMPxEN;   // Analog input source enable selection
     volatile uint16_t ADCMPxLO;   // ADC digital comparator Lower Threshold register
     volatile uint16_t ADCMPxHI;   // ADC digital comparator Upper Threshold register
 }__attribute__((packed)) HSADC_ADCMP_CONFIG_t; // ADC DIGITAL COMPARATOR Settings 
@@ -4670,7 +4910,7 @@ extern volatile uint16_t hsadc_module_power_down(void);
 extern volatile uint16_t hsadc_module_enable(void);
 extern volatile uint16_t hsadc_module_disable(void);
 
-extern volatile uint16_t hsadc_init_adc_core(uint16_t index, uint16_t regADCORExL, uint16_t regADCORExH);
+extern volatile uint16_t hsadc_init_adc_core(uint16_t index, HSADC_ADCOREx_CONFIG_t core_cfg);
 extern volatile uint16_t hsadc_power_on_adc_core(uint16_t index);
 extern volatile uint16_t hsadc_reset(void);
 extern volatile uint16_t hsadc_check_adc_cores_ready(void);
