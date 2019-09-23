@@ -5080,7 +5080,7 @@ typedef struct {
 
 // Prototypes
 extern volatile uint16_t hsadc_adc_module_initialize( HSADC_MODULE_CONFIG_t adc_cfg );
-extern volatile uint16_t hsadc_adc_core_initialize(uint16_t index, HSADC_ADCOREx_CONFIG_t core_cfg);
+extern volatile uint16_t hsadc_adc_core_initialize( HSADC_ADCOREx_CONFIG_t adcore_cfg );
 extern volatile uint16_t hsadc_adc_input_initialize( HSADC_INPUT_CONFIG_t adin_cfg );
 
 

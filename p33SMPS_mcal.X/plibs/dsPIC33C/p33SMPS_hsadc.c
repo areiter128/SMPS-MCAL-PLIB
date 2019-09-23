@@ -247,7 +247,7 @@ inline volatile uint16_t hsadc_adc_input_initialize( HSADC_INPUT_CONFIG_t adin_c
  * is always taken as index of the shared ADC core instance.
  * ***********************************************************************************************/
 
-inline volatile uint16_t hsadc_adc_core_initialize(uint16_t index, HSADC_ADCOREx_CONFIG_t adcore_cfg)
+inline volatile uint16_t hsadc_adc_core_initialize(HSADC_ADCOREx_CONFIG_t adcore_cfg)
 {
 
     volatile uint16_t fres = 1;     // Success/Failure result
@@ -270,7 +270,7 @@ inline volatile uint16_t hsadc_adc_core_initialize(uint16_t index, HSADC_ADCOREx
 
 
     // check if given ADC core instance index is greater than number of available ADC cores
-	if (index >= ADC_CORE_COUNT) return(0);
+	if (adcore_cfg.index >= ADC_CORE_COUNT) return(0);
 
     // Check which core type needs to be configured
     if(adcore_cfg.type == ADCORE_TYPE_DEDICATED)
@@ -283,7 +283,7 @@ inline volatile uint16_t hsadc_adc_core_initialize(uint16_t index, HSADC_ADCOREx
         // Only slave cores and single core devices like dsPIC33CK have multiple dedicated
         // cores and one shared core. The shared core always has the highest instance index.
 
-        reg_offset = (index-1) * ((volatile uint16_t)&ADCORE1L - (volatile uint16_t)&ADCORE0L); // Get register set offset
+        reg_offset = (adcore_cfg.index-1) * ((volatile uint16_t)&ADCORE1L - (volatile uint16_t)&ADCORE0L); // Get register set offset
 
         regADCORExL.bits.SAMC = adcore_cfg.config.bits.SAMC;      // Capture ADC core configuration ADCORExL
         
@@ -303,7 +303,7 @@ inline volatile uint16_t hsadc_adc_core_initialize(uint16_t index, HSADC_ADCOREx
         fres &= (volatile bool)((*regptr & REG_ADCORExH_VALID_DATA_MSK) == reg_buf);  // Check if WRITE operation was successful
 
         
-        switch (index) { 
+        switch (adcore_cfg.index) { 
             #if (ADC_CORE_COUNT > 1)
             case 0: regADCON4L.bits.SAMC0EN = adcore_cfg.sample_delay_enable; break;
             #endif
@@ -335,7 +335,7 @@ inline volatile uint16_t hsadc_adc_core_initialize(uint16_t index, HSADC_ADCOREx
         *regptr = reg_buf;                                      // Write configuration to register
         fres &= (volatile bool)((*regptr & REG_ADCON4L_VALID_DATA_WRITE_MSK) == reg_buf);  // Check if WRITE operation was successful
 
-        switch (index) { 
+        switch (adcore_cfg.index) { 
             #if (ADC_CORE_COUNT > 1)
             case 0: regADCON4H.bits.C0CHS = adcore_cfg.adc_input_select.C0CHS; break;
             #endif
@@ -507,6 +507,10 @@ inline volatile uint16_t hsadc_module_reset(void) {
     ADEISTATL  = REG_ADEISTATL_RESET;   // Disable and reset ADC EARLY INTERRUPT STATUS REGISTER LOW
     ADEISTATH  = REG_ADEISTATH_RESET;   // Disable and reset ADC EARLY INTERRUPT STATUS REGISTER HIGH
 
+    ADLVLTRGL  = REG_ADLVLTRGL_RESET;   // Disable and reset ADC LEVEL-SENSITIVE TRIGGER CONTROL REGISTER LOW
+    ADLVLTRGH  = REG_ADLVLTRGH_RESET;   // Disable and reset ADC LEVEL-SENSITIVE TRIGGER CONTROL REGISTER HIGH
+    
+/*
     #if defined (ADTRIG0L) // Registers ADTRIGxL is only available if ADC has related trigger sources 
     ADTRIG0L   = REG_ADTRIGxL_TRGSRC_NONE;
     #endif
@@ -593,8 +597,7 @@ inline volatile uint16_t hsadc_module_reset(void) {
     ADCMP3LO   = REG_ADCMPxLO_RESET;
     ADCMP3HI   = REG_ADCMPxHI_RESET;
     #endif
-    ADLVLTRGL  = REG_ADLVLTRGL_RESET;
-    ADLVLTRGH  = REG_ADLVLTRGH_RESET;
+*/
     
     // Reset registers for dedicated ADC cores
     #if defined (ADCORE0L) // Registers ADCORExL is only available if ADC has dedicated cores
