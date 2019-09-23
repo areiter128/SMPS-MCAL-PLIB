@@ -476,83 +476,169 @@ inline volatile uint16_t hsadc_module_reset(void) {
     
 	// Reset all ADC configuration registers to defaults
 
-	ADCON1Lbits.ADON = ADC_OFF;				// Disable ADC
+	ADCON1Lbits.ADON = ADC_OFF;         // Disable ADC
   
-	ADCON1L	   = REG_ADCON1L_RESET;			// Disable and reset ADC configuration register 1 low
-	ADCON1H	   = REG_ADCON1H_RESET;			// Disable and reset ADC configuration register 1 high
-	ADCON2L	   = REG_ADCON2L_RESET;			// Disable and reset ADC configuration register 2 low
-	ADCON2H	   = REG_ADCON2H_RESET;			// Disable and reset ADC configuration register 2 high
-    ADCON3L    = REG_ADCON3L_RESET;			// Disable and reset ADC configuration register 3 low
-    ADCON3H    = REG_ADCON3H_RESET;			// Disable and reset ADC configuration register 3 high
-    #if defined (ADCON4L)
-    ADCON4L    = REG_ADCON4L_RESET;			// Disable and reset ADC configuration register 4 low
-    #endif
-    #if defined (ADCON4H)
-    ADCON4H    = REG_ADCON4H_RESET;			// Disable and reset ADC configuration register 4 high
-    #endif
-    ADCON5L    = REG_ADCON5L_RESET;			// Disable and reset ADC configuration register 5 low
-    ADCON5H    = REG_ADCON5H_RESET;			// Disable and reset ADC configuration register 5 high
+	ADCON1L	   = REG_ADCON1L_RESET;     // Disable and reset ADC configuration register 1 low
+	ADCON1H	   = REG_ADCON1H_RESET;     // Disable and reset ADC configuration register 1 high
+	ADCON2L	   = REG_ADCON2L_RESET;     // Disable and reset ADC configuration register 2 low
+	ADCON2H	   = REG_ADCON2H_RESET;     // Disable and reset ADC configuration register 2 high
+    ADCON3L    = REG_ADCON3L_RESET;     // Disable and reset ADC configuration register 3 low
+    ADCON3H    = REG_ADCON3H_RESET;     // Disable and reset ADC configuration register 3 high
+    #if defined (ADCON4L)     
+    ADCON4L    = REG_ADCON4L_RESET;     // Disable and reset ADC configuration register 4 low
+    #endif     
+    #if defined (ADCON4H)     
+    ADCON4H    = REG_ADCON4H_RESET;     // Disable and reset ADC configuration register 4 high
+    #endif     
+    ADCON5L    = REG_ADCON5L_RESET;     // Disable and reset ADC configuration register 5 low
+    ADCON5H    = REG_ADCON5H_RESET;     // Disable and reset ADC configuration register 5 high
 
-    /* ToDo: Rework RESET routine to filter on available registers
-    ADMOD0L    = REG_ADMOD0L_RESET;
-    ADMOD0H    = REG_ADMOD0H_RESET;
-    ADMOD1L    = REG_ADMOD1L_RESET;   
-    ADMOD1H    = REG_ADMOD1H_RESET;     
-    ADIEL      = REG_ADIEL_RESET;
-    ADIEH      = REG_ADIEH_RESET;
-    ADSTATL    = REG_ADSTATL_RESET;      
-    ADSTATH    = REG_ADSTATH_RESET;  
+    // Reset registers for ADC input channels and sub-modules
+    ADMOD0L    = REG_ADMOD0L_RESET;     // Disable and reset ADC INPUT MODE CONTROL REGISTER 0 LOW
+    ADMOD0H    = REG_ADMOD0H_RESET;     // Disable and reset ADC INPUT MODE CONTROL REGISTER 0 HIGH
+    ADMOD1L    = REG_ADMOD1L_RESET;     // Disable and reset ADC INPUT MODE CONTROL REGISTER 1 LOW
+    ADMOD1H    = REG_ADMOD1H_RESET;     // Disable and reset ADC INPUT MODE CONTROL REGISTER 1 HIGH     
+    ADIEL      = REG_ADIEL_RESET;       // Disable and reset ADC INTERRUPT ENABLE REGISTER LOW
+    ADIEH      = REG_ADIEH_RESET;       // Disable and reset ADC INTERRUPT ENABLE REGISTER HIGH
+    ADSTATL    = REG_ADSTATL_RESET;     // Disable and reset ADC DATA READY STATUS REGISTER LOW 
+    ADSTATH    = REG_ADSTATH_RESET;     // Disable and reset ADC DATA READY STATUS REGISTER HIGH 
+    ADEIEL     = REG_ADEIEL_RESET;      // Disable and reset ADC EARLY INTERRUPT ENABLE REGISTER LOW 
+    ADEIEH     = REG_ADEIEH_RESET;      // Disable and reset ADC EARLY INTERRUPT ENABLE REGISTER HIGH 
+    ADEISTATL  = REG_ADEISTATL_RESET;   // Disable and reset ADC EARLY INTERRUPT STATUS REGISTER LOW
+    ADEISTATH  = REG_ADEISTATH_RESET;   // Disable and reset ADC EARLY INTERRUPT STATUS REGISTER HIGH
+
+    #if defined (ADTRIG0L) // Registers ADTRIGxL is only available if ADC has related trigger sources 
+    ADTRIG0L   = REG_ADTRIGxL_TRGSRC_NONE;
+    #endif
+    #if defined (ADTRIG0H) // Registers ADTRIGxH is only available if ADC has related trigger sources    
+    ADTRIG0H   = REG_ADTRIGxH_TRGSRC_NONE;
+    #endif
+    #if defined (ADTRIG1L) // Registers ADTRIGxL is only available if ADC has related trigger sources    
+    ADTRIG1L   = REG_ADTRIGxL_TRGSRC_NONE;
+    #endif
+    #if defined (ADTRIG2H) // Registers ADTRIGxH is only available if ADC has related trigger sources    
+    ADTRIG1H   = REG_ADTRIGxH_TRGSRC_NONE;
+    #endif
+    #if defined (ADTRIG2L) // Registers ADTRIGxL is only available if ADC has related trigger sources    
+    ADTRIG2L   = REG_ADTRIGxL_TRGSRC_NONE;
+    #endif
+    #if defined (ADTRIG2H) // Registers ADTRIGxH is only available if ADC has related trigger sources    
+    ADTRIG2H   = REG_ADTRIGxL_TRGSRC_NONE;
+    #endif
+    #if defined (ADTRIG3L) // Registers ADTRIGxL is only available if ADC has related trigger sources    
+    ADTRIG3L   = REG_ADTRIGxL_TRGSRC_NONE;
+    #endif
+    #if defined (ADTRIG3H) // Registers ADTRIGxH is only available if ADC has related trigger sources    
+    ADTRIG3H   = REG_ADTRIGxH_TRGSRC_NONE;
+    #endif
+    #if defined (ADTRIG4L) // Registers ADTRIGxL is only available if ADC has related trigger sources    
+    ADTRIG4L   = REG_ADTRIGxL_TRGSRC_NONE;
+    #endif
+    #if defined (ADTRIG4H) // Registers ADTRIGxH is only available if ADC has related trigger sources    
+    ADTRIG4H   = REG_ADTRIGxH_TRGSRC_NONE;
+    #endif
+    #if defined (ADTRIG5L) // Registers ADTRIGxL is only available if ADC has related trigger sources    
+    ADTRIG5L   = REG_ADTRIGxL_TRGSRC_NONE;
+    #endif
+    #if defined (ADTRIG5H) // Registers ADTRIGxH is only available if ADC has related trigger sources    
+    ADTRIG5H   = REG_ADTRIGxH_TRGSRC_NONE;
+    #endif
+    #if defined (ADTRIG6L) // Registers ADTRIGxL is only available if ADC has related trigger sources    
+    ADTRIG6L   = REG_ADTRIGxL_TRGSRC_NONE;
+    #endif
+    #if defined (ADTRIG6H) // Registers ADTRIGxH is only available if ADC has related trigger sources    
+    ADTRIG6H   = REG_ADTRIGxH_TRGSRC_NONE;
+    #endif
+
+    #if defined (ADFL0CON) // Registers ADFLxCON is only available if ADC has digital filters    
+    ADFL0DAT   = REG_ADFLxDAT_RESET;
+    ADFL0CON   = REG_ADFLxCON_RESET;
+    #endif
+    #if defined (ADFL1CON) // Registers ADFLxCON is only available if ADC has digital filters    
+    ADFL1DAT   = REG_ADFLxDAT_RESET;
+    ADFL1CON   = REG_ADFLxCON_RESET;
+    #endif
+    #if defined (ADFL2CON) // Registers ADFLxCON is only available if ADC has digital filters    
+    ADFL2DAT   = REG_ADFLxDAT_RESET;
+    ADFL2CON   = REG_ADFLxCON_RESET;
+    #endif
+    #if defined (ADFL3CON) // Registers ADFLxCON is only available if ADC has digital filters    
+    ADFL3DAT   = REG_ADFLxDAT_RESET;
+    ADFL3CON   = REG_ADFLxCON_RESET;
+    #endif
+    #if defined (ADCMP0CON) // Registers ADCMPxCON is only available if ADC has digital comparators    
+    ADCMP0CON  = REG_ADCMPxCON_RESET;
     ADCMP0ENL  = REG_ADCMPxENL_RESET;
     ADCMP0ENH  = REG_ADCMPxENH_RESET; 
     ADCMP0LO   = REG_ADCMPxLO_RESET;
     ADCMP0HI   = REG_ADCMPxHI_RESET;
+    #endif
+    #if defined (ADCMP1CON) // Registers ADCMPxCON is only available if ADC has digital comparators    
+    ADCMP1CON  = REG_ADCMPxCON_RESET;
     ADCMP1ENL  = REG_ADCMPxENL_RESET;
     ADCMP1ENH  = REG_ADCMPxENH_RESET;
     ADCMP1HI   = REG_ADCMPxHI_RESET;
+    #endif
+    #if defined (ADCMP2CON) // Registers ADCMPxCON is only available if ADC has digital comparators    
+    ADCMP2CON  = REG_ADCMPxCON_RESET;
     ADCMP2ENL  = REG_ADCMPxENL_RESET;
     ADCMP2ENH  = REG_ADCMPxENH_RESET;
     ADCMP2LO   = REG_ADCMPxLO_RESET;
     ADCMP2HI   = REG_ADCMPxHI_RESET;
+    #endif
+    #if defined (ADCMP3CON) // Registers ADCMPxCON is only available if ADC has digital comparators    
+    ADCMP3CON  = REG_ADCMPxCON_RESET;
     ADCMP3ENL  = REG_ADCMPxENL_RESET;
     ADCMP3ENH  = REG_ADCMPxENH_RESET;
     ADCMP3LO   = REG_ADCMPxLO_RESET;
     ADCMP3HI   = REG_ADCMPxHI_RESET;
-    ADFL0DAT   = REG_ADFLxDAT_RESET;
-    ADFL0CON   = REG_ADFLxCON_RESET;
-    ADFL1DAT   = REG_ADFLxDAT_RESET;
-    ADFL1CON   = REG_ADFLxCON_RESET;
-    ADFL2DAT   = REG_ADFLxDAT_RESET;
-    ADFL2CON   = REG_ADFLxCON_RESET;
-    ADFL3DAT   = REG_ADFLxDAT_RESET;
-    ADFL3CON   = REG_ADFLxCON_RESET;
-    ADTRIG0L   = REG_ADTRIGxL_TRGSRC_NONE;
-    ADTRIG0H   = REG_ADTRIGxH_TRGSRC_NONE;
-    ADTRIG1L   = REG_ADTRIGxL_TRGSRC_NONE;
-    ADTRIG1H   = REG_ADTRIGxH_TRGSRC_NONE;
-    ADTRIG2L   = REG_ADTRIGxL_TRGSRC_NONE;
-    ADTRIG2H   = REG_ADTRIGxL_TRGSRC_NONE;
-    ADTRIG3L   = REG_ADTRIGxL_TRGSRC_NONE;
-    ADTRIG3H   = REG_ADTRIGxH_TRGSRC_NONE;
-    ADTRIG4L   = REG_ADTRIGxL_TRGSRC_NONE;
-    ADTRIG4H   = REG_ADTRIGxH_TRGSRC_NONE;
-    ADTRIG5L   = REG_ADTRIGxL_TRGSRC_NONE;
-    ADTRIG5H   = REG_ADTRIGxH_TRGSRC_NONE;
-    ADTRIG6L   = REG_ADTRIGxL_TRGSRC_NONE;
-    ADCMP0CON  = REG_ADCMPxCON_RESET;
-    ADCMP1CON  = REG_ADCMPxCON_RESET;
-    ADCMP2CON  = REG_ADCMPxCON_RESET;
-    ADCMP3CON  = REG_ADCMPxCON_RESET;
+    #endif
     ADLVLTRGL  = REG_ADLVLTRGL_RESET;
     ADLVLTRGH  = REG_ADLVLTRGH_RESET;
+    
+    // Reset registers for dedicated ADC cores
+    #if defined (ADCORE0L) // Registers ADCORExL is only available if ADC has dedicated cores
     ADCORE0L   = REG_ADCORExL_RESET;
+    #endif
+    #if defined (ADCORE0H) // Registers ADCORExH is only available if ADC has dedicated cores
     ADCORE0H   = REG_ADCORExH_RESET;
+    #endif
+    #if defined (ADCORE1L) // Registers ADCORExL is only available if ADC has dedicated cores
     ADCORE1L   = REG_ADCORExL_RESET;
+    #endif
+    #if defined (ADCORE1H) // Registers ADCORExH is only available if ADC has dedicated cores
     ADCORE1H   = REG_ADCORExH_RESET;
-    ADEIEL     = REG_ADEIEL_RESET;
-    ADEIEH     = REG_ADEIEH_RESET;
-    ADEISTATL  = REG_ADEISTATL_RESET;
-    ADEISTATH  = REG_ADEISTATH_RESET;
-    */
+    #endif
+    #if defined (ADCORE2L) // Registers ADCORExL is only available if ADC has dedicated cores
+    ADCORE2L   = REG_ADCORExL_RESET;
+    #endif
+    #if defined (ADCORE2H) // Registers ADCORExH is only available if ADC has dedicated cores
+    ADCORE2H   = REG_ADCORExH_RESET;
+    #endif
+    #if defined (ADCORE3L) // Registers ADCORExL is only available if ADC has dedicated cores
+    ADCORE3L   = REG_ADCORExL_RESET;
+    #endif
+    #if defined (ADCORE3H) // Registers ADCORExH is only available if ADC has dedicated cores
+    ADCORE3H   = REG_ADCORExH_RESET;
+    #endif
+    #if defined (ADCORE4L) // Registers ADCORExL is only available if ADC has dedicated cores
+    ADCORE4L   = REG_ADCORExL_RESET;
+    #endif
+    #if defined (ADCORE4H) // Registers ADCORExH is only available if ADC has dedicated cores
+    ADCORE4H   = REG_ADCORExH_RESET;
+    #endif
+    #if defined (ADCORE5L) // Registers ADCORExL is only available if ADC has dedicated cores
+    ADCORE5L   = REG_ADCORExL_RESET;
+    #endif
+    #if defined (ADCORE5H) // Registers ADCORExH is only available if ADC has dedicated cores
+    ADCORE5H   = REG_ADCORExH_RESET;
+    #endif
+    #if defined (ADCORE6L) // Registers ADCORExL is only available if ADC has dedicated cores
+    ADCORE6L   = REG_ADCORExL_RESET;
+    #endif
+    #if defined (ADCORE6H) // Registers ADCORExH is only available if ADC has dedicated cores
+    ADCORE6H   = REG_ADCORExH_RESET;
+    #endif
     
 	return(1);
 }
