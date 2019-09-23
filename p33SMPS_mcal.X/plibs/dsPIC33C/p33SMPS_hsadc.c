@@ -102,7 +102,7 @@ inline volatile uint16_t hsadc_module_power_down(void)
  * Basic options like clock source, early interrupts, format options, sampling order and modes
  * are set here.
  * ***********************************************************************************************/
-inline volatile uint16_t hsadc_init_adc_module( HSADC_MODULE_CONFIG_t adc_cfg )
+inline volatile uint16_t hsadc_adc_module_initialize( HSADC_MODULE_CONFIG_t adc_cfg )
 {
     volatile uint16_t fres = 1;
     volatile uint32_t *regptr32;
@@ -198,7 +198,7 @@ inline volatile uint16_t hsadc_init_adc_module( HSADC_MODULE_CONFIG_t adc_cfg )
  * This routine configures the individual settings of an analog input .
  * ***********************************************************************************************/
 
-inline volatile uint16_t hsadc_init_adc_channel( HSADC_INPUT_CONFIG_t adin_cfg ) {
+inline volatile uint16_t hsadc_adc_input_initialize( HSADC_INPUT_CONFIG_t adin_cfg ) {
     
     volatile uint16_t fres = 1;
     
@@ -247,7 +247,7 @@ inline volatile uint16_t hsadc_init_adc_channel( HSADC_INPUT_CONFIG_t adin_cfg )
  * is always taken as index of the shared ADC core instance.
  * ***********************************************************************************************/
 
-inline volatile uint16_t hsadc_init_adc_core(uint16_t index, HSADC_ADCOREx_CONFIG_t adcore_cfg)
+inline volatile uint16_t hsadc_adc_core_initialize(uint16_t index, HSADC_ADCOREx_CONFIG_t adcore_cfg)
 {
 
     volatile uint16_t fres = 1;     // Success/Failure result
@@ -470,7 +470,7 @@ inline volatile uint16_t hsadc_module_disable(void)
  * become GPIOs.
  * ***********************************************************************************************/
 
-inline volatile uint16_t hsadc_reset(void) {
+inline volatile uint16_t hsadc_module_reset(void) {
     
     /* ToDo: Add register contents check after WRITE */
     
@@ -570,7 +570,7 @@ inline volatile uint16_t hsadc_reset(void) {
  * calibration of the given ADC core.
  * ***********************************************************************************************/
 
-inline volatile uint16_t hsadc_check_adc_cores_ready(void)
+inline volatile uint16_t hsadc_adc_cores_check_ready(void)
 {
     volatile uint16_t timeout = 0, rdy_compare = 0, reg_buf = 0;
 
@@ -682,7 +682,7 @@ inline volatile uint16_t hsadc_calibrate_adc_core(uint16_t index, uint16_t calib
  * calibration of the given ADC core.
  * ***********************************************************************************************/
 
-inline volatile uint16_t hsadc_power_on_adc_core(uint16_t index)
+inline volatile uint16_t hsadc_adc_core_power_on(uint16_t index)
 {
     volatile uint16_t *regptr;
     volatile uint16_t reg_buf=0;

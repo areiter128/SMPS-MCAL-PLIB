@@ -5079,19 +5079,19 @@ typedef struct {
 
 
 // Prototypes
-extern volatile uint16_t hsadc_init_adc_module( HSADC_MODULE_CONFIG_t adc_cfg );
-extern volatile uint16_t hsadc_init_adc_channel( HSADC_INPUT_CONFIG_t adin_cfg );
+extern volatile uint16_t hsadc_adc_module_initialize( HSADC_MODULE_CONFIG_t adc_cfg );
+extern volatile uint16_t hsadc_adc_core_initialize(uint16_t index, HSADC_ADCOREx_CONFIG_t core_cfg);
+extern volatile uint16_t hsadc_adc_input_initialize( HSADC_INPUT_CONFIG_t adin_cfg );
 
 
 extern volatile uint16_t hsadc_module_power_up(void);
 extern volatile uint16_t hsadc_module_power_down(void);
 extern volatile uint16_t hsadc_module_enable(void);
 extern volatile uint16_t hsadc_module_disable(void);
+extern volatile uint16_t hsadc_module_reset(void);
 
-extern volatile uint16_t hsadc_init_adc_core(uint16_t index, HSADC_ADCOREx_CONFIG_t core_cfg);
-extern volatile uint16_t hsadc_power_on_adc_core(uint16_t index);
-extern volatile uint16_t hsadc_reset(void);
-extern volatile uint16_t hsadc_check_adc_cores_ready(void);
+extern volatile uint16_t hsadc_adc_core_power_on(uint16_t index);
+extern volatile uint16_t hsadc_adc_cores_check_ready(void);
 
 
 
