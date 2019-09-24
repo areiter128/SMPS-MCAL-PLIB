@@ -205,7 +205,7 @@ inline volatile uint16_t hsadc_adc_input_initialize( HSADC_INPUT_CONFIG_t adin_c
     // Check if given analog input number is available
     if(adin_cfg.ad_input > ADC_ANINPUT_COUNT) { return(0); }
     
-    // Set AD input mode (differential or single ended)
+    // Set AD input mode (differential or single ended) and Conversion data output format (signed/unsigned)
     fres &= hsadc_set_adc_input_mode(adin_cfg.ad_input, 
             adin_cfg.config.bits.input_mode, adin_cfg.config.bits.data_mode);
 
@@ -840,13 +840,13 @@ inline volatile uint16_t hsadc_adc_core_power_on(uint16_t index)
 
 inline volatile uint16_t hsadc_set_adc_input_trigger_source(uint16_t index, ADTRIG_TRGSRC_e trigger_source)
 {
-
+    volatile uint16_t fres = 1;
     volatile uint16_t *regptr;
     volatile uint16_t reg_offset;
     volatile uint16_t reg_buf=0;
+    volatile uint16_t reg_mask=0;
 
-    /* ToDo: Add register contents check after WRITE */
-    
+    // Check if given ADC input index is within available range
     if (index >= ADC_ANINPUT_COUNT) return(0);
 
     // Determine register set offset
@@ -855,15 +855,20 @@ inline volatile uint16_t hsadc_set_adc_input_trigger_source(uint16_t index, ADTR
 
     if (index & 0x0001) {
     // Odd analog input numbers are located in the high-byte of the register word
-        reg_buf = ((trigger_source << 8) & REG_ADTRIGx_VALID_DATA_MSK);
+        reg_mask = REG_ADTRIGx_VALID_DATA_HIGH_MSK;
+        reg_buf = ((trigger_source << 8) & reg_mask);
         *regptr |= reg_buf;
     }
     else{
     // Even analog input numbers are located in the low-byte of the register word
-        reg_buf = (trigger_source & REG_ADTRIGx_VALID_DATA_MSK);
+        reg_mask = REG_ADTRIGx_VALID_DATA_LOW_MSK;
+        reg_buf = (trigger_source & reg_mask);
         *regptr |= reg_buf;
 
     }
+    
+    // Check if WRITE operation was successful
+    fres &= (volatile bool)((*regptr & reg_mask) == reg_buf);  
 
     return(1);
 }

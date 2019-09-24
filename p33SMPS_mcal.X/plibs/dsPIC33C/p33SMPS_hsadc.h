@@ -236,48 +236,49 @@
     #define ADC_CORE_AN0   0  // ADC input is assigned to dedicated ADC core (#0)
     #define ADC_CORE_AN1   1  // ADC input is assigned to dedicated ADC core (#1)
     #define ADC_CORE_AN2   2  // ADC input is assigned to shared ADC core (#2)
-    #define ADC_CORE_AN3   2  // ADC input is assigned to shared ADC core (#2)
-    #define ADC_CORE_AN4   2  // ADC input is assigned to shared ADC core (#2)
-    #define ADC_CORE_AN5   2  // ADC input is assigned to shared ADC core (#2)
-    #define ADC_CORE_AN6   2  // ADC input is assigned to shared ADC core (#2)
-    #define ADC_CORE_AN7   2  // ADC input is assigned to shared ADC core (#2)
-    #define ADC_CORE_AN8   2  // ADC input is assigned to shared ADC core (#2)
-    #define ADC_CORE_AN9   2  // ADC input is assigned to shared ADC core (#2)
-    #define ADC_CORE_AN10  2  // ADC input is assigned to shared ADC core (#2)
-    #define ADC_CORE_AN11  2  // ADC input is assigned to shared ADC core (#2)
+    #define ADC_CORE_AN3   2  // ADC input is assigned to shared ADC core (#3)
+    #define ADC_CORE_AN4   2  // ADC input is assigned to shared ADC core (#4)
+    #define ADC_CORE_AN5   2  // ADC input is assigned to shared ADC core (#5)
+    #define ADC_CORE_AN6   2  // ADC input is assigned to shared ADC core (#6)
+    #define ADC_CORE_AN7   2  // ADC input is assigned to shared ADC core (#7)
+    #define ADC_CORE_AN8   2  // ADC input is assigned to shared ADC core (#8)
+    #define ADC_CORE_AN9   2  // ADC input is assigned to shared ADC core (#9)
+    #define ADC_CORE_AN10  2  // ADC input is assigned to shared ADC core (#10)
+    #define ADC_CORE_AN11  2  // ADC input is assigned to shared ADC core (#11)
+
 
     #if defined (__P33SMPS_CK203__) || defined (__P33SMPS_CK503__) || \
         defined (__P33SMPS_CK205__) || defined (__P33SMPS_CK505__) || \
         defined (__P33SMPS_CK206__) || defined (__P33SMPS_CK506__) || \
         defined (__P33SMPS_CK208__) || defined (__P33SMPS_CK508__)
     // 36-/48-/64-/80-pin devices only
-    #define ADC_CORE_AN12  2  // ADC input is assigned to shared ADC core (#2)
-    #define ADC_CORE_AN13  2  // ADC input is assigned to shared ADC core (#2)
-    #define ADC_CORE_AN14  2  // ADC input is assigned to shared ADC core (#2)
-    #define ADC_CORE_AN15  2  // ADC input is assigned to shared ADC core (#2)
+    #define ADC_CORE_AN12  2  // ADC input is assigned to shared ADC core (#12)
+    #define ADC_CORE_AN13  2  // ADC input is assigned to shared ADC core (#13)
+    #define ADC_CORE_AN14  2  // ADC input is assigned to shared ADC core (#14)
+    #define ADC_CORE_AN15  2  // ADC input is assigned to shared ADC core (#15)
     #endif
 
     #if defined (__P33SMPS_CK205__) || defined (__P33SMPS_CK505__) || \
         defined (__P33SMPS_CK206__) || defined (__P33SMPS_CK506__) || \
         defined (__P33SMPS_CK208__) || defined (__P33SMPS_CK508__)
     // 48-/64-/80-pin devices only
-    #define ADC_CORE_AN16  2  // ADC input is assigned to shared ADC core (#2)
-    #define ADC_CORE_AN17  2  // ADC input is assigned to shared ADC core (#2)
-    #define ADC_CORE_AN18  2  // ADC input is assigned to shared ADC core (#2)
+    #define ADC_CORE_AN16  2  // ADC input is assigned to shared ADC core (#16)
+    #define ADC_CORE_AN17  2  // ADC input is assigned to shared ADC core (#17)
+    #define ADC_CORE_AN18  2  // ADC input is assigned to shared ADC core (#19)
     #endif
 
     #if defined (__P33SMPS_CK206__) || defined (__P33SMPS_CK506__) || \
         defined (__P33SMPS_CK208__) || defined (__P33SMPS_CK508__)
     // 64-/80-pin devices only
-    #define ADC_CORE_AN19  2  // ADC input is assigned to shared ADC core (#2)
+    #define ADC_CORE_AN19  2  // ADC input is assigned to shared ADC core (#20)
     #endif
     
     #if defined (__P33SMPS_CK208__) || defined (__P33SMPS_CK508__)
     // 80-pin devices only
-    #define ADC_CORE_AN20  2  // ADC input is assigned to shared ADC core (#2)
-    #define ADC_CORE_AN21  2  // ADC input is assigned to shared ADC core (#2)
-    #define ADC_CORE_AN22  2  // ADC input is assigned to shared ADC core (#2)
-    #define ADC_CORE_AN23  2  // ADC input is assigned to shared ADC core (#2)
+    #define ADC_CORE_AN20  2  // ADC input is assigned to shared ADC core (#21)
+    #define ADC_CORE_AN21  2  // ADC input is assigned to shared ADC core (#22)
+    #define ADC_CORE_AN22  2  // ADC input is assigned to shared ADC core (#23)
+    #define ADC_CORE_AN23  2  // ADC input is assigned to shared ADC core (#24)
     #endif
 
     typedef enum {
@@ -286,47 +287,47 @@
         ADCORE_AN1  = 1,  // ADC input is assigned to dedicated ADC core (#1)
         ADCORE_ANA1 = 1,  // ADC input is assigned to dedicated ADC core (#1)
         ADCORE_AN2  = 2,  // ADC input is assigned to shared ADC core (#2)
-        ADCORE_AN3  = 2,  // ADC input is assigned to shared ADC core (#2)
-        ADCORE_AN4  = 2,  // ADC input is assigned to shared ADC core (#2)
-        ADCORE_AN5  = 2,  // ADC input is assigned to shared ADC core (#2)
-        ADCORE_AN6  = 2,  // ADC input is assigned to shared ADC core (#2)
-        ADCORE_AN7  = 2,  // ADC input is assigned to shared ADC core (#2)
-        ADCORE_AN8  = 2,  // ADC input is assigned to shared ADC core (#2)
-        ADCORE_AN9  = 2,  // ADC input is assigned to shared ADC core (#2)
-        ADCORE_AN10 = 2,  // ADC input is assigned to shared ADC core (#2)
-        ADCORE_AN11 = 2,  // ADC input is assigned to shared ADC core (#2)
+        ADCORE_AN3  = 2,  // ADC input is assigned to shared ADC core (#3)
+        ADCORE_AN4  = 2,  // ADC input is assigned to shared ADC core (#4)
+        ADCORE_AN5  = 2,  // ADC input is assigned to shared ADC core (#5)
+        ADCORE_AN6  = 2,  // ADC input is assigned to shared ADC core (#6)
+        ADCORE_AN7  = 2,  // ADC input is assigned to shared ADC core (#7)
+        ADCORE_AN8  = 2,  // ADC input is assigned to shared ADC core (#8)
+        ADCORE_AN9  = 2,  // ADC input is assigned to shared ADC core (#9)
+        ADCORE_AN10 = 2,  // ADC input is assigned to shared ADC core (#10)
+        ADCORE_AN11 = 2,  // ADC input is assigned to shared ADC core (#11)
     #if defined (__P33SMPS_CK203__) || defined (__P33SMPS_CK503__) || \
         defined (__P33SMPS_CK205__) || defined (__P33SMPS_CK505__) || \
         defined (__P33SMPS_CK206__) || defined (__P33SMPS_CK506__) || \
         defined (__P33SMPS_CK208__) || defined (__P33SMPS_CK508__)
-        ADCORE_AN12 = 2,  // ADC input is assigned to shared ADC core (#2)
-        ADCORE_AN13 = 2,  // ADC input is assigned to shared ADC core (#2)
-        ADCORE_AN14 = 2,  // ADC input is assigned to shared ADC core (#2)
-        ADCORE_AN15 = 2,  // ADC input is assigned to shared ADC core (#2)
+        ADCORE_AN12 = 2,  // ADC input is assigned to shared ADC core (#12)
+        ADCORE_AN13 = 2,  // ADC input is assigned to shared ADC core (#13)
+        ADCORE_AN14 = 2,  // ADC input is assigned to shared ADC core (#14)
+        ADCORE_AN15 = 2,  // ADC input is assigned to shared ADC core (#15)
     #endif
 
     #if defined (__P33SMPS_CK205__) || defined (__P33SMPS_CK505__) || \
         defined (__P33SMPS_CK206__) || defined (__P33SMPS_CK506__) || \
         defined (__P33SMPS_CK208__) || defined (__P33SMPS_CK508__)
-        ADCORE_AN16 = 2,  // ADC input is assigned to shared ADC core (#2)
-        ADCORE_AN17 = 2,  // ADC input is assigned to shared ADC core (#2)
-        ADCORE_AN18 = 2,  // ADC input is assigned to shared ADC core (#2)
+        ADCORE_AN16 = 2,  // ADC input is assigned to shared ADC core (#16)
+        ADCORE_AN17 = 2,  // ADC input is assigned to shared ADC core (#17)
+        ADCORE_AN18 = 2,  // ADC input is assigned to shared ADC core (#18)
     #endif
 
     #if defined (__P33SMPS_CK206__) || defined (__P33SMPS_CK506__) || \
         defined (__P33SMPS_CK208__) || defined (__P33SMPS_CK508__)
-        ADCORE_AN19 = 2,  // ADC input is assigned to shared ADC core (#2)
+        ADCORE_AN19 = 2,  // ADC input is assigned to shared ADC core (#19)
     #endif
     
     #if defined (__P33SMPS_CK208__) || defined (__P33SMPS_CK508__)
-        ADCORE_AN20 = 2,  // ADC input is assigned to shared ADC core (#2)
-        ADCORE_AN21 = 2,  // ADC input is assigned to shared ADC core (#2)
-        ADCORE_AN22 = 2,  // ADC input is assigned to shared ADC core (#2)
-        ADCORE_AN23 = 2,  // ADC input is assigned to shared ADC core (#2)
+        ADCORE_AN20 = 2,  // ADC input is assigned to shared ADC core (#20)
+        ADCORE_AN21 = 2,  // ADC input is assigned to shared ADC core (#21)
+        ADCORE_AN22 = 2,  // ADC input is assigned to shared ADC core (#22)
+        ADCORE_AN23 = 2,  // ADC input is assigned to shared ADC core (#23)
     #endif
 
-        ADCORE_AN24 = 2,  // ADC input is assigned to shared ADC core (#2) => Temperature Sensor
-        ADCORE_AN25 = 2   // ADC input is assigned to shared ADC core (#2) => Bandgap Reference
+        ADCORE_AN24 = 2,  // ADC input is assigned to shared ADC core (#24) => Temperature Sensor
+        ADCORE_AN25 = 2   // ADC input is assigned to shared ADC core (#25) => Bandgap Reference
     }ADC_CORE_INDEX_e;
 
 #else
@@ -3990,6 +3991,9 @@ typedef union {
 #define REG_ADTRIGx_VALID_DATA_MSK          0b0001111100011111 // =0x1F1F
 #define REG_ADTRIGxH_VALID_DATA_MSK         0b0001111100000000 // =0x1F00
 
+#define REG_ADTRIGx_VALID_DATA_LOW_MSK      0b0000000000011111 // =0x001F
+#define REG_ADTRIGx_VALID_DATA_HIGH_MSK     0b0001111100000000 // =0x1F00
+
 
 #if defined (__P33SMPS_EP__)
 
@@ -4921,11 +4925,12 @@ typedef union {
 
 // ==============================================================================================
 // Global macros 
+// ==============================================================================================
 #define ADCBUFx_ADDR(x)  ((x) * ((volatile uint16_t)&ADCBUF1 - (volatile uint16_t)&ADCBUF0)) /// ADCBUFx_ADDR: ADC result buffer address
 
 
 // ==============================================================================================
-// // High Speed ADC Core Settings Data Structure (Dedicated ADC Code 0-6 and Shared ADC Core)
+// High Speed ADC Core Settings Data Structure (Dedicated ADC Code 0-6 and Shared ADC Core)
 // ==============================================================================================
 
 typedef enum {
@@ -5019,7 +5024,7 @@ typedef struct {
 
 
 // ==============================================================================================
-// // High Speed ADC Input Channel Settings Data Structure (ANx inputs 0-31)
+// High Speed ADC Input Channel Settings Data Structure (ANx inputs 0-31)
 // ==============================================================================================
 
 typedef enum {
@@ -5043,11 +5048,13 @@ typedef struct {
     volatile ADMOD_OUTPUT_DATA_MODE_e data_mode : 1;    // Bit 2: Input ANx output data mode bit
     volatile ADIE_IE_e interrupt_enable : 1;            // Bit 3: Input ANx interrupt enable bit
     volatile ADEIE_EIEN_e early_interrupt_enable : 1;   // Bit 4: Input ANx early interrupt enable bit
-    volatile ADCOREx_EISEL_e early_interrupt_tad : 3;   // Bit 5: Input ANx early interrupt period selection bits
-    volatile ADLVLTRG_e trigger_mode : 1;               // Bit 6: Level Trigger for corresponding Analog Input Enable bit
-    volatile ADTRIG_TRGSRC_e trigger_source : 5;        // Bit 11-7: Input ANx trigger source bits
+    volatile ADLVLTRG_e trigger_mode : 1;               // Bit 5: Level Trigger for corresponding Analog Input Enable bit
+    volatile ADTRIG_TRGSRC_e trigger_source : 5;        // Bit 10-6: Input ANx trigger source bits
     volatile unsigned : 1;                              // Bit 11: (reserved)
     volatile unsigned : 1;                              // Bit 12: (reserved)
+    volatile unsigned : 1;                              // Bit 13: (reserved)
+    volatile unsigned : 1;                              // Bit 14: (reserved)
+    volatile unsigned : 1;                              // Bit 15: (reserved)
 }__attribute__((packed)) ANIN_CONFIG_t; // ADC Input Channel Settings 
 
 typedef union {
@@ -5060,8 +5067,9 @@ typedef struct {
     volatile REGBLK_ANIN_CONFIG_t config; // Analog input configuration
 }__attribute__((packed)) HSADC_INPUT_CONFIG_t; // ADC Input Channel Settings 
 
-
+// ==============================================================================================
 // ADC Digital Comparator Object
+// ==============================================================================================
 
 typedef struct {
     volatile REGBLK_ADCMPxCON_t ADCMPxCON; // ADC digital comparator configuration
@@ -5070,7 +5078,9 @@ typedef struct {
     volatile uint16_t ADCMPxHI;   // ADC digital comparator Upper Threshold register
 }__attribute__((packed)) HSADC_ADCMP_CONFIG_t; // ADC DIGITAL COMPARATOR Settings 
 
+// ==============================================================================================
 // ADC Digital Comparator Object
+// ==============================================================================================
 
 typedef struct {
     volatile REGBLK_ADFLxCON_t ADFLxCON;    // ADC digital filter configuration
@@ -5078,7 +5088,9 @@ typedef struct {
 }__attribute__((packed)) HSADC_ADFLT_CONFIG_t; // ADC DIGITAL FILTER Settings 
 
 
-// Prototypes
+// ==============================================================================================
+// Global Function Prototypes
+// ==============================================================================================
 extern volatile uint16_t hsadc_adc_module_initialize( HSADC_MODULE_CONFIG_t adc_cfg );
 extern volatile uint16_t hsadc_adc_core_initialize( HSADC_ADCOREx_CONFIG_t adcore_cfg );
 extern volatile uint16_t hsadc_adc_input_initialize( HSADC_INPUT_CONFIG_t adin_cfg );
@@ -5092,7 +5104,6 @@ extern volatile uint16_t hsadc_module_reset(void);
 
 extern volatile uint16_t hsadc_adc_core_power_on(uint16_t index);
 extern volatile uint16_t hsadc_adc_cores_check_ready(void);
-
 
 
 #if defined (__P33SMPS_EP__)
