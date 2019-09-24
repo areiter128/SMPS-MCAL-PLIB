@@ -26,12 +26,13 @@
 
 // Device header file
 #include <xc.h>
-
+#include <stdint.h>
+#include <stdbool.h>
 
 /*!p33GS_irq.c
  * ************************************************************************************************
  * Summary:
- * Driver file for the dsPIC33ExxGS Interrupt Controller SFRs
+ * Driver file for the dsPIC33 Interrupt Controller SFRs
  *
  * Description:
  * The embedded Interrupt Controller offers some configuration options. This additional
@@ -53,22 +54,31 @@
  * are set here.
  * ***********************************************************************************************/
 
-inline volatile uint16_t gsirq_init_irq(uint16_t regINTCON1, uint16_t regINTCON2, uint16_t regINTCON3)
+inline volatile uint16_t gsirq_irq_initialize(INTERRUPT_CONFIG_t intcon)
 {
 
-    volatile uint16_t reg_buf=0, fres=0;
+    volatile uint16_t fres=0;
+    volatile uint16_t reg_buf=0;
 
-	reg_buf = (regINTCON1 & REG_INTCON1_WRITE_BIT_MSK);	// Status-bits will be masked out, flag bits will be reset
+	reg_buf = (intcon.intcon1.value & REG_INTCON1_WRITE_BIT_MSK);
 	INTCON1 = reg_buf;                                  // Read register contents
-	if((INTCON1 & REG_INTCON1_WRITE_BIT_MSK) == reg_buf) fres = 1; // Compare 
+	fres &= (volatile bool)((INTCON1 & REG_INTCON1_WRITE_BIT_MSK) == reg_buf); // Compare 
 
-	reg_buf = (regINTCON2 & REG_INTCON2_WRITE_BIT_MSK);	// Status-bits will be masked out
+	reg_buf = (intcon.intcon2.value & REG_INTCON2_WRITE_BIT_MSK);
 	INTCON2 = reg_buf;	
-	if((INTCON2 & REG_INTCON2_VALID_BIT_MSK) == reg_buf) fres &= 1;
+	fres &= (volatile bool)((INTCON2 & REG_INTCON2_VALID_BIT_MSK) == reg_buf);
 
-	reg_buf = (regINTCON3 & REG_INTCON3_WRITE_BIT_MSK);	// Status-bits will be masked out
+	reg_buf = (intcon.intcon3.value & REG_INTCON3_WRITE_BIT_MSK);
 	INTCON3 = reg_buf;	
-	if((INTCON3 & REG_INTCON3_VALID_BIT_MSK) == reg_buf) fres &= 1;
+	fres &= (volatile bool)((INTCON3 & REG_INTCON3_VALID_BIT_MSK) == reg_buf);
+
+    reg_buf = (intcon.intcon4.value & REG_INTCON4_WRITE_BIT_MSK);
+	INTCON4 = reg_buf;	
+	fres &= (volatile bool)((INTCON4 & REG_INTCON4_VALID_BIT_MSK) == reg_buf);
+
+    reg_buf = (intcon.inttreg.value & REG_INTTREG_VALID_BIT_MSK);
+	INTTREG = reg_buf;	
+	fres &= (volatile bool)((INTTREG & REG_INTTREG_VALID_BIT_MSK) == reg_buf);
 
 	return(fres);
 	
@@ -102,6 +112,26 @@ inline volatile uint16_t gsirq_get_current_irq_priority_level(void)
 	return(reg_buf);
 	
 }
+/*!gsirq_get_current_irq_vector
+ * ************************************************************************************************
+ * Summary:
+ * Reads the recent interrupt vector number from INTTREG register
+ *
+ * Parameters:
+ *	(none)
+ *
+ * Returns:
+ *  uint16_t (0...15)
+ * 
+ * Description:
+ * Read the recent active, highest priority interrupt vector from the INTTREG register and returns
+ * a unsigned integer number
+ * ***********************************************************************************************/
+
+inline volatile uint16_t gsirq_get_current_irq_vector(void)
+{
+    return(INTTREGbits.VECNUM);
+}
 
 /*!gsirq_init_soft_traps
  * ************************************************************************************************
@@ -119,7 +149,9 @@ inline volatile uint16_t gsirq_get_current_irq_priority_level(void)
  * and the catastrophic overflow event trap. (on/off options) 
  * ***********************************************************************************************/
 
-inline volatile uint16_t gsirq_init_soft_traps(uint16_t accumulator_a_overflow_trap_enable, uint16_t accumulator_b_overflow_trap_enable, 
+inline volatile uint16_t gsirq_soft_traps_initialize(
+                    uint16_t accumulator_a_overflow_trap_enable, 
+                    uint16_t accumulator_b_overflow_trap_enable, 
                     uint16_t accumulator_catastrophic_overflow_trap_enable)
 {
     
