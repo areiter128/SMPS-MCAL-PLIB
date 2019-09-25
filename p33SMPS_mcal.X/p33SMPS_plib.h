@@ -35,7 +35,7 @@
 #include <stdint.h> // For uint16_t definition                      
 #include <stdbool.h>  // For true/false definition   
 
-#include "plibs/p33SMPS_devices.h" // Triaging dsPIC33 device families
+#include "plibs/p33SMPS_devices.h" // Triage dsPIC33 device families
 
 // include peripheral library headers for the selected device
 #if defined (__P33SMPS_CH__) || defined (__P33SMPS_CK__)

@@ -980,29 +980,29 @@ typedef enum
 
 typedef union 
 {
-	volatile REG_UxMODE_BIT_FIELD_e reg_block;
-	volatile UxMODE_CONTROL_REGISTER_BIT_FIELD_t flags;
+	volatile REG_UxMODE_BIT_FIELD_e value;
+	volatile UxMODE_CONTROL_REGISTER_BIT_FIELD_t bits;
 }UxMODE_CONTROL_REGISTER_t;
 
 #if defined (__P33SMPS_CH__) || defined (__P33SMPS_CK__)
 typedef union 
 {
-	volatile REG_UxMODEH_BIT_FIELD_e reg_block;
-	volatile UxMODEH_CONTROL_REGISTER_BIT_FIELD_t flags;
+	volatile REG_UxMODEH_BIT_FIELD_e value;
+	volatile UxMODEH_CONTROL_REGISTER_BIT_FIELD_t bits;
 }UxMODEH_CONTROL_REGISTER_t;
 #endif
 
 typedef union 
 {
-	volatile REG_UxSTA_BIT_FIELD_e reg_block;
-	volatile UxSTA_CONTROL_REGISTER_BIT_FIELD_t flags;
+	volatile REG_UxSTA_BIT_FIELD_e value;
+	volatile UxSTA_CONTROL_REGISTER_BIT_FIELD_t bits;
 }UxSTA_CONTROL_REGISTER_t;
 
 #if defined (__P33SMPS_CH__) || defined (__P33SMPS_CK__)
 typedef union 
 {
-	volatile REG_UxSTAH_BIT_FIELD_e reg_block;
-	volatile UxSTAH_CONTROL_REGISTER_BIT_FIELD_t flags;
+	volatile REG_UxSTAH_BIT_FIELD_e value;
+	volatile UxSTAH_CONTROL_REGISTER_BIT_FIELD_t bits;
 }UxSTAH_CONTROL_REGISTER_t;
 #endif
 

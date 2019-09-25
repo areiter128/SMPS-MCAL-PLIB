@@ -356,8 +356,8 @@ typedef enum
 
 typedef union 
 {
-	volatile uint16_t reg_block;
-	volatile TxCON_CONTROL_REGISTER_BIT_FIELD_t flags;
+	volatile uint16_t value;
+	volatile TxCON_CONTROL_REGISTER_BIT_FIELD_t bits;
 }TxCON_CONTROL_REGISTER_t;
 
 

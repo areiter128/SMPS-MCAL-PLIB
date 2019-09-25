@@ -133,7 +133,7 @@ inline volatile uint16_t gstmr_init_timer16b(uint16_t index, TxCON_CONTROL_REGIS
         TIMER1_ISR_ENABLE	= 0;			// disable interrupt
         TIMER1_ISR_PRIORITY	= isr_priority;	// set interrupt priority
         PR1		= (unsigned int)per_buf;	// Timer Period
-        T1CON	= ((reg_buf | regTCON.reg_block) &	// Pre-Scaler 1:1, 1:8, 1:64 or 1:256
+        T1CON	= ((reg_buf | regTCON.value) &	// Pre-Scaler 1:1, 1:8, 1:64 or 1:256
                     tmr_reg_msk);	// apply user settings
 
         break;
@@ -145,7 +145,7 @@ inline volatile uint16_t gstmr_init_timer16b(uint16_t index, TxCON_CONTROL_REGIS
         TIMER2_ISR_PRIORITY	= isr_priority;	// set interrupt priority
         PR2		= (unsigned int)per_buf;	// Timer Period
         T2CON	= reg_buf 			|		// Pre-Scaler 1:1, 1:8, 1:64 or 1:256
-                  (regTCON.reg_block & tmr_reg_msk);	// apply user settings
+                  (regTCON.value & tmr_reg_msk);	// apply user settings
 
         break;
 
@@ -158,7 +158,7 @@ inline volatile uint16_t gstmr_init_timer16b(uint16_t index, TxCON_CONTROL_REGIS
         TIMER3_ISR_PRIORITY	= isr_priority;	// set interrupt priority
         PR3		= (unsigned int)per_buf;	// Timer Period
         T3CON	= reg_buf 			|		// Pre-Scaler 1:1, 1:8, 1:64 or 1:256
-                  (regTCON.reg_block & tmr_reg_msk);	// apply user settings
+                  (regTCON.value & tmr_reg_msk);	// apply user settings
 
         break;
 
@@ -171,7 +171,7 @@ inline volatile uint16_t gstmr_init_timer16b(uint16_t index, TxCON_CONTROL_REGIS
         TIMER4_ISR_PRIORITY	= isr_priority;	// set interrupt priority
         PR4		= (unsigned int)per_buf;	// Timer Period
         T4CON	= reg_buf 			|		// Pre-Scaler 1:1, 1:8, 1:64 or 1:256
-                  (regTCON.reg_block & tmr_reg_msk);	// apply user settings
+                  (regTCON.value & tmr_reg_msk);	// apply user settings
 
         break;
 
@@ -184,7 +184,7 @@ inline volatile uint16_t gstmr_init_timer16b(uint16_t index, TxCON_CONTROL_REGIS
         TIMER5_ISR_PRIORITY	= isr_priority;	// set interrupt priority
         PR5		= (unsigned int)per_buf;	// Timer Period
         T5CON	= reg_buf 			|		// Pre-Scaler 1:1, 1:8, 1:64 or 1:256
-                  (regTCON.reg_block & tmr_reg_msk);	// apply user settings
+                  (regTCON.value & tmr_reg_msk);	// apply user settings
 
         break;
 	
@@ -249,7 +249,7 @@ inline volatile uint16_t gstmr_get_tmr_config(uint16_t index, TxCON_CONTROL_REGI
     }
     
     // decode period to full length
-    switch(regTCON->flags.tckps)
+    switch(regTCON->bits.tckps)
     {
         case TCKPS_DIV_1_to_1:      period  = (volatile uint32_t)reg_buf; break;
         case TCKPS_DIV_1_to_8:      period  = (volatile uint32_t)(reg_buf<<3); break;

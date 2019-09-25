@@ -85,10 +85,10 @@ inline volatile uint16_t smps_uart_init(uint16_t uart_instance, UxMODE_CONTROL_R
 	reg_offset = ((uart_instance-1) * UART_INDEX_REG_OFFSET);
 
     regptr  = (volatile uint16_t *)&U1MODE;
-    *regptr = (((uint16_t)regUxMODE.reg_block & UART_UxMODE_REG_WRITE_MASK) & UART_UxMODE_REG_OFF_MASK);	// UART ENABLE is masked out !!!
+    *regptr = (((uint16_t)regUxMODE.value & UART_UxMODE_REG_WRITE_MASK) & UART_UxMODE_REG_OFF_MASK);	// UART ENABLE is masked out !!!
     
     regptr  = (volatile uint16_t *)&U1STA;
-    *regptr = ((uint16_t)regUxSTA.reg_block & UART_UxSTA_REG_WRITE_MASK);	// may reset all status bits
+    *regptr = ((uint16_t)regUxSTA.value & UART_UxSTA_REG_WRITE_MASK);	// may reset all status bits
 
     return(1);
 }
