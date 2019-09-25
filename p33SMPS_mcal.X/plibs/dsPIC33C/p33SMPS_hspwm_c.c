@@ -106,102 +106,102 @@ volatile uint16_t hspwm_init_pwm_module ( HSPWM_C_MODULE_CONFIG_t pwm_config ) {
     // write register configuration
     regptr16 = (volatile uint16_t*) &PCLKCON; // Get target address
     *regptr16 = (pwm_config.PCLKCON.value & REG_PCLKCON_VALID_DATA_WRITE_MASK); // write value with bit-mask
-    fres &= ((*regptr16 & REG_PCLKCON_VALID_DATA_READ_MASK) == (pwm_config.PCLKCON.value & REG_PCLKCON_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
+    fres &= ((*regptr16 & REG_PCLKCON_VALID_DATA_WRITE_MASK) == (pwm_config.PCLKCON.value & REG_PCLKCON_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
 
     // write register configuration
     regptr16 = (volatile uint16_t*) &FSCL; // Get target address
     *regptr16 = (pwm_config.FSCL.value & REG_FSCL_VALID_DATA_WRITE_MASK); // write value with bit-mask
-    fres &= ((*regptr16 & REG_FSCL_VALID_DATA_READ_MASK) == (pwm_config.FSCL.value & REG_FSCL_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
+    fres &= ((*regptr16 & REG_FSCL_VALID_DATA_WRITE_MASK) == (pwm_config.FSCL.value & REG_FSCL_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
 
     // write register configuration
     regptr16 = (volatile uint16_t*) &FSMINPER; // Get target address
     *regptr16 = (pwm_config.FSMINPER.value & REG_FSMINPER_VALID_DATA_WRITE_MASK); // write value with bit-mask
-    fres &= ((*regptr16 & REG_FSMINPER_VALID_DATA_READ_MASK) == (pwm_config.FSMINPER.value & REG_FSMINPER_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
+    fres &= ((*regptr16 & REG_FSMINPER_VALID_DATA_WRITE_MASK) == (pwm_config.FSMINPER.value & REG_FSMINPER_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
     
     // write register configuration
     regptr16 = (volatile uint16_t*) &MPHASE; // Get target address
     *regptr16 = (pwm_config.MPHASE.value & REG_MPHASE_VALID_DATA_WRITE_MASK); // write value with bit-mask
-    fres &= ((*regptr16 & REG_MPHASE_VALID_DATA_READ_MASK) == (pwm_config.MPHASE.value & REG_MPHASE_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
+    fres &= ((*regptr16 & REG_MPHASE_VALID_DATA_WRITE_MASK) == (pwm_config.MPHASE.value & REG_MPHASE_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
 
     // write register configuration
     regptr16 = (volatile uint16_t*) &MDC; // Get target address
     *regptr16 = (pwm_config.MDC.value & REG_MDC_VALID_DATA_WRITE_MASK); // write value with bit-mask
-    fres &= ((*regptr16 & REG_MDC_VALID_DATA_READ_MASK) == (pwm_config.MDC.value & REG_MDC_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
+    fres &= ((*regptr16 & REG_MDC_VALID_DATA_WRITE_MASK) == (pwm_config.MDC.value & REG_MDC_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
 
     // write register configuration
     regptr16 = (volatile uint16_t*) &MPER; // Get target address
     *regptr16 = (pwm_config.MPER.value & REG_MPER_VALID_DATA_WRITE_MASK); // write value with bit-mask
-    fres &= ((*regptr16 & REG_MPER_VALID_DATA_READ_MASK) == (pwm_config.MPER.value & REG_MPER_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
+    fres &= ((*regptr16 & REG_MPER_VALID_DATA_WRITE_MASK) == (pwm_config.MPER.value & REG_MPER_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
 
     // write register configuration
     regptr16 = (volatile uint16_t*) &LFSR; // Get target address
     *regptr16 = (pwm_config.LFSR.value & REG_LFSR_VALID_DATA_WRITE_MASK); // write value with bit-mask
-    fres &= ((*regptr16 & REG_LFSR_VALID_DATA_READ_MASK) == (pwm_config.LFSR.value & REG_LFSR_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
+    fres &= ((*regptr16 & REG_LFSR_VALID_DATA_WRITE_MASK) == (pwm_config.LFSR.value & REG_LFSR_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
 
     // write register configuration
     regptr32 = (volatile uint32_t*) ((volatile uint8_t*)&CMBTRIGL); // Get target address
     *regptr32 = (pwm_config.CMBTRIG.value & REG_CMBTRIG_VALID_DATA_WRITE_MASK); // write value with bit-mask
-    fres &= ((*regptr16 & REG_CMBTRIG_VALID_DATA_READ_MASK) == (pwm_config.CMBTRIG.value & REG_CMBTRIG_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
+    fres &= ((*regptr16 & REG_CMBTRIG_VALID_DATA_WRITE_MASK) == (pwm_config.CMBTRIG.value & REG_CMBTRIG_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
 
     // write register configuration
     regptr16 = (volatile uint16_t*) &LOGCONA; // Get target address
     *regptr16 = (pwm_config.LOGCONA.value & REG_LOGCONy_VALID_DATA_WRITE_MASK); // write value with bit-mask
-    fres &= ((*regptr16 & REG_LOGCONy_VALID_DATA_READ_MASK) == (pwm_config.LOGCONA.value & REG_LOGCONy_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
+    fres &= ((*regptr16 & REG_LOGCONy_VALID_DATA_WRITE_MASK) == (pwm_config.LOGCONA.value & REG_LOGCONy_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
     
     // write register configuration
     regptr16 = (volatile uint16_t*) &LOGCONB; // Get target address
     *regptr16 = (pwm_config.LOGCONB.value & REG_LOGCONy_VALID_DATA_WRITE_MASK); // write value with bit-mask
-    fres &= ((*regptr16 & REG_LOGCONy_VALID_DATA_READ_MASK) == (pwm_config.LOGCONB.value & REG_LOGCONy_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
+    fres &= ((*regptr16 & REG_LOGCONy_VALID_DATA_WRITE_MASK) == (pwm_config.LOGCONB.value & REG_LOGCONy_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
 
     // write register configuration
     regptr16 = (volatile uint16_t*) &LOGCONC; // Get target address
     *regptr16 = (pwm_config.LOGCONC.value & REG_LOGCONy_VALID_DATA_WRITE_MASK); // write value with bit-mask
-    fres &= ((*regptr16 & REG_LOGCONy_VALID_DATA_READ_MASK) == (pwm_config.LOGCONC.value & REG_LOGCONy_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
+    fres &= ((*regptr16 & REG_LOGCONy_VALID_DATA_WRITE_MASK) == (pwm_config.LOGCONC.value & REG_LOGCONy_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
     
     // write register configuration
     regptr16 = (volatile uint16_t*) &LOGCOND; // Get target address
     *regptr16 = (pwm_config.LOGCOND.value & REG_LOGCONy_VALID_DATA_WRITE_MASK); // write value with bit-mask
-    fres &= ((*regptr16 & REG_LOGCONy_VALID_DATA_READ_MASK) == (pwm_config.LOGCOND.value & REG_LOGCONy_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
+    fres &= ((*regptr16 & REG_LOGCONy_VALID_DATA_WRITE_MASK) == (pwm_config.LOGCOND.value & REG_LOGCONy_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
     
     // write register configuration
     regptr16 = (volatile uint16_t*) &LOGCONE; // Get target address
     *regptr16 = (pwm_config.LOGCONE.value & REG_LOGCONy_VALID_DATA_WRITE_MASK); // write value with bit-mask
-    fres &= ((*regptr16 & REG_LOGCONy_VALID_DATA_READ_MASK) == (pwm_config.LOGCONE.value & REG_LOGCONy_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
+    fres &= ((*regptr16 & REG_LOGCONy_VALID_DATA_WRITE_MASK) == (pwm_config.LOGCONE.value & REG_LOGCONy_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
     
     // write register configuration
     regptr16 = (volatile uint16_t*) &LOGCONF; // Get target address
     *regptr16 = (pwm_config.LOGCONF.value & REG_LOGCONy_VALID_DATA_WRITE_MASK); // write value with bit-mask
-    fres &= ((*regptr16 & REG_LOGCONy_VALID_DATA_READ_MASK) == (pwm_config.LOGCONF.value & REG_LOGCONy_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
+    fres &= ((*regptr16 & REG_LOGCONy_VALID_DATA_WRITE_MASK) == (pwm_config.LOGCONF.value & REG_LOGCONy_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
     
     // write register configuration
     regptr16 = (volatile uint16_t*) &PWMEVTA; // Get target address
     *regptr16 = (pwm_config.PWMEVTA.value & REG_PWMEVTy_VALID_DATA_WRITE_MASK); // write value with bit-mask
-    fres &= ((*regptr16 & REG_PWMEVTy_VALID_DATA_READ_MASK) == (pwm_config.PWMEVTA.value & REG_PWMEVTy_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
+    fres &= ((*regptr16 & REG_PWMEVTy_VALID_DATA_WRITE_MASK) == (pwm_config.PWMEVTA.value & REG_PWMEVTy_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
 
     // write register configuration
     regptr16 = (volatile uint16_t*) &PWMEVTB; // Get target address
     *regptr16 = (pwm_config.PWMEVTB.value & REG_PWMEVTy_VALID_DATA_WRITE_MASK); // write value with bit-mask
-    fres &= ((*regptr16 & REG_PWMEVTy_VALID_DATA_READ_MASK) == (pwm_config.PWMEVTB.value & REG_PWMEVTy_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
+    fres &= ((*regptr16 & REG_PWMEVTy_VALID_DATA_WRITE_MASK) == (pwm_config.PWMEVTB.value & REG_PWMEVTy_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
 
     // write register configuration
     regptr16 = (volatile uint16_t*) &PWMEVTC; // Get target address
     *regptr16 = (pwm_config.PWMEVTC.value & REG_PWMEVTy_VALID_DATA_WRITE_MASK); // write value with bit-mask
-    fres &= ((*regptr16 & REG_PWMEVTy_VALID_DATA_READ_MASK) == (pwm_config.PWMEVTC.value & REG_PWMEVTy_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
+    fres &= ((*regptr16 & REG_PWMEVTy_VALID_DATA_WRITE_MASK) == (pwm_config.PWMEVTC.value & REG_PWMEVTy_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
 
     // write register configuration
     regptr16 = (volatile uint16_t*) &PWMEVTD; // Get target address
     *regptr16 = (pwm_config.PWMEVTD.value & REG_PWMEVTy_VALID_DATA_WRITE_MASK); // write value with bit-mask
-    fres &= ((*regptr16 & REG_PWMEVTy_VALID_DATA_READ_MASK) == (pwm_config.PWMEVTD.value & REG_PWMEVTy_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
+    fres &= ((*regptr16 & REG_PWMEVTy_VALID_DATA_WRITE_MASK) == (pwm_config.PWMEVTD.value & REG_PWMEVTy_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
 
     // write register configuration
     regptr16 = (volatile uint16_t*) &PWMEVTE; // Get target address
     *regptr16 = (pwm_config.PWMEVTE.value & REG_PWMEVTy_VALID_DATA_WRITE_MASK); // write value with bit-mask
-    fres &= ((*regptr16 & REG_PWMEVTy_VALID_DATA_READ_MASK) == (pwm_config.PWMEVTE.value & REG_PWMEVTy_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
+    fres &= ((*regptr16 & REG_PWMEVTy_VALID_DATA_WRITE_MASK) == (pwm_config.PWMEVTE.value & REG_PWMEVTy_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
 
     // write register configuration
     regptr16 = (volatile uint16_t*) &PWMEVTF; // Get target address
     *regptr16 = (pwm_config.PWMEVTF.value & REG_PWMEVTy_VALID_DATA_WRITE_MASK); // write value with bit-mask
-    fres &= ((*regptr16 & REG_PWMEVTy_VALID_DATA_READ_MASK) == (pwm_config.PWMEVTF.value & REG_PWMEVTy_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
+    fres &= ((*regptr16 & REG_PWMEVTy_VALID_DATA_WRITE_MASK) == (pwm_config.PWMEVTF.value & REG_PWMEVTy_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
 
     return(fres);
 }
@@ -234,27 +234,27 @@ volatile uint16_t hspwm_init_pwm_generator ( uint16_t instance, HSPWM_C_GENERATO
     // write PWM generator instance register configuration
     regptr32 = (volatile uint32_t*) ((volatile uint8_t*)&PG1CONL + reg_offset); // capture register address
     *regptr32 = (pg_config.PGxCON.value & REG_PGxCON_VALID_DATA_WRITE_MASK); // write value to registers
-    fres &= ((*regptr32 & REG_PGxCON_VALID_DATA_READ_MASK) == (pg_config.PGxCON.value & REG_PGxCON_VALID_DATA_WRITE_MASK)); // read and compare register values
+    fres &= ((*regptr32 & REG_PGxCON_VALID_DATA_WRITE_MASK) == (pg_config.PGxCON.value & REG_PGxCON_VALID_DATA_WRITE_MASK)); // read and compare register values
     
     // write PWM generator instance register configuration
     regptr16 = (volatile uint16_t*) ((volatile uint8_t*)&PG1STAT + reg_offset); // capture register address
     *regptr16 = (pg_config.PGxSTAT.value & REG_PGxSTAT_VALID_DATA_WRITE_MASK); // write value to registers
-    fres &= ((*regptr32 & REG_PGxSTAT_VALID_DATA_READ_MASK) == (pg_config.PGxSTAT.value & REG_PGxSTAT_VALID_DATA_WRITE_MASK)); // read and compare register values
+    fres &= ((*regptr16 & REG_PGxSTAT_VALID_DATA_WRITE_MASK) == (pg_config.PGxSTAT.value & REG_PGxSTAT_VALID_DATA_WRITE_MASK)); // read and compare register values
 
     // write PWM generator instance register configuration
     regptr32 = (volatile uint32_t*) ((volatile uint8_t*)&PG1IOCONL + reg_offset); // capture register address
     *regptr32 = (pg_config.PGxIOCON.value & REG_PGxIOCON_VALID_DATA_WRITE_MASK); // write value to registers
-    fres &= ((*regptr32 & REG_PGxIOCON_VALID_DATA_READ_MASK) == (pg_config.PGxSTAT.value & REG_PGxIOCON_VALID_DATA_WRITE_MASK)); // read and compare register values
+    fres &= ((*regptr32 & REG_PGxIOCON_VALID_DATA_WRITE_MASK) == (pg_config.PGxIOCON.value & REG_PGxIOCON_VALID_DATA_WRITE_MASK)); // read and compare register values
 
     // write PWM generator instance register configuration
     regptr32 = (volatile uint32_t*) ((volatile uint8_t*)&PG1EVTL + reg_offset); // capture register address
     *regptr32 = (pg_config.PGxEVT.value & REG_PGxEVTy_VALID_DATA_WRITE_MASK); // write value to registers
-    fres &= ((*regptr32 & REG_PGxEVTy_VALID_DATA_READ_MASK) == (pg_config.PGxEVT.value & REG_PGxEVTy_VALID_DATA_WRITE_MASK)); // read and compare register values
+    fres &= ((*regptr32 & REG_PGxEVTy_VALID_DATA_WRITE_MASK) == (pg_config.PGxEVT.value & REG_PGxEVTy_VALID_DATA_WRITE_MASK)); // read and compare register values
 
     // write PWM generator instance register configuration
     regptr32 = (volatile uint32_t*) ((volatile uint8_t*)&PG1FPCIL + reg_offset); // capture register address
     *regptr32 = (pg_config.PGxFPCI.value & REG_PGxyPCI_VALID_DATA_WRITE_MASK); // write value to registers
-    fres &= ((*regptr32 & REG_PGxyPCI_VALID_DATA_READ_MASK) == (pg_config.PGxFPCI.value & REG_PGxyPCI_VALID_DATA_WRITE_MASK)); // read and compare register values
+    fres &= ((*regptr32 & REG_PGxyPCI_VALID_DATA_WRITE_MASK) == (pg_config.PGxFPCI.value & REG_PGxyPCI_VALID_DATA_WRITE_MASK)); // read and compare register values
 
     return(fres);
 }
@@ -300,21 +300,25 @@ inline volatile uint16_t hspwm_init_independent_pwm(
     reg_offset = (instance-1) * ((volatile uint16_t)&PG2CONL - (volatile uint16_t)&PG1CONL);
     regptr32 = (volatile uint32_t*) ((volatile uint8_t*)&PG1CONL + reg_offset);
     *regptr32 = (regPGxCON.value & REG_PGxCON_VALID_DATA_WRITE_MASK);
+    fres &= ((*regptr32 & REG_PGxCON_VALID_DATA_WRITE_MASK) == (regPGxCON.value & REG_PGxCON_VALID_DATA_WRITE_MASK)); // read and compare register values
 
     // write PWM instance event configuration
     reg_offset = (instance-1) * ((volatile uint16_t)&PG2EVTL - (volatile uint16_t)&PG1EVTL);
     regptr32 = (volatile uint32_t*) ((volatile uint8_t*)&PG1EVTL + reg_offset);
     *regptr32 = (regPGxEVT.value & REG_PGxEVTy_VALID_DATA_WRITE_MASK);
+    fres &= ((*regptr32 & REG_PGxEVTy_VALID_DATA_WRITE_MASK) == (regPGxEVT.value & REG_PGxEVTy_VALID_DATA_WRITE_MASK)); // read and compare register values
 
     // write IO configuration
     reg_offset = (instance-1) * ((volatile uint16_t)&PG2IOCONL - (volatile uint16_t)&PG1IOCONL);
     regptr32 = (volatile uint32_t*) ((volatile uint8_t*)&PG1IOCONL + reg_offset);
     *regptr32 = (regPGxIOCON.value & REG_PGxIOCON_VALID_DATA_WRITE_MASK);
+    fres &= ((*regptr32 & REG_PGxIOCON_VALID_DATA_WRITE_MASK) == (regPGxIOCON.value & REG_PGxIOCON_VALID_DATA_WRITE_MASK)); // read and compare register values
 
     // write dead time
     reg_offset = (instance-1) * ((volatile uint16_t)&PG2DTL - (volatile uint16_t)&PG1DTL);
     regptr32 = (volatile uint32_t*) ((volatile uint8_t*)&PG1DTL + reg_offset);
     *regptr32 = (regPGxDT.value & REG_PGxDT_VALID_DATA_WRITE_MASK);
+    fres &= ((*regptr32 & REG_PGxDT_VALID_DATA_WRITE_MASK) == (regPGxDT.value & REG_PGxDT_VALID_DATA_WRITE_MASK)); // read and compare register values
     
     return(fres);
 
@@ -431,7 +435,7 @@ inline volatile uint16_t hspwm_set_duty_cycle(uint16_t instance, uint16_t regPGx
 
 inline volatile uint16_t hspwm_enable_pwm(uint16_t instance, bool wait_for_hres)
 {
-
+    volatile uint16_t fres = 1;
     volatile uint16_t *regptr16;
     volatile uint16_t reg_offset;
     volatile uint16_t reg_buf=0;
@@ -459,7 +463,9 @@ inline volatile uint16_t hspwm_enable_pwm(uint16_t instance, bool wait_for_hres)
     reg_buf = *regptr16;
     *regptr16 = (reg_buf | REG_PGCON_ON_PWM_ENABLED);
     
-    return((volatile uint16_t)(volatile bool)(*regptr16 & REG_PGCON_ON_PWM_ENABLED));
+    fres &= (volatile uint16_t)(volatile bool)(*regptr16 & REG_PGCON_ON_PWM_ENABLED);
+    
+    return(fres);
 
 }
 
@@ -481,7 +487,7 @@ inline volatile uint16_t hspwm_enable_pwm(uint16_t instance, bool wait_for_hres)
 
 inline volatile uint16_t hspwm_disable_pwm(uint16_t instance)
 {
-
+    volatile uint16_t fres=1;
     volatile uint16_t *regptr16;
     volatile uint16_t reg_offset;
     volatile uint16_t reg_buf=0;
@@ -491,7 +497,9 @@ inline volatile uint16_t hspwm_disable_pwm(uint16_t instance)
     reg_buf = *regptr16;
     *regptr16 = reg_buf & REG_PGCON_ON_PWM_RESET;
     
-    return((volatile uint16_t)(volatile bool)(*regptr16 & REG_PGCON_ON_PWM_ENABLED));
+    fres &= (volatile uint16_t)(volatile bool)(*regptr16 & REG_PGCON_ON_PWM_ENABLED);
+    
+    return(fres);
 }
 /*!hspwm_ovr_hold
  * ************************************************************************************************
@@ -514,6 +522,7 @@ inline volatile uint16_t hspwm_disable_pwm(uint16_t instance)
 
 inline volatile uint16_t hspwm_ovr_hold(uint16_t instance)
 {
+    volatile uint16_t fres=1;
     volatile uint16_t *regptr16;
     volatile uint16_t reg_offset;
     volatile uint16_t reg_buf=0;
@@ -523,7 +532,9 @@ inline volatile uint16_t hspwm_ovr_hold(uint16_t instance)
     reg_buf = *regptr16;
     *regptr16 = reg_buf | REG_IOCON_OVREN_COMP_SET;
     
-    return((volatile uint16_t)(volatile bool)(*regptr16 & REG_IOCON_OVREN_COMP_SET));
+    fres &= (volatile uint16_t)(volatile bool)(*regptr16 & REG_IOCON_OVREN_COMP_SET);
+    
+    return(fres);
 }
 
 /*!hspwm_ovr_release
@@ -545,6 +556,7 @@ inline volatile uint16_t hspwm_ovr_hold(uint16_t instance)
 
 inline volatile uint16_t hspwm_ovr_release(uint16_t instance)
 {
+    volatile uint16_t fres=1;
     volatile uint16_t *regptr16;
     volatile uint16_t reg_offset;
     volatile uint16_t reg_buf=0;
@@ -554,7 +566,9 @@ inline volatile uint16_t hspwm_ovr_release(uint16_t instance)
     reg_buf = *regptr16;
     *regptr16 = reg_buf & REG_IOCON_OVREN_COMP_RESET;
     
-    return(1 - (volatile uint16_t)(volatile bool)(*regptr16 & REG_IOCON_OVREN_COMP_SET));
+    fres &= (1 - (volatile uint16_t)(volatile bool)(*regptr16 & REG_IOCON_OVREN_COMP_SET));
+    
+    return(fres);
 }
 
 /*!hspwm_ovr_release_high_side
@@ -576,6 +590,7 @@ inline volatile uint16_t hspwm_ovr_release(uint16_t instance)
 
 inline volatile uint16_t hspwm_ovr_release_high_side(uint16_t instance)
 {
+    volatile uint16_t fres=1;
     volatile uint16_t *regptr16;
     volatile uint16_t reg_offset;
     volatile uint16_t reg_buf=0;
@@ -585,7 +600,9 @@ inline volatile uint16_t hspwm_ovr_release_high_side(uint16_t instance)
     reg_buf = *regptr16;
     *regptr16 = reg_buf & REG_IOCON_OVRENH_RESET;
     
-    return(1 - (volatile uint16_t)(volatile bool)(*regptr16 & REG_IOCON_OVRENH_ENABLED));
+    fres &= (1 - (volatile uint16_t)(volatile bool)(*regptr16 & REG_IOCON_OVRENH_ENABLED));
+    
+    return(fres);
 }
 
 /*!hspwm_ovr_release_low_side
@@ -607,6 +624,7 @@ inline volatile uint16_t hspwm_ovr_release_high_side(uint16_t instance)
 
 inline volatile uint16_t hspwm_ovr_release_low_side(uint16_t instance)
 {
+    volatile uint16_t fres=1;
     volatile uint16_t *regptr16;
     volatile uint16_t reg_offset;
     volatile uint16_t reg_buf=0;
@@ -616,7 +634,9 @@ inline volatile uint16_t hspwm_ovr_release_low_side(uint16_t instance)
     reg_buf = *regptr16;
     *regptr16 = reg_buf & REG_IOCON_OVRENL_RESET;
     
-    return(1 - (volatile uint16_t)(volatile bool)(*regptr16 & REG_IOCON_OVRENL_ENABLED));
+    fres &= (1 - (volatile uint16_t)(volatile bool)(*regptr16 & REG_IOCON_OVRENL_ENABLED));
+    
+    return(fres);
 }
 
 /*!hspwm_set_gpio_high_side
@@ -639,6 +659,7 @@ inline volatile uint16_t hspwm_ovr_release_low_side(uint16_t instance)
 
 inline volatile uint16_t hspwm_set_gpio_high_side(uint16_t instance)
 {
+    volatile uint16_t fres=1;
     volatile uint16_t *regptr16;
     volatile uint16_t reg_offset;
     volatile uint16_t reg_buf=0;
@@ -648,7 +669,9 @@ inline volatile uint16_t hspwm_set_gpio_high_side(uint16_t instance)
     reg_buf = *regptr16;
     *regptr16 = reg_buf & REG_IOCON_PENH_GPIO_ENABLE;
     
-    return((volatile uint16_t)(volatile bool)(*regptr16 & REG_IOCON_PENH_GPIO_DISABLE));
+    fres &= (volatile uint16_t)(volatile bool)(*regptr16 & REG_IOCON_PENH_GPIO_DISABLE);
+    
+    return(fres);
 }
 
 /*!hspwm_reset_gpio_high_side
@@ -671,6 +694,7 @@ inline volatile uint16_t hspwm_set_gpio_high_side(uint16_t instance)
      
 inline volatile uint16_t hspwm_reset_gpio_high_side(uint16_t instance)
 {
+    volatile uint16_t fres=1;
     volatile uint16_t *regptr16;
     volatile uint16_t reg_offset;
     volatile uint16_t reg_buf=0;
@@ -680,7 +704,9 @@ inline volatile uint16_t hspwm_reset_gpio_high_side(uint16_t instance)
     reg_buf = *regptr16;
     *regptr16 = reg_buf | REG_IOCON_PENH_GPIO_DISABLE;
     
-    return(1 - (volatile uint16_t)(volatile bool)(*regptr16 & REG_IOCON_PENH_GPIO_DISABLE));
+    fres &= 1 - (volatile uint16_t)(volatile bool)(*regptr16 & REG_IOCON_PENH_GPIO_DISABLE);
+    
+    return(fres);
 }
 
 /*!hspwm_set_gpio_low_side
@@ -703,6 +729,7 @@ inline volatile uint16_t hspwm_reset_gpio_high_side(uint16_t instance)
 
 inline volatile uint16_t hspwm_set_gpio_low_side(uint16_t instance)
 {
+    volatile uint16_t fres=1;
     volatile uint16_t *regptr16;
     volatile uint16_t reg_offset;
     volatile uint16_t reg_buf=0;
@@ -712,7 +739,9 @@ inline volatile uint16_t hspwm_set_gpio_low_side(uint16_t instance)
     reg_buf = *regptr16;
     *regptr16 = reg_buf & REG_IOCON_PENL_GPIO_ENABLE;
     
-    return((volatile uint16_t)(volatile bool)(*regptr16 & REG_IOCON_PENL_GPIO_DISABLE));
+    fres &= (volatile uint16_t)(volatile bool)(*regptr16 & REG_IOCON_PENL_GPIO_DISABLE);
+    
+    return(fres);
 }
 
 /*!hspwm_reset_gpio_low_side
@@ -735,6 +764,7 @@ inline volatile uint16_t hspwm_set_gpio_low_side(uint16_t instance)
 
 inline volatile uint16_t hspwm_reset_gpio_low_side(uint16_t instance)
 {
+    volatile uint16_t fres=1;
     volatile uint16_t *regptr16;
     volatile uint16_t reg_offset;
     volatile uint16_t reg_buf=0;
@@ -744,7 +774,9 @@ inline volatile uint16_t hspwm_reset_gpio_low_side(uint16_t instance)
     reg_buf = *regptr16;
     *regptr16 = reg_buf | REG_IOCON_PENL_GPIO_DISABLE;
     
-    return(1 - (volatile uint16_t)(volatile bool)(*regptr16 & REG_IOCON_PENL_GPIO_DISABLE));
+    fres &= (1 - (volatile uint16_t)(volatile bool)(*regptr16 & REG_IOCON_PENL_GPIO_DISABLE));
+    
+    return(fres);
 }
 /* *****************************************************************************************************
  * *****************************************************************************************************/
