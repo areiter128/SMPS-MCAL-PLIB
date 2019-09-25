@@ -817,7 +817,7 @@ typedef struct {
 }INTERRUPT_CONFIG_t; // Interrupt Controller Configuration Register Set
 
 
-extern volatile uint16_t gsirq_irq_initialize(INTERRUPT_CONFIG_t intcon);
+extern volatile uint16_t gsirq_irq_initialize(volatile INTERRUPT_CONFIG_t intcon);
 extern volatile uint16_t gsirq_get_current_irq_priority_level(void);
 extern volatile uint16_t gsirq_get_current_irq_vector(void);
 extern volatile uint16_t gsirq_soft_traps_initialize(

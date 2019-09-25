@@ -54,7 +54,7 @@
  * are set here.
  * ***********************************************************************************************/
 
-inline volatile uint16_t gsirq_irq_initialize(INTERRUPT_CONFIG_t intcon)
+inline volatile uint16_t gsirq_irq_initialize(volatile INTERRUPT_CONFIG_t intcon)
 {
 
     volatile uint16_t fres=0;
