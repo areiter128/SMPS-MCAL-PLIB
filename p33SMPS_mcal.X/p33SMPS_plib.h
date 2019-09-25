@@ -20,9 +20,9 @@
  */
 
 /* 
- * File:   
- * Author: 
- * Comments:
+ * File:   p33SMPS_plib.h
+ * Author: M91406
+ * Comments: This common library header triage the library files based on device selection
  * Revision history: 
  */
 
@@ -54,7 +54,7 @@
 #include "plibs/dsPIC33C/p33SMPS_uart.h"
 
 #else
-  #pragma message "P33SMPS_plib Warning: selected device is currently not supported by the peripheral libraries"
+  #pragma message "p33SMPS_plib Warning: selected device is currently not supported by the peripheral libraries"
 #endif
 
 // peripheral library global data structures
