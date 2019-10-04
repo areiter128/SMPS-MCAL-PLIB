@@ -51,19 +51,22 @@
  * 
  * *****************************************************************************************************/
 
-inline volatile uint16_t hsadc_module_power_up(void)
+volatile uint16_t hsadc_module_power_up(void)
 {
-    volatile uint16_t fres=0;
-    
-        #if defined (_ABGMD)
-        _ABGMD = 0;         // Turn on power to analog bandgap reference
-        fres = (1-_ABGMD);
-        #endif
-        #if defined (_ADCMD)
-        _ADCMD = 0; 		// Turn on power to ADC module
-        fres &= (1-_ADCMD);
-        #endif
-        return(fres);
+    volatile uint16_t fres=1;
+
+    #if defined (_ABGMD)
+    _ABGMD = 0;         // Turn on power to analog bandgap reference
+    fres &= (1-_ABGMD);
+    #endif
+    #if defined (_ADCMD)
+    _ADCMD = 0; 		// Turn on power to ADC module
+    fres &= (1-_ADCMD);
+    #elif defined (_ADC1MD)
+    _ADC1MD = 0; 		// Turn on power to ADC module
+    fres &= (1-_ADC1MD);
+    #endif
+    return(fres);
 
 } 
 
@@ -79,14 +82,28 @@ inline volatile uint16_t hsadc_module_power_up(void)
  * 
  * *****************************************************************************************************/
 
-inline volatile uint16_t hsadc_module_power_down(void)
+volatile uint16_t hsadc_module_power_down(void)
 {
-    #if defined (_ADCMD)
-    _ADCMD = 1; 		// Turn on power to PWM channel #1
-    return(_ADCMD);
-    #else
-    return(1);
+    volatile uint16_t fres=1;
+    
+    Nop();  // No-Operation Instructions required to ensure proper register access
+    Nop();  // DO NOT REMOVE
+    Nop();  // *******************************************************************
+
+    #if defined (_ABGMD)
+    _ABGMD = 1;         // Turn off power to analog bandgap reference
+    fres &= (_ABGMD);
     #endif
+    #if defined (_ADCMD)
+    _ADCMD = 1; 		// Turn off power to PWM channel #1
+    fres &= (_ADCMD);
+    #elif defined (_ADC1MD)
+    _ADC1MD = 1; 		// Turn off power to PWM channel #1
+    fres &= (_ADC1MD);
+    #else
+    fres = 0;
+    #endif
+    return(fres);
 
 }
 
