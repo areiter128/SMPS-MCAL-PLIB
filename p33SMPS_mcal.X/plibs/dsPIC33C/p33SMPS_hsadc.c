@@ -216,7 +216,7 @@ volatile uint16_t hsadc_adc_input_initialize( volatile HSADC_ADCANCFG_t adin_cfg
     fres &= hsadc_set_adc_input_mode(adin_cfg);
 
     // Set interrupt enable and early interrupt enable
-   fres &= hsadc_set_adc_input_interrupt(adin_cfg);
+    fres &= hsadc_set_adc_input_interrupt(adin_cfg);
     
     // Set interrupt trigger mode (level/edge)
     fres &= hsadc_set_adc_input_trigger_mode(adin_cfg);
@@ -228,218 +228,6 @@ volatile uint16_t hsadc_adc_input_initialize( volatile HSADC_ADCANCFG_t adin_cfg
     return(fres);
     
 }
-
-
-/*!hsadc_init_adc_core
- * ************************************************************************************************
- * Summary:
- * Initializes an individual ADC Core configuration (dedicated or shared)
- *
- * Parameters:
- *	HSADC_ADCOREx_CONFIG_t core_cfg  data structure holding all required ADC core 
- *                          configuration settings
- *
- * Description:
- * Fundamental operating settings of a dedicated or shared core are written to the respective
- * registers, such as like conversion delay, early interrupt period, ADC resolution and 
- * input clock dividers. 
- * 
- * Dedicated ADC cores have their own register set (ADCORExH, ADCORExL) while the shared core 
- * settings are distributed across multiple registers (ADCON1H and ADCON2L). This routine
- * offers one function call for both and treats the settings accordingly.
- * 
- * As different devices may have a different number of dedicated cores, the highest index
- * is always taken as index of the shared ADC core instance.
- * ***********************************************************************************************/
-
-//volatile uint16_t hsadc_adc_core_initialize(volatile HSADC_ADCORECFG_t adcore_cfg)
-//{
-//
-//    volatile uint16_t fres=1;       // Success/Failure result
-//    volatile uint16_t *regptr;      // Register address pointer
-//    volatile uint16_t reg_buf=0;    // Register value buffer
-//    volatile uint16_t reg_mask=0;   // Dummy variable for complex filter bit-masks
-//    volatile uint16_t reg_val=0;    // Dummy variable for preparing data before WRITE events
-//
-//    // Variables for shared ADC core configuration
-//    volatile REGBLK_ADCON1H_t regADCON1H;  // ADCON1H register copy for WRITE operation
-//    volatile REGBLK_ADCON2L_t regADCON2L;  // ADCON2L register copy for WRITE operation
-//    volatile REGBLK_ADCON2H_t regADCON2H;  // ADCON2H register copy for WRITE operation
-//    
-//    // Variables for dedicated ADC core configuration
-//    #if defined (ADCORE0L)
-//    volatile REGBLK_ADCON4L_t  regADCON4L;  // ADCON4L register copy for WRITE operating
-////    volatile REGBLK_ADCON4H_t  regADCON4H;  // ADCON4H register copy for WRITE operating
-//    volatile REGBLK_ADCON5H_t  regADCON5H;  // ADCON5H register copy for WRITE operating
-//    volatile REGBLK_ADCORExL_t regADCORExL; // ADCORExL register copy for WRITE operation
-//    volatile REGBLK_ADCORExH_t regADCORExH; // ADCORExH register copy for WRITE operation
-//    volatile uint16_t reg_offset=0;
-//    #endif
-//
-//    
-//    // check if given ADC core instance index is greater than number of available ADC cores
-//	if (adcore_cfg.index >= ADC_CORE_COUNT) return(0);
-//    
-//    // Track ADC cores in use
-//    adcc_usage |= (0x0001 << adcore_cfg.index);
-//
-//
-//    // Check which core type needs to be configured
-//    if (adcore_cfg.config.type == ADCORE_TYPE_DEDICATED)
-//    {
-//        // Dedicated cores have their individual configuration 
-//        // registers ADCORExL and ADCORExH
-//        
-//        #if defined (ADCORE0L)
-//        // Dual core devices like dsPIC33CH only have shared cores on the master side.
-//        // Only slave cores and single core devices like dsPIC33CK have multiple dedicated
-//        // cores and one shared core. The shared core always has the highest instance index.
-//
-//        reg_offset = (adcore_cfg.index-1) * ((volatile uint16_t)&ADCORE1L - (volatile uint16_t)&ADCORE0L); // Get register set offset
-//
-//        regADCORExL.bits.samc = adcore_cfg.config.samc;      // Capture ADC core configuration ADCORExL
-//        
-//        regptr = (volatile uint16_t *)&ADCORE0L + reg_offset;   // Get pointer to ADC core configuration register
-//        reg_buf = (regADCORExL.value & REG_ADCORExL_VALID_DATA_MSK);  // Get value to be written to register
-//        *regptr = reg_buf;                                      // Write configuration to register
-//        fres &= (volatile bool)((*regptr & REG_ADCORExL_VALID_DATA_MSK) == reg_buf);  // Check if WRITE operation was successful
-//
-//        
-//        regADCORExH.bits.adcs = adcore_cfg.config.adcs;    // Capture ADC core clock divider configuration
-//        regADCORExH.bits.eisel = adcore_cfg.config.eisel;  // Capture ADC core Early Interrupt Period configuration
-//        regADCORExH.bits.res = adcore_cfg.config.res;      // Capture ADC core resolution configuration
-//
-//        regptr = (volatile uint16_t *)&ADCORE0H + reg_offset;   // Get pointer to ADC core configuration register
-//        reg_buf = (regADCORExH.value & REG_ADCORExH_VALID_DATA_MSK);  // Get value to be written to register
-//        *regptr = reg_buf;                                      // Write configuration to register
-//        fres &= (volatile bool)((*regptr & REG_ADCORExH_VALID_DATA_MSK) == reg_buf);  // Check if WRITE operation was successful
-//
-//        
-//        switch (adcore_cfg.index) { 
-//            #if (ADC_CORE_COUNT > 1)
-//            case 0: regADCON4L.bits.samc0en = adcore_cfg.config.samc_en; break;
-//            #endif
-//            #if (ADC_CORE_COUNT > 2)
-//            case 1: regADCON4L.bits.samc1en = adcore_cfg.config.samc_en; break;
-//            #endif
-//            #if (ADC_CORE_COUNT > 3)
-//            case 2: regADCON4L.bits.samc2en = adcore_cfg.config.samc_en; break;
-//            #endif
-//            #if (ADC_CORE_COUNT > 4)
-//            case 3: regADCON4L.bits.samc3en = adcore_cfg.config.samc_en; break;
-//            #endif
-//            #if (ADC_CORE_COUNT > 5)
-//            case 4: regADCON4L.bits.samc4en = adcore_cfg.config.samc_en; break;
-//            #endif
-//            #if (ADC_CORE_COUNT > 6)
-//            case 5: regADCON4L.bits.samc5en = adcore_cfg.config.samc_en; break;
-//            #endif
-//            #if (ADC_CORE_COUNT > 7)
-//            case 6: regADCON4L.bits.samc6en = adcore_cfg.config.samc_en; break;
-//            #endif
-//            default:
-//                return(0);
-//                break;
-//        }
-//                
-//        regptr = (volatile uint16_t *)&ADCON4L;   // Get pointer to ADC configuration register
-//        reg_buf = (regADCON4L.value & REG_ADCON4L_VALID_DATA_WRITE_MSK);  // Get value to be written to register
-//        *regptr = reg_buf;                                      // Write configuration to register
-//        fres &= (volatile bool)((*regptr & REG_ADCON4L_VALID_DATA_WRITE_MSK) == reg_buf);  // Check if WRITE operation was successful
-//
-//        regADCON5H.bits.warmtime = adcore_cfg.config.warmtime;
-//        
-//        regptr = (volatile uint16_t *)&ADCON5H;   // Get pointer to ADC configuration register
-//        reg_buf = (regADCON5H.value & REG_ADCON5H_VALID_DATA_WRITE_MSK);  // Get value to be written to register
-//        *regptr = reg_buf;                                      // Write configuration to register
-//        fres &= (volatile bool)((*regptr & REG_ADCON5H_VALID_DATA_WRITE_MSK) == reg_buf);  // Check if WRITE operation was successful
-//
-///*        
-//        switch (adcore_cfg.index) { 
-//            #if (ADC_CORE_COUNT > 1)
-//            case 0: regADCON4H.bits.C0CHS = adcore_cfg.adin_select.C0CHS; break;
-//            #endif
-//            #if (ADC_CORE_COUNT > 2)
-//            case 1: regADCON4H.bits.C1CHS = adcore_cfg.adin_select.C1CHS; break;
-//            #endif
-//            #if (ADC_CORE_COUNT > 3)
-//            case 2: regADCON4H.bits.C2CHS = adcore_cfg.adin_select.C2CHS; break;
-//            #endif
-//            #if (ADC_CORE_COUNT > 4)
-//            case 3: regADCON4H.bits.C3CHS = adcore_cfg.adin_select.C3CHS; break;
-//            #endif
-//            #if (ADC_CORE_COUNT > 5)
-//            case 4: regADCON4H.bits.C4CHS = adcore_cfg.adin_select.C4CHS; break;
-//            #endif
-//            #if (ADC_CORE_COUNT > 6)
-//            case 5: regADCON4H.bits.C5CHS = adcore_cfg.adin_select.C5CHS; break;
-//            #endif
-//            #if (ADC_CORE_COUNT > 7)
-//            case 6: regADCON4H.bits.C6CHS = adcore_cfg.adin_select.C6CHS; break;
-//            #endif
-//            default:
-//                return(0);
-//                break;
-//        }
-//                
-//        regptr = (volatile uint16_t *)&ADCON4H;   // Get pointer to ADC configuration register
-//        reg_buf = (regADCON4H.value & REG_ADCON4H_VALID_DATA_WRITE_MSK);  // Get value to be written to register
-//        *regptr = reg_buf;                                      // Write configuration to register
-//        fres &= (volatile bool)((*regptr & REG_ADCON4H_VALID_DATA_WRITE_MSK) == reg_buf);  // Check if WRITE operation was successful
-//  */      
-//        #endif
-//        
-//    }
-//    else if(adcore_cfg.config.type == ADCORE_TYPE_SHARED)
-//    {
-//        Nop();
-//        
-//        // The configuration of the shared core is incorporated into the generic registers 
-//        // ADCON1H, ADCON2L and ADCON2H while dedicated cores have their own configuration 
-//        // registers ADCORExH and ADCORExL. The values, however, are identical and therefore
-//        // this library API treats them as equal on the surface but differently when accessing
-//        // registers. So don't get confused.
-//        
-//        // Set settings in ADCON1H register
-//        reg_mask = (REG_ADCON1H_EXCLUDE_SHRADC_CFG_MSK & REG_ADCON1H_VALID_DATA_MSK);
-//        regADCON1H.value = (((volatile uint16_t)ADCON1H) & reg_mask);   // Get pointer to ADC core configuration in ADC configuration #1 HIGH register
-//        reg_val = (volatile uint16_t)adcore_cfg.config.res;
-//        regADCON1H.bits.shrres = reg_val;  // Overwrite ADC core resolution configuration
-//        reg_buf = (regADCON1H.value & REG_ADCON1H_VALID_DATA_MSK);  // Get value to be written to register
-//        ADCON1H = reg_buf; // Write configuration to register with bit-filter
-//        fres &= (volatile bool)((ADCON1H & REG_ADCON1H_VALID_DATA_MSK) == reg_buf);  // Check if WRITE operation was successful
-//
-//        // Set settings in ADCON2L register
-//        reg_mask = (REG_ADCON2L_EXCLUDE_SHRADC_CFG_MSK & REG_ADCON2L_VALID_DATA_MSK);
-//        regADCON2L.value = (((volatile uint16_t)ADCON2L) & reg_mask);   // Get pointer to ADC core configuration in ADC configuration #1 HIGH register
-//        reg_val = (volatile uint16_t)adcore_cfg.config.adcs;
-//        regADCON2L.bits.shradcs = reg_val;  // Overwrite user defined ADC clock divider setting
-//        reg_val = (volatile uint16_t)adcore_cfg.config.eisel; 
-//        regADCON2L.bits.shreisel = reg_val; // Overwrite user defined ADC Early Interrupt Period
-//        reg_buf = (regADCON2L.value & REG_ADCON2L_VALID_DATA_MSK);  // Get value to be written to register
-//        ADCON2L = reg_buf; // Write configuration to register with bit-filter
-//        fres &= (volatile bool)((ADCON2L & REG_ADCON2L_VALID_DATA_MSK) == reg_buf);  // Check if WRITE operation was successful
-//
-//        // Set settings in ADCON2H register
-//        reg_mask = (REG_ADCON2H_EXCLUDE_SHRADC_CFG_MSK & REG_ADCON2H_VALID_DATA_MSK);
-//        regADCON2H.value = (((volatile uint16_t)ADCON2H) & reg_mask);   // Get pointer to ADC core configuration in ADC configuration #1 HIGH register
-//        reg_val = (volatile uint16_t)adcore_cfg.config.samc;
-//        regADCON2H.bits.shrsamc = reg_val;  // Overwrite user defined ADC clock divider setting
-//        reg_buf = (regADCON2H.value & REG_ADCON2H_VALID_DATA_MSK);  // Get value to be written to register
-//        ADCON2H = reg_buf; // Write configuration to register with bit-filter
-//        fres &= (volatile bool)((ADCON2H & REG_ADCON2H_VALID_DATA_MSK) == reg_buf);  // Check if WRITE operation was successful
-//
-//    }
-//    else {
-//        Nop(); // Place breakpoint here to debug failure
-//        Nop();
-//        return(0);
-//    }
-//
-//    return(fres);
-//    
-//}
-
 
 /*!hsadc_module_enable()
  * ************************************************************************************************
@@ -455,7 +243,6 @@ volatile uint16_t hsadc_adc_input_initialize( volatile HSADC_ADCANCFG_t adin_cfg
 
 volatile uint16_t hsadc_module_enable(void)
 {
-
     volatile uint16_t fres=1;
     volatile uint16_t i=0;
     volatile uint16_t adcore_check=0;
@@ -464,10 +251,10 @@ volatile uint16_t hsadc_module_enable(void)
     fres &= _ADON;  // Check if ADC module is enabled
     
     // Enable all ADC cores
-    for (i=0; i<ADC_CORE_COUNT; i++) {
-        adcore_check = (adcc_usage & (0x0001 << i));
+    for (i=0; i<ADC_CORE_COUNT; i++) { // Check which of the ADC cores need to be enabled
+        adcore_check = (adcc_usage & (0x0001 << i)); // User ADC Core tracking variable to identify active cores
         if (adcore_check)
-        { fres &= hsadc_adc_core_power_on(i); }
+        { fres &= hsadc_adc_core_power_on(i); } // enable active ADC core
     }
     
 	return(fres);
