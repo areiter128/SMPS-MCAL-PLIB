@@ -112,21 +112,20 @@ typedef enum {
     PCLKCON_HRRDY_WAIT = 0b0 // The high-resolution circuitry is not ready
 } PCLKCON_HRRDY_e; // High-Resolution Ready bit
 
-typedef struct {
-    volatile PCLKCON_MCLKSEL_e MCLKSEL : 2; // PWM Master Clock Selection bits
-    volatile unsigned : 2;
-    volatile PCLKCON_DIVSEL_e DIVSEL : 2; // PWM Clock Divider Selection bits
-    volatile unsigned : 2;
-    volatile PCLKCON_LOCK_e LOCK : 1; // Register write protection Lock bit
-    volatile unsigned : 5;
-    volatile PCLKCON_HRERR_e HRERR : 1; // High-Resolution Error bit
-    volatile PCLKCON_HRRDY_e HRRDY : 1; // High-Resolution Ready bit
-} __attribute__((packed)) PCLKCON_t; // PWM CLOCK CONTROL REGISTER
 
 typedef union {
+    struct {
+        volatile PCLKCON_MCLKSEL_e MCLKSEL : 2; // PWM Master Clock Selection bits
+        volatile unsigned : 2;
+        volatile PCLKCON_DIVSEL_e DIVSEL : 2; // PWM Clock Divider Selection bits
+        volatile unsigned : 2;
+        volatile PCLKCON_LOCK_e LOCK : 1; // Register write protection Lock bit
+        volatile unsigned : 5;
+        volatile PCLKCON_HRERR_e HRERR : 1; // High-Resolution Error bit
+        volatile PCLKCON_HRRDY_e HRRDY : 1; // High-Resolution Ready bit
+    } __attribute__((packed)) bits; // PWM CLOCK CONTROL REGISTER
     volatile uint16_t value; // 16-bit register direct write access
-    volatile PCLKCON_t bits; // PWM CLOCK CONTROL REGISTER
-} REGBLK_PCLKCON_t; // PWM CLOCK CONTROL REGISTER
+} PCLKCON_t; // PWM CLOCK CONTROL REGISTER
 
 /* ===========================================================================
  * FSCL: FREQUENCY SCALE REGISTER
@@ -134,14 +133,12 @@ typedef union {
 #define REG_FSCL_VALID_DATA_WRITE_MASK 0xFFFF
 #define REG_FSCL_VALID_DATA_READ_MASK  0xFFFF
 
-typedef struct {
-    volatile uint16_t FSCL; // <15:0>: Frequency Scale Register
-} __attribute__((packed)) FSCL_t;   // PWM FREQUENCY SCALE REGISTER
-
 typedef union {
+    struct {
+        volatile uint16_t FSCL; // <15:0>: Frequency Scale Register
+    } __attribute__((packed)) bits;   // PWM FREQUENCY SCALE REGISTER
     volatile uint16_t value; // 16-bit register direct write access
-    volatile FSCL_t bits; // <15:0>: Frequency Scale Register
-} REGBLK_FSCL_t;   // PWM FREQUENCY SCALE REGISTER
+} FSCL_t;   // PWM FREQUENCY SCALE REGISTER
 
 /* ===========================================================================
  * FSMINPER: FREQUENCY SCALING MINIMUM PERIOD REGISTER
@@ -149,14 +146,12 @@ typedef union {
 #define REG_FSMINPER_VALID_DATA_WRITE_MASK 0xFFFF
 #define REG_FSMINPER_VALID_DATA_READ_MASK  0xFFFF
 
-typedef struct {
-    volatile uint16_t FSMINPER; // <15:0>: Frequency Scaling Minimum Period Register bits
-} __attribute__((packed)) FSMINPER_t;   // PWM FREQUENCY SCALING MINIMUM PERIOD REGISTER
-
 typedef union {
+    struct {
+        volatile uint16_t FSMINPER; // <15:0>: Frequency Scaling Minimum Period Register bits
+    } __attribute__((packed)) bits;   // PWM FREQUENCY SCALING MINIMUM PERIOD REGISTER
     volatile uint16_t value; // 16-bit register direct write access
-    volatile FSMINPER_t bits; // Frequency Scaling Minimum Period Register  Bits
-} REGBLK_FSMINPER_t;   // PWM FREQUENCY SCALING MINIMUM PERIOD REGISTER
+} FSMINPER_t;   // PWM FREQUENCY SCALING MINIMUM PERIOD REGISTER
 
 /* ===========================================================================
  * MPHASE: MASTER PHASE REGISTER
@@ -164,14 +159,12 @@ typedef union {
 #define REG_MPHASE_VALID_DATA_WRITE_MASK 0xFFFF
 #define REG_MPHASE_VALID_DATA_READ_MASK  0xFFFF
 
-typedef struct {
-    volatile uint16_t MPHASE; // <15:0>: Master Phase Register bits
-} __attribute__((packed)) MPHASE_t;   // MPHASE: MASTER PHASE REGISTER
-
 typedef union {
+    struct {
+        volatile uint16_t MPHASE; // <15:0>: Master Phase Register bits
+    } __attribute__((packed)) bits;   // MPHASE: MASTER PHASE REGISTER
     volatile uint16_t value; // 16-bit register direct write access
-    volatile MPHASE_t bits; // Master Phase Register Bits
-} REGBLK_MPHASE_t;   // MPHASE: MASTER PHASE REGISTER
+} MPHASE_t;   // MPHASE: MASTER PHASE REGISTER
 
 /* ===========================================================================
  * MDC: MASTER DUTY CYCLE REGISTER
@@ -179,14 +172,12 @@ typedef union {
 #define REG_MDC_VALID_DATA_WRITE_MASK 0xFFFF
 #define REG_MDC_VALID_DATA_READ_MASK  0xFFFF
 
-typedef struct {
-    volatile uint16_t MDC; // <15:0>: Master Duty Cycle Register bits
-} __attribute__((packed)) MDC_t;   // MDC: MASTER DUTY CYCLE REGISTER
-
 typedef union {
+    struct {
+        volatile uint16_t MDC; // <15:0>: Master Duty Cycle Register bits
+    } __attribute__((packed)) bits;   // MDC: MASTER DUTY CYCLE REGISTER
     volatile uint16_t value; // 16-bit register direct write access
-    volatile MDC_t bits; // Master Duty Cycle Register bits
-} REGBLK_MDC_t;   // MDC: MASTER DUTY CYCLE REGISTER
+} MDC_t;   // MDC: MASTER DUTY CYCLE REGISTER
 
 /* ===========================================================================
  * MPER: MASTER PERIOD REGISTER
@@ -194,14 +185,12 @@ typedef union {
 #define REG_MPER_VALID_DATA_WRITE_MASK 0xFFFF
 #define REG_MPER_VALID_DATA_READ_MASK  0xFFFF
 
-typedef struct {
-    volatile uint16_t MPER; // <15:0>: Master Period Register bits
-} __attribute__((packed)) MPER_t;   // MPER: MASTER PERIOD REGISTER
-
 typedef union {
+    struct {
+        volatile uint16_t MPER; // <15:0>: Master Period Register bits
+    } __attribute__((packed)) MPER_t;   // MPER: MASTER PERIOD REGISTER
     volatile uint16_t value; // 16-bit register direct write access
-    volatile MPER_t bits; // Master Period Register bits
-} REGBLK_MPER_t;   // MPER: MASTER PERIOD REGISTER
+} MPER_t;   // MPER: MASTER PERIOD REGISTER
 
 /* ===========================================================================
  * LFSR: LINEAR FEEDBACK SHIFT REGISTER
@@ -209,15 +198,13 @@ typedef union {
 #define REG_LFSR_VALID_DATA_WRITE_MASK 0x7FFF
 #define REG_LFSR_VALID_DATA_READ_MASK  0x7FFF
 
-typedef struct {
-    volatile uint16_t LFSR; // Bit <14:0>: Linear Feedback Shift Register bits
-    volatile unsigned  : 1; // Bit 15: (reserved)
-} __attribute__((packed)) LFSR_t;   // LFSR: LINEAR FEEDBACK SHIFT REGISTER
-
 typedef union {
+    struct {
+        volatile uint16_t LFSR; // Bit <14:0>: Linear Feedback Shift Register bits
+        volatile unsigned  : 1; // Bit 15: (reserved)
+    } __attribute__((packed)) bits;   // LFSR: LINEAR FEEDBACK SHIFT REGISTER
     volatile uint16_t value; // 16-bit register direct read/write access
-    volatile LFSR_t bits; // Linear Feedback Shift Register bits
-} REGBLK_LFSR_t;   // LFSR: LINEAR FEEDBACK SHIFT REGISTER
+} LFSR_t;   // LFSR: LINEAR FEEDBACK SHIFT REGISTER
 
 /* ======================================================================================================
  * CMBTRIGL/H: COMBINATIONAL TRIGGER REGISTER LOW/HIGH
@@ -282,15 +269,13 @@ typedef struct {
 
 } __attribute__((packed)) CMBTRIGy_ENABLE_t; // COMBINATIONAL TRIGGER REGISTER ENABLE BITS
 
-typedef struct {
-    volatile CMBTRIGy_ENABLE_t CTBxEN; // COMBINATIONAL TRIGGER ENABLE REGISTER bits
-    volatile CMBTRIGy_ENABLE_t CTAxEN; // COMBINATIONAL TRIGGER ENABLE REGISTER bits
-} __attribute__((packed)) CMBTRIGy_t;  // COMBINATIONAL TRIGGER ENABLE REGISTER 
-
 typedef union {
+    struct {
+        volatile CMBTRIGy_ENABLE_t CTBxEN; // COMBINATIONAL TRIGGER ENABLE REGISTER bits
+        volatile CMBTRIGy_ENABLE_t CTAxEN; // COMBINATIONAL TRIGGER ENABLE REGISTER bits
+    } __attribute__((packed)) CMBTRIGy_t;  // COMBINATIONAL TRIGGER ENABLE REGISTER 
     volatile uint32_t value; // register value
-    volatile CMBTRIGy_t bits; // COMBINATIONAL TRIGGER ENABLE REGISTER bits
-} REGBLK_CMBTRIGy_t;  // COMBINATIONAL TRIGGER ENABLE REGISTER 
+} CMBTRIGy_t;  // COMBINATIONAL TRIGGER ENABLE REGISTER 
 
 /* ===========================================================================
  * LOGCONy: COMBINATORIAL PWM LOGIC CONTROL REGISTER y (y=A, B, C, D ,E or F)
@@ -395,22 +380,18 @@ typedef enum {
 }LOGCON_LOGDIR_e; // Combinatorial PWM Logic Destination Selection bits
 
 
-typedef struct {
-    
-    volatile LOGCON_LOGDIR_e PWMLFD : 3; // Bit 2-0: Combinatorial PWM Logic Function Selection bits
-    volatile unsigned : 1;              // Bit 3: (reserved)
-    volatile LOGCON_LOGFUN_e PWMLF : 2; // Bit 5-4: Combinatorial PWM Logic Function Selection bits
-    volatile LOGCON_SPOL_e S2POL : 1;   // Bit 6: Combinatorial PWM Logic Source #2 Polarity bit
-    volatile LOGCON_SPOL_e S1POL : 1;   // Bit 7: Combinatorial PWM Logic Source #1 Polarity bit
-    volatile LOGCON_SRC_e  PWMS2 : 4;   // Bit 11-8:  Combinatorial PWM Logic Source #2 Selection bits
-    volatile LOGCON_SRC_e  PWMS1 : 4;   // Bit 15-12: Combinatorial PWM Logic Source #1 Selection bits
-
-} __attribute__((packed)) LOGCONy_t; // COMBINATIONAL TRIGGER REGISTERS HIGH and LOW
-
 typedef union {
+    struct {
+        volatile LOGCON_LOGDIR_e PWMLFD : 3; // Bit 2-0: Combinatorial PWM Logic Function Selection bits
+        volatile unsigned : 1;              // Bit 3: (reserved)
+        volatile LOGCON_LOGFUN_e PWMLF : 2; // Bit 5-4: Combinatorial PWM Logic Function Selection bits
+        volatile LOGCON_SPOL_e S2POL : 1;   // Bit 6: Combinatorial PWM Logic Source #2 Polarity bit
+        volatile LOGCON_SPOL_e S1POL : 1;   // Bit 7: Combinatorial PWM Logic Source #1 Polarity bit
+        volatile LOGCON_SRC_e  PWMS2 : 4;   // Bit 11-8:  Combinatorial PWM Logic Source #2 Selection bits
+        volatile LOGCON_SRC_e  PWMS1 : 4;   // Bit 15-12: Combinatorial PWM Logic Source #1 Selection bits
+    } __attribute__((packed)) bits; // COMBINATIONAL TRIGGER REGISTERS HIGH and LOW
     volatile uint32_t value;  // Combinatorial PWM Logic control register value
-    volatile LOGCONy_t bits;  // Combinatorial PWM Logic control register bits
-} REGBLK_LOGCONy_t; // COMBINATIONAL PWM LOGIC CONTROL REGISTERS HIGH and LOW
+} LOGCONy_t; // COMBINATIONAL PWM LOGIC CONTROL REGISTERS HIGH and LOW
 
 
 /* ===========================================================================
@@ -498,21 +479,19 @@ typedef enum {
     PWMEVTy_EVTyOEN_DISABLE = 0b0 // Event output signal is internal only
 }EVTyOEN_e; // PWM Event Output Polarity bit
 
-typedef struct {
-    volatile EVTyOEN_e EVTyOEN : 1; // PWM Event Output Enable bit
-    volatile EVTyPOL_e EVTyPOL : 1; // PWM Event Output Polarity bit
-    volatile EVTySTRD_e EVTySTRD : 1; // PWM Event Output Stretch Disable bit
-    volatile EVTySYNC_e EVTySYNC : 1; // PWM Event Output Sync bit
-    volatile unsigned : 4; // reserved
-    volatile EVTySEL_e EVTySEL : 4; // PWM Event Selection bits
-    volatile unsigned : 1; // reserved
-    volatile EVTyPGS_e EVTyPGS : 3; // PWM Event Source Selection bits
-} __attribute__((packed)) PWMEVTy_t;
-
 typedef union {
+    struct {
+        volatile EVTyOEN_e EVTyOEN : 1; // PWM Event Output Enable bit
+        volatile EVTyPOL_e EVTyPOL : 1; // PWM Event Output Polarity bit
+        volatile EVTySTRD_e EVTySTRD : 1; // PWM Event Output Stretch Disable bit
+        volatile EVTySYNC_e EVTySYNC : 1; // PWM Event Output Sync bit
+        volatile unsigned : 4; // reserved
+        volatile EVTySEL_e EVTySEL : 4; // PWM Event Selection bits
+        volatile unsigned : 1; // reserved
+        volatile EVTyPGS_e EVTyPGS : 3; // PWM Event Source Selection bits
+    } __attribute__((packed)) bits; // PWM EVENT OUTPUT CONTROL REGISTER A, B, C, D, E or F
     volatile uint32_t value; // EVENT OUTPUT CONTROL REGISTER DIRECT READ/WRITE
-    volatile PWMEVTy_t bits; // PWM EVENT OUTPUT CONTROL REGISTER A, B, C, D, E or F
-}REGBLK_PWMEVTy_t_CONFIG_t; // PWM EVENT OUTPUT CONTROL REGISTER CONFIGURATION
+}PWMEVTy_t; // PWM EVENT OUTPUT CONTROL REGISTER CONFIGURATION
 
 /* ******************************************************************************************************
  * ******************************************************************************************************
@@ -667,31 +646,28 @@ typedef enum {
     PGCON_MDCSEL_INDEPENDENT = 0b0 // PWM Generator uses the PGxDC register
 } PGCON_MDCSEL_e; // Master Duty Cycle Register Select bit
 
-typedef struct {
-    
-    volatile PGCON_MODSEL_e MODSEL : 3; // Mode Selection bits
-    volatile PGCON_CLKSEL_e CLKSEL : 2; // Clock Selection bits
-    volatile unsigned : 2; // reserved
-    volatile PGCON_HREN_e HREN : 1; // PWM Generator x High-Resolution Enable bit
-    volatile PGCON_TRGCNT_e TRGCNT : 3; // Trigger Count Select bits
-    volatile unsigned : 4; // reserved
-    volatile PGCON_ON_e ON : 1; // PWM module enable bit
-    
-    volatile PGCON_SOCS_e SOCS : 4; // Start-of-Cycle Selection bits
-    volatile unsigned : 2; // reserved
-    volatile PGCON_TRGMOD_e TRGMOD : 2; // PWM Generator Trigger Mode Selection bit
-    volatile PGCON_UPDMOD_e UPDMOD : 3; // PWM Buffer Update Mode Selection bits
-    volatile PGCON_MSTEN_e MSTEN : 1; // Master Update Enable bit
-    volatile unsigned : 1; // reserved
-    volatile PGCON_MPHSEL_e MPHSEL : 1; // Master Phase Register Select bit
-    volatile PGCON_MPERSEL_e MPERSEL : 1; // Master Period Register Select bit
-    volatile PGCON_MDCSEL_e MDCSEL : 1; // Master Duty Cycle Register Select bit
-} __attribute__((packed)) PGxCON_t;
-
 typedef union {
+    struct {
+        volatile PGCON_MODSEL_e MODSEL : 3; // Mode Selection bits
+        volatile PGCON_CLKSEL_e CLKSEL : 2; // Clock Selection bits
+        volatile unsigned : 2; // reserved
+        volatile PGCON_HREN_e HREN : 1; // PWM Generator x High-Resolution Enable bit
+        volatile PGCON_TRGCNT_e TRGCNT : 3; // Trigger Count Select bits
+        volatile unsigned : 4; // reserved
+        volatile PGCON_ON_e ON : 1; // PWM module enable bit
+
+        volatile PGCON_SOCS_e SOCS : 4; // Start-of-Cycle Selection bits
+        volatile unsigned : 2; // reserved
+        volatile PGCON_TRGMOD_e TRGMOD : 2; // PWM Generator Trigger Mode Selection bit
+        volatile PGCON_UPDMOD_e UPDMOD : 3; // PWM Buffer Update Mode Selection bits
+        volatile PGCON_MSTEN_e MSTEN : 1; // Master Update Enable bit
+        volatile unsigned : 1; // reserved
+        volatile PGCON_MPHSEL_e MPHSEL : 1; // Master Phase Register Select bit
+        volatile PGCON_MPERSEL_e MPERSEL : 1; // Master Period Register Select bit
+        volatile PGCON_MDCSEL_e MDCSEL : 1; // Master Duty Cycle Register Select bit
+    } __attribute__((packed)) bits;
     volatile uint32_t value;
-    volatile PGxCON_t bits;
-} REGBLK_PGxCH_CONFIG_t;
+} PGxCON_t;
 
 
 /* ===========================================================================
@@ -824,31 +800,28 @@ typedef enum {
     PGSTAT_SEVT_NONE = 0b0 // No PCI Sync event has occurred
 }PGSTAT_SEVT_t;     // PCI Sync Event bit
 
-typedef struct {
-
-    volatile PGSTAT_TRIG_t TRIG : 1; // PWM trigger status bit
-    volatile PGSTAT_CAHALF_t CAHALF : 1; // Half Cycle Status bit (Center-Aligned modes only)
-    volatile PGSTAT_STEER_t STEER : 1; // Output Steering Status bit (Push-Pull Output mode only)
-    volatile PGSTAT_UPDREQ_t UPDREQ : 1; // PWM Data Register Update Request bit
-    volatile PGSTAT_UPDATE_t UPDATE : 1; // PWM Data Register Update Status/Control bit
-    volatile PGSTAT_CAP_t CAP : 1; // PWM time base capture status bit
-    volatile PGSTAT_TRSET_t TRSET : 2; // PWM Generator Software Trigger Set/Clear control bits
-    
-    volatile PGSTAT_FFACT_t FFACT : 1; // PCI Fault Active Status bit
-    volatile PGSTAT_CLACT_t CLACT : 1; // PCI Current-Limit Status bit
-    volatile PGSTAT_FLTACT_t FLTACT : 1; // PCI Fault Status bit
-    volatile PGSTAT_SACT_t SACT : 1; // PCI Sync Status bit
-    volatile PGSTAT_FFEVT_t FFEVT : 1; // PCI Feed-Forward Active Status bit
-    volatile PGSTAT_CLEVT_t CLEVT : 1; // PCI Current-Limit Status bit
-    volatile PGSTAT_FLTEVT_t FLTEVT : 1; // PCI Fault Active Status bit
-    volatile PGSTAT_SEVT_t SEVT : 1; // PCI Sync Event Status bit
-
-} __attribute__((packed)) PGxSTAT_t;
-
 typedef union {
+    struct {
+        volatile PGSTAT_TRIG_t TRIG : 1; // PWM trigger status bit
+        volatile PGSTAT_CAHALF_t CAHALF : 1; // Half Cycle Status bit (Center-Aligned modes only)
+        volatile PGSTAT_STEER_t STEER : 1; // Output Steering Status bit (Push-Pull Output mode only)
+        volatile PGSTAT_UPDREQ_t UPDREQ : 1; // PWM Data Register Update Request bit
+        volatile PGSTAT_UPDATE_t UPDATE : 1; // PWM Data Register Update Status/Control bit
+        volatile PGSTAT_CAP_t CAP : 1; // PWM time base capture status bit
+        volatile PGSTAT_TRSET_t TRSET : 2; // PWM Generator Software Trigger Set/Clear control bits
+
+        volatile PGSTAT_FFACT_t FFACT : 1; // PCI Fault Active Status bit
+        volatile PGSTAT_CLACT_t CLACT : 1; // PCI Current-Limit Status bit
+        volatile PGSTAT_FLTACT_t FLTACT : 1; // PCI Fault Status bit
+        volatile PGSTAT_SACT_t SACT : 1; // PCI Sync Status bit
+        volatile PGSTAT_FFEVT_t FFEVT : 1; // PCI Feed-Forward Active Status bit
+        volatile PGSTAT_CLEVT_t CLEVT : 1; // PCI Current-Limit Status bit
+        volatile PGSTAT_FLTEVT_t FLTEVT : 1; // PCI Fault Active Status bit
+        volatile PGSTAT_SEVT_t SEVT : 1; // PCI Sync Event Status bit
+    } __attribute__((packed)) bits;
+
     volatile uint16_t value;
-    volatile PGxSTAT_t bits;
-} REGBLK_PGxSTAT_t;
+} PGxSTAT_t;
 
 /* ===========================================================================
  * PGxIOCONL/H: PWM GENERATOR x I/O CONTROL REGISTER LOW/HIGH
@@ -1030,34 +1003,32 @@ typedef enum {
     IOCON_CAPSRC_NONE = 0b000 // No hardware source selected for time base capture ? software only
 } IOCON_CAPSRC_e; // Time Base Capture Source Selection bits
 
-typedef struct {
-    volatile IOCON_DBDAT_e DBDAT : 2; // Data for PWMxH/PWMxL Pins if Debug Mode is Active and PTFRZ = 1 bits
-    volatile IOCON_FFDAT_e FFDAT : 2; // Data for PWMxH/PWMxL Pins if Feed-Forward Event is Active bits
-    volatile IOCON_CLDAT_e CLDAT : 2; // Data for PWMxH/PWMxL Pins if Current-Limit Event is Active bits
-    volatile IOCON_FLTDAT_e FLTDAT : 2; // Data for PWMxH/PWMxL Pins if Fault Event is Active bits
-    volatile IOCON_OSYNC_e OSYNC : 2; // User Output Override Synchronization Control bits
-    volatile IOCON_OVRDAT_e OVRDAT : 2; // Data for PWMxH/PWMxL Pins if Override is Enabled bits
-    volatile IOCON_OVRENx_e OVRENL : 1; // User Override Enable for PWMxH Pin bit
-    volatile IOCON_OVRENx_e OVRENH : 1; // User Override Enable for PWMxL Pin bit
-    volatile IOCON_SWAP_e SWAP : 1; // Swap PWM Signals to PWMxH and PWMxL Device Pins bit
-    volatile IOCON_CLMOD_e CLMOD : 1; // Current-Limit Mode Select bit
-
-    volatile IOCON_POLx_e POLL : 1; // PWMxL Output Polarity bit
-    volatile IOCON_POLx_e POLH : 1; // PWMxH Output Polarity bit
-    volatile IOCON_PENx_e PENL : 1; // PWMxL Output Port Enable bit
-    volatile IOCON_PENx_e PENH : 1; // PWMxH Output Port Enable bit
-    volatile IOCON_PMOD_e PMOD : 2; // PWM Generator Output Mode Selection bits
-    volatile unsigned : 2; // reserved
-    volatile IOCON_DTCMPSEL_e DTCMPSEL : 1; // Dead-Time Compensation Select bit
-    volatile unsigned : 3; // reserved
-    volatile IOCON_CAPSRC_e CAPSRC : 3; // Time Base Capture Source Selection bits
-
-} __attribute__((packed)) PGxIOCON_t;
-
 typedef union {
+    struct {
+        volatile IOCON_DBDAT_e DBDAT : 2; // Data for PWMxH/PWMxL Pins if Debug Mode is Active and PTFRZ = 1 bits
+        volatile IOCON_FFDAT_e FFDAT : 2; // Data for PWMxH/PWMxL Pins if Feed-Forward Event is Active bits
+        volatile IOCON_CLDAT_e CLDAT : 2; // Data for PWMxH/PWMxL Pins if Current-Limit Event is Active bits
+        volatile IOCON_FLTDAT_e FLTDAT : 2; // Data for PWMxH/PWMxL Pins if Fault Event is Active bits
+        volatile IOCON_OSYNC_e OSYNC : 2; // User Output Override Synchronization Control bits
+        volatile IOCON_OVRDAT_e OVRDAT : 2; // Data for PWMxH/PWMxL Pins if Override is Enabled bits
+        volatile IOCON_OVRENx_e OVRENL : 1; // User Override Enable for PWMxH Pin bit
+        volatile IOCON_OVRENx_e OVRENH : 1; // User Override Enable for PWMxL Pin bit
+        volatile IOCON_SWAP_e SWAP : 1; // Swap PWM Signals to PWMxH and PWMxL Device Pins bit
+        volatile IOCON_CLMOD_e CLMOD : 1; // Current-Limit Mode Select bit
+
+        volatile IOCON_POLx_e POLL : 1; // PWMxL Output Polarity bit
+        volatile IOCON_POLx_e POLH : 1; // PWMxH Output Polarity bit
+        volatile IOCON_PENx_e PENL : 1; // PWMxL Output Port Enable bit
+        volatile IOCON_PENx_e PENH : 1; // PWMxH Output Port Enable bit
+        volatile IOCON_PMOD_e PMOD : 2; // PWM Generator Output Mode Selection bits
+        volatile unsigned : 2; // reserved
+        volatile IOCON_DTCMPSEL_e DTCMPSEL : 1; // Dead-Time Compensation Select bit
+        volatile unsigned : 3; // reserved
+        volatile IOCON_CAPSRC_e CAPSRC : 3; // Time Base Capture Source Selection bits
+
+    } __attribute__((packed)) bits;
     volatile uint32_t value;
-    volatile PGxIOCON_t bits;
-} REGBLK_PGxIO_CONFIG_t;
+} PGxIOCON_t;
 
 /* ===========================================================================
  * PGxEVTx: PWM GENERATOR x EVENT REGISTER HIGH/LOW
@@ -1294,7 +1265,15 @@ typedef enum {
     PGEVT_ADTR1EN1_PGxTRIGA_ENABLED = 0b1, // PGxTRIGA register compare event is enabled as trigger source for ADC Trigger 1
     PGEVT_ADTR1EN1_PGxTRIGA_DISABLED = 0b0  // PGxTRIGA register compare event is disabled as trigger source for ADC Trigger 1
 }PGEVT_ADTR1EN1_e;  // ADC Trigger 1 Source is PGxTRIGA Compare Event Enable bit
-    
+
+typedef enum {
+    PGEVT_ADTRxEN_PGxTRIGA = 0b001, // PGxTRIGA register compare event is enabled as trigger source for ADC Trigger 1 or 2
+    PGEVT_ADTRxEN_PGxTRIGB = 0b010, // PGxTRIGB register compare event is enabled as trigger source for ADC Trigger 1 or 2
+    PGEVT_ADTRxEN_PGxTRIGC = 0b100, // PGxTRIGC register compare event is enabled as trigger source for ADC Trigger 1 or 2
+    PGEVT_ADTRxEN_NONE = 0b000  // PGxTRIGn register compare event used as trigger source for ADC Trigger 1 or 2
+}PGEVT_ADTRxEN_e;  // ADC Trigger 1 or 2 Source is PGxTRIGA/B/C Compare Event Enable bit
+
+
 #define REG_PGEVT_UPDTRG_PGxTRIGA   0b0000000000011000 // A write of the PGxTRIGA register automatically sets the UPDATE bit
 #define REG_PGEVT_UPDTRG_PGxPHASE   0b0000000000010000 // A write of the PGxPHASE register automatically sets the UPDATE bit
 #define REG_PGEVT_UPDTRG_PGxDC      0b0000000000001000 // A write of the PGxDC register automatically sets the UPDATE bit
@@ -1320,33 +1299,33 @@ typedef enum {
 }PGEVT_PGTRGSEL_e;   // PWM Generator Trigger Output Selection bits
 
 
-typedef struct {
-    
-    volatile PGEVT_PGTRGSEL_e PGTRGSEL : 3; // PWM Generator Trigger Output Selection bits(1)
-    volatile PGEVT_UPDTRG_e UPDTRG : 2;     // Update Trigger Select bits
-    volatile unsigned : 3;            // reserved
-    volatile PGEVT_ADTR1EN1_e ADTR1EN1 : 1; // ADC Trigger 1 Source is PGxTRIGA Compare Event Enable bit
-    volatile PGEVT_ADTR1EN2_e ADTR1EN2 : 1; // ADC Trigger 2 Source is PGxTRIGB Compare Event Enable bit
-    volatile PGEVT_ADTR1EN3_e ADTR1EN3 : 1; // ADC Trigger 3 Source is PGxTRIGC Compare Event Enable bit
-    volatile PGEVT_ADTR1PS_e  ADTR1PS : 5;  // ADC Trigger 1 Post-Scaler Selection bits
-    
-    volatile PGEVT_ADTR1OFS_e ADTR1OFS : 5; // ADC Trigger 1 Offset Selection bits
-    volatile PGEVT_ADTR2EN1_e ADTR2EN1 : 1; // ADC Trigger 2 Source is PGxTRIGA Compare Event Enable bit
-    volatile PGEVT_ADTR2EN2_e ADTR2EN2 : 1; // ADC Trigger 2 Source is PGxTRIGA Compare Event Enable bit
-    volatile PGEVT_ADTR2EN3_e ADTR2EN3 : 1; // ADC Trigger 2 Source is PGxTRIGA Compare Event Enable bit
-    volatile PGEVT_IEVTSEL_e IEVTSEL : 2;   // Interrupt Event Selection bits
-    volatile unsigned : 2;            // reserved
-    volatile PGEVT_SIEN_e SIEN : 1;         // PCI Sync Interrupt Enable bit
-    volatile PGEVT_FFIEN_e FFIEN: 1;        // PCI Feed-Forward Interrupt Enable bit
-    volatile PGEVT_CLIEN_e CLIEN: 1;        // PCI Current-Limit Interrupt Enable bit
-    volatile PGEVT_FLTIEN_e FLTIEN: 1;      // PCI Fault Interrupt Enable bit
-    
-} __attribute__((packed)) PGxEVT_t;
-
 typedef union {
+    struct {
+
+        volatile PGEVT_PGTRGSEL_e PGTRGSEL : 3; // PWM Generator Trigger Output Selection bits(1)
+        volatile PGEVT_UPDTRG_e UPDTRG : 2;     // Update Trigger Select bits
+        volatile unsigned : 3;            // reserved
+    //    volatile PGEVT_ADTR1EN1_e ADTR1EN1 : 1; // ADC Trigger 1 Source is PGxTRIGA Compare Event Enable bit
+    //    volatile PGEVT_ADTR1EN2_e ADTR1EN2 : 1; // ADC Trigger 2 Source is PGxTRIGB Compare Event Enable bit
+    //    volatile PGEVT_ADTR1EN3_e ADTR1EN3 : 1; // ADC Trigger 3 Source is PGxTRIGC Compare Event Enable bit
+        volatile PGEVT_ADTRxEN_e  ADTR1EN : 3;   // ADC Trigger 1 Source is PGxTRIGA/B/C Compare Event 
+        volatile PGEVT_ADTR1PS_e  ADTR1PS : 5;   // ADC Trigger 1 Post-Scaler Selection bits
+
+        volatile PGEVT_ADTR1OFS_e ADTR1OFS : 5; // ADC Trigger 1 Offset Selection bits
+    //    volatile PGEVT_ADTR2EN1_e ADTR2EN1 : 1; // ADC Trigger 2 Source is PGxTRIGA Compare Event Enable bit
+    //    volatile PGEVT_ADTR2EN2_e ADTR2EN2 : 1; // ADC Trigger 2 Source is PGxTRIGA Compare Event Enable bit
+    //    volatile PGEVT_ADTR2EN3_e ADTR2EN3 : 1; // ADC Trigger 2 Source is PGxTRIGA Compare Event Enable bit
+        volatile PGEVT_ADTRxEN_e ADTR2EN : 3;   // ADC Trigger 2 Source is PGxTRIGA/B/C Compare Event 
+        volatile PGEVT_IEVTSEL_e IEVTSEL : 2;   // Interrupt Event Selection bits
+        volatile unsigned : 2;            // reserved
+        volatile PGEVT_SIEN_e SIEN : 1;         // PCI Sync Interrupt Enable bit
+        volatile PGEVT_FFIEN_e FFIEN: 1;        // PCI Feed-Forward Interrupt Enable bit
+        volatile PGEVT_CLIEN_e CLIEN: 1;        // PCI Current-Limit Interrupt Enable bit
+        volatile PGEVT_FLTIEN_e FLTIEN: 1;      // PCI Fault Interrupt Enable bit
+
+    } __attribute__((packed)) bits;
     volatile uint32_t value;
-    volatile PGxEVT_t bits;
-}REGBLK_PGxEVT_CONFIG_t;
+}PGxEVT_t;
 
 
 /* ===========================================================================
@@ -1622,34 +1601,29 @@ typedef enum {
 }PGxyPCIH_TQSS_e; // Termination Qualifier Source Selection bits
 
 
-
-typedef struct {
-    
-    volatile PGxyPCIL_PSS_e PSS : 5;            // Bit 4-0: PCI Source Selection bits
-    volatile PGxyPCIL_PPS_e PPS : 1;            // Bit 5: PCI Polarity Select bit
-    volatile PGxyPCIL_PSYNC_e PSYNC : 1;        // Bit 6: PCI Synchronization Control
-    volatile PGxyPCIL_SWTERM_e SWTERM : 1;      // Bit 7: PCI Software Termination bit
-    volatile PGxyPCIL_AQSS_e AQSS : 3;          // Bit 10-8: Acceptance Qualifier Source Selection bits
-    volatile PGxyPCIL_AQPS_e AQPS : 1;          // Bit 11: Acceptance Qualifier Polarity Select bit
-    volatile PGxyPCIL_TERM_e TERM : 3;          // Bit 14-12: Termination Event Selection bits
-    volatile PGxyPCIL_TSYNCDIS_e TSYNCDIS: 1;   // Bit 15: PCI Fault Interrupt Enable bit
-    
-    volatile PGxyPCIH_TQSS_e TQSS : 3;          // Bit 2-0: Termination Qualifier Source Selection bits
-    volatile PGxyPCIH_TQPS_e TQPS : 1;          // Bit 3: Termination Qualifier Polarity Select bit
-    volatile PGxyPCIH_LATMOD_e LATMOD : 1;      // Bit 4: PCI SR Latch Mode bit
-    volatile PGxyPCIH_SWPCIM_e SWPCIM : 2;      // Bit 6-5: Software PCI Control Mode bits
-    volatile PGxyPCIH_SWPCI_e SWPCI : 1;        // Bit 7: Software PCI Control bit
-    volatile PGxyPCIH_ACP_e ACP : 3;            // Bit 10-8: PCI Acceptance Criteria Selection bits
-    volatile unsigned : 1;                      // (reserved)
-    volatile PGxyPCIH_BPSEL_e BPSEL : 3;        // Bit 14-12: PCI Bypass Source Selection bits
-    volatile PGxyPCIH_BPEN_e BPEN : 1;          // Bit 15: PCI Bypass Enable bit
-    
-} __attribute__((packed)) PGxyPCI_t; // PGxyPCIL: PWM GENERATOR xy PCI REGISTER HIGH/LOW
-
 typedef union {
+    struct {
+        volatile PGxyPCIL_PSS_e PSS : 5;            // Bit 4-0: PCI Source Selection bits
+        volatile PGxyPCIL_PPS_e PPS : 1;            // Bit 5: PCI Polarity Select bit
+        volatile PGxyPCIL_PSYNC_e PSYNC : 1;        // Bit 6: PCI Synchronization Control
+        volatile PGxyPCIL_SWTERM_e SWTERM : 1;      // Bit 7: PCI Software Termination bit
+        volatile PGxyPCIL_AQSS_e AQSS : 3;          // Bit 10-8: Acceptance Qualifier Source Selection bits
+        volatile PGxyPCIL_AQPS_e AQPS : 1;          // Bit 11: Acceptance Qualifier Polarity Select bit
+        volatile PGxyPCIL_TERM_e TERM : 3;          // Bit 14-12: Termination Event Selection bits
+        volatile PGxyPCIL_TSYNCDIS_e TSYNCDIS: 1;   // Bit 15: PCI Fault Interrupt Enable bit
+
+        volatile PGxyPCIH_TQSS_e TQSS : 3;          // Bit 2-0: Termination Qualifier Source Selection bits
+        volatile PGxyPCIH_TQPS_e TQPS : 1;          // Bit 3: Termination Qualifier Polarity Select bit
+        volatile PGxyPCIH_LATMOD_e LATMOD : 1;      // Bit 4: PCI SR Latch Mode bit
+        volatile PGxyPCIH_SWPCIM_e SWPCIM : 2;      // Bit 6-5: Software PCI Control Mode bits
+        volatile PGxyPCIH_SWPCI_e SWPCI : 1;        // Bit 7: Software PCI Control bit
+        volatile PGxyPCIH_ACP_e ACP : 3;            // Bit 10-8: PCI Acceptance Criteria Selection bits
+        volatile unsigned : 1;                      // (reserved)
+        volatile PGxyPCIH_BPSEL_e BPSEL : 3;        // Bit 14-12: PCI Bypass Source Selection bits
+        volatile PGxyPCIH_BPEN_e BPEN : 1;          // Bit 15: PCI Bypass Enable bit
+    } __attribute__((packed)) bits; // PGxyPCIL: PWM GENERATOR xy PCI REGISTER HIGH/LOW
     volatile uint32_t value; // Direct read/write access to both registers
-    volatile PGxEVT_t bits;  // Single-bit access to register bits
-}REGBLK_PGxyPCI_t;  // PGxyPCIL: PWM GENERATOR xy PCI REGISTER HIGH/LOW
+}PGxyPCI_t;  // PGxyPCIL: PWM GENERATOR xy PCI REGISTER HIGH/LOW
                     // (x = PWM GENERATOR #; y = F, CL, FF OR S) 
 
 
@@ -1693,22 +1667,20 @@ typedef enum {
     PGxLEBCON_LEBTRG_DISABLE = 0b0  // LEB ignores the selected edge of PWMx
 } PGxLEBCON_LEBTRG_e;
 
-typedef struct {
-    
-    volatile PGxLEBCON_LEBTRG_e PLF : 1;    // Bit 0: PWMxL Falling Edge Trigger Enable bit
-    volatile PGxLEBCON_LEBTRG_e PLR : 1;    // Bit 1: PWMxL Rising Edge Trigger Enable bit
-    volatile PGxLEBCON_LEBTRG_e PHF : 1;    // Bit 2: PWMxH Falling Edge Trigger Enable bit
-    volatile PGxLEBCON_LEBTRG_e PHR : 1;    // Bit 3: PWMxH Rising Edge Trigger Enable bit
-    volatile unsigned : 4;                  // Bit 7-4:  (reserved)
-    volatile PGxLEBCON_PWMPCI_e PWMPCI : 3; // Bit 10-8: PWM Source for PCI Selection bits
-    volatile unsigned : 5;                  // Bit 15-11: (reserved)
-
-} __attribute__((packed)) PGxLEBCON_t; // PGxLEBH: PWM GENERATOR x LEADING-EDGE BLANKING REGISTER HIGH
-
 typedef union {
-    volatile uint32_t value; // Direct read/write access to both registers
-    volatile PGxEVT_t bits;  // Single-bit access to register bits
-}REGBLK_PGxLEBCON_t;   // PGxLEBH: PWM GENERATOR x LEADING-EDGE BLANKING REGISTER HIGH
+    struct {
+
+        volatile PGxLEBCON_LEBTRG_e PLF : 1;    // Bit 0: PWMxL Falling Edge Trigger Enable bit
+        volatile PGxLEBCON_LEBTRG_e PLR : 1;    // Bit 1: PWMxL Rising Edge Trigger Enable bit
+        volatile PGxLEBCON_LEBTRG_e PHF : 1;    // Bit 2: PWMxH Falling Edge Trigger Enable bit
+        volatile PGxLEBCON_LEBTRG_e PHR : 1;    // Bit 3: PWMxH Rising Edge Trigger Enable bit
+        volatile unsigned : 4;                  // Bit 7-4:  (reserved)
+        volatile PGxLEBCON_PWMPCI_e PWMPCI : 3; // Bit 10-8: PWM Source for PCI Selection bits
+        volatile unsigned : 5;                  // Bit 15-11: (reserved)
+
+    } __attribute__((packed)) bits; // PGxLEBH: PWM GENERATOR x LEADING-EDGE BLANKING REGISTER HIGH
+    volatile uint16_t value; // Direct read/write access to both registers
+}PGxLEBCON_t;   // PGxLEBH: PWM GENERATOR x LEADING-EDGE BLANKING REGISTER HIGH
 
 
 /* ===========================================================================
@@ -1737,15 +1709,13 @@ typedef union {
  *
  * ******************************************************************************** */
 
-typedef struct {
-    volatile uint32_t DT_FALLING : 16; // dead time low-side PWM output
-    volatile uint32_t DT_RISING : 16; // dead time high-side PWM output
-} PGxDT_t;
-
 typedef union {
+    struct {
+        volatile uint32_t DT_FALLING : 16; // dead time low-side PWM output
+        volatile uint32_t DT_RISING : 16; // dead time high-side PWM output
+    } bits;
     volatile uint32_t value;
-    volatile PGxDT_t bits;
-} REGBLK_PGxDEAD_TIME_t;
+} PGxDTxy_t;
 
 
 /* ===========================================================================
@@ -1754,16 +1724,12 @@ typedef union {
 #define REG_PGxDC_VALID_DATA_WRITE_MASK 0xFFFF
 #define REG_PGxDC_VALID_DATA_READ_MASK 0xFFFF
 
-typedef struct {
-    
-    volatile unsigned DC : 16; // duty cycle time period common PWM modes
-
-} __attribute__((packed)) PGxDC_t;
-
 typedef union {
-    volatile PGxDC_t bits;
+    struct {
+        volatile unsigned DC : 16; // duty cycle time period common PWM modes
+    } __attribute__((packed)) bits;
     volatile uint16_t value;
-} REGBLK_PGxDC_t;
+} PGxDC_t;
 
 /* ===========================================================================
  * PGxDCA: PWM GENERATOR x DUTY CYCLE ADJUSTMENT REGISTER
@@ -1771,17 +1737,13 @@ typedef union {
 #define REG_PGxDCA_VALID_DATA_WRITE_MASK 0x00FF
 #define REG_PGxDCA_VALID_DATA_READ_MASK 0x00FF
 
-typedef struct {
-    
-    volatile unsigned DCA : 8; // duty cycle time period common PWM modes
-    volatile unsigned : 8; // reserved
-
-} __attribute__((packed)) PGxDCA_t;
-
 typedef union {
+    struct {
+        volatile unsigned DCA : 8; // duty cycle time period common PWM modes
+        volatile unsigned : 8; // reserved
+    } __attribute__((packed)) bits;
     volatile uint16_t value;
-    volatile PGxDCA_t bits;
-} REGBLK_PGxDCA_t;
+} PGxDCA_t;
 
 
 /* ===========================================================================
@@ -1790,16 +1752,12 @@ typedef union {
 #define REG_PGxPER_VALID_DATA_WRITE_MASK 0xFFFF
 #define REG_PGxPER_VALID_DATA_READ_MASK 0xFFFF
 
-typedef struct {
-    
-    volatile unsigned PER : 16; // PWM period PWM ticks
-
-} __attribute__((packed)) PGxPER_t;
-
 typedef union {
-    volatile PGxDC_t bits;
+    struct {
+        volatile unsigned PER : 16; // PWM period PWM ticks
+    } __attribute__((packed)) bits;
     volatile uint16_t value;
-} REGBLK_PGxPER_t;
+} PGxPER_t;
 
 /* ===========================================================================
  * PGxDC: PWM GENERATOR x PHASE REGISTER
@@ -1807,16 +1765,13 @@ typedef union {
 #define REG_PGxPHASE_VALID_DATA_WRITE_MASK 0xFFFF
 #define REG_PGxPHASE_VALID_DATA_READ_MASK 0xFFFF
 
-typedef struct {
-    
-    volatile unsigned PHASE : 16; // PWM period PWM ticks
-
-} __attribute__((packed)) PGxPHASE_t;
 
 typedef union {
-    volatile PGxPHASE_t bits;
+    struct {
+        volatile unsigned PHASE : 16; // PWM period PWM ticks
+    } __attribute__((packed)) bits;
     volatile uint16_t value;
-} REGBLK_PGxPHASE_t;
+} PGxPHASE_t;
 
 
 /* ===========================================================================
@@ -1825,16 +1780,12 @@ typedef union {
 #define REG_PGxLEB_VALID_DATA_WRITE_MASK 0xFFFF
 #define REG_PGxLEB_VALID_DATA_READ_MASK 0xFFFF
 
-typedef struct {
-    
-    volatile unsigned LEB : 16; // PWM period PWM ticks
-
-} __attribute__((packed)) PGxLEB_t;
-
 typedef union {
-    volatile PGxLEB_t bits;
+    struct {
+        volatile unsigned LEB : 16; // PWM period PWM ticks
+    } __attribute__((packed)) bits;
     volatile uint16_t value;
-} REGBLK_PGxLEB_t;
+} PGxLEB_t;
 
 /* ===========================================================================
  * PGxTRIGA: PWM GENERATOR x TRIGGER y REGISTER (x = PWM Generator, y = A, B or C)
@@ -1842,16 +1793,12 @@ typedef union {
 #define REG_PGxTRIGy_VALID_DATA_WRITE_MASK 0xFFFF
 #define REG_PGxTRIGy_VALID_DATA_READ_MASK 0xFFFF
 
-typedef struct {
-    
-    volatile unsigned TRG : 16; // PWM trigger PWM ticks
-
-} __attribute__((packed)) PGxTRGy_t;
-
 typedef union {
-    volatile PGxTRGy_t bits;
+    struct {
+        volatile unsigned TRG : 16; // PWM trigger PWM ticks
+    } __attribute__((packed)) bits;
     volatile uint16_t value;
-} REGBLK_PGxTRGy_t;
+} PGxTRGy_t;
 
 
 /* ===========================================================================
@@ -1860,16 +1807,12 @@ typedef union {
 #define REG_PGxCAP_VALID_DATA_WRITE_MASK 0x0000
 #define REG_PGxCAP_VALID_DATA_READ_MASK 0xFFFF
 
-typedef struct {
-    
-    volatile unsigned CAP : 16; // PWM capture PWM ticks
-
-} __attribute__((packed)) PGxCAP_t;
-
 typedef union {
-    volatile PGxCAP_t bits;
+    struct {
+        volatile unsigned CAP : 16; // PWM capture PWM ticks
+    } __attribute__((packed)) bits;
     volatile uint16_t value;
-} REGBLK_PGxCAP_t;
+} PGxCAP_t;
 
 
 
@@ -1886,51 +1829,50 @@ typedef union {
  * ******************************************************************************** */
 
 typedef struct {
-    volatile REGBLK_PCLKCON_t PCLKCON;  // PCLKCON: PWM CLOCK CONTROL REGISTER
-    volatile REGBLK_FSCL_t FSCL;        // FSCL: FREQUENCY SCALE REGISTER
-    volatile REGBLK_FSMINPER_t FSMINPER; // FSMINPER: FREQUENCY SCALING MINIMUM PERIOD REGISTER
-    volatile REGBLK_MPHASE_t MPHASE; // MPHASE: MASTER PHASE REGISTER
-    volatile REGBLK_MDC_t MDC; // MDC: MASTER DUTY CYCLE REGISTER
-    volatile REGBLK_MPER_t MPER; // MPER: MASTER PERIOD REGISTER
-    volatile REGBLK_LFSR_t LFSR; // LFSR: LINEAR FEEDBACK SHIFT REGISTER
-    volatile REGBLK_CMBTRIGy_t CMBTRIG; // CMBTRIGL/H: COMBINATIONAL TRIGGER REGISTER LOW & HIGH
-    volatile REGBLK_LOGCONy_t LOGCONA;  // LOGCONy: COMBINATORIAL PWM LOGIC CONTROLREGISTER A
-    volatile REGBLK_LOGCONy_t LOGCONB;  // LOGCONy: COMBINATORIAL PWM LOGIC CONTROLREGISTER A
-    volatile REGBLK_LOGCONy_t LOGCONC;  // LOGCONy: COMBINATORIAL PWM LOGIC CONTROLREGISTER A
-    volatile REGBLK_LOGCONy_t LOGCOND;  // LOGCONy: COMBINATORIAL PWM LOGIC CONTROLREGISTER A
-    volatile REGBLK_LOGCONy_t LOGCONE;  // LOGCONy: COMBINATORIAL PWM LOGIC CONTROLREGISTER A
-    volatile REGBLK_LOGCONy_t LOGCONF;  // LOGCONy: COMBINATORIAL PWM LOGIC CONTROLREGISTER A
-    volatile REGBLK_PWMEVTy_t_CONFIG_t PWMEVTA; // PWMEVTy: PWM EVENT OUTPUT CONTROL REGISTER A
-    volatile REGBLK_PWMEVTy_t_CONFIG_t PWMEVTB; // PWMEVTy: PWM EVENT OUTPUT CONTROL REGISTER B
-    volatile REGBLK_PWMEVTy_t_CONFIG_t PWMEVTC; // PWMEVTy: PWM EVENT OUTPUT CONTROL REGISTER C
-    volatile REGBLK_PWMEVTy_t_CONFIG_t PWMEVTD; // PWMEVTy: PWM EVENT OUTPUT CONTROL REGISTER D
-    volatile REGBLK_PWMEVTy_t_CONFIG_t PWMEVTE; // PWMEVTy: PWM EVENT OUTPUT CONTROL REGISTER E
-    volatile REGBLK_PWMEVTy_t_CONFIG_t PWMEVTF; // PWMEVTy: PWM EVENT OUTPUT CONTROL REGISTER F
+    volatile PCLKCON_t PCLKCON;  // PCLKCON: PWM CLOCK CONTROL REGISTER
+    volatile FSCL_t FSCL;        // FSCL: FREQUENCY SCALE REGISTER
+    volatile FSMINPER_t FSMINPER; // FSMINPER: FREQUENCY SCALING MINIMUM PERIOD REGISTER
+    volatile MPHASE_t MPHASE; // MPHASE: MASTER PHASE REGISTER
+    volatile MDC_t MDC; // MDC: MASTER DUTY CYCLE REGISTER
+    volatile MPER_t MPER; // MPER: MASTER PERIOD REGISTER
+    volatile LFSR_t LFSR; // LFSR: LINEAR FEEDBACK SHIFT REGISTER
+    volatile CMBTRIGy_t CMBTRIG; // CMBTRIGL/H: COMBINATIONAL TRIGGER REGISTER LOW & HIGH
+    volatile LOGCONy_t LOGCONA;  // LOGCONy: COMBINATORIAL PWM LOGIC CONTROLREGISTER A
+    volatile LOGCONy_t LOGCONB;  // LOGCONy: COMBINATORIAL PWM LOGIC CONTROLREGISTER A
+    volatile LOGCONy_t LOGCONC;  // LOGCONy: COMBINATORIAL PWM LOGIC CONTROLREGISTER A
+    volatile LOGCONy_t LOGCOND;  // LOGCONy: COMBINATORIAL PWM LOGIC CONTROLREGISTER A
+    volatile LOGCONy_t LOGCONE;  // LOGCONy: COMBINATORIAL PWM LOGIC CONTROLREGISTER A
+    volatile LOGCONy_t LOGCONF;  // LOGCONy: COMBINATORIAL PWM LOGIC CONTROLREGISTER A
+    volatile PWMEVTy_t PWMEVTA; // PWMEVTy: PWM EVENT OUTPUT CONTROL REGISTER A
+    volatile PWMEVTy_t PWMEVTB; // PWMEVTy: PWM EVENT OUTPUT CONTROL REGISTER B
+    volatile PWMEVTy_t PWMEVTC; // PWMEVTy: PWM EVENT OUTPUT CONTROL REGISTER C
+    volatile PWMEVTy_t PWMEVTD; // PWMEVTy: PWM EVENT OUTPUT CONTROL REGISTER D
+    volatile PWMEVTy_t PWMEVTE; // PWMEVTy: PWM EVENT OUTPUT CONTROL REGISTER E
+    volatile PWMEVTy_t PWMEVTF; // PWMEVTy: PWM EVENT OUTPUT CONTROL REGISTER F
 } __attribute__((packed)) HSPWM_C_MODULE_CONFIG_t;   // GENERIC PWM MODULE BASE REGISTERS
 
 
 typedef struct {
-    volatile REGBLK_PGxCH_CONFIG_t PGxCON; // PWM GENERATOR x CONTROL REGISTER LOW/HIGH
-    volatile REGBLK_PGxSTAT_t PGxSTAT; // PWM GENERATOR x STATUS REGISTER
-    volatile REGBLK_PGxIO_CONFIG_t PGxIOCON; // PWM GENERATOR x I/O CONTROL REGISTER LOW/HIGH
-    volatile REGBLK_PGxEVT_CONFIG_t PGxEVT; // PWM GENERATOR x EVENT REGISTER LOW/HIGH
-    volatile REGBLK_PGxyPCI_t PGxFPCI; // PWM GENERATOR x FAULT PCI REGISTER LOW(HIGH)
-    volatile REGBLK_PGxyPCI_t PGxCLPCI; // PWM GENERATOR x CURRENT LIMIT PCI REGISTER LOW/HIGH
-    volatile REGBLK_PGxyPCI_t PGxFFPCI; // PWM GENERATOR x FEED FORWARD PCI REGISTER LOW/HIGH
-    volatile REGBLK_PGxyPCI_t PGxSPCI; // PWM GENERATOR x SOFTWARE PCI REGISTER LOW/HIGH
-    volatile REGBLK_PGxLEB_t PGxLEB; // PWM GENERATOR x LEADING-EDGE BLANKING REGISTER LOW
-    volatile REGBLK_PGxLEBCON_t PGxLEBCON; // PWM GENERATOR x LEADING-EDGE BLANKING REGISTER HIGH
-    volatile REGBLK_PGxPHASE_t PGxPHASE; // PWM GENERATOR x PHASE REGISTER
-    volatile REGBLK_PGxDC_t PGxDC; // PWM GENERATOR x DUTY CYCLE REGISTER
-    volatile REGBLK_PGxDCA_t PGxDCA; // PWM GENERATOR x DUTY CYCLE ADJUSTMENT REGISTER
-    volatile REGBLK_PGxPER_t PGxPER; // PWM GENERATOR x PERIOD REGISTER
-    volatile REGBLK_PGxTRGy_t PGxTRIGA; // PWM GENERATOR x TRIGGER A REGISTER
-    volatile REGBLK_PGxTRGy_t PGxTRIGB; // PWM GENERATOR x TRIGGER B REGISTER
-    volatile REGBLK_PGxTRGy_t PGxTRIGC; // PWM GENERATOR x TRIGGER C REGISTER
-    volatile REGBLK_PGxDEAD_TIME_t  PGxDT; // PWM GENERATOR x DEAD-TIME REGISTER LOW/HIGH
-    volatile REGBLK_PGxCAP_t PGxCAP; // PWM GENERATOR x CAPTURE REGISTER
-} __attribute__((packed)) HSPWM_C_GENERATOR_CONFIG_t;   // INDIVIDUAL PWM GENERATOR REGISTERS
-
+    volatile PGxCON_t PGxCON; // PWM GENERATOR x CONTROL REGISTER LOW/HIGH
+    volatile PGxSTAT_t PGxSTAT; // PWM GENERATOR x STATUS REGISTER
+    volatile PGxIOCON_t PGxIOCON; // PWM GENERATOR x I/O CONTROL REGISTER LOW/HIGH
+    volatile PGxEVT_t PGxEVT; // PWM GENERATOR x EVENT REGISTER LOW/HIGH
+    volatile PGxyPCI_t PGxFPCI; // PWM GENERATOR x FAULT PCI REGISTER LOW(HIGH)
+    volatile PGxyPCI_t PGxCLPCI; // PWM GENERATOR x CURRENT LIMIT PCI REGISTER LOW/HIGH
+    volatile PGxyPCI_t PGxFFPCI; // PWM GENERATOR x FEED FORWARD PCI REGISTER LOW/HIGH
+    volatile PGxyPCI_t PGxSPCI; // PWM GENERATOR x SOFTWARE PCI REGISTER LOW/HIGH
+    volatile PGxLEB_t PGxLEB; // PWM GENERATOR x LEADING-EDGE BLANKING REGISTER LOW
+    volatile PGxLEBCON_t PGxLEBCON; // PWM GENERATOR x LEADING-EDGE BLANKING REGISTER HIGH
+    volatile PGxPHASE_t PGxPHASE; // PWM GENERATOR x PHASE REGISTER
+    volatile PGxDC_t PGxDC; // PWM GENERATOR x DUTY CYCLE REGISTER
+    volatile PGxDCA_t PGxDCA; // PWM GENERATOR x DUTY CYCLE ADJUSTMENT REGISTER
+    volatile PGxPER_t PGxPER; // PWM GENERATOR x PERIOD REGISTER
+    volatile PGxTRGy_t PGxTRIGA; // PWM GENERATOR x TRIGGER A REGISTER
+    volatile PGxTRGy_t PGxTRIGB; // PWM GENERATOR x TRIGGER B REGISTER
+    volatile PGxTRGy_t PGxTRIGC; // PWM GENERATOR x TRIGGER C REGISTER
+    volatile PGxDTxy_t PGxDT; // PWM GENERATOR x DEAD-TIME REGISTER LOW/HIGH
+    volatile PGxCAP_t PGxCAP; // PWM GENERATOR x CAPTURE REGISTER
+} HSPWM_C_GENERATOR_CONFIG_t;   // INDIVIDUAL PWM GENERATOR REGISTERS
 
 
 // Prototypes
@@ -1940,11 +1882,11 @@ extern volatile uint16_t hspwm_init_pwm_generator(uint16_t instance, HSPWM_C_GEN
 
 extern volatile uint16_t hspwm_init_independent_pwm (
     uint16_t instance,
-    REGBLK_PCLKCON_t regPCLK,
-    REGBLK_PGxCH_CONFIG_t regPGxCON,
-    REGBLK_PGxEVT_CONFIG_t regPGxEVT,
-    REGBLK_PGxIO_CONFIG_t regPGxIOCON,
-    REGBLK_PGxDEAD_TIME_t regPGxDT
+    PCLKCON_t regPCLK,
+    PGxCON_t regPGxCON,
+    PGxEVT_t regPGxEVT,
+    PGxIOCON_t regPGxIOCON,
+    PGxDTxy_t regPGxDT
     );
 
 extern volatile uint16_t hspwm_init_pwm_timing (

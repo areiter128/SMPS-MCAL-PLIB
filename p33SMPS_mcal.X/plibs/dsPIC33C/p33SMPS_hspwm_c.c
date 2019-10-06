@@ -276,11 +276,11 @@ volatile uint16_t hspwm_init_pwm_generator ( uint16_t instance, HSPWM_C_GENERATO
 
 inline volatile uint16_t hspwm_init_independent_pwm(
             uint16_t instance, 
-            REGBLK_PCLKCON_t regPCLK, 
-            REGBLK_PGxCH_CONFIG_t regPGxCON, 
-            REGBLK_PGxEVT_CONFIG_t regPGxEVT,
-            REGBLK_PGxIO_CONFIG_t regPGxIOCON, 
-            REGBLK_PGxDEAD_TIME_t regPGxDT
+            PCLKCON_t regPCLK, 
+            PGxCON_t regPGxCON, 
+            PGxEVT_t regPGxEVT,
+            PGxIOCON_t regPGxIOCON, 
+            PGxDTxy_t regPGxDT
     )
 {
     
