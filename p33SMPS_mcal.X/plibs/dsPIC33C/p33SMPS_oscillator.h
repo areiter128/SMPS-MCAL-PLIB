@@ -1101,6 +1101,6 @@ extern volatile uint16_t init_AUXCLK(AUXOSC_CONFIG_t aux_clock_config);
 
 extern volatile uint16_t init_FRCCLK_Defaults(CPU_SPEED_DEFAULTS_e cpu_speed);
 extern volatile uint16_t init_AUXCLK_Defaults(AUX_PLL_DEFAULTS_e afpllo_frequency);
-extern volatile uint32_t osc_get_frequencies(uint32_t pri_osc_frequency);
+extern volatile uint16_t osc_get_frequencies(uint32_t pri_osc_frequency);
 
 #endif  /* __MCAL_P33_SMPS_OSCILLATOR_H__ */

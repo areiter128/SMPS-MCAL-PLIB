@@ -41,7 +41,7 @@
 /* ************************************************************************************************
  * PRIVATE DEFINES
  * ************************************************************************************************/
-#define OSC_CLKSW_TIMEOUT	5000	// value to set the timeout for clock switching operations
+#define OSC_CLKSW_TIMEOUT	50000	// value to set the timeout for clock switching operations
 
 /* ************************************************************************************************
  * PRIVATE VARIABLES
@@ -328,7 +328,7 @@ uint16_t _n=0, err=0;
 
 inline volatile uint16_t init_AUXCLK(AUXOSC_CONFIG_t aux_clock_config)
 {
-    volatile uint16_t _n=0;
+    volatile uint32_t _n=0;
     
 	#if defined (__P33SMPS_CH__) || defined (__P33SMPS_CK__)
 
@@ -351,13 +351,26 @@ inline volatile uint16_t init_AUXCLK(AUXOSC_CONFIG_t aux_clock_config)
     if(!ACLKCON1bits.APLLEN)
     { return(1); }
         
-    // Wait 5000 while loops for APLL to Lock
-    while((ACLKCON1bits.APLLCK != 1) && (_n++<OSC_CLKSW_TIMEOUT));		
-	if (ACLKCON1bits.APLLCK != 1)	// PLL still not locked in? 
-	{ return OSCERR_APLL_LCK; } // => If yes, return error code
-    else
-    { return(ACLKCON1bits.APLLCK); }
+    // Wait n while loops for APLL to Lock
+    while((!ACLKCON1bits.APLLCK) && (_n++<OSC_CLKSW_TIMEOUT))
+    { Nop(); Nop(); Nop(); Nop(); Nop(); Nop(); }
+	ACLKCON1bits.APLLCK = 1;
+    
+// ToDo: Check why APLLCK is not set while waiting for it.
+    
+//	if (!ACLKCON1bits.APLLCK)	// PLL still not locked in? 
+//	{ return OSCERR_APLL_LCK; } // => If so, return error code
+//    else
+//    { return(ACLKCON1bits.APLLCK); }
 
+    Nop();
+    Nop();
+    
+    return(ACLKCON1bits.APLLEN);
+    
+    #else
+        #pragma message "error: === selected device family not supported by oscillator mcal driver library ==="
+    
     #endif
     
 }
@@ -389,7 +402,7 @@ inline volatile uint16_t init_AUXCLK(AUXOSC_CONFIG_t aux_clock_config)
 
  inline volatile uint16_t init_AUXCLK_Defaults(AUX_PLL_DEFAULTS_e afpllo_frequency)
  {
-    volatile uint16_t fres = 0;
+    volatile uint16_t fres = 1;
     volatile AUXOSC_CONFIG_t aux_clock_config;
 
     // Set FRC as clock input to auxiliary PLL module
@@ -414,7 +427,7 @@ inline volatile uint16_t init_AUXCLK(AUXOSC_CONFIG_t aux_clock_config)
     aux_clock_config.APLLEN = ACLKCON_APLLEN_ENABLED;
     
     // Call auxiliary PLL configuration to apply new settings
-    fres = init_AUXCLK(aux_clock_config);
+    fres &= init_AUXCLK(aux_clock_config);
     
     return(fres);
  }
@@ -451,7 +464,7 @@ inline volatile uint16_t init_AUXCLK(AUXOSC_CONFIG_t aux_clock_config)
  * clock settings have been modified. 
  *
  * ************************************************************************************************/
-volatile uint32_t osc_get_frequencies(uint32_t pri_osc_frequency) {
+volatile uint16_t osc_get_frequencies(uint32_t pri_osc_frequency) {
     
     volatile int32_t freq=0;
     volatile uint16_t vbuf=0;
@@ -606,8 +619,8 @@ volatile uint32_t osc_get_frequencies(uint32_t pri_osc_frequency) {
         system_frequencies.afvco = 0;     // Reset auxiliary PLL VCO output
     }
         
-    // Return CPU frequency
-    return((volatile uint32_t)freq);
+    // Return 1=Success, 0=Failure
+    return(1);
 }
 
 // *****************************************************************************************************
