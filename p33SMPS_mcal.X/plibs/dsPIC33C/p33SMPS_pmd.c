@@ -43,38 +43,46 @@
 
 inline volatile uint16_t pmd_reset(pmd_enable_setting_e power_on_state) {
     
+    volatile uint16_t regval=0;
+    
+    if (power_on_state == PMD_POWER_OFF)
+    { regval = 0xFFFF; }
+    
     #ifdef PMDCON
-    PMDCONbits.PMDLOCK = 1; // Peripheral Module Disable-bits (1=can be set, 0=cannot be set) in software
+    _PMDLOCK = 1; // Peripheral Module Disable-bits (1=can be set, 0=cannot be set) in software
     #endif
     
     #ifdef PMD1
-        PMD1 = power_on_state;   // disable all peripherals in PMD1 register
+        PMD1 = (regval & PMD1_VALID_DATA_MASK);   // disable all peripherals in PMD1 register
     #endif
     #ifdef PMD2
-        PMD2 = power_on_state;   // disable all peripherals in PMD2 register
+        PMD2 = (regval & PMD2_VALID_DATA_MASK);   // disable all peripherals in PMD2 register
     #endif
     #ifdef PMD3
-        PMD3 = power_on_state;   // disable all peripherals in PMD3 register
+        PMD3 = (regval & PMD3_VALID_DATA_MASK);   // disable all peripherals in PMD3 register
     #endif
     #ifdef PMD4
-        PMD4 = power_on_state;   // disable all peripherals in PMD4 register
+        PMD4 = (regval & PMD4_VALID_DATA_MASK);   // disable all peripherals in PMD4 register
     #endif
     #ifdef PMD5
-        PMD5 = power_on_state;   // disable all peripherals in PMD5 register
+        PMD5 = (regval & PMD5_VALID_DATA_MASK);   // disable all peripherals in PMD5 register
     #endif
     #ifdef PMD6
-        PMD6 = power_on_state;   // disable all peripherals in PMD6 register
+        PMD6 = (regval & PMD6_VALID_DATA_MASK);   // disable all peripherals in PMD6 register
     #endif
     #ifdef PMD7
-        PMD7 = power_on_state;   // disable all peripherals in PMD7 register
+        PMD7 = (regval & PMD7_VALID_DATA_MASK);   // disable all peripherals in PMD7 register
     #endif
     #ifdef PMD8
-        PMD8 = power_on_state;   // disable all peripherals in PMD8 register
+        PMD8 = (regval & PMD8_VALID_DATA_MASK);   // disable all peripherals in PMD8 register
     #endif
     #ifdef PMD9
-        PMD9 = power_on_state;   // disable all peripherals in PMD9 register
+        PMD9 = (regval & PMD9_VALID_DATA_MASK);   // disable all peripherals in PMD9 register
     #endif
 
+    #ifdef PMDCON
+    _PMDLOCK = 0; // Peripheral Module Disable-bits (1=can be set, 0=cannot be set) in software
+    #endif
         
         
     return(1);

@@ -80,6 +80,7 @@ inline volatile uint16_t smps_uart_init(uint16_t uart_instance, UxMODE_CONTROL_R
     volatile uint16_t *regptr;
     volatile uint16_t reg_offset=0;
 
+    if (!(smps_uart_power_on(uart_instance))) return(0); // Make sure power to peripheral is turned on
 	if (uart_instance > UART_UART_COUNT) return(0);
     
 	reg_offset = ((uart_instance-1) * UART_INDEX_REG_OFFSET);
@@ -122,6 +123,7 @@ inline volatile uint16_t smps_uart_open_port(uint16_t uart_instance,
     volatile uint16_t reg_offset=0, reg_buf=0;
     volatile uint32_t brg_buf=0;
 
+    if (!(smps_uart_power_on(uart_instance))) return(0); // Make sure power to peripheral is turned on
 	if (uart_instance > UART_UART_COUNT) return(0);     // Check if index is valid
     
     // Determine SFR offset depending on given index
@@ -417,6 +419,7 @@ inline volatile uint16_t smps_uart_enable(uint16_t uart_instance)
     volatile uint16_t *regptr;
     volatile uint16_t reg_offset=0, reg_buf=0;
 	
+    if (!(smps_uart_power_on(uart_instance))) return(0); // Make sure power to peripheral is turned on
 	if (uart_instance > UART_UART_COUNT) return(0); // Skip if index is out of range
 
 	reg_offset = ((uart_instance-1) * UART_INDEX_REG_OFFSET);
@@ -488,6 +491,8 @@ inline volatile uint16_t smps_uart_dispose(uint16_t uart_instance)
     regptr  = (volatile uint16_t *)&U1STA;
     *regptr = UART_UxSTA_REG_DISPOSE_MASK;	
     
+    smps_uart_power_off(uart_instance);
+    
 	return(1);
 
 }
@@ -509,6 +514,11 @@ inline volatile uint16_t smps_uart_power_on(uint16_t uart_instance)
 
 	if (uart_instance > UART_UART_COUNT) return(0); // Skip if index is out of range
 
+    // Peripheral Module Disable-bits (1=can be set, 0=cannot be set) in software
+    #ifdef PMDCON
+    _PMDLOCK = 1; 
+    #endif
+
     // Turn on power to peripheral module
     #ifdef _U1MD
         if(uart_instance == 1) { _U1MD = 0; }
@@ -523,6 +533,11 @@ inline volatile uint16_t smps_uart_power_on(uint16_t uart_instance)
         if(index == 4) { _U4MD = 0; }
     #endif
 
+    // Peripheral Module Disable-bits (1=can be set, 0=cannot be set) in software
+    #ifdef PMDCON
+    _PMDLOCK = 0; 
+    #endif
+    
 	return(1);
 
 }
@@ -545,6 +560,11 @@ inline volatile uint16_t smps_uart_power_off(uint16_t uart_instance)
 
 	if (uart_instance > UART_UART_COUNT) return(0); // Skip if index is out of range
 
+    // Peripheral Module Disable-bits (1=can be set, 0=cannot be set) in software
+    #ifdef PMDCON
+    _PMDLOCK = 1; 
+    #endif
+
     // Turn on power to peripheral module
     #ifdef _U1MD
         if(uart_instance == 1) { _U1MD = 1; }
@@ -559,6 +579,11 @@ inline volatile uint16_t smps_uart_power_off(uint16_t uart_instance)
         if(index == 4) { _U4MD = 1; }
     #endif
 
+    // Peripheral Module Disable-bits (1=can be set, 0=cannot be set) in software
+    #ifdef PMDCON
+    _PMDLOCK = 0; 
+    #endif
+    
 	return(1);
 
 }

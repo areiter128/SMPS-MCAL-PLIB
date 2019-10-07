@@ -46,6 +46,7 @@
 
 #include <xc.h> // include processor files - each processor file is guarded.  
 #include <stdint.h>
+#include "../p33SMPS_devices.h"
 
 // Direct control macros for peripheral modules
 #define PMD_TIMER1_POWER_ON   {_T1MD = 0}
@@ -152,6 +153,18 @@ typedef enum
     PMD_POWER_OFF = 1
 }pmd_enable_setting_e;
 
+#if defined (__P33SMPS_CK__)
+    #define PMD1_VALID_DATA_MASK    0b0000111011111011
+    #define PMD2_VALID_DATA_MASK    0b0000000111111111
+    #define PMD3_VALID_DATA_MASK    0b0000000110101110
+    #define PMD4_VALID_DATA_MASK    0b0000000000001000
+    #define PMD5_VALID_DATA_MASK    0b0000000000000000
+    #define PMD6_VALID_DATA_MASK    0b0000111100000001
+    #define PMD7_VALID_DATA_MASK    0b0000011100001000
+    #define PMD8_VALID_DATA_MASK    0b0011100100111110
+#else
+    #pragma message "=== selected device is not defined and may not be supported ==="
+#endif
 
 // global prototypes
 extern volatile uint16_t pmd_reset(pmd_enable_setting_e power_on_state);

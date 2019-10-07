@@ -57,6 +57,9 @@ volatile uint16_t hsadc_module_power_up(void)
 {
     volatile uint16_t fres=1;
 
+    #ifdef PMDCON
+    _PMDLOCK = 1; // Peripheral Module Disable-bits (1=can be set, 0=cannot be set) in software
+    #endif
     #if defined (_ABGMD)
     _ABGMD = 0;         // Turn on power to analog bandgap reference
     fres &= (1-_ABGMD);
@@ -68,6 +71,10 @@ volatile uint16_t hsadc_module_power_up(void)
     _ADC1MD = 0; 		// Turn on power to ADC module
     fres &= (1-_ADC1MD);
     #endif
+    #ifdef PMDCON
+    _PMDLOCK = 0; // Peripheral Module Disable-bits (1=can be set, 0=cannot be set) in software
+    #endif
+
     return(fres);
 
 } 
@@ -92,6 +99,9 @@ volatile uint16_t hsadc_module_power_down(void)
     Nop();  // DO NOT REMOVE
     Nop();  // *******************************************************************
 
+    #ifdef PMDCON
+    _PMDLOCK = 1; // Peripheral Module Disable-bits (1=can be set, 0=cannot be set) in software
+    #endif
     #if defined (_ABGMD)
     _ABGMD = 1;         // Turn off power to analog bandgap reference
     fres &= (_ABGMD);
@@ -104,6 +114,9 @@ volatile uint16_t hsadc_module_power_down(void)
     fres &= (_ADC1MD);
     #else
     fres = 0;
+    #endif
+    #ifdef PMDCON
+    _PMDLOCK = 0; // Peripheral Module Disable-bits (1=can be set, 0=cannot be set) in software
     #endif
     return(fres);
 

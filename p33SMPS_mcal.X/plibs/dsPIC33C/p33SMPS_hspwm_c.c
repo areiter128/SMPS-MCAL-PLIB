@@ -54,7 +54,17 @@
  * ***********************************************************************************************/
 inline volatile uint16_t hspwm_power_enable(void) {
 // enable power to peripheral
-    _HSPWM_POWER_ENABLE;
+
+    #ifdef PMDCON
+    _PMDLOCK = 1;  // Unlock PMDx WRITE events
+    #endif
+    
+    _HSPWM_POWER_ENABLE; // Power up PWM
+
+    #ifdef PMDCON
+    _PMDLOCK = 0;  // Lock PMDx WRITE events
+    #endif
+
     return(1 - _PWMMD);
 }
 
@@ -73,7 +83,17 @@ inline volatile uint16_t hspwm_power_enable(void) {
  * ***********************************************************************************************/
 inline volatile uint16_t hspwm_power_disable(void) {
 // disable power to peripheral
+    
+    #ifdef PMDCON
+    _PMDLOCK = 1;  // Unlock PMDx WRITE events
+    #endif
+
     _HSPWM_POWER_DISABLE;
+
+    #ifdef PMDCON
+    _PMDLOCK = 0;  // Unlock PMDx WRITE events
+    #endif
+
     return(1 - _PWMMD);
 }
 
