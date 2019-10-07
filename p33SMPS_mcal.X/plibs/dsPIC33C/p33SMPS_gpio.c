@@ -43,7 +43,7 @@ volatile uint16_t gpio_clear_config(volatile GPIO_REGISTER_TYPE_e reg_type, vola
 
 inline volatile uint16_t gpio_init(void) {
 
-    uint16_t fres = 1;
+    volatile uint16_t fres = 1;
     
     fres &= gpio_clear_config(GPIO_ANSEL, false); // reset port pin analog/digital input setting
     fres &= gpio_clear_config(GPIO_TRIS, true);   // reset port pin weak pull-up resistor setting
@@ -236,6 +236,8 @@ inline volatile uint16_t gpio_clear_config(volatile GPIO_REGISTER_TYPE_e reg_typ
 //            CNPDE = (regval & REG_PORTE_VALID_DATA_WRITE_MSK);
 //            fres &= (volatile bool)((regval & REG_PORTE_VALID_DATA_WRITE_MSK) == (CNPDE & REG_PORTE_VALID_DATA_WRITE_MSK));
 //            #endif
+            
+            break;
 
         default:
             return(0);
