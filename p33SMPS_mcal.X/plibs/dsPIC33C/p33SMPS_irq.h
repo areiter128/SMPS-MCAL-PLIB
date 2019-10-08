@@ -186,29 +186,28 @@ typedef enum {
     INTCON1_OSCFAIL_FLAG_CLEAR = 0b0  // Oscillator Failure Trap Status bit cleared
 } INTCON1_OSCFAIL_e;
 
-typedef struct {
-    volatile unsigned : 1;                  // Bit 0: (reserved)
-    volatile INTCON1_OSCFAIL_e OSCFAIL : 1; // Bit 1: Oscillator Failure Trap Status bit
-    volatile INTCON1_STKERR_e  STKERR : 1; // Bit 2: Stack Error Trap Status bit
-    volatile INTCON1_ADDRERR_e ADDRERR : 1; // Bit 3: Address Error Trap Status bit
-    volatile INTCON1_MATHERR_e MATHERR : 1; // Bit 4: Math Error Status bit
-    volatile INTCON1_DMACERR_e DMACERR : 1; // Bit 5: DMA Controller Trap Status bit
-    volatile INTCON1_DIV0ERR_e DIV0ERR : 1; // Bit 6: Divide-by-Zero Error Status bit
-    volatile INTCON1_SFTACERR_e SFTACERR : 1; // Bit 7: Shift Accumulator Error Status bit
-    volatile INTCON1_COVTE_e   COVTE : 1; // Bit 8: Catastrophic Overflow Trap Enable bit
-    volatile INTCON1_OVBTE_e   OVBTE : 1; // Bit 9: Accumulator B Overflow Trap Enable bit
-    volatile INTCON1_OVATE_e   OVATE : 1; // Bit 10: Accumulator A Overflow Trap Enable bit
-    volatile INTCON1_COVBERR_e COVBERR : 1; // Bit 11: Accumulator B Catastrophic Overflow Trap Flag bit
-    volatile INTCON1_COVAERR_e COVAERR : 1; // Bit 12: Accumulator A Catastrophic Overflow Trap Flag bit
-    volatile INTCON1_OVBERR_e  OVBERR : 1; // Bit 13: Accumulator B Overflow Trap Flag bit
-    volatile INTCON1_OVAERR_e  OVAERR : 1; // Bit 14: Accumulator A Overflow Trap Flag bit
-    volatile INTCON1_NSTDIS_e  NSTDIS : 1; // Bit 15: Interrupt Nesting Disable bit
-} __attribute__((packed)) INTCON1_t;
-
 typedef union {
-    volatile INTCON1_t bits;
+
+    struct {
+        volatile unsigned : 1;                  // Bit 0: (reserved)
+        volatile INTCON1_OSCFAIL_e OSCFAIL : 1; // Bit 1: Oscillator Failure Trap Status bit
+        volatile INTCON1_STKERR_e  STKERR : 1; // Bit 2: Stack Error Trap Status bit
+        volatile INTCON1_ADDRERR_e ADDRERR : 1; // Bit 3: Address Error Trap Status bit
+        volatile INTCON1_MATHERR_e MATHERR : 1; // Bit 4: Math Error Status bit
+        volatile INTCON1_DMACERR_e DMACERR : 1; // Bit 5: DMA Controller Trap Status bit
+        volatile INTCON1_DIV0ERR_e DIV0ERR : 1; // Bit 6: Divide-by-Zero Error Status bit
+        volatile INTCON1_SFTACERR_e SFTACERR : 1; // Bit 7: Shift Accumulator Error Status bit
+        volatile INTCON1_COVTE_e   COVTE : 1; // Bit 8: Catastrophic Overflow Trap Enable bit
+        volatile INTCON1_OVBTE_e   OVBTE : 1; // Bit 9: Accumulator B Overflow Trap Enable bit
+        volatile INTCON1_OVATE_e   OVATE : 1; // Bit 10: Accumulator A Overflow Trap Enable bit
+        volatile INTCON1_COVBERR_e COVBERR : 1; // Bit 11: Accumulator B Catastrophic Overflow Trap Flag bit
+        volatile INTCON1_COVAERR_e COVAERR : 1; // Bit 12: Accumulator A Catastrophic Overflow Trap Flag bit
+        volatile INTCON1_OVBERR_e  OVBERR : 1; // Bit 13: Accumulator B Overflow Trap Flag bit
+        volatile INTCON1_OVAERR_e  OVAERR : 1; // Bit 14: Accumulator A Overflow Trap Flag bit
+        volatile INTCON1_NSTDIS_e  NSTDIS : 1; // Bit 15: Interrupt Nesting Disable bit
+    } __attribute__((packed)) bits;
     volatile uint16_t value;
-}REGBLK_INTCON1_t; // INTCON1: INTERRUPT CONTROL REGISTER 1
+}INTCON1_t; // INTCON1: INTERRUPT CONTROL REGISTER 1
 
 
 // ======================================================================================================
@@ -287,60 +286,58 @@ typedef enum {
     INTCON2_INTxEP_RISING = 0b0 // External Interrupt x Edge Detect Polarity Select bit Rising
 } INTCON2_INTxEP_e; // External Interrupt x Edge Detect Polarity Select bit
 
-typedef struct {
-    #if defined (_INT0EP)
-    volatile INTCON2_INTxEP_e INT0EP : 1; // Bit 0: External Interrupt 0 Edge Detect Polarity Select bit
-    #else
-    volatile unsigned : 1; // (reserved)
-    #endif
-    #if defined (_INT1EP)
-    volatile INTCON2_INTxEP_e INT1EP : 1; // Bit 1: External Interrupt 1 Edge Detect Polarity Select bit
-    #else
-    volatile unsigned : 1; // (reserved)
-    #endif
-    #if defined (_INT2EP)
-    volatile INTCON2_INTxEP_e INT2EP : 1; // Bit 2: External Interrupt 2 Edge Detect Polarity Select bit
-    #else
-    volatile unsigned : 1; // (reserved)
-    #endif
-    #if defined (_INT3EP)
-    volatile INTCON2_INTxEP_e INT3EP : 1; // Bit 3: External Interrupt 3 Edge Detect Polarity Select bit
-    #else
-    volatile unsigned : 1; // (reserved)
-    #endif
-    #if defined (_INT4EP)
-    volatile INTCON2_INTxEP_e INT4EP : 1; // Bit 4: External Interrupt 4 Edge Detect Polarity Select bit
-    #else
-    volatile unsigned : 1; // (reserved)
-    #endif
-    #if defined (_INT5EP)
-    volatile INTCON2_INTxEP_e INT5EP : 1; // Bit 5: External Interrupt 5 Edge Detect Polarity Select bit
-    #else
-    volatile unsigned : 1; // (reserved)
-    #endif
-    #if defined (_INT6EP)
-    volatile INTCON2_INTxEP_e INT6EP : 1; // Bit 6: External Interrupt 6 Edge Detect Polarity Select bit
-    #else
-    volatile unsigned : 1; // (reserved)
-    #endif
-    #if defined (_INT7EP)
-    volatile INTCON2_INTxEP_e INT7EP : 1; // Bit 7: External Interrupt 7 Edge Detect Polarity Select bit
-    #else
-    volatile unsigned : 1; // (reserved)
-    #endif
-
-    volatile INTCON2_AIVTEN_e AIVTEN : 1; // Bit 8: Alternate Interrupt Vector Table Enable bit
-    volatile unsigned : 4;                // Bit 12-9: (reserved)
-    volatile INTCON2_SWTRAP_e SWTRAP : 1; // Bit 13: Software Trap Status bit
-    volatile INTCON2_DISI_e   DISI   : 1; // Bit 14: DISI Instruction Status bit
-    volatile INTCON2_GIE_e    GIE    : 1; // Bit 15: Global Interrupt Enable bit
-    
-} __attribute__((packed)) INTCON2_t; // INTCON2: INTERRUPT CONTROL REGISTER 2
-
 typedef union {
-    volatile INTCON2_t bits;
+    struct {
+        #if defined (_INT0EP)
+        volatile INTCON2_INTxEP_e INT0EP : 1; // Bit 0: External Interrupt 0 Edge Detect Polarity Select bit
+        #else
+        volatile unsigned : 1; // (reserved)
+        #endif
+        #if defined (_INT1EP)
+        volatile INTCON2_INTxEP_e INT1EP : 1; // Bit 1: External Interrupt 1 Edge Detect Polarity Select bit
+        #else
+        volatile unsigned : 1; // (reserved)
+        #endif
+        #if defined (_INT2EP)
+        volatile INTCON2_INTxEP_e INT2EP : 1; // Bit 2: External Interrupt 2 Edge Detect Polarity Select bit
+        #else
+        volatile unsigned : 1; // (reserved)
+        #endif
+        #if defined (_INT3EP)
+        volatile INTCON2_INTxEP_e INT3EP : 1; // Bit 3: External Interrupt 3 Edge Detect Polarity Select bit
+        #else
+        volatile unsigned : 1; // (reserved)
+        #endif
+        #if defined (_INT4EP)
+        volatile INTCON2_INTxEP_e INT4EP : 1; // Bit 4: External Interrupt 4 Edge Detect Polarity Select bit
+        #else
+        volatile unsigned : 1; // (reserved)
+        #endif
+        #if defined (_INT5EP)
+        volatile INTCON2_INTxEP_e INT5EP : 1; // Bit 5: External Interrupt 5 Edge Detect Polarity Select bit
+        #else
+        volatile unsigned : 1; // (reserved)
+        #endif
+        #if defined (_INT6EP)
+        volatile INTCON2_INTxEP_e INT6EP : 1; // Bit 6: External Interrupt 6 Edge Detect Polarity Select bit
+        #else
+        volatile unsigned : 1; // (reserved)
+        #endif
+        #if defined (_INT7EP)
+        volatile INTCON2_INTxEP_e INT7EP : 1; // Bit 7: External Interrupt 7 Edge Detect Polarity Select bit
+        #else
+        volatile unsigned : 1; // (reserved)
+        #endif
+
+        volatile INTCON2_AIVTEN_e AIVTEN : 1; // Bit 8: Alternate Interrupt Vector Table Enable bit
+        volatile unsigned : 4;                // Bit 12-9: (reserved)
+        volatile INTCON2_SWTRAP_e SWTRAP : 1; // Bit 13: Software Trap Status bit
+        volatile INTCON2_DISI_e   DISI   : 1; // Bit 14: DISI Instruction Status bit
+        volatile INTCON2_GIE_e    GIE    : 1; // Bit 15: Global Interrupt Enable bit
+
+    } __attribute__((packed)) bits; // INTCON2: INTERRUPT CONTROL REGISTER 2
     volatile uint16_t value;
-}REGBLK_INTCON2_t; // INTCON2: INTERRUPT CONTROL REGISTER 2
+}INTCON2_t; // INTCON2: INTERRUPT CONTROL REGISTER 2
 
 
 // ======================================================================================================
@@ -392,37 +389,35 @@ typedef enum {
     INTCON3_APLL_CLEAR = 0b0 // APLL lock soft trap has not occurred
 }INTCON3_APLL_e; // Auxiliary PLL Loss of Lock Soft Trap Status bit
 
-typedef struct {
-    volatile INTCON3_APLL_e APLL : 1;   // Bit 0: Auxiliary PLL Loss of Lock Soft Trap Status bit
-    volatile unsigned : 1;              // Bit 1: (reserved)
-    volatile unsigned : 1;              // Bit 2: (reserved)
-    volatile unsigned : 1;              // Bit 3: (reserved)
-    volatile INTCON3_DOOVR_e DOOVR : 1; // Bit 4: DO Stack Overflow Soft Trap Status bit
-    volatile unsigned : 1;              // Bit 5: (reserved)
-    #if defined (_CAN2)
-    volatile INTCON3_CANx_e CAN2 : 1;   // Bit 6: CAN2 Address Error Soft Trap Status bit
-    #else
-    volatile unsigned : 1; // (reserved)
-    #endif
-    volatile unsigned : 1;              // Bit 7: (reserved)
-    volatile INTCON3_NAE_e NAE : 1;     // Bit 8: NVM Address Error Soft Trap Status bit
-    #if defined (_CAN)
-    volatile INTCON3_CANx_e CAN : 1;    // Bit 9: CAN  Address Error Soft Trap Status bit
-    #else
-    volatile unsigned : 1; // (reserved)
-    #endif
-    volatile unsigned : 1;              // Bit 10: (reserved)
-    volatile unsigned : 1;              // Bit 11: (reserved)
-    volatile unsigned : 1;              // Bit 12: (reserved)
-    volatile unsigned : 1;              // Bit 13: (reserved)
-    volatile unsigned : 1;              // Bit 14: (reserved)
-    volatile unsigned : 1;              // Bit 15: (reserved)
-} __attribute__((packed)) INTCON3_t; // INTCON3: INTERRUPT CONTROL REGISTER 3
-
 typedef union {
-    volatile INTCON3_t bits;
+    struct {
+        volatile INTCON3_APLL_e APLL : 1;   // Bit 0: Auxiliary PLL Loss of Lock Soft Trap Status bit
+        volatile unsigned : 1;              // Bit 1: (reserved)
+        volatile unsigned : 1;              // Bit 2: (reserved)
+        volatile unsigned : 1;              // Bit 3: (reserved)
+        volatile INTCON3_DOOVR_e DOOVR : 1; // Bit 4: DO Stack Overflow Soft Trap Status bit
+        volatile unsigned : 1;              // Bit 5: (reserved)
+        #if defined (_CAN2)
+        volatile INTCON3_CANx_e CAN2 : 1;   // Bit 6: CAN2 Address Error Soft Trap Status bit
+        #else
+        volatile unsigned : 1; // (reserved)
+        #endif
+        volatile unsigned : 1;              // Bit 7: (reserved)
+        volatile INTCON3_NAE_e NAE : 1;     // Bit 8: NVM Address Error Soft Trap Status bit
+        #if defined (_CAN)
+        volatile INTCON3_CANx_e CAN : 1;    // Bit 9: CAN  Address Error Soft Trap Status bit
+        #else
+        volatile unsigned : 1; // (reserved)
+        #endif
+        volatile unsigned : 1;              // Bit 10: (reserved)
+        volatile unsigned : 1;              // Bit 11: (reserved)
+        volatile unsigned : 1;              // Bit 12: (reserved)
+        volatile unsigned : 1;              // Bit 13: (reserved)
+        volatile unsigned : 1;              // Bit 14: (reserved)
+        volatile unsigned : 1;              // Bit 15: (reserved)
+    } __attribute__((packed)) bits; // INTCON3: INTERRUPT CONTROL REGISTER 3
     volatile uint16_t value;
-}REGBLK_INTCON3_t; // INTCON3: INTERRUPT CONTROL REGISTER 3
+}INTCON3_t; // INTCON3: INTERRUPT CONTROL REGISTER 3
 
 // ======================================================================================================
 // INTCON4 Configuration Bits
@@ -449,34 +444,31 @@ typedef enum {
 }INTCON4_ECCDBE_e; // ECC Double-Bit Error Trap bit
 #endif
 
-
-typedef struct {
-    volatile INTCON4_SGHT_e SGHT : 1;       // Bit 0: Software Generated Hard Trap Status bit
-    #if defined (_ECCDBE)
-    volatile INTCON4_ECCDBE_e ECCDBE : 1;   // Bit 1: ECC Double-Bit Error Trap bit
-    #else
-    volatile unsigned : 1; (reserved)
-    #endif
-    volatile unsigned : 1;                  // Bit 2: (reserved)
-    volatile unsigned : 1;                  // Bit 3: (reserved)
-    volatile unsigned : 1;                  // Bit 4: (reserved)
-    volatile unsigned : 1;                  // Bit 5: (reserved)
-    volatile unsigned : 1;                  // Bit 6: (reserved)
-    volatile unsigned : 1;                  // Bit 7: (reserved)
-    volatile unsigned : 1;                  // Bit 8: (reserved)
-    volatile unsigned : 1;                  // Bit 9: (reserved)
-    volatile unsigned : 1;                  // Bit 10: (reserved)
-    volatile unsigned : 1;                  // Bit 11: (reserved)
-    volatile unsigned : 1;                  // Bit 12: (reserved)
-    volatile unsigned : 1;                  // Bit 13: (reserved)
-    volatile unsigned : 1;                  // Bit 14: (reserved)
-    volatile unsigned : 1;                  // Bit 15: (reserved)
-} __attribute__((packed)) INTCON4_t; // INTCON3: INTERRUPT CONTROL REGISTER 3
-
 typedef union {
-    volatile INTCON4_t bits;
+    struct {
+        volatile INTCON4_SGHT_e SGHT : 1;       // Bit 0: Software Generated Hard Trap Status bit
+        #if defined (_ECCDBE)
+        volatile INTCON4_ECCDBE_e ECCDBE : 1;   // Bit 1: ECC Double-Bit Error Trap bit
+        #else
+        volatile unsigned : 1; (reserved)
+        #endif
+        volatile unsigned : 1;                  // Bit 2: (reserved)
+        volatile unsigned : 1;                  // Bit 3: (reserved)
+        volatile unsigned : 1;                  // Bit 4: (reserved)
+        volatile unsigned : 1;                  // Bit 5: (reserved)
+        volatile unsigned : 1;                  // Bit 6: (reserved)
+        volatile unsigned : 1;                  // Bit 7: (reserved)
+        volatile unsigned : 1;                  // Bit 8: (reserved)
+        volatile unsigned : 1;                  // Bit 9: (reserved)
+        volatile unsigned : 1;                  // Bit 10: (reserved)
+        volatile unsigned : 1;                  // Bit 11: (reserved)
+        volatile unsigned : 1;                  // Bit 12: (reserved)
+        volatile unsigned : 1;                  // Bit 13: (reserved)
+        volatile unsigned : 1;                  // Bit 14: (reserved)
+        volatile unsigned : 1;                  // Bit 15: (reserved)
+    } __attribute__((packed)) bits; // INTCON4: INTERRUPT CONTROL REGISTER 4
     volatile uint16_t value;
-}REGBLK_INTCON4_t; // INTCON4: INTERRUPT CONTROL REGISTER 4
+}INTCON4_t; // INTCON4: INTERRUPT CONTROL REGISTER 4
 
 
 
@@ -794,26 +786,24 @@ typedef enum {
     INTTREG_VHOLD_DISABLED = 0b0  // Vector number latched into VECNUM<7:0> at Interrupt Acknowledge and retained until next IACK
 }INTTREG_VHOLD_e;
 
-typedef struct {
-    volatile INTTREG_VECNUM_e VECNUM : 8;   // Bit 7-0: Vector Number of Pending Interrupt bits
-    volatile INTTREG_ILR_e ILR : 4;         // Bit 11-8: New CPU Interrupt Priority Level bits
-    volatile unsigned : 1;                  // Bit 12: (reserved)
-    volatile INTTREG_VHOLD_e VHOLD : 1;     // Bit 13: Vector Number Capture Enable bit
-    volatile unsigned : 1;                  // Bit 14: (reserved)
-    volatile unsigned : 1;                  // Bit 15: (reserved)
-} __attribute__((packed)) INTTREG_t; // INTTREG: INTERRUPT CONTROL AND STATUS REGISTER
-
 typedef union {
-    volatile INTTREG_t bits;
+    struct {
+        volatile INTTREG_VECNUM_e VECNUM : 8;   // Bit 7-0: Vector Number of Pending Interrupt bits
+        volatile INTTREG_ILR_e ILR : 4;         // Bit 11-8: New CPU Interrupt Priority Level bits
+        volatile unsigned : 1;                  // Bit 12: (reserved)
+        volatile INTTREG_VHOLD_e VHOLD : 1;     // Bit 13: Vector Number Capture Enable bit
+        volatile unsigned : 1;                  // Bit 14: (reserved)
+        volatile unsigned : 1;                  // Bit 15: (reserved)
+    } __attribute__((packed)) bits; // INTTREG: INTERRUPT CONTROL AND STATUS REGISTER
     volatile uint16_t value;
-}REGBLK_INTTREG_t; // INTTREG: INTERRUPT CONTROL AND STATUS REGISTER
+}INTTREG_t; // INTTREG: INTERRUPT CONTROL AND STATUS REGISTER
 
 typedef struct {
-    REGBLK_INTCON1_t intcon1; // INTCON1: INTERRUPT CONTROL REGISTER 1
-    REGBLK_INTCON2_t intcon2; // INTCON2: INTERRUPT CONTROL REGISTER 2
-    REGBLK_INTCON3_t intcon3; // INTCON3: INTERRUPT CONTROL REGISTER 3
-    REGBLK_INTCON4_t intcon4; // INTCON4: INTERRUPT CONTROL REGISTER 4
-    REGBLK_INTTREG_t inttreg; // INTERRUPT CONTROL AND STATUS REGISTER
+    INTCON1_t intcon1; // INTCON1: INTERRUPT CONTROL REGISTER 1
+    INTCON2_t intcon2; // INTCON2: INTERRUPT CONTROL REGISTER 2
+    INTCON3_t intcon3; // INTCON3: INTERRUPT CONTROL REGISTER 3
+    INTCON4_t intcon4; // INTCON4: INTERRUPT CONTROL REGISTER 4
+    INTTREG_t inttreg; // INTERRUPT CONTROL AND STATUS REGISTER
 }INTERRUPT_CONFIG_t; // Interrupt Controller Configuration Register Set
 
 
