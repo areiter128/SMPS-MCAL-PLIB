@@ -161,7 +161,7 @@ volatile uint16_t hspwm_init_pwm_module ( HSPWM_C_MODULE_CONFIG_t pwm_config ) {
     // write register configuration
     regptr32 = (volatile uint32_t*) ((volatile uint8_t*)&CMBTRIGL); // Get target address
     *regptr32 = (pwm_config.CMBTRIG.value & REG_CMBTRIG_VALID_DATA_WRITE_MASK); // write value with bit-mask
-    fres &= ((*regptr16 & REG_CMBTRIG_VALID_DATA_WRITE_MASK) == (pwm_config.CMBTRIG.value & REG_CMBTRIG_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
+    fres &= ((*regptr32 & REG_CMBTRIG_VALID_DATA_WRITE_MASK) == (pwm_config.CMBTRIG.value & REG_CMBTRIG_VALID_DATA_WRITE_MASK)); // Test if written value matches parameter
 
     // write register configuration
     regptr16 = (volatile uint16_t*) &LOGCONA; // Get target address
@@ -276,6 +276,72 @@ volatile uint16_t hspwm_init_pwm_generator ( uint16_t instance, HSPWM_C_GENERATO
     *regptr32 = (pg_config.PGxFPCI.value & REG_PGxyPCI_VALID_DATA_WRITE_MASK); // write value to registers
     fres &= ((*regptr32 & REG_PGxyPCI_VALID_DATA_WRITE_MASK) == (pg_config.PGxFPCI.value & REG_PGxyPCI_VALID_DATA_WRITE_MASK)); // read and compare register values
 
+    // write PWM generator instance register configuration
+    regptr32 = (volatile uint32_t*) ((volatile uint8_t*)&PG1CLPCIL + reg_offset); // capture register address
+    *regptr32 = (pg_config.PGxCLPCI.value & REG_PGxyPCI_VALID_DATA_WRITE_MASK); // write value to registers
+    fres &= ((*regptr32 & REG_PGxyPCI_VALID_DATA_WRITE_MASK) == (pg_config.PGxCLPCI.value & REG_PGxyPCI_VALID_DATA_WRITE_MASK)); // read and compare register values
+
+    // write PWM generator instance register configuration
+    regptr32 = (volatile uint32_t*) ((volatile uint8_t*)&PG1FFPCIL + reg_offset); // capture register address
+    *regptr32 = (pg_config.PGxFFPCI.value & REG_PGxyPCI_VALID_DATA_WRITE_MASK); // write value to registers
+    fres &= ((*regptr32 & REG_PGxyPCI_VALID_DATA_WRITE_MASK) == (pg_config.PGxFFPCI.value & REG_PGxyPCI_VALID_DATA_WRITE_MASK)); // read and compare register values
+
+    // write PWM generator instance register configuration
+    regptr32 = (volatile uint32_t*) ((volatile uint8_t*)&PG1SPCIL + reg_offset); // capture register address
+    *regptr32 = (pg_config.PGxSPCI.value & REG_PGxyPCI_VALID_DATA_WRITE_MASK); // write value to registers
+    fres &= ((*regptr32 & REG_PGxyPCI_VALID_DATA_WRITE_MASK) == (pg_config.PGxSPCI.value & REG_PGxyPCI_VALID_DATA_WRITE_MASK)); // read and compare register values
+
+    // write PWM generator instance register configuration
+    regptr16 = (volatile uint16_t*) ((volatile uint8_t*)&PG1LEBL + reg_offset); // capture register address
+    *regptr16 = (pg_config.PGxLEB.value & REG_PGxLEB_VALID_DATA_WRITE_MASK); // write value to registers
+    fres &= ((*regptr16 & REG_PGxLEB_VALID_DATA_WRITE_MASK) == (pg_config.PGxLEB.value & REG_PGxLEB_VALID_DATA_WRITE_MASK)); // read and compare register values
+
+    // write PWM generator instance register configuration
+    regptr16 = (volatile uint16_t*) ((volatile uint8_t*)&PG1LEBH + reg_offset); // capture register address
+    *regptr16 = (pg_config.PGxLEBCON.value & REG_PGxLEBCON_VALID_DATA_WRITE_MASK); // write value to registers
+    fres &= ((*regptr16 & REG_PGxLEBCON_VALID_DATA_WRITE_MASK) == (pg_config.PGxLEBCON.value & REG_PGxLEBCON_VALID_DATA_WRITE_MASK)); // read and compare register values
+
+    // write PWM generator instance register configuration
+    regptr16 = (volatile uint16_t*) ((volatile uint8_t*)&PG1PHASE + reg_offset); // capture register address
+    *regptr16 = (pg_config.PGxPHASE.value & REG_PGxPHASE_VALID_DATA_WRITE_MASK); // write value to registers
+    fres &= ((*regptr16 & REG_PGxPHASE_VALID_DATA_WRITE_MASK) == (pg_config.PGxPHASE.value & REG_PGxPHASE_VALID_DATA_WRITE_MASK)); // read and compare register values
+    
+    // write PWM generator instance register configuration
+    regptr16 = (volatile uint16_t*) ((volatile uint8_t*)&PG1DC + reg_offset); // capture register address
+    *regptr16 = (pg_config.PGxDC.value & REG_PGxDC_VALID_DATA_WRITE_MASK); // write value to registers
+    fres &= ((*regptr16 & REG_PGxDC_VALID_DATA_WRITE_MASK) == (pg_config.PGxDC.value & REG_PGxDC_VALID_DATA_WRITE_MASK)); // read and compare register values
+    
+    // write PWM generator instance register configuration
+    regptr16 = (volatile uint16_t*) ((volatile uint8_t*)&PG1DCA + reg_offset); // capture register address
+    *regptr16 = (pg_config.PGxDCA.value & REG_PGxDCA_VALID_DATA_WRITE_MASK); // write value to registers
+    fres &= ((*regptr16 & REG_PGxDCA_VALID_DATA_WRITE_MASK) == (pg_config.PGxDCA.value & REG_PGxDCA_VALID_DATA_WRITE_MASK)); // read and compare register values
+
+    // write PWM generator instance register configuration
+    regptr16 = (volatile uint16_t*) ((volatile uint8_t*)&PG1PER + reg_offset); // capture register address
+    *regptr16 = (pg_config.PGxPER.value & REG_PGxPER_VALID_DATA_WRITE_MASK); // write value to registers
+    fres &= ((*regptr16 & REG_PGxPER_VALID_DATA_WRITE_MASK) == (pg_config.PGxPER.value & REG_PGxPER_VALID_DATA_WRITE_MASK)); // read and compare register values
+    
+    // write PWM generator instance register configuration
+    regptr16 = (volatile uint16_t*) ((volatile uint8_t*)&PG1TRIGA + reg_offset); // capture register address
+    *regptr16 = (pg_config.PGxTRIGA.value & REG_PGxTRIGy_VALID_DATA_WRITE_MASK); // write value to registers
+    fres &= ((*regptr16 & REG_PGxTRIGy_VALID_DATA_WRITE_MASK) == (pg_config.PGxTRIGA.value & REG_PGxTRIGy_VALID_DATA_WRITE_MASK)); // read and compare register values
+
+    // write PWM generator instance register configuration
+    regptr16 = (volatile uint16_t*) ((volatile uint8_t*)&PG1TRIGB + reg_offset); // capture register address
+    *regptr16 = (pg_config.PGxTRIGB.value & REG_PGxTRIGy_VALID_DATA_WRITE_MASK); // write value to registers
+    fres &= ((*regptr16 & REG_PGxTRIGy_VALID_DATA_WRITE_MASK) == (pg_config.PGxTRIGB.value & REG_PGxTRIGy_VALID_DATA_WRITE_MASK)); // read and compare register values
+
+    // write PWM generator instance register configuration
+    regptr16 = (volatile uint16_t*) ((volatile uint8_t*)&PG1TRIGC + reg_offset); // capture register address
+    *regptr16 = (pg_config.PGxTRIGC.value & REG_PGxTRIGy_VALID_DATA_WRITE_MASK); // write value to registers
+    fres &= ((*regptr16 & REG_PGxTRIGy_VALID_DATA_WRITE_MASK) == (pg_config.PGxTRIGC.value & REG_PGxTRIGy_VALID_DATA_WRITE_MASK)); // read and compare register values
+
+    // write PWM generator instance register configuration
+    regptr32 = (volatile uint32_t*) ((volatile uint8_t*)&PG1DTL + reg_offset); // capture register address
+    *regptr32 = (pg_config.PGxDT.value & REG_PGxDT_VALID_DATA_WRITE_MASK); // write value to registers
+    fres &= ((*regptr32 & REG_PGxDT_VALID_DATA_WRITE_MASK) == (pg_config.PGxDT.value & REG_PGxDT_VALID_DATA_WRITE_MASK)); // read and compare register values
+    
+    
     return(fres);
 }
 
