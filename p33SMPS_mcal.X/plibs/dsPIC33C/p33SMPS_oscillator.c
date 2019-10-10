@@ -328,7 +328,6 @@ uint16_t _n=0, err=0;
 
 inline volatile uint16_t init_AUXCLK(AUXOSC_CONFIG_t aux_clock_config)
 {
-    volatile uint32_t _n=0;
     
 	#if defined (__P33SMPS_CH__) || defined (__P33SMPS_CK__)
 
@@ -348,23 +347,8 @@ inline volatile uint16_t init_AUXCLK(AUXOSC_CONFIG_t aux_clock_config)
     ACLKCON1bits.APLLEN = aux_clock_config.APLLEN;
 
     // if user has not enabled the APLL module, exit here
-    if(!ACLKCON1bits.APLLEN)
-    { return(1); }
-        
-    // Wait n while loops for APLL to Lock
-    while((!ACLKCON1bits.APLLCK) && (_n++<OSC_CLKSW_TIMEOUT))
-    { Nop(); Nop(); Nop(); Nop(); Nop(); Nop(); }
-	ACLKCON1bits.APLLCK = 1;
-    
-// ToDo: Check why APLLCK is not set while waiting for it.
-    
-//	if (!ACLKCON1bits.APLLCK)	// PLL still not locked in? 
-//	{ return OSCERR_APLL_LCK; } // => If so, return error code
-//    else
-//    { return(ACLKCON1bits.APLLCK); }
-
-    Nop();
-    Nop();
+    if(!aux_clock_config.APLLEN)
+    { return(0); }
     
     return(ACLKCON1bits.APLLEN);
     

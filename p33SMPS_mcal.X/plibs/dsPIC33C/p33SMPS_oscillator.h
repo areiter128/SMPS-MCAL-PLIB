@@ -88,7 +88,7 @@ typedef enum
     AFPLLO_500_MHZ  = 500, // Auxiliary PLL output frequency of 500 MHz (Default for high resolution PWM)
     AFPLLO_600_MHZ  = 600, // Auxiliary PLL output frequency of 600 MHz
     AFPLLO_700_MHZ  = 700, // Auxiliary PLL output frequency of 700 MHz
-    AFPLLO_800_MHZ  = 800 // Auxiliary PLL output frequency of 800 MHz
+    AFPLLO_800_MHZ  = 800  // Auxiliary PLL output frequency of 800 MHz
 } AUX_PLL_DEFAULTS_e;  // Default Auxiliary PLL output frequency settings 
 
 
