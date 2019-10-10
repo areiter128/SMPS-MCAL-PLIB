@@ -1056,10 +1056,10 @@
 
 // PROTOTYPES FOR p33SMPS_pps.c
     
-extern volatile uint16_t pps_RemapOutput(uint8_t *pinno, uint8_t peripheral);
-extern volatile uint16_t pps_UnmapOutput(uint8_t *pinno);
-extern volatile uint16_t pps_RemapInput(uint8_t pinno, uint8_t *peripheral);
-extern volatile uint16_t pps_UnmapInput(uint8_t *peripheral);
+extern volatile uint16_t pps_RemapOutput(uint8_t pinno, uint8_t peripheral);
+extern volatile uint16_t pps_UnmapOutput(uint8_t pinno);
+extern volatile uint16_t pps_RemapInput(uint8_t pinno, uint8_t* peripheral);
+extern volatile uint16_t pps_UnmapInput(uint8_t* peripheral);
 extern volatile uint16_t pps_LockIO(void);
 extern volatile uint16_t pps_UnlockIO(void);
 

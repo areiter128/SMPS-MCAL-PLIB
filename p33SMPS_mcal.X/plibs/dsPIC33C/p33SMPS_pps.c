@@ -189,7 +189,7 @@ inline volatile uint16_t pps_UnlockIO(void){
  * Assigns a digital function output to a pin
  *
  * Parameters:
- *	unsigned char *pinno: Number of the RPx-pin, which should be assigned to the function
+ *	unsigned char pinno: Number of the RPx-pin, which should be assigned to the function
  *	unsigned char peripheral: Function, which should be assigned to the pin
  *
  * Returns:
@@ -210,19 +210,20 @@ inline volatile uint16_t pps_UnlockIO(void){
  *  pps_UnmapOutput, pps_UnmapInput
  * 
  * ***********************************************************************************************/
-inline volatile uint16_t pps_RemapOutput(uint8_t *pinno, uint8_t peripheral){
+inline volatile uint16_t pps_RemapOutput(uint8_t pinno, uint8_t peripheral){
 	
-    //volatile uint8_t *regptr;
-
-  
-	// Map selected pin function
-//    regptr = (volatile uint8_t *)&RPOR0; // get register block base address
-//    regptr += (volatile uint8_t)pinno;   // add offset
-//
-//    *regptr = (volatile uint8_t)peripheral;	// copy configuration into register location
-    *pinno=peripheral;
+    volatile uint16_t fres = 0;
+    volatile uint8_t *regptr;
+    volatile uint8_t pin_offset=0;
     
-	return (1);
+    pin_offset = (pinno - RP_PINNO_MIN);    // Determine pin-offset
+    regptr = (volatile uint8_t *)&RPOR0;    // get register block base address
+    regptr += (volatile uint8_t)pin_offset; // add offset
+    *regptr = (volatile uint8_t)peripheral;	// copy configuration into register location
+
+    fres = (*regptr == (volatile uint8_t)peripheral);	// Check if contents have been written correctly
+    
+	return (fres);
 
 }
 
@@ -255,6 +256,7 @@ inline volatile uint16_t pps_RemapOutput(uint8_t *pinno, uint8_t peripheral){
  * ***********************************************************************************************/
 inline volatile uint16_t pps_RemapInput(uint8_t pinno, uint8_t *peripheral)
 {
+
 	// Map selected pin function
     *peripheral = pinno;
 
@@ -288,7 +290,7 @@ inline volatile uint16_t pps_RemapInput(uint8_t pinno, uint8_t *peripheral)
  *  pps_RemapOutput, pps_UnmapInput
  * 
  * ***********************************************************************************************/
-inline volatile uint16_t pps_UnmapOutput(uint8_t *pinno)
+inline volatile uint16_t pps_UnmapOutput(uint8_t pinno)
 {
     volatile uint16_t fres=0;
 
@@ -324,7 +326,7 @@ inline volatile uint16_t pps_UnmapOutput(uint8_t *pinno)
  *  pps_RemapOutput, pps_UnmapOutput
  * 
  * ***********************************************************************************************/
-inline volatile uint16_t pps_UnmapInput(uint8_t *peripheral)
+inline volatile uint16_t pps_UnmapInput(uint8_t* peripheral)
 {
     volatile uint16_t fres=0;
 
