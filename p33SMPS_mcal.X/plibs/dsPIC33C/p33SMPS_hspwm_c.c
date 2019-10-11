@@ -616,7 +616,7 @@ inline volatile uint16_t hspwm_ovr_hold(uint16_t instance)
     reg_offset = (instance-1) * ((volatile uint16_t)&PG2IOCONL - (volatile uint16_t)&PG1IOCONL);
     regptr16 = (volatile uint16_t*) ((volatile uint8_t*)&PG1IOCONL + reg_offset);
     reg_buf = *regptr16;
-    *regptr16 = reg_buf | REG_IOCON_OVREN_COMP_SET;
+    *regptr16 = (reg_buf | REG_IOCON_OVREN_COMP_SET);
     
     fres &= (volatile uint16_t)(volatile bool)(*regptr16 & REG_IOCON_OVREN_COMP_SET);
     
