@@ -392,8 +392,8 @@ inline volatile uint16_t init_AUXCLK(AUXOSC_CONFIG_t aux_clock_config)
     // Set FRC as clock input to auxiliary PLL module
     aux_clock_config.FRCSEL = PLLDIV_ACLKCON_FRCSEL_FRC;
     
-    // Set auxiliary PLL VCO divider to 1:1
-    aux_clock_config.AVCODIV = APLLDIV_AVCODIV_FVCO_DIV_BY_1;
+    // Set auxiliary PLL VCO divider to 1:4
+    aux_clock_config.AVCODIV = APLLDIV_AVCODIV_FVCO_DIV_BY_4;
     
     // Select PLL dividers and multiplier in accordance with user parameter 
     if(afpllo_frequency <= 800) {
