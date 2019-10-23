@@ -1711,8 +1711,8 @@ typedef union {
 
 typedef union {
     struct {
-        volatile uint32_t DT_FALLING : 16; // dead time low-side PWM output
-        volatile uint32_t DT_RISING : 16; // dead time high-side PWM output
+        volatile uint16_t DT_FALLING : 16; // dead time low-side PWM output
+        volatile uint16_t DT_RISING : 16; // dead time high-side PWM output
     } bits;
     volatile uint32_t value;
 } PGxDTxy_t;
