@@ -276,11 +276,11 @@
     #define DEVICE_DEFAULT_AVDD 3.300 // if device VDD is not defined in this project, define it for standard value of 3.3V
 #endif
 
-#define ADC_VREF            DEVICE_DEFAULT_AVDD     // ADC reference voltage in [V]
-#define ADC_RES_BIT         12.0    // ADC resolution in integer
-#define ADC_RES             (uint16_t)(pow(2, ADC_RES_BIT)-1)    // ADC resolution in integer
-#define ADC_SCALER          (float)(((float)(ADC_RES))/((float)(ADC_VREF))) // ADC Scaling in ticks/V
-#define ADC_GRANULARITY     (float)(ADC_REF / pow(2.0, ADC_RES)) // ADC granularity in [V/tick]
+#define HSADC_VREF            DEVICE_DEFAULT_AVDD     // ADC reference voltage in [V]
+#define HSADC_RESOLUTION_BIT  12.0    // ADC resolution in integer
+#define HSADC_RES             (uint16_t)(pow(2, HSADC_RESOLUTION_BIT)-1)    // ADC resolution in integer
+#define HSADC_SCALER          (float)(((float)(HSADC_RES))/((float)(HSADC_VREF))) // ADC Scaling in ticks/V
+#define HSADC_GRANULARITY     (float)(HSADC_VREF / pow(2.0, HSADC_RES)) // ADC granularity in [V/tick]
     
 #define ADC_ANx_INTERRUPT_ENABLE        1       // Bit setting for enabled interrupts of a dedicated analog input
 #define ADC_ANx_INTERRUPT_DISABLE       0       // Bit setting for disabled interrupts of a dedicated analog input
@@ -289,8 +289,8 @@
 #define ADC_ANx_EARLY_INTERRUPT_DISABLE 0       // Bit setting for disabled early interrupts of a dedicated analog input
 
 // General Flags
-#define ADC_OFF							0b0		// Flag is used to shut down the adc module
-#define ADC_ON							0b1		// Flag is used to enable the adc module
+#define HSADC_OFF						0b0		// Flag is used to shut down the adc module
+#define HSADC_ON						0b1		// Flag is used to enable the adc module
 
 // REGISTER ADCON1L/H: ANALOG-TO-DIGITAL CONTROL REGISTER 1 LOW/HIGH
 
@@ -4669,26 +4669,26 @@ typedef struct {
 // ==============================================================================================
 // Global Function Prototypes
 // ==============================================================================================
-extern volatile uint16_t smpsADC_Module_Iniitalize( volatile HSADC_ADMODCFG_t adc_cfg );
-extern volatile uint16_t smpsADC_ADInput_Initialize( volatile HSADC_ADCANCFG_t adin_cfg );
+extern volatile uint16_t smpsHSADC_Module_Initialize( volatile HSADC_ADMODCFG_t adc_cfg );
+extern volatile uint16_t smpsHSADC_ADInput_Initialize( volatile HSADC_ADCANCFG_t adin_cfg );
 
 
-extern volatile uint16_t smpsADC_Module_PowerUp(void);
-extern volatile uint16_t smpsADC_Module_PowerDown(void);
-extern volatile uint16_t smpsADC_Module_Enable(void);
-extern volatile uint16_t smpsADC_Module_Disable(void);
-extern volatile uint16_t smpsADC_Module_Reset(void);
+extern volatile uint16_t smpsHSADC_Module_PowerUp(void);
+extern volatile uint16_t smpsHSADC_Module_PowerDown(void);
+extern volatile uint16_t smpsHSADC_Module_Enable(void);
+extern volatile uint16_t smpsHSADC_Module_Disable(void);
+extern volatile uint16_t smpsHSADC_Module_Reset(void);
 
-extern volatile uint16_t smpsADC_Core_PowerUp(volatile uint16_t index);
-extern volatile uint16_t smpsADC_Core_CheckReady(void);
+extern volatile uint16_t smpsHSADC_Core_PowerUp(volatile uint16_t index);
+extern volatile uint16_t smpsHSADC_Core_CheckReady(void);
 
-extern volatile uint16_t smpsADC_ADInput_SetMode(volatile HSADC_ADCANCFG_t adin_cfg);
-extern volatile uint16_t smpsADC_ADInput_SetTriggerSource(volatile HSADC_ADCANCFG_t adin_cfg);
-extern volatile uint16_t smpsADC_ADInput_SetTriggerMode(volatile HSADC_ADCANCFG_t adin_cfg);
-extern volatile uint16_t smpsADC_ADInput_SetInterrupt(volatile HSADC_ADCANCFG_t adin_cfg);
+extern volatile uint16_t smpsHSADC_ADInput_SetMode(volatile HSADC_ADCANCFG_t adin_cfg);
+extern volatile uint16_t smpsHSADC_ADInput_SetTriggerSource(volatile HSADC_ADCANCFG_t adin_cfg);
+extern volatile uint16_t smpsHSADC_ADInput_SetTriggerMode(volatile HSADC_ADCANCFG_t adin_cfg);
+extern volatile uint16_t smpsHSADC_ADInput_SetInterrupt(volatile HSADC_ADCANCFG_t adin_cfg);
 
-extern volatile uint16_t smpsADC_ADComp_Initialize(volatile uint16_t index, volatile HSADC_ADCMP_CONFIG_t adcmp_cfg);
-extern volatile uint16_t smpsADC_ADFilter_Initialize(volatile uint16_t index, volatile HSADC_ADFLT_CONFIG_t adflt_cfg);
+extern volatile uint16_t smpsHSADC_ADComp_Initialize(volatile uint16_t index, volatile HSADC_ADCMP_CONFIG_t adcmp_cfg);
+extern volatile uint16_t smpsHSADC_ADFilter_Initialize(volatile uint16_t index, volatile HSADC_ADFLT_CONFIG_t adflt_cfg);
 
 
 #endif /* dsPIC33CH/CK only */

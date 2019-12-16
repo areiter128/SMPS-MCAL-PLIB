@@ -57,17 +57,17 @@
 
 // Device specific properties
 #if   defined (__P33SMPS_FJA__) 
-	#define GSTMR_TIMER_COUNT	2
+	#define P33SMPS_TIMER_COUNT	2
 #elif defined (__P33SMPS_FJ__)
-	#define GSTMR_TIMER_COUNT	3
+	#define P33SMPS_TIMER_COUNT	3
 #elif defined (__P33SMPS_FJC__)
-	#define GSTMR_TIMER_COUNT	5
+	#define P33SMPS_TIMER_COUNT	5
 #elif defined (__P33SMPS_EP2__)
-	#define GSTMR_TIMER_COUNT	3
+	#define P33SMPS_TIMER_COUNT	3
 #elif defined (__P33SMPS_EP5__) || defined (__P33SMPS_EP7__)
-	#define GSTMR_TIMER_COUNT	5
+	#define P33SMPS_TIMER_COUNT	5
 #elif defined (__P33SMPS_CH__) || defined (__P33SMPS_CK__)
-	#define GSTMR_TIMER_COUNT	1
+	#define P33SMPS_TIMER_COUNT	1
 
 #else
 	#error === selected device not supported ===
@@ -100,27 +100,27 @@
 #endif
 
 // Interrupt Flag-Bits & Priorities
-#if ( GSTMR_TIMER_COUNT >=	1 )
+#if ( P33SMPS_TIMER_COUNT >=	1 )
   #define TIMER1_ISR_FLAG		IFS0bits.T1IF	// Timer1 interrupt flag
   #define TIMER1_ISR_PRIORITY	IPC0bits.T1IP	// Timer1 interrupt priority
   #define TIMER1_ISR_ENABLE		IEC0bits.T1IE	// Timer1 interrupt service routine enable
 #endif
-#if ( GSTMR_TIMER_COUNT >=	2 )
+#if ( P33SMPS_TIMER_COUNT >=	2 )
   #define TIMER2_ISR_FLAG		IFS0bits.T2IF	// Timer2 interrupt flag
   #define TIMER2_ISR_PRIORITY	IPC1bits.T2IP	// Timer2 interrupt priority
   #define TIMER2_ISR_ENABLE		IEC0bits.T2IE	// Timer2 interrupt service routine enable
 #endif
-#if ( GSTMR_TIMER_COUNT >=	3 )
+#if ( P33SMPS_TIMER_COUNT >=	3 )
   #define TIMER3_ISR_FLAG		IFS0bits.T3IF	// Timer3 interrupt flag
   #define TIMER3_ISR_PRIORITY	IPC2bits.T3IP	// Timer3 interrupt priority
   #define TIMER3_ISR_ENABLE		IEC0bits.T3IE	// Timer3 interrupt service routine enable
 #endif
-#if ( GSTMR_TIMER_COUNT >=	4 )
+#if ( P33SMPS_TIMER_COUNT >=	4 )
   #define TIMER4_ISR_FLAG		IFS1bits.T4IF	// Timer4 interrupt flag
   #define TIMER4_ISR_PRIORITY	IPC6bits.T4IP	// Timer4 interrupt priority
   #define TIMER4_ISR_ENABLE		IEC1bits.T4IE	// Timer4 interrupt service routine enable
 #endif
-#if ( GSTMR_TIMER_COUNT >=	5 )
+#if ( P33SMPS_TIMER_COUNT >=	5 )
   #define TIMER5_ISR_FLAG		IFS1bits.T5IF	// Timer5 interrupt flag
   #define TIMER5_ISR_PRIORITY	IPC7bits.T5IP	// Timer5 interrupt priority
   #define TIMER5_ISR_ENABLE		IEC1bits.T5IE	// Timer5 interrupt service routine enable
