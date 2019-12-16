@@ -185,7 +185,7 @@ volatile uint16_t smpsTimer_Initialize16b(uint16_t instance, TxCON_CONTROL_REGIS
     volatile uint16_t reg_buf=0, tmr_reg_msk=0;
 
     if (!smpsTimer_PowerOn(instance)) return(0);
-	if (instance > GSTMR_TIMER_COUNT) return(0); // Skip if index is out of range
+	if (instance > P33SMPS_TIMER_COUNT) return(0); // Skip if index is out of range
 
 	// Set register bit masks to prevent setting of unsupported features
 	if (instance == 1)							tmr_reg_msk = TIMER1_TCON_REG_WRITE_MASK;
@@ -240,7 +240,7 @@ volatile uint16_t smpsTimer_Initialize16b(uint16_t instance, TxCON_CONTROL_REGIS
 
         break;
 
-	#if (GSTMR_TIMER_COUNT >= 2)
+	#if (P33SMPS_TIMER_COUNT >= 2)
 	case 2:
 
         TIMER2_ISR_ENABLE	= 0;			// disable interrupt
@@ -253,7 +253,7 @@ volatile uint16_t smpsTimer_Initialize16b(uint16_t instance, TxCON_CONTROL_REGIS
 
 	#endif
 
-	#if (GSTMR_TIMER_COUNT >= 3)
+	#if (P33SMPS_TIMER_COUNT >= 3)
 	case 3:
 
         TIMER3_ISR_ENABLE	= 0;			// disable interrupt
@@ -266,7 +266,7 @@ volatile uint16_t smpsTimer_Initialize16b(uint16_t instance, TxCON_CONTROL_REGIS
 
 	#endif
 
-	#if (GSTMR_TIMER_COUNT >= 4)
+	#if (P33SMPS_TIMER_COUNT >= 4)
 	case 4:
 
         TIMER4_ISR_ENABLE	= 0;			// disable interrupt
@@ -279,7 +279,7 @@ volatile uint16_t smpsTimer_Initialize16b(uint16_t instance, TxCON_CONTROL_REGIS
 
 	#endif
 
-	#if (GSTMR_TIMER_COUNT >= 5)
+	#if (P33SMPS_TIMER_COUNT >= 5)
 	case 5:
 
         TIMER5_ISR_ENABLE	= 0;			// disable interrupt
@@ -307,40 +307,40 @@ volatile uint16_t smpsTimer_GetTimerConfig(uint16_t instance, TxCON_CONTROL_REGI
     
     volatile uint32_t reg_buf=0;
 
-	if (instance > GSTMR_TIMER_COUNT) return(0); // Skip if index is out of range
+	if (instance > P33SMPS_TIMER_COUNT) return(0); // Skip if index is out of range
 
 	// Read period register
     switch (instance)
     {
-        #if (GSTMR_TIMER_COUNT >= 1)
+        #if (P33SMPS_TIMER_COUNT >= 1)
         case 1: 
             *regTCON = (volatile TxCON_CONTROL_REGISTER_t)(T1CON & TIMER1_TCON_REG_READ_MASK);
             reg_buf = (volatile uint32_t)PR1;
             *isr_priority = (volatile uint16_t)TIMER1_ISR_PRIORITY;
             break;
         #endif
-        #if (GSTMR_TIMER_COUNT >= 2)
+        #if (P33SMPS_TIMER_COUNT >= 2)
         case 2: 
             *regTCON = (volatile TxCON_CONTROL_REGISTER_t)(T2CON & TIMER2_4_TCON_REG_READ_MASK);
             reg_buf  = (volatile uint32_t)PR2;
             *isr_priority = (volatile uint16_t)TIMER2_ISR_PRIORITY;
             break;
         #endif
-        #if (GSTMR_TIMER_COUNT >= 3)
+        #if (P33SMPS_TIMER_COUNT >= 3)
         case 3:
             *regTCON = (volatile TxCON_CONTROL_REGISTER_t)(T3CON & TIMERx_TCON_REG_READ_MASK);
             reg_buf = (volatile uint32_t)PR3;
             *isr_priority = (volatile uint16_t)TIMER3_ISR_PRIORITY;
             break;
         #endif
-        #if (GSTMR_TIMER_COUNT >= 4)
+        #if (P33SMPS_TIMER_COUNT >= 4)
         case 4:
             *regTCON = (volatile TxCON_CONTROL_REGISTER_t)(T4CON & TIMER2_4_TCON_REG_READ_MASK);
             reg_buf  = (volatile uint32_t)PR4;
             *isr_priority = (volatile uint16_t)TIMER4_ISR_PRIORITY;
             break;
         #endif
-        #if (GSTMR_TIMER_COUNT >= 5)
+        #if (P33SMPS_TIMER_COUNT >= 5)
         case 5:
             *regTCON = (volatile TxCON_CONTROL_REGISTER_t)(T5CON & TIMERx_TCON_REG_READ_MASK);
             reg_buf = (volatile uint32_t)PR5;
@@ -383,7 +383,7 @@ volatile uint16_t smpsTimer_Enable(uint16_t instance, TIMER_ISR_ENABLE_STATE_e i
 {
 	
     if (!smpsTimer_PowerOn(instance)) return(0);
-	if (instance > GSTMR_TIMER_COUNT) return(0); // Skip if index is out of range
+	if (instance > P33SMPS_TIMER_COUNT) return(0); // Skip if index is out of range
 	
 	switch (instance)
 	{
@@ -395,7 +395,7 @@ volatile uint16_t smpsTimer_Enable(uint16_t instance, TIMER_ISR_ENABLE_STATE_e i
         T1CON 			   |= 0x8000;		// enable timer
         break;
 
-	#if (GSTMR_TIMER_COUNT >= 2)
+	#if (P33SMPS_TIMER_COUNT >= 2)
 	case 2:
         TMR2				= 0;			// Reset timer counter
         TIMER2_ISR_FLAG		= 0;			// Clear the timer interrupt flag
@@ -404,7 +404,7 @@ volatile uint16_t smpsTimer_Enable(uint16_t instance, TIMER_ISR_ENABLE_STATE_e i
         break;
 	#endif
 
-	#if (GSTMR_TIMER_COUNT >= 3)
+	#if (P33SMPS_TIMER_COUNT >= 3)
 	case 3:
         TMR3				= 0;			// Reset timer counter
         TIMER3_ISR_FLAG		= 0;			// Clear the timer interrupt flag
@@ -413,7 +413,7 @@ volatile uint16_t smpsTimer_Enable(uint16_t instance, TIMER_ISR_ENABLE_STATE_e i
         break;
 	#endif
 
-	#if (GSTMR_TIMER_COUNT >= 4)
+	#if (P33SMPS_TIMER_COUNT >= 4)
 	case 4:
         TMR4				= 0;			// Reset timer counter
         TIMER4_ISR_FLAG		= 0;			// Clear the timer interrupt flag
@@ -422,7 +422,7 @@ volatile uint16_t smpsTimer_Enable(uint16_t instance, TIMER_ISR_ENABLE_STATE_e i
         break;
 	#endif
 
-	#if (GSTMR_TIMER_COUNT >= 5)
+	#if (P33SMPS_TIMER_COUNT >= 5)
 	case 5:
         TMR5				= 0;			// Reset timer counter
         TIMER5_ISR_FLAG		= 0;			// Clear the timer interrupt flag
@@ -457,7 +457,7 @@ volatile uint16_t smpsTimer_Enable(uint16_t instance, TIMER_ISR_ENABLE_STATE_e i
 volatile uint16_t smpsTimer_Disable(uint16_t instance)
 {
 	
-	if (instance > GSTMR_TIMER_COUNT) return(0); // Skip if index is out of range
+	if (instance > P33SMPS_TIMER_COUNT) return(0); // Skip if index is out of range
 	
 	switch (instance)
 	{
@@ -466,25 +466,25 @@ volatile uint16_t smpsTimer_Disable(uint16_t instance)
 			T1CON &= 0x7FFF;
 			break;
 
-	#if (GSTMR_TIMER_COUNT >= 2)
+	#if (P33SMPS_TIMER_COUNT >= 2)
 	case 2:
 			T2CON &= 0x7FFF;
 			break;
 	#endif
 
-	#if (GSTMR_TIMER_COUNT >= 3)
+	#if (P33SMPS_TIMER_COUNT >= 3)
 	case 3:
 			T3CON &= 0x7FFF;
 			break;
 	#endif
 
-	#if (GSTMR_TIMER_COUNT >= 4)
+	#if (P33SMPS_TIMER_COUNT >= 4)
 	case 4:
 			T4CON &= 0x7FFF;
 			break;
 	#endif
 
-	#if (GSTMR_TIMER_COUNT >= 5)
+	#if (P33SMPS_TIMER_COUNT >= 5)
 	case 5:
 			T5CON &= 0x7FFF;
 			break;
@@ -514,7 +514,7 @@ volatile uint16_t smpsTimer_Disable(uint16_t instance)
 volatile uint16_t smpsTimer_Reset(uint16_t instance)
 {
 	
-	if (instance > GSTMR_TIMER_COUNT) return(0); // Skip if index is out of range
+	if (instance > P33SMPS_TIMER_COUNT) return(0); // Skip if index is out of range
 	
 	switch (instance)
 	{
@@ -523,25 +523,25 @@ volatile uint16_t smpsTimer_Reset(uint16_t instance)
 			T1CON = 0x0000;
 			break;
 
-	#if (GSTMR_TIMER_COUNT >= 2)
+	#if (P33SMPS_TIMER_COUNT >= 2)
 	case 2:
 			T2CON = 0x0000;
 			break;
 	#endif
 
-	#if (GSTMR_TIMER_COUNT >= 3)
+	#if (P33SMPS_TIMER_COUNT >= 3)
 	case 3:
 			T3CON = 0x0000;
 			break;
 	#endif
 
-	#if (GSTMR_TIMER_COUNT >= 4)
+	#if (P33SMPS_TIMER_COUNT >= 4)
 	case 4:
 			T4CON = 0x0000;
 			break;
 	#endif
 
-	#if (GSTMR_TIMER_COUNT >= 5)
+	#if (P33SMPS_TIMER_COUNT >= 5)
 	case 5:
 			T5CON = 0x0000;
 			break;

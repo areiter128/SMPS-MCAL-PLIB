@@ -1877,10 +1877,10 @@ typedef struct {
 
 // Prototypes
 
-extern volatile uint16_t hspwm_init_pwm_module(HSPWM_C_MODULE_CONFIG_t pwm_config);
-extern volatile uint16_t hspwm_init_pwm_generator(uint16_t instance, HSPWM_C_GENERATOR_CONFIG_t pg_config);
+extern volatile uint16_t smpsHSPWM_Module_Initialize(HSPWM_C_MODULE_CONFIG_t pwm_config);
+extern volatile uint16_t smpsHSPWM_Channel_Initialize(uint16_t instance, HSPWM_C_GENERATOR_CONFIG_t pg_config);
 
-extern volatile uint16_t hspwm_init_independent_pwm (
+extern volatile uint16_t smpsHSPWM_IndependentPWM_Initialize (
     uint16_t instance,
     PCLKCON_t regPCLK,
     PGxCON_t regPGxCON,
@@ -1889,13 +1889,13 @@ extern volatile uint16_t hspwm_init_independent_pwm (
     PGxDTxy_t regPGxDT
     );
 
-extern volatile uint16_t hspwm_init_pwm_timing (
+extern volatile uint16_t smpsHSPWM_ChannelTiming_Initialize (
     uint16_t channel,
     uint16_t regPGxPER,
     uint16_t regPGxDC,
     uint16_t regPGxPHASE
     );
-extern volatile uint16_t hspwm_set_duty_cycle(
+extern volatile uint16_t smpsHSPWM_SetDutyCycle(
     uint16_t instance, 
     uint16_t regPGxDC, 
     uint16_t regPGxDCA

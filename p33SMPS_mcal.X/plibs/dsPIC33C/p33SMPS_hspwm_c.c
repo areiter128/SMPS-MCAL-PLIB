@@ -97,7 +97,7 @@ volatile uint16_t smpsHSPWM_PowerDown(void) {
     return(1 - _PWMMD);
 }
 
-/*!hspwm_init_pwm_module
+/*!smpsHSPWM_Module_Initialize
  * ************************************************************************************************
  * Summary:
  * Writes a complete PWM module base register set configuration
@@ -114,7 +114,7 @@ volatile uint16_t smpsHSPWM_PowerDown(void) {
  * base register configuration at once while still every write process is monitored and 
  * checked.
  * ***********************************************************************************************/
-volatile uint16_t hspwm_init_pwm_module ( HSPWM_C_MODULE_CONFIG_t pwm_config ) {
+volatile uint16_t smpsHSPWM_Module_Initialize ( HSPWM_C_MODULE_CONFIG_t pwm_config ) {
 
     volatile uint16_t fres=1;
     volatile uint16_t *regptr16;
@@ -226,7 +226,7 @@ volatile uint16_t hspwm_init_pwm_module ( HSPWM_C_MODULE_CONFIG_t pwm_config ) {
     return(fres);
 }
 
-/*!hspwm_init_pwm_generator
+/*!smpsHSPWM_Channel_Initialize
  * ************************************************************************************************
  * Summary:
  * Writes a complete PWM generator register set configuration
@@ -241,7 +241,7 @@ volatile uint16_t hspwm_init_pwm_module ( HSPWM_C_MODULE_CONFIG_t pwm_config ) {
  * in user code. This routine can be used to write this complete PWM generator register configuration 
  * at once while still every write process is monitored and checked.
  * ***********************************************************************************************/
-volatile uint16_t hspwm_init_pwm_generator ( uint16_t instance, HSPWM_C_GENERATOR_CONFIG_t pg_config ) {
+volatile uint16_t smpsHSPWM_Channel_Initialize ( uint16_t instance, HSPWM_C_GENERATOR_CONFIG_t pg_config ) {
 
     volatile uint16_t fres=1;
     volatile uint16_t *regptr16;
@@ -346,7 +346,7 @@ volatile uint16_t hspwm_init_pwm_generator ( uint16_t instance, HSPWM_C_GENERATO
 }
 
 
-/*!hspwm_init_independent_pwm
+/*!smpsHSPWM_IndependentPWM_Initialize
  * ************************************************************************************************
  * Summary:
  * Sets the basic configuration of a PWM generator 
@@ -360,7 +360,7 @@ volatile uint16_t hspwm_init_pwm_generator ( uint16_t instance, HSPWM_C_GENERATO
  * needs to be enabled by using the function call "hspwm_enable_pwm(instance)".
  * ***********************************************************************************************/
 
-volatile uint16_t hspwm_init_independent_pwm(
+volatile uint16_t smpsHSPWM_IndependentPWM_Initialize(
             uint16_t instance, 
             PCLKCON_t regPCLK, 
             PGxCON_t regPGxCON, 
@@ -410,7 +410,7 @@ volatile uint16_t hspwm_init_independent_pwm(
 
 }
 
-/*!hspwm_init_pwm_timing
+/*!smpsHSPWM_ChannelTiming_Initialize
  * ************************************************************************************************
  * Summary:
  * Sets the basic signal timing configuration of a PWM generator 
@@ -426,7 +426,7 @@ volatile uint16_t hspwm_init_independent_pwm(
  * duty cycle/on-time and phase shift.
  * ***********************************************************************************************/
 
-volatile uint16_t hspwm_init_pwm_timing(uint16_t instance, uint16_t regPGxPER, uint16_t regPGxDC, uint16_t regPGxPHASE)
+volatile uint16_t smpsHSPWM_ChannelTiming_Initialize(uint16_t instance, uint16_t regPGxPER, uint16_t regPGxDC, uint16_t regPGxPHASE)
 {
     
     volatile uint16_t fres=1;
@@ -461,7 +461,7 @@ volatile uint16_t hspwm_init_pwm_timing(uint16_t instance, uint16_t regPGxPER, u
 
 }
 
-/*!hspwm_set_duty_cycle
+/*!smpsHSPWM_SetDutyCycle
  * ************************************************************************************************
  * Summary:
  * Writes a new duty cycle value to the individual duty cycle register of the specified PWM instance 
@@ -478,7 +478,7 @@ volatile uint16_t hspwm_init_pwm_timing(uint16_t instance, uint16_t regPGxPER, u
  * specified by parameter 'instance'.
  * ***********************************************************************************************/
 
-volatile uint16_t hspwm_set_duty_cycle(uint16_t instance, uint16_t regPGxDC, uint16_t regPGxDCA)
+volatile uint16_t smpsHSPWM_SetDutyCycle(uint16_t instance, uint16_t regPGxDC, uint16_t regPGxDCA)
 {
     volatile uint16_t fres=0;
     volatile uint16_t *regptr16;
