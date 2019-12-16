@@ -371,7 +371,7 @@ volatile uint16_t smpsHSADC_Module_Reset(void) {
  * an OK/NOT_READY response.
  * ***********************************************************************************************/
 
-volatile uint16_t smpsHSADC_Core_CheckReady(void)
+volatile uint16_t smpsHSADC_Cores_CheckReady(void)
 {
     volatile uint16_t fres = 1;
     volatile uint16_t timeout = 0;

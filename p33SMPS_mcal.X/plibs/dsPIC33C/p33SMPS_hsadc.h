@@ -4680,7 +4680,7 @@ extern volatile uint16_t smpsHSADC_Module_Disable(void);
 extern volatile uint16_t smpsHSADC_Module_Reset(void);
 
 extern volatile uint16_t smpsHSADC_Core_PowerUp(volatile uint16_t index);
-extern volatile uint16_t smpsHSADC_Core_CheckReady(void);
+extern volatile uint16_t smpsHSADC_Cores_CheckReady(void);
 
 extern volatile uint16_t smpsHSADC_ADInput_SetMode(volatile HSADC_ADCANCFG_t adin_cfg);
 extern volatile uint16_t smpsHSADC_ADInput_SetTriggerSource(volatile HSADC_ADCANCFG_t adin_cfg);
