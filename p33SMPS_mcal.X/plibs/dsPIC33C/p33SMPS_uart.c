@@ -1018,7 +1018,7 @@ volatile uint32_t smpsUART_GetBaudrate(volatile uint16_t uart_instance) {
     return(baudrate);
 }
 
-/*!smpsUART_GetCRC16
+/*!smpsUART_GetStandardCRC16
  * ************************************************************************************************
  * Summary:
  * Calculates the Cyclic Redundancy Checksum across an 8-bit data array
@@ -1047,11 +1047,11 @@ volatile uint32_t smpsUART_GetBaudrate(volatile uint16_t uart_instance) {
  *      start:              1                   |
  *      length:             1    2    3    4    5
  * 
- *      function call: [CRC] = smpsUART_GetCRC16( &my_array, 1, 5);
+ *      function call: [CRC] = smpsUART_GetStandardCRC16( &my_array, 1, 5);
  * 
  * ************************************************************************************************/
 
-volatile uint16_t smpsUART_GetCRC16(volatile uint8_t *buffer, volatile uint8_t start, volatile uint8_t length)
+volatile uint16_t smpsUART_GetStandardCRC16(volatile uint8_t *buffer, volatile uint8_t start, volatile uint8_t length)
 {
     volatile uint16_t cnt1=0, cnt2=0, crc=0; // declare calculation auxiliary variables
     

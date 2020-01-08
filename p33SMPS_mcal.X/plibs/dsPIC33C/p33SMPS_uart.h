@@ -1467,7 +1467,7 @@ extern volatile uint16_t smpsUART_Disable(volatile UART_t uart);
 extern volatile uint16_t smpsUART_PowerOn(volatile uint16_t uart_instance);
 extern volatile uint16_t smpsUART_PowerOff(volatile uint16_t uart_instance);
 
-extern volatile uint16_t smpsUART_GetCRC16(volatile uint8_t *buffer, volatile uint8_t start, volatile uint8_t length);
+extern volatile uint16_t smpsUART_GetStandardCRC16(volatile uint8_t *buffer, volatile uint8_t start, volatile uint8_t length);
 
 #endif  /* __MCAL_P33SMPS_UART_H__ */
 // End of File
