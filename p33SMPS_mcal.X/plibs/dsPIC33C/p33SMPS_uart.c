@@ -666,16 +666,56 @@ volatile uint16_t smpsUART_Disable(volatile UART_t uart)
 /*!smpsUART_Close
  * ************************************************************************************************
  * Summary:
+ * Closes a specific UART peripheral
+ *
+ * Parameters:
+ * UART_t   uart = UART object specified by user
+ *
+ * Description:
+ * This routine is disabling the selected UART peripheral but keeps it powered and
+ * all configuration bits in place (except status bits)
+ * ***********************************************************************************************/
+
+volatile uint16_t smpsUART_Close(volatile UART_t* uart)
+{
+    volatile uint16_t fres=0;
+    volatile UART_CONFIG_t *ux_regbuf;
+ 
+    // Check if the requested UART does exists on the recently selected device
+    if (uart->instance > UART_UART_COUNT) return(0);     // Check if index is valid
+
+    // Capture UARTx SFRs
+    if(uart->handle == NULL) return(0);                  // If UART is not initialized, exit here
+    ux_regbuf = (volatile UART_CONFIG_t*)uart->handle;   // Capture start of the UART register block
+
+    // Shut down UART peripheral
+    ux_regbuf->mode.bits.uarten = 0; // Turn off UART
+    ux_regbuf->mode.value = UART_UxMODE_REG_DISPOSE_MASK; // Reset all mode registers
+    fres = (1-ux_regbuf->mode.bits.uarten); // Read Enable-Bit
+    
+    // Clear STATUS registers
+    ux_regbuf->status.value = UART_UxSTA_REG_DISPOSE_MASK; // Reset all status registers
+    
+    return(fres);
+
+}
+
+
+/*!smpsUART_Dispose
+ * ************************************************************************************************
+ * Summary:
  * Disposes a specific UART unit 
  *
  * Parameters:
  * UART_t   uart = UART object specified by user
  *
  * Description:
- * This routine is disabling the selected UART and resets its entire configuration.
+ * This routine is disabling the selected UART, resets its entire configuration and powers down
+ * the module. No further writes to registers of this peripheral can be made until it is 
+ * initialized again.
  * ***********************************************************************************************/
 
-volatile uint16_t smpsUART_Close(volatile UART_t* uart)
+volatile uint16_t smpsUART_Dispose(volatile UART_t* uart)
 {
     volatile uint16_t fres=0;
     volatile UART_CONFIG_t *ux_regbuf;
@@ -706,6 +746,7 @@ volatile uint16_t smpsUART_Close(volatile UART_t* uart)
     return(fres);
 
 }
+
 
 /*!smpsUART_PowerOn
  * ************************************************************************************************
