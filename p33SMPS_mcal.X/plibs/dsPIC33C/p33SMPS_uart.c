@@ -48,7 +48,8 @@
 
 #include "p33SMPS_uart.h"
 
-#define SMPS_UART_IO_TIMEOUT   5000    // wait for n while cycles before terminating poll-attempt
+#define SMPS_UART_IO_TIMEOUT        5000    // wait for n while cycles before terminating poll-attempt
+#define SMPS_UART_ACTIVE_TIMEOUT    10000   // wait for n while cycles before terminating poll-attempt
 
 /*@@p33MP_uart.c
  * ************************************************************************************************
@@ -176,6 +177,8 @@ volatile uint16_t smpsUART_Initialize(volatile uint16_t uart_instance, volatile 
 volatile uint16_t smpsUART_OpenPort(volatile UART_t* uart)
 {
     volatile uint16_t fres=1;
+    volatile uint16_t timeout=0;
+    
     volatile UART_CONFIG_t *ux_regbuf;
     
     volatile UxMODE_t uxmode_config;
@@ -324,6 +327,9 @@ volatile uint16_t smpsUART_OpenPort(volatile UART_t* uart)
     ux_regbuf->mode.bits.uarten = UxMODE_UARTEN_ENABLED; // Enable UART
     ux_regbuf->mode.bits.urxen = UxMODE_URXEN_ENABLED;   // Enable receiving messages
     ux_regbuf->mode.bits.utxen = UxMODE_UTXEN_ENABLED;   // Enable sending messages
+    
+    while((!ux_regbuf->mode.bits.active) && (timeout < SMPS_UART_ACTIVE_TIMEOUT));
+    fres &= (bool)(timeout < SMPS_UART_ACTIVE_TIMEOUT);
     
     if (!fres) uart->handle = NULL; // Clear handle if configuration failed
     
