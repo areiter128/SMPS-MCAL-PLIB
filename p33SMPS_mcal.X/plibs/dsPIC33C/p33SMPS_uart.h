@@ -107,7 +107,7 @@
 #endif
 
 #if ( UART_UART_COUNT >= 4 )
-  #pragma message "=== selected device is not supported by this library ==="
+  #pragma message "=== selected UART instance is not supported by this device ==="
 #endif
 
 
