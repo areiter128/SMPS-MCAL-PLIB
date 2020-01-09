@@ -98,23 +98,10 @@ volatile uint16_t smpsPPS_LockIO(void){
     return(OSCCONbits.IOLOCK);
     
 #elif defined (__P33SMPS_CH__) || defined (__P33SMPS_CK__)
-    // IOLOCK sequence is performed on NVMKEY register
-//	asm volatile
-//	(	"push.s \n"
-//		"disi #5 \n"
-//		"mov #0x55,w1 \n"
-//		"mov #0xAA, w2 \n"
-//		"mov w1, _NVMKEY \n"
-//		"mov w2, _NVMKEY \n"
-//		"bset _RPCON, #11 \n"
-//		"disi #0 \n"			// see errata
-//		"nop \n"
-//		"nop \n"
-//        "pop.s \n"
-//	);
-
+    
     __builtin_write_RPCON(0x0800); // lock PPS
     return(RPCONbits.IOLOCK);
+
 #endif
     
 }
@@ -166,22 +153,9 @@ volatile uint16_t smpsPPS_UnlockIO(void){
 #elif defined (__P33SMPS_CH__) || defined (__P33SMPS_CK__)
     // IOLOCK sequence is performed on RPCON using NVMKEY register to unlock
 
-//	asm volatile
-//	(	"push.s \n"
-//		"disi #5 \n"
-//		"mov #0x55,w1 \n"
-//		"mov #0xAA, w2 \n"
-//		"mov w1, _NVMKEY \n"
-//		"mov w2, _NVMKEY \n"
-//		"bclr _RPCON, #11 \n"
-//		"disi #0 \n"			// see errata
-//		"nop \n"
-//		"nop \n"
-//        "pop.s \n"
-//	);
-
     __builtin_write_RPCON(0x0000); // unlock PPS
     return(1 - RPCONbits.IOLOCK);
+
 #endif
     
 }
