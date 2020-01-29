@@ -396,27 +396,6 @@ extern "C" {
         volatile bool             reverse_bits; // Flag bit indicating that CRC result needs to be reversed
     } CRC_CONFIG_t; // CRC module configuration
     
-
-/* ===========================================================================
- * GLOBAL INLINE ASSEMLBY MACROS
- * ===========================================================================*/
-
-#define SwapWordBytes(x) __extension__ ({ \
-    volatile uint16_t __x = (x), __v; \
-    __asm__ ("swap %0;\n\t" : "=d" (__v) : "d" (__x)); __v; \
-})    
-
-#define ReverseBitOrder16b(x) __extension__ ({ \
-    volatile uint16_t __x = (x), __v; \
-    __asm__ ( \
-        "clr w4 \n" \
-        "RBO16LP: do #15, RBO16LPE \n" \
-        "sl w4, #1, w4 \n" \
-        "btsc %0, #0 \n" \
-        "bset w4, #0 \n" \
-        "RBO16LPE: rrnc %0, %0 \n" \
-        "mov w4, %0 \n" : "=d" (__v) : "d" (__x)); __v; \
-})
     
 /* ===========================================================================
  * GLOBAL FUNCTION CALL PROTOTYPES

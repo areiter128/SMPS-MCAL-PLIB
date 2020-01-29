@@ -30,8 +30,8 @@
 #define _APPLICATION_LAYER_DEFINES_H_
 
 #include <stdint.h>
-#include "stdbool.h"
-#include "stddef.h"
+#include <stdbool.h>
+#include <stddef.h>
 
 /* ***************************************************************************************
  *	Generic Macros
@@ -57,6 +57,48 @@
     volatile uint16_t __x = (x), __v; \
     __asm__ ("ctxtswp %1;\n\t" : "=d" (__v) : "d" (__x)); __v; \
 })    
+
+/*!SwapWordBytes()
+ * ********************************************************************************
+ * Summary: Swaps high and low byte of a 16 bit value
+ * 
+ * Parameters:
+ *      uint16_t x: Value to be swapped
+ * 
+ * Returns: 
+ *      uint16_t:   16-bit value in reverse byte order
+ * 
+ * ********************************************************************************/
+#define SwapWordBytes(x) __extension__ ({ \
+    volatile uint16_t __x = (x), __v; \
+    __asm__ ("swap %0;\n\t" : "=d" (__v) : "d" (__x)); __v; \
+})    
+
+
+/*!ReverseBitOrder16b()
+ * ********************************************************************************
+ * Summary: Reverses the bit order of a 16 bit value
+ * 
+ * Parameters:
+ *      uint16_t x: Value to be reversed
+ * 
+ * Returns: 
+ *      uint16_t:   16-bit value in reverse bit order
+ * 
+ * ********************************************************************************/
+
+#define ReverseBitOrder16b(x) __extension__ ({ \
+    volatile uint16_t __x = (x), __v; \
+    __asm__ ( \
+        "clr w4 \n" \
+        "RBO16LP: do #15, RBO16LPE \n" \
+        "sl w4, #1, w4 \n" \
+        "btsc %0, #0 \n" \
+        "bset w4, #0 \n" \
+        "RBO16LPE: rrnc %0, %0 \n" \
+        "mov w4, %0 \n" : "=d" (__v) : "d" (__x)); __v; \
+})
+
 
 
 #endif  /* _APPLICATION_LAYER_DEFINES_H_ */
